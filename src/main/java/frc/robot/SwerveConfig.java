@@ -34,6 +34,9 @@ public class SwerveConfig {
         private static final int BACK_LEFT_ROT_ENC_ID = 21;
 
 
+        public static final int PIGEON_ID = 25;
+
+
         // Inverse Booleans
         private static final boolean FRONT_LEFT_ROT_INVERSE = false;
         private static final boolean FRONT_LEFT_TRANS_INVERSE = true;

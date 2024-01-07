@@ -4,7 +4,8 @@
 
 package frc.robot.subsystems;
 
-import com.kauailabs.navx.frc.AHRS;
+import com.ctre.phoenix.sensors.Pigeon2;
+import com.ctre.phoenix.sensors.WPI_Pigeon2;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -12,7 +13,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.SwerveConfig;
@@ -25,19 +25,19 @@ public class SwerveSubsystem extends SubsystemBase {
   private final SwerveDriveKinematics mKinematics;
   private final SwerveDriveOdometry mOdometry;
 
-  private final AHRS mNavX;
+  private final WPI_Pigeon2 mPigeon2;
 
   private final SwerveModule[] mModules;
 
   public SwerveSubsystem() {
     // Populating Instance Variables
+
     mKinematics = SwerveConfig.SWERVE_KINEMATICS;
-    mNavX = new AHRS(Port.kMXP);
+    mPigeon2 = new WPI_Pigeon2(SwerveConfig.PIGEON_ID);
     mModules = SwerveConfig.SWERVE_MODULES;
     mOdometry = new SwerveDriveOdometry(mKinematics, getRotation2d(), getModulePositions());
     resetGyro();
     resetRobotPose(new Pose2d());
-
   }
 
   @Override
@@ -60,7 +60,7 @@ public class SwerveSubsystem extends SubsystemBase {
             mModules[i].getDesiredRadiansRot() / Math.PI * 180);
         SmartDashboard.putNumber("RotRelativePosDeg" + i,
             mModules[i].getRotRelativePosition() * 360);
-        SmartDashboard.putNumber("AbsEncoderDeg" + i, mModules[i].getRotPosition() / Math.PI * 180);
+        SmartDashboard.putNumber("AbsEncoderDeg" + i, mModules[i].getRotPosition());
         SmartDashboard.putNumber("SpeedMeters" + i, mModules[i].getTransVelocity());
         SmartDashboard.putNumber("PosMeters" + i, mModules[i].getTransPosition());
       }
@@ -71,7 +71,7 @@ public class SwerveSubsystem extends SubsystemBase {
    * Sets the current YAW heading as the 0'd heading
    */
   public void resetGyro() {
-    mNavX.reset();
+    mPigeon2.reset();
   }
 
   /**
@@ -88,7 +88,7 @@ public class SwerveSubsystem extends SubsystemBase {
    * @return the degrees at which the gyro is at
    */
   public double getHeading() {
-    return -mNavX.getAngle();
+    return -mPigeon2.getAngle();
   }
 
   /**
