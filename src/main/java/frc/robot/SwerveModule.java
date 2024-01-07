@@ -1,6 +1,6 @@
 package frc.robot;
 
-import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -26,7 +26,7 @@ public class SwerveModule {
     private final CANSparkMax mRotMotor;
     private final CANSparkMax mTransMotor;
     // Encoders
-    private final CANCoder mRotEncoder;
+    private final CANcoder mRotEncoder;
     private final RelativeEncoder mTransEncoder;
     private final RelativeEncoder mRotRelativeEncoder;
 
@@ -50,7 +50,7 @@ public class SwerveModule {
 
 
         // Encoders
-        mRotEncoder = new CANCoder(mRotEncoderID);
+        mRotEncoder = new CANcoder(mRotEncoderID);
         mTransEncoder = mTransMotor.getEncoder();
         mRotRelativeEncoder = mRotMotor.getEncoder();
         mRotRelativeEncoder.setPosition(0);
@@ -156,7 +156,7 @@ public class SwerveModule {
      * @return Returns rotation position in radians
      */
     private double getRotPositionRaw() {
-        return Math.toRadians(mRotEncoder.getAbsolutePosition());
+        return mRotEncoder.getAbsolutePosition().getValueAsDouble()*2*Math.PI;
     }
 
     /**
