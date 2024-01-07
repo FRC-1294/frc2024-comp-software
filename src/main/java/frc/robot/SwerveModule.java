@@ -156,7 +156,7 @@ public class SwerveModule {
      * @return Returns rotation position in radians
      */
     private double getRotPositionRaw() {
-        return mRotEncoder.getAbsolutePosition();
+        return Math.toRadians(mRotEncoder.getAbsolutePosition());
     }
 
     /**
