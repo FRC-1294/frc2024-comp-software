@@ -4,8 +4,8 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.sensors.Pigeon2;
-import com.ctre.phoenix.sensors.WPI_Pigeon2;
+
+import com.ctre.phoenix6.hardware.Pigeon2;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -25,7 +25,7 @@ public class SwerveSubsystem extends SubsystemBase {
   private final SwerveDriveKinematics mKinematics;
   private final SwerveDriveOdometry mOdometry;
 
-  private final WPI_Pigeon2 mPigeon2;
+  private final Pigeon2 mPigeon2;
 
   private final SwerveModule[] mModules;
 
@@ -33,7 +33,7 @@ public class SwerveSubsystem extends SubsystemBase {
     // Populating Instance Variables
 
     mKinematics = SwerveConfig.SWERVE_KINEMATICS;
-    mPigeon2 = new WPI_Pigeon2(SwerveConfig.PIGEON_ID);
+    mPigeon2 = new Pigeon2(SwerveConfig.PIGEON_ID);
     mModules = SwerveConfig.SWERVE_MODULES;
     mOdometry = new SwerveDriveOdometry(mKinematics, getRotation2d(), getModulePositions());
     resetGyro();
