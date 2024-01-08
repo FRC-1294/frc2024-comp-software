@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.constants.JoystickConstants;
 
 // Input Class For Joystick/Controller Input Functions
@@ -16,12 +15,6 @@ public class Input {
 
   private static final Joystick mRotJoystick = new Joystick(JoystickConstants.ROT_JOYSTICK_PORT);
   private static final Joystick mTransJoystick = new Joystick(JoystickConstants.TRANS_JOY_PORT);
-
-
-  public static final int DPADUP = 0;
-  public static final int DPADRIGHT = 90;
-  public static final int DPADDOWN = 180;
-  public static final int DPADLEFT = 270;
 
 
   public static boolean resetGyro() {

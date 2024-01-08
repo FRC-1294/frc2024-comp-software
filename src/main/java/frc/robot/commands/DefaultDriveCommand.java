@@ -4,13 +4,13 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.JoystickConstants;
 import frc.robot.constants.SwerveConstants;
 import frc.robot.subsystems.Input;
 import frc.robot.subsystems.SwerveSubsystem;
 
-public class DefaultDriveCommand extends CommandBase {
+public class DefaultDriveCommand extends Command {
 
   private final SwerveSubsystem mSwerve;
   private boolean mIsPrecisionToggle = false;
