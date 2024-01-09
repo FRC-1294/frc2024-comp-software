@@ -39,16 +39,16 @@ public class SwerveConfig {
 
         // Inverse Booleans
         private static final boolean FRONT_LEFT_ROT_INVERSE = false;
-        private static final boolean FRONT_LEFT_TRANS_INVERSE = true;
+        private static final boolean FRONT_LEFT_TRANS_INVERSE = false;
 
         private static final boolean FRONT_RIGHT_ROT_INVERSE = false;
-        private static final boolean FRONT_RIGHT_TRANS_INVERSE = false;
+        private static final boolean FRONT_RIGHT_TRANS_INVERSE = true;
 
         private static final boolean BACK_LEFT_ROT_INVERSE = false;
-        private static final boolean BACK_LEFT_TRANS_INVERSE = true;
+        private static final boolean BACK_LEFT_TRANS_INVERSE = false;
 
         private static final boolean BACK_RIGHT_ROT_INVERSE = false;
-        private static final boolean BACK_RIGHT_TRANS_INVERSE = false;
+        private static final boolean BACK_RIGHT_TRANS_INVERSE = true;
 
         // Swerve Module Locations
         public static final Translation2d FRONT_LEFT_COORDS_METERS =

@@ -4,13 +4,13 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.JoystickConstants;
 import frc.robot.constants.SwerveConstants;
 import frc.robot.subsystems.Input;
 import frc.robot.subsystems.SwerveSubsystem;
 
-public class DefaultDriveCommand extends CommandBase {
+public class DefaultDriveCommand extends Command {
 
   private final SwerveSubsystem mSwerve;
   private boolean mIsPrecisionToggle = false;
@@ -50,7 +50,7 @@ public class DefaultDriveCommand extends CommandBase {
       rot = Math.abs(rot) > JoystickConstants.DRIVE_PRECISION_ROT_DEADZONE ? rot : 0.0;
     } else {
       x = Math.abs(x) > JoystickConstants.DRIVE_REG_X_DEADZONE ? x : 0.0;
-      y = Math.abs(y) > JoystickConstants.DRIVE_REG_Y_DEADZONE ? y : 0.0;
+      y = Math.abs(y) >  JoystickConstants.DRIVE_REG_Y_DEADZONE ? y : 0.0;
       rot = Math.abs(rot) > JoystickConstants.DRIVE_REG_ROT_DEADZONE ? rot : 0.0;
     }
 
@@ -58,7 +58,7 @@ public class DefaultDriveCommand extends CommandBase {
     y *= SwerveConstants.TELE_MAX_SPEED_MPS;
     rot *= SwerveConstants.TELE_MAX_ROT_SPEED_RAD_SEC;
 
-    mSwerve.setChassisSpeed(x, y, rot, false);
+    mSwerve.setChassisSpeed(x, y, rot, true);
   }
 
   // Returns true when the command should end.
