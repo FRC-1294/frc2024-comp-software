@@ -1,38 +1,73 @@
 {
-    "fileName": "NavX.json",
-    "name": "KauaiLabs_navX_FRC",
-    "version": "2023.0.3",
-    "uuid": "cb311d09-36e9-4143-a032-55bb2b94443b",
+    "fileName": "REVLib.json",
+    "name": "REVLib",
+    "version": "2024.2.0",
+    "frcYear": "2024",
+    "uuid": "3f48eb8c-50fe-43a6-9cb7-44c86353c4cb",
     "mavenUrls": [
-        "https://dev.studica.com/maven/release/2023/"
+        "https://maven.revrobotics.com/"
     ],
-    "jsonUrl": "https://dev.studica.com/releases/2023/NavX.json",
+    "jsonUrl": "https://software-metadata.revrobotics.com/REVLib-2024.json",
     "javaDependencies": [
         {
-            "groupId": "com.kauailabs.navx.frc",
-            "artifactId": "navx-frc-java",
-            "version": "2023.0.3"
+            "groupId": "com.revrobotics.frc",
+            "artifactId": "REVLib-java",
+            "version": "2024.2.0"
         }
     ],
-    "jniDependencies": [],
-    "cppDependencies": [
+    "jniDependencies": [
         {
-            "groupId": "com.kauailabs.navx.frc",
-            "artifactId": "navx-frc-cpp",
-            "version": "2023.0.3",
-            "headerClassifier": "headers",
-            "sourcesClassifier": "sources",
-            "sharedLibrary": false,
-            "libName": "navx_frc",
+            "groupId": "com.revrobotics.frc",
+            "artifactId": "REVLib-driver",
+            "version": "2024.2.0",
             "skipInvalidPlatforms": true,
-            "binaryPlatforms": [
-                "linuxathena",
-                "linuxraspbian",
-                "linuxarm32",
+            "isJar": false,
+            "validPlatforms": [
+                "windowsx86-64",
+                "windowsx86",
                 "linuxarm64",
                 "linuxx86-64",
-                "osxuniversal",
-                "windowsx86-64"
+                "linuxathena",
+                "linuxarm32",
+                "osxuniversal"
+            ]
+        }
+    ],
+    "cppDependencies": [
+        {
+            "groupId": "com.revrobotics.frc",
+            "artifactId": "REVLib-cpp",
+            "version": "2024.2.0",
+            "libName": "REVLib",
+            "headerClassifier": "headers",
+            "sharedLibrary": false,
+            "skipInvalidPlatforms": true,
+            "binaryPlatforms": [
+                "windowsx86-64",
+                "windowsx86",
+                "linuxarm64",
+                "linuxx86-64",
+                "linuxathena",
+                "linuxarm32",
+                "osxuniversal"
+            ]
+        },
+        {
+            "groupId": "com.revrobotics.frc",
+            "artifactId": "REVLib-driver",
+            "version": "2024.2.0",
+            "libName": "REVLibDriver",
+            "headerClassifier": "headers",
+            "sharedLibrary": false,
+            "skipInvalidPlatforms": true,
+            "binaryPlatforms": [
+                "windowsx86-64",
+                "windowsx86",
+                "linuxarm64",
+                "linuxx86-64",
+                "linuxathena",
+                "linuxarm32",
+                "osxuniversal"
             ]
         }
     ]
