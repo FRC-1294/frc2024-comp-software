@@ -33,7 +33,7 @@ public class SwerveSubsystem extends SubsystemBase {
     // Populating Instance Variables
 
     mKinematics = SwerveConfig.SWERVE_KINEMATICS;
-    mPigeon2 = new Pigeon2(SwerveConfig.PIGEON_ID);
+    mPigeon2 = new Pigeon2(SwerveConfig.PIGEON_ID,"SWERVE_ENC");
     mModules = SwerveConfig.SWERVE_MODULES;
     mOdometry = new SwerveDriveOdometry(mKinematics, getRotation2d(), getModulePositions());
     resetGyro();
