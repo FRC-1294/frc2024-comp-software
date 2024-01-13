@@ -46,7 +46,6 @@ public class SwerveModule {
     private double mCurAccel = 0.0;
     private double prevVel = 0.0;
     private double prevTS;
-    private double nominalVoltage;
 
     public SwerveModule(int rotID, int transID, int rotEncoderID, boolean rotInverse,
             boolean transInverse, PIDConstants rotPID, PIDConstants transPID) {
@@ -169,9 +168,6 @@ public class SwerveModule {
         mDesiredRadians = desiredState.angle.getRadians();
         mPIDOutput = mRotPID.calculate(getRotPosition(), desiredState.angle.getRadians());
         mRotMotor.set(mPIDOutput);
-
-        nominalVoltage = mTransMotor.getVoltageCompensationNominalVoltage();
-
     }
 
     public void setPID(double degrees) {
@@ -347,5 +343,12 @@ public class SwerveModule {
      */
     public double getDesiredRadiansRot() {
         return mDesiredRadians;
+    }
+
+    /**
+     * @return the nominal voltage amount after voltage compensation for the translation motor
+     */
+    public double getTranslationNominalVoltage(){
+        return mTransMotor.getVoltageCompensationNominalVoltage();
     }
 }
