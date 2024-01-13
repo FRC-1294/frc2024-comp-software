@@ -43,13 +43,13 @@ public class SwerveConfig {
         private static final boolean FRONT_LEFT_TRANS_INVERSE = true;
 
         private static final boolean FRONT_RIGHT_ROT_INVERSE = false;
-        private static final boolean FRONT_RIGHT_TRANS_INVERSE = false;
+        private static final boolean FRONT_RIGHT_TRANS_INVERSE = true;
 
         private static final boolean BACK_LEFT_ROT_INVERSE = false;
-        private static final boolean BACK_LEFT_TRANS_INVERSE = true;
+        private static final boolean BACK_LEFT_TRANS_INVERSE = false;
 
         private static final boolean BACK_RIGHT_ROT_INVERSE = false;
-        private static final boolean BACK_RIGHT_TRANS_INVERSE = false;
+        private static final boolean BACK_RIGHT_TRANS_INVERSE = true;
 
         // Swerve Module Locations
         public static final Translation2d FRONT_LEFT_COORDS_METERS =
@@ -71,10 +71,10 @@ public class SwerveConfig {
         public static final PIDConstants BACK_RIGHT_ROT_PID = new PIDConstants(0.35, 0, 0);
         public static final PIDConstants BACK_LEFT_ROT_PID = new PIDConstants(0.35, 0, 0);
 
-        public static final PIDConstants FRONT_LEFT_TRANS_PID = new PIDConstants(0.1, 0, 0,0.0085,0.21);
-        public static final PIDConstants FRONT_RIGHT_TRANS_PID = new PIDConstants(0.1, 0, 0,0.0085,0.21);
-        public static final PIDConstants BACK_RIGHT_TRANS_PID = new PIDConstants(0.1, 0, 0,0.0085,0.21);
-        public static final PIDConstants BACK_LEFT_TRANS_PID = new PIDConstants(0.1, 0, 0,0.0085,0.21);
+        public static final PIDConstants FRONT_LEFT_TRANS_PID = new PIDConstants(0.0, 0, 0,0.0087,0.208);
+        public static final PIDConstants FRONT_RIGHT_TRANS_PID = new PIDConstants(0.0, 0, 0,0.0087,0.207);
+        public static final PIDConstants BACK_RIGHT_TRANS_PID = new PIDConstants(0.0, 0, 0,0.0087,0.211);
+        public static final PIDConstants BACK_LEFT_TRANS_PID = new PIDConstants(0.0, 0, 0,0.0087,0.208);
 
 
         public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(

@@ -83,6 +83,7 @@ public class SwerveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("TranslationDesiredVel" + i, mModules[i].getTransVelocitySetpoint());
         SmartDashboard.putNumber("Nominal Voltage", mModules[i].getTranslationNominalVoltage());
         SmartDashboard.putNumber("ExpkFValue" + i, (mModules[i].getTransAppliedVolts()/mModules[i].getTranslationNominalVoltage())/mModules[i].getTransVelocity());
+        SmartDashboard.putNumber("FeedForwardGains" + i, mModules[i].feedforward);
         SmartDashboard.putNumber("MaxAccel", i);
       }
 
