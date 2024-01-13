@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import frc.robot.constants.SwerveConstants;
@@ -75,6 +76,11 @@ public class SwerveConfig {
         public static final PIDConstants BACK_RIGHT_TRANS_PID = new PIDConstants(0, 0, 0,0.1,0.23);
         public static final PIDConstants BACK_LEFT_TRANS_PID = new PIDConstants(0, 0, 0,0.1,0.23);
 
+        public static final SimpleMotorFeedforward FRONT_LEFT_FEED_FORWARD = new SimpleMotorFeedforward(0.102, 0.21);
+        public static final SimpleMotorFeedforward FRONT_RIGHT_FEED_FORWARD = new SimpleMotorFeedforward(0.102, 0.21);
+        public static final SimpleMotorFeedforward BACK_LEFT_FEED_FORWARD = new SimpleMotorFeedforward(0.102, 0.21);
+        public static final SimpleMotorFeedforward BACK_RIGHT_FEED_FORWARD = new SimpleMotorFeedforward(0.102, 0.21);
+
 
         public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
                         FRONT_LEFT_COORDS_METERS, FRONT_RIGHT_COORDS_METERS,
@@ -84,19 +90,19 @@ public class SwerveConfig {
         // Swerve Modules and Other Hardware
         public static final SwerveModule FRONT_LEFT_MODULE = new SwerveModule(FRONT_LEFT_ROT_ID,
                         FRONT_LEFT_TRANS_ID, FRONT_LEFT_ROT_ENC_ID, FRONT_LEFT_ROT_INVERSE,
-                        FRONT_LEFT_TRANS_INVERSE, FRONT_LEFT_ROT_PID,FRONT_LEFT_TRANS_PID);
+                        FRONT_LEFT_TRANS_INVERSE, FRONT_LEFT_ROT_PID,FRONT_LEFT_TRANS_PID, FRONT_LEFT_FEED_FORWARD);
 
         public static final SwerveModule FRONT_RIGHT_MODULE = new SwerveModule(FRONT_RIGHT_ROT_ID,
                         FRONT_RIGHT_TRANS_ID, FRONT_RIGHT_ROT_ENC_ID, FRONT_RIGHT_ROT_INVERSE,
-                        FRONT_RIGHT_TRANS_INVERSE, FRONT_RIGHT_ROT_PID,FRONT_RIGHT_TRANS_PID);
+                        FRONT_RIGHT_TRANS_INVERSE, FRONT_RIGHT_ROT_PID,FRONT_RIGHT_TRANS_PID, FRONT_RIGHT_FEED_FORWARD);
 
         public static final SwerveModule BACK_LEFT_MODULE = new SwerveModule(BACK_LEFT_ROT_ID,
                 BACK_LEFT_TRANS_ID, BACK_LEFT_ROT_ENC_ID, BACK_LEFT_ROT_INVERSE,
-                BACK_LEFT_TRANS_INVERSE, BACK_LEFT_ROT_PID,BACK_LEFT_TRANS_PID);
+                BACK_LEFT_TRANS_INVERSE, BACK_LEFT_ROT_PID,BACK_LEFT_TRANS_PID, BACK_LEFT_FEED_FORWARD);
 
         public static final SwerveModule BACK_RIGHT_MODULE = new SwerveModule(BACK_RIGHT_ROT_ID,
                         BACK_RIGHT_TRANS_ID, BACK_RIGHT_ROT_ENC_ID, BACK_RIGHT_ROT_INVERSE,
-                        BACK_RIGHT_TRANS_INVERSE, BACK_RIGHT_ROT_PID,BACK_RIGHT_TRANS_PID);
+                        BACK_RIGHT_TRANS_INVERSE, BACK_RIGHT_ROT_PID,BACK_RIGHT_TRANS_PID, BACK_RIGHT_FEED_FORWARD);
 
 
         public static final SwerveModule[] SWERVE_MODULES = {FRONT_LEFT_MODULE, FRONT_RIGHT_MODULE,
