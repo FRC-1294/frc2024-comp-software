@@ -4,10 +4,10 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import frc.robot.constants.SwerveConstants;
+import frc.robot.Util.PIDConstants;
 
 /** Add your docs here. */
 public class SwerveConfig {
@@ -65,10 +65,15 @@ public class SwerveConfig {
                                         -SwerveConstants.TRACK_WIDTH_METERS / 2);
 
         // PID Controllers
-        public static final PIDController FRONT_LEFT_ROT_PID = new PIDController(0.35, 0., 0.);
-        public static final PIDController FRONT_RIGHT_ROT_PID = new PIDController(0.35, 0.0, 0.);
-        public static final PIDController BACK_RIGHT_ROT_PID = new PIDController(0.35, 0, 0.);
-        public static final PIDController BACK_LEFT_ROT_PID = new PIDController(0.35, 0, 0);
+        public static final PIDConstants FRONT_LEFT_ROT_PID = new PIDConstants(0.35, 0, 0);
+        public static final PIDConstants FRONT_RIGHT_ROT_PID = new PIDConstants(0.35, 0, 0);
+        public static final PIDConstants BACK_RIGHT_ROT_PID = new PIDConstants(0.35, 0, 0);
+        public static final PIDConstants BACK_LEFT_ROT_PID = new PIDConstants(0.35, 0, 0);
+
+        public static final PIDConstants FRONT_LEFT_TRANS_PID = new PIDConstants(0, 0,                                                        0,0.1,0.23);
+        public static final PIDConstants FRONT_RIGHT_TRANS_PID = new PIDConstants(0, 0, 0,0.1,0.23);
+        public static final PIDConstants BACK_RIGHT_TRANS_PID = new PIDConstants(0, 0, 0,0.1,0.23);
+        public static final PIDConstants BACK_LEFT_TRANS_PID = new PIDConstants(0, 0, 0,0.1,0.23);
 
 
         public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
@@ -79,24 +84,25 @@ public class SwerveConfig {
         // Swerve Modules and Other Hardware
         public static final SwerveModule FRONT_LEFT_MODULE = new SwerveModule(FRONT_LEFT_ROT_ID,
                         FRONT_LEFT_TRANS_ID, FRONT_LEFT_ROT_ENC_ID, FRONT_LEFT_ROT_INVERSE,
-                        FRONT_LEFT_TRANS_INVERSE, FRONT_LEFT_ROT_PID);
+                        FRONT_LEFT_TRANS_INVERSE, FRONT_LEFT_ROT_PID,FRONT_LEFT_TRANS_PID);
 
         public static final SwerveModule FRONT_RIGHT_MODULE = new SwerveModule(FRONT_RIGHT_ROT_ID,
                         FRONT_RIGHT_TRANS_ID, FRONT_RIGHT_ROT_ENC_ID, FRONT_RIGHT_ROT_INVERSE,
-                        FRONT_RIGHT_TRANS_INVERSE, FRONT_RIGHT_ROT_PID);
+                        FRONT_RIGHT_TRANS_INVERSE, FRONT_RIGHT_ROT_PID,FRONT_RIGHT_TRANS_PID);
+
+        public static final SwerveModule BACK_LEFT_MODULE = new SwerveModule(BACK_LEFT_ROT_ID,
+                BACK_LEFT_TRANS_ID, BACK_LEFT_ROT_ENC_ID, BACK_LEFT_ROT_INVERSE,
+                BACK_LEFT_TRANS_INVERSE, BACK_LEFT_ROT_PID,BACK_LEFT_TRANS_PID);
 
         public static final SwerveModule BACK_RIGHT_MODULE = new SwerveModule(BACK_RIGHT_ROT_ID,
                         BACK_RIGHT_TRANS_ID, BACK_RIGHT_ROT_ENC_ID, BACK_RIGHT_ROT_INVERSE,
-                        BACK_RIGHT_TRANS_INVERSE, BACK_RIGHT_ROT_PID);
+                        BACK_RIGHT_TRANS_INVERSE, BACK_RIGHT_ROT_PID,BACK_RIGHT_TRANS_PID);
 
-        public static final SwerveModule BACK_LEFT_MODULE = new SwerveModule(BACK_LEFT_ROT_ID,
-                        BACK_LEFT_TRANS_ID, BACK_LEFT_ROT_ENC_ID, BACK_LEFT_ROT_INVERSE,
-                        BACK_LEFT_TRANS_INVERSE, BACK_LEFT_ROT_PID);
 
         public static final SwerveModule[] SWERVE_MODULES = {FRONT_LEFT_MODULE, FRONT_RIGHT_MODULE,
                         BACK_LEFT_MODULE, BACK_RIGHT_MODULE};
 
-        public static final PIDController[] SWERVE_MODULE_PIDs = {FRONT_LEFT_ROT_PID,
+        public static final PIDConstants[] SWERVE_MODULE_PIDs = {FRONT_LEFT_ROT_PID,
                         FRONT_RIGHT_ROT_PID, BACK_LEFT_ROT_PID, BACK_LEFT_ROT_PID};
 
 }
