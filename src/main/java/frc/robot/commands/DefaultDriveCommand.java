@@ -65,7 +65,7 @@ public class DefaultDriveCommand extends Command {
     y *= SwerveConstants.TELE_MAX_SPEED_MPS;
     rot *= SwerveConstants.TELE_MAX_ROT_SPEED_RAD_SEC;
 
-    mSwerve.setChassisSpeed(x, y, rot, true);
+    mSwerve.setChassisSpeed(xMove, 0, rot, true);
   }
 
   // Returns true when the command should end.

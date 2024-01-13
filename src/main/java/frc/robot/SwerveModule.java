@@ -162,8 +162,8 @@ public class SwerveModule {
         double feedForwardGains = mTransFF.calculate(mDesiredVel);
 
         mTransPID.setReference(mDesiredVel, ControlType.kVelocity, 0, feedForwardGains, ArbFFUnits.kPercentOut);
-        //mTransMotor.set((feedForwardGains+pidOutput) / SwerveConstants.PHYSICAL_MAX_SPEED_MPS);
-
+        // mTransMotor.set((feedForwardGains+pidOutput) / SwerveConstants.PHYSICAL_MAX_SPEED_MPS);
+        // mTransMotor.set(mDesiredVel/SwerveConstants.PHYSICAL_MAX_SPEED_MPS);
 
         mDesiredRadians = desiredState.angle.getRadians();
         mPIDOutput = mRotPID.calculate(getRotPosition(), desiredState.angle.getRadians());
