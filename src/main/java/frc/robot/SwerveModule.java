@@ -4,8 +4,11 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.SparkPIDController.ArbFFUnits;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -45,10 +48,9 @@ public class SwerveModule {
     public double prevVel = 0.0;
     public double prevTS;
     public double nominalVolty;
-    public SimpleMotorFeedforward mFeedForward;
 
     public SwerveModule(int rotID, int transID, int rotEncoderID, boolean rotInverse,
-            boolean transInverse, PIDConstants rotPID, PIDConstants transPID, SimpleMotorFeedforward feedforward) {
+            boolean transInverse, PIDConstants rotPID, PIDConstants transPID) {
         // Setting Parameters
         prevTS = Timer.getFPGATimestamp();
         mRotID = rotID;
@@ -57,7 +59,6 @@ public class SwerveModule {
         mRotInverse = rotInverse;
         mTransInverse = transInverse;
 
-        mFeedForward = feedforward;
         // mFeedforward.calculate(transID, rotEncoderID);
 
         // ----Setting Hardware
@@ -83,7 +84,7 @@ public class SwerveModule {
         mTransPID.setP(transPID.mKP, 0);
         mTransPID.setI(transPID.mKI, 0);
         mTransPID.setD(transPID.mKD, 0);
-        mTransPID.setFF(transPID.mKV, 0);
+        //mTransPID.setFF(transPID.mKV, 0);
 
         // ----Setting Inversion
         mRotMotor.setInverted(mRotInverse);
@@ -160,9 +161,10 @@ public class SwerveModule {
 
         // PID Controller for both translation and rotation
         mDesiredVel = desiredState.speedMetersPerSecond;
-        double feedForwardGains = mFeedForward.calculate(mDesiredVel);
-        double pidOutput = new PIDController(0.1, 0, 0).calculate(getTransVelocity(), mDesiredVel);
-        mTransMotor.set((feedForwardGains+pidOutput) / SwerveConstants.PHYSICAL_MAX_SPEED_MPS);
+        double feedForwardGains = mTransFF.calculate(mDesiredVel);
+
+        mTransPID.setReference(mDesiredVel, ControlType.kVelocity, 0, feedForwardGains, ArbFFUnits.kPercentOut);
+        //mTransMotor.set((feedForwardGains+pidOutput) / SwerveConstants.PHYSICAL_MAX_SPEED_MPS);
 
 
         mDesiredRadians = desiredState.angle.getRadians();
