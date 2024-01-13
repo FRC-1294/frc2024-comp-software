@@ -42,11 +42,10 @@ public class SwerveModule {
     private double mPIDOutput = 0.0;
     private double mDesiredRadians = 0.0;
     private double mDesiredVel = 0.0;
-    public double mMaxAccel = 0.0;
-    public double mCurAccel = 0.0;
-    public double prevVel = 0.0;
-    public double prevTS;
-    public double nominalVolty;
+    private double mMaxAccel = 0.0;
+    private double mCurAccel = 0.0;
+    private double prevVel = 0.0;
+    private double prevTS;
 
     public SwerveModule(int rotID, int transID, int rotEncoderID, boolean rotInverse,
             boolean transInverse, PIDConstants rotPID, PIDConstants transPID) {
@@ -169,9 +168,6 @@ public class SwerveModule {
         mDesiredRadians = desiredState.angle.getRadians();
         mPIDOutput = mRotPID.calculate(getRotPosition(), desiredState.angle.getRadians());
         mRotMotor.set(mPIDOutput);
-
-        nominalVolty = mTransMotor.getVoltageCompensationNominalVoltage();
-
     }
 
     public void setPID(double degrees) {
@@ -259,6 +255,19 @@ public class SwerveModule {
     }
 
     /**
+     * @return the max acceleration in m/s^2 from the translation motor's initialization
+     */
+    public double getMaxAccel(){
+        return mMaxAccel;
+    }
+
+    /**
+     * @return the current acceleration in m/s^2 from the translation motor
+     */
+    public double getCurAccel(){
+        return mCurAccel;
+    }
+    /**
      * 
      * @return Returns the applied voltage to the translation motor after nominal voltage
      *         compensation
@@ -334,5 +343,12 @@ public class SwerveModule {
      */
     public double getDesiredRadiansRot() {
         return mDesiredRadians;
+    }
+
+    /**
+     * @return the nominal voltage amount after voltage compensation for the translation motor
+     */
+    public double getTranslationNominalVoltage(){
+        return mTransMotor.getVoltageCompensationNominalVoltage();
     }
 }
