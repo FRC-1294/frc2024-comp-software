@@ -46,6 +46,7 @@ public class SwerveModule {
     private double mCurAccel = 0.0;
     private double prevVel = 0.0;
     private double prevTS;
+    public double feedforward=0;
 
     public SwerveModule(int rotID, int transID, int rotEncoderID, boolean rotInverse,
             boolean transInverse, PIDConstants rotPID, PIDConstants transPID) {
@@ -159,11 +160,11 @@ public class SwerveModule {
 
         // PID Controller for both translation and rotation
         mDesiredVel = desiredState.speedMetersPerSecond;
-        double feedForwardGains = mTransFF.calculate(mDesiredVel);
-
-        mTransPID.setReference(mDesiredVel, ControlType.kVelocity, 0, feedForwardGains, ArbFFUnits.kPercentOut);
-        // mTransMotor.set((feedForwardGains+pidOutput) / SwerveConstants.PHYSICAL_MAX_SPEED_MPS);
-        // mTransMotor.set(mDesiredVel/SwerveConstants.PHYSICAL_MAX_SPEED_MPS);
+        feedforward = mTransFF.calculate(mDesiredVel);
+        mTransPID.setReference(mDesiredVel, ControlType.kVelocity, 0, feedforward);
+        // double pidOutput = new PIDController(0.1, 0, 0).calculate(getTransVelocity(), mDesiredVel);
+        // mTransMotor.set((pidOutput / SwerveConstants.PHYSICAL_MAX_SPEED_MPS) + feedforward);
+        //mTransMotor.set(mDesiredVel/SwerveConstants.PHYSICAL_MAX_SPEED_MPS);
 
         mDesiredRadians = desiredState.angle.getRadians();
         mPIDOutput = mRotPID.calculate(getRotPosition(), desiredState.angle.getRadians());
