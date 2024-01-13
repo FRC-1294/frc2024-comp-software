@@ -14,7 +14,6 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.units.Time;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Util.PIDConstants;
 import frc.robot.constants.SwerveConstants;
@@ -43,11 +42,11 @@ public class SwerveModule {
     private double mPIDOutput = 0.0;
     private double mDesiredRadians = 0.0;
     private double mDesiredVel = 0.0;
-    public double mMaxAccel = 0.0;
-    public double mCurAccel = 0.0;
-    public double prevVel = 0.0;
-    public double prevTS;
-    public double nominalVolty;
+    private double mMaxAccel = 0.0;
+    private double mCurAccel = 0.0;
+    private double prevVel = 0.0;
+    private double prevTS;
+    private double nominalVoltage;
 
     public SwerveModule(int rotID, int transID, int rotEncoderID, boolean rotInverse,
             boolean transInverse, PIDConstants rotPID, PIDConstants transPID) {
@@ -171,7 +170,7 @@ public class SwerveModule {
         mPIDOutput = mRotPID.calculate(getRotPosition(), desiredState.angle.getRadians());
         mRotMotor.set(mPIDOutput);
 
-        nominalVolty = mTransMotor.getVoltageCompensationNominalVoltage();
+        nominalVoltage = mTransMotor.getVoltageCompensationNominalVoltage();
 
     }
 
@@ -259,6 +258,19 @@ public class SwerveModule {
         return mDesiredVel;
     }
 
+    /**
+     * @return the max acceleration in m/s^2 from the translation motor's initialization
+     */
+    public double getMaxAccel(){
+        return mMaxAccel;
+    }
+
+    /**
+     * @return the current acceleration in m/s^2 from the translation motor
+     */
+    public double getCurAccel(){
+        return mCurAccel;
+    }
     /**
      * 
      * @return Returns the applied voltage to the translation motor after nominal voltage

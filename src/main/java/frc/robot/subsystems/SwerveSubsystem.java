@@ -68,11 +68,11 @@ public class SwerveSubsystem extends SubsystemBase {
         if (mModules[i].getTransVelocity()>maxSpeed){
           maxSpeed = mModules[i].getTransVelocity();
         }
-        SmartDashboard.putNumber("MaxAccel"+i, mModules[i].mMaxAccel);
-        SmartDashboard.putNumber("CurrentAccel"+i, mModules[i].mCurAccel);
+        SmartDashboard.putNumber("MaxAccel"+i, mModules[i].getMaxAccel());
+        SmartDashboard.putNumber("CurrentAccel"+i, mModules[i].getCurAccel());
         SmartDashboard.putNumber("MaxSpeed", maxSpeed);
         SmartDashboard.putNumber("TransAppliedOutput" + i, mModules[i].getTransAppliedVolts());
-        SmartDashboard.putNumber("TransNominalVoltage" + i, mModules[i].nominalVolty);
+        SmartDashboard.putNumber("TransNominalVoltage" + i, mModules[i].getTranslationNominalVoltage());
         mAvgSpeed += Math.abs(mModules[i].getTransVelocity());
         SmartDashboard.putNumber("DesiredStateAngleDeg" + i,
             mModules[i].getDesiredRadiansRot() / Math.PI * 180);
@@ -81,8 +81,8 @@ public class SwerveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("AbsEncoderDeg" + i, mModules[i].getRotPosition() / Math.PI * 180);
         SmartDashboard.putNumber("TranslationSpeedMeters" + i, mModules[i].getTransVelocity());
         SmartDashboard.putNumber("TranslationDesiredVel" + i, mModules[i].getTransVelocitySetpoint());
-        SmartDashboard.putNumber("Nominal Voltage", mModules[i].nominalVolty);
-        SmartDashboard.putNumber("ExpkFValue" + i, (mModules[i].getTransAppliedVolts()/mModules[i].nominalVolty)/mModules[i].getTransVelocity());
+        SmartDashboard.putNumber("Nominal Voltage", mModules[i].getTranslationNominalVoltage());
+        SmartDashboard.putNumber("ExpkFValue" + i, (mModules[i].getTransAppliedVolts()/mModules[i].getTranslationNominalVoltage())/mModules[i].getTransVelocity());
         SmartDashboard.putNumber("MaxAccel", i);
       }
 
