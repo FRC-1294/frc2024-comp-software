@@ -21,14 +21,14 @@ public class DefaultIntakeCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    _intake.runMotorRaw(0.0);
+    _intake.stopMotor();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     if (alreadyRunning && _intake.gamePieceInIntake()) {
-      _intake.runMotorRaw(0.0);
+      _intake.stopMotor();
       alreadyRunning = false;
     }
     if (!alreadyRunning && Input.getleftBumperXbox() && !_intake.gamePieceInIntake()) {
