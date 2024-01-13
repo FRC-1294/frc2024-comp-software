@@ -34,7 +34,6 @@ public class SwerveModule {
     private final CANcoder mRotEncoder;
     private final RelativeEncoder mTransEncoder;
     private final RelativeEncoder mRotRelativeEncoder;
-    // private final SimpleMotorFeedforward mFeedforward = new SimpleMotorFeedforward(mTransID, mRotID, mRotEncoderID);
     
 
     // Public Debugging Values
@@ -46,9 +45,10 @@ public class SwerveModule {
     public double prevVel = 0.0;
     public double prevTS;
     public double nominalVolty;
+    public SimpleMotorFeedforward mFeedForward;
 
     public SwerveModule(int rotID, int transID, int rotEncoderID, boolean rotInverse,
-            boolean transInverse, PIDConstants rotPID, PIDConstants transPID) {
+            boolean transInverse, PIDConstants rotPID, PIDConstants transPID, SimpleMotorFeedforward feedforward) {
         // Setting Parameters
         prevTS = Timer.getFPGATimestamp();
         mRotID = rotID;
@@ -56,6 +56,8 @@ public class SwerveModule {
         mRotEncoderID = rotEncoderID;
         mRotInverse = rotInverse;
         mTransInverse = transInverse;
+
+        mFeedForward = feedforward;
         // mFeedforward.calculate(transID, rotEncoderID);
 
         // ----Setting Hardware
@@ -157,8 +159,12 @@ public class SwerveModule {
         desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
 
         // PID Controller for both translation and rotation
-        mDesiredVel = Math.abs(desiredState.speedMetersPerSecond);
-        mTransMotor.set(desiredState.speedMetersPerSecond / SwerveConstants.PHYSICAL_MAX_SPEED_MPS);
+        mDesiredVel = desiredState.speedMetersPerSecond;
+        double feedForwardGains = mFeedForward.calculate(mDesiredVel);
+        double pidOutput = new PIDController(0.1, 0, 0).calculate(getTransVelocity(), mDesiredVel);
+        mTransMotor.set((feedForwardGains+pidOutput) / SwerveConstants.PHYSICAL_MAX_SPEED_MPS);
+
+
         mDesiredRadians = desiredState.angle.getRadians();
         mPIDOutput = mRotPID.calculate(getRotPosition(), desiredState.angle.getRadians());
         mRotMotor.set(mPIDOutput);
