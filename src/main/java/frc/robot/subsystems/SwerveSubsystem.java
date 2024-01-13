@@ -13,6 +13,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.SwerveConfig;
@@ -28,6 +29,11 @@ public class SwerveSubsystem extends SubsystemBase {
   private final Pigeon2 mPigeon2;
 
   private final SwerveModule[] mModules;
+  private double mTargetSpeed = 0;
+  private double mAvgSpeed = 0;
+  private double maxSpeed = 0;
+
+
 
   public SwerveSubsystem() {
     // Populating Instance Variables
@@ -44,25 +50,48 @@ public class SwerveSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     mOdometry.update(getRotation2d(), getModulePositions());
+    mOdometry.update(getRotation2d(), getModulePositions());
     if (CompConstants.DEBUG_MODE) {
+      SmartDashboard.putData("Swerve", this);
       SmartDashboard.putNumber("FLPIDOutput", mModules[0].getPIDOutputRot());
       SmartDashboard.putNumber("FRPIDOutput", mModules[1].getPIDOutputRot());
       SmartDashboard.putNumber("BLPIDOutput", mModules[2].getPIDOutputRot());
       SmartDashboard.putNumber("BRPIDOutput", mModules[3].getPIDOutputRot());
 
+
       SmartDashboard.putNumber("XPos", mOdometry.getPoseMeters().getX());
       SmartDashboard.putNumber("YPos", mOdometry.getPoseMeters().getY());
       SmartDashboard.putNumber("Heading", getRotation2d().getDegrees());
-
+      SmartDashboard.putNumber("YawRateDegPerSec", getRate());
+      SmartDashboard.putNumber("FPGA_TS",Timer.getFPGATimestamp());
       for (int i = 0; i < mModules.length; i++) {
-        SmartDashboard.putNumber("AppliedOutput" + i, mModules[i].getAppliedOutput());
+        if (mModules[i].getTransVelocity()>maxSpeed){
+          maxSpeed = mModules[i].getTransVelocity();
+        }
+        SmartDashboard.putNumber("MaxAccel"+i, mModules[i].mMaxAccel);
+        SmartDashboard.putNumber("CurrentAccel"+i, mModules[i].mCurAccel);
+        SmartDashboard.putNumber("MaxSpeed", maxSpeed);
+        SmartDashboard.putNumber("TransAppliedOutput" + i, mModules[i].getTransAppliedVolts());
+        SmartDashboard.putNumber("TransNominalVoltage" + i, mModules[i].nominalVolty);
+        mAvgSpeed += Math.abs(mModules[i].getTransVelocity());
         SmartDashboard.putNumber("DesiredStateAngleDeg" + i,
             mModules[i].getDesiredRadiansRot() / Math.PI * 180);
         SmartDashboard.putNumber("RotRelativePosDeg" + i,
             mModules[i].getRotRelativePosition() * 360);
-        SmartDashboard.putNumber("AbsEncoderDeg" + i, mModules[i].getRotPosition());
-        SmartDashboard.putNumber("SpeedMeters" + i, mModules[i].getTransVelocity());
-        SmartDashboard.putNumber("PosMeters" + i, mModules[i].getTransPosition());
+        SmartDashboard.putNumber("AbsEncoderDeg" + i, mModules[i].getRotPosition() / Math.PI * 180);
+        SmartDashboard.putNumber("TranslationSpeedMeters" + i, mModules[i].getTransVelocity());
+        SmartDashboard.putNumber("TranslationDesiredVel" + i, mModules[i].getTransVelocitySetpoint());
+        SmartDashboard.putNumber("Nominal Voltage", mModules[i].nominalVolty);
+        SmartDashboard.putNumber("ExpkFValue" + i, (mModules[i].getTransAppliedVolts()/mModules[i].nominalVolty)/mModules[i].getTransVelocity());
+        SmartDashboard.putNumber("MaxAccel", i);
+      }
+
+      mAvgSpeed = mAvgSpeed / 4;
+      SmartDashboard.putNumber("AvgVelocity", mAvgSpeed);
+      SmartDashboard.putNumber("TargetVelocity", mTargetSpeed); 
+      for (int i = 0; i < mModules.length; i++) {
+        SmartDashboard.putNumber("VelocityDeviation" + i,
+        Math.abs(mModules[i].getTransVelocity()) - mAvgSpeed);
       }
     }
   }
@@ -72,6 +101,13 @@ public class SwerveSubsystem extends SubsystemBase {
    */
   public void resetGyro() {
     mPigeon2.reset();
+  }
+
+  /**
+   * returns the rate of rotation from the pidgeon in deg/sec CCW positive
+   */
+  public double getRate() {
+    return -mPigeon2.getRate();
   }
 
   /**
@@ -157,7 +193,9 @@ public class SwerveSubsystem extends SubsystemBase {
     }
     SwerveModuleState[] moduleStates = mKinematics.toSwerveModuleStates(chassisSpeeds);
 
-
+    if (CompConstants.DEBUG_MODE){
+      mTargetSpeed = moduleStates[0].speedMetersPerSecond;
+    }
     setModuleStates(moduleStates);
 
   }

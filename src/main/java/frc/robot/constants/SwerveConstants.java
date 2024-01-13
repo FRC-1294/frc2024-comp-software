@@ -21,14 +21,15 @@ public class SwerveConstants {
   public static final double TRACK_LENGTH_METERS = .54;
 
 
-
   // Physical Max
-  public static final double PHYSICAL_MAX_SPEED_MPS = 4.3;
+  public static final double PHYSICAL_MAX_SPEED_MPS = 4.625;
 
-  public static final double TELE_MAX_SPEED_MPS = 4.3;
+  public static final double TELE_MAX_SPEED_MPS = 4.625;
   public static final double TELE_MAX_ROT_SPEED_RAD_SEC = 2 * Math.PI;
 
   public static final double TELE_MAX_ACC_MPS2 = 5.0;
   public static final double TELE_MAX_ROT_ACC_RAD_SEC2 = 4 * Math.PI;
+
+  public static final double kS = 0.1;
 
 }
