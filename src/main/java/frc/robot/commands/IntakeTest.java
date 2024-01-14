@@ -31,9 +31,9 @@ public class IntakeTest extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    SequentialCommandGroup wait = new SequentialCommandGroup(new WaitCommand(1));
     if(Input.getleftBumperXbox()) {
       m_intake.runMotorRaw(-1.0);
-      SequentialCommandGroup wait = new SequentialCommandGroup(new WaitCommand(1));
       wait.schedule();
       m_intake.stopMotor();
       wait.schedule();
@@ -44,11 +44,21 @@ public class IntakeTest extends Command {
   public void testGetID() {
     Intake intake = new Intake(4, 2);
     if (intake.getID() == 4) {
-      System.out.println("Test Worked for ID");
+      System.out.println("Test Worked for Intake GetID");
     } else {
-      System.out.println("Test Failed for GetID");
+      System.out.println("Test FAILED for Intake GetId");
     }
   }
+
+  public void testGetBeambreakID() {
+    Intake intake = new Intake(4, 2);
+    if(intake.getBeamBreakID() == 2) {
+      System.out.println("Test Worked for Beambreak getBeambreakID");
+    } else {
+      System.out.println("Test FAILED For Beambreak GetID");
+    }
+  }
+
 
   public void checkGamePieceInIntake() {
     SmartDashboard.putBoolean("Game Piece In Intake", m_intake.gamePieceInIntake());
