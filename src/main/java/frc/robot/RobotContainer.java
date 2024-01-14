@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.DefaultIntakeCommand;
+import frc.robot.commands.IntakeTest;
 import frc.robot.constants.IntakeConstants;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -27,7 +28,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     mSwerveSubsystem.setDefaultCommand(new DefaultDriveCommand(mSwerveSubsystem));
-    mIntake.setDefaultCommand(new DefaultIntakeCommand(mIntake));
+    mIntake.setDefaultCommand(new IntakeTest(mIntake));
 
   }
 

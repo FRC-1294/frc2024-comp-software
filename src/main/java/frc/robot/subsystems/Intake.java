@@ -33,21 +33,21 @@ public class Intake extends SubsystemBase{
     /**
      * @return returns intake motor
      */
-    public CANSparkMax getMotor() {
+    public CANSparkMax getMotor() { //Maybe test with .equals()
         return _motor;
     }
 
     /**
      * @return returns the DIO port for the beambreak sensors
      */
-    public int getBeamBreakID() {
+    public int getBeamBreakID() { //Create Test
         return _beambreak.getChannel();
     }
 
     /**
      * @return returns the beambreak object
      */
-    public DigitalInput getBeamBreak() {
+    public DigitalInput getBeamBreak() { //Maybe test with .equals()
         return _beambreak;
     }
 
