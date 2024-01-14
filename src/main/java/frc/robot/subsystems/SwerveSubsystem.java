@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 
 import com.ctre.phoenix6.hardware.Pigeon2;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -83,7 +84,6 @@ public class SwerveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("TranslationDesiredVel" + i, mModules[i].getTransVelocitySetpoint());
         SmartDashboard.putNumber("Nominal Voltage", mModules[i].getTranslationNominalVoltage());
         SmartDashboard.putNumber("ExpkFValue" + i, (mModules[i].getTransAppliedVolts()/mModules[i].getTranslationNominalVoltage())/mModules[i].getTransVelocity());
-        SmartDashboard.putNumber("FeedForwardGains" + i, mModules[i].feedforward);
         SmartDashboard.putNumber("MaxAccel", i);
       }
 
@@ -192,13 +192,24 @@ public class SwerveSubsystem extends SubsystemBase {
     } else {
       chassisSpeeds = new ChassisSpeeds(vxMPS, vyMPS, angleSpeedRADPS);
     }
-    SwerveModuleState[] moduleStates = mKinematics.toSwerveModuleStates(chassisSpeeds);
+    setChassisSpeed(chassisSpeeds);
 
+  }
+
+  public void setChassisSpeed(ChassisSpeeds chassisSpeeds){
+    SwerveModuleState[] moduleStates = mKinematics.toSwerveModuleStates(chassisSpeeds);
     if (CompConstants.DEBUG_MODE){
       mTargetSpeed = moduleStates[0].speedMetersPerSecond;
     }
     setModuleStates(moduleStates);
+  }
 
+  public ChassisSpeeds getChassisSpeeds(){
+    SwerveModuleState[] moduleStates = new SwerveModuleState[4];
+    for (int i = 0; i<4; i++){
+      moduleStates[i] = SwerveConfig.SWERVE_MODULES[i].getState();
+    }
+    return mKinematics.toChassisSpeeds(moduleStates);
   }
 
   public void setChassisSpeed(double x, double y, double rot) {
