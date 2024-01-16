@@ -16,4 +16,10 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+
+  //launcher
+  public static final double kLauncherTolerance = 0; //TBD
+  public static final double[] kLauncherMainPID = new double [] {0.0, 0.0, 0.0, 0.0};
+  public static final double[] kLauncherRollerPID = new double [] {0.0, 0.0, 0.0, 0.0};
+
 }
