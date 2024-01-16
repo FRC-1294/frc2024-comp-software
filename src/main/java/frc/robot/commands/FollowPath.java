@@ -22,6 +22,7 @@ public class FollowPath extends Command {
   /** Creates a new FollowPath. */
   private final SwerveSubsystem mSwerve;
   private final Command mFinalCmd;
+  PathPlannerPath p;
   public FollowPath(SwerveSubsystem swerveSubsystem) {
     mSwerve = swerveSubsystem;
     addRequirements(mSwerve);
@@ -40,14 +41,15 @@ public class FollowPath extends Command {
                                 // here
       ), ()->false, mSwerve);
 
-    PathPlannerPath path = PathPlannerPath.fromPathFile("2_Meter");
-    mFinalCmd = AutoBuilder.followPath(path);
+    p = PathPlannerPath.fromPathFile("Goofy_Loop");
+    mFinalCmd = AutoBuilder.followPath(p);
     addRequirements(mSwerve);
   }
 
-  // Called when the command is initially scheduled.
+  // Called when the command is iniqtially scheduled.
   @Override
   public void initialize() {
+    mSwerve.resetRobotPose(new Pose2d(p.getPoint(0).position, p.getPoint(0).rotationTarget.getTarget()));
     mFinalCmd.schedule();
   }
 
