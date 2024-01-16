@@ -233,5 +233,12 @@ public class SwerveSubsystem extends SubsystemBase {
     return mOdometry.getPoseMeters();
   }
 
+  /**
+   * @return Raw Modules
+   */
+  public SwerveModule[] getRawModules() {
+    return mModules;
+  }
+
 
 }
