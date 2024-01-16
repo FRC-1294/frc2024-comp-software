@@ -42,6 +42,10 @@ public class DefaultDriveCommand extends Command {
       mIsPrecisionToggle = !mIsPrecisionToggle;
     }
 
+    if (Input.resetOdo()) {
+      mSwerve.resetOdometry();
+    }
+
     if (mIsPrecisionToggle) {
       x = x / JoystickConstants.DRIVE_PRECISION_X_DESATURATION;
       y = y / JoystickConstants.DRIVE_PRECISION_Y_DESATURATION;

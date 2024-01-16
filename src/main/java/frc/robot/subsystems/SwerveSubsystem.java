@@ -51,7 +51,6 @@ public class SwerveSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     mOdometry.update(getRotation2d(), getModulePositions());
-    mOdometry.update(getRotation2d(), getModulePositions());
     if (CompConstants.DEBUG_MODE) {
       SmartDashboard.putData("Swerve", this);
       SmartDashboard.putNumber("FLPIDOutput", mModules[0].getPIDOutputRot());
