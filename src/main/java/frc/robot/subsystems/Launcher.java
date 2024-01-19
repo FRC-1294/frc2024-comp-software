@@ -3,159 +3,136 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
-
-
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.Command;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.LauncherConstants;
+
 
 
 public class Launcher extends SubsystemBase {
-  //Declare joysticks
-  Joystick joysticks;
-  //Declare mainTalon, rollerTalon
-  TalonFX mainTalon = TalonFX(IDs.mainFlyWheelID); //need ID file?
-  TalonFX rollerTalon = TalonFX(IDs.rollerFlyWheelID);
 
-  //Create launcherModeIndex, set to 0
-  int launcherModeIndex = 0;
-  //Create new instance of launcherMode and set to off
-  LauncherMode launcherMode = LauncherMode.off;
-  //Create launcherReady boolean, meaning velocity is within tolerance, and set to false
-  boolean launcherReady = false;
-  //Create launcherScrollPressed boolean, meaning launcher is enabled, and set to false
-  boolean launcherScrollPressed = false;
+  private final CANSparkMax mIndexer = new CANSparkMax(LauncherConstants.INDEXER_ID, MotorType.kBrushless);
 
-  double setVelocityMain = 0;
-  double setVelocityRoller = 0;
+  private final TalonFX mMainFlywheel = new TalonFX(LauncherConstants.MAIN_FLYWHEEL_ID);
+  private final TalonFX mRollerFlywheel = new TalonFX(LauncherConstants.ROLLER_FLYWHEEL_ID);
 
-  final LauncherMode[] modes = new LauncherMode[]
-  {LauncherMode.speaker, LauncherMode.amp, LauncherMode.off};
-
-  public Launcher(Joystick joysticks) {
-    //launcher method (joysticks)
-    this.joysticks = joysticks;
-
-    var slot0Configs = new Slot0Configs();
-
-    slot0Configs.kS = Constants.kLauncherMainPID[0];
-    slot0Configs.kV = Constants.kLauncherMainPID[1];
-    slot0Configs.kP = Constants.kLauncherMainPID[2];
-    slot0Configs.kI = Constants.kLauncherMainPID[3];
-    slot0Configs.kD = Constants.kLauncherMainPID[4];
-
-    mainTalon.getConfigurator().apply(slot0Configs);
-    rollerTalon.getConfigurator().apply(slot0Configs);
-
-    final VelocityVoltage request = new VelocityVoltage(0).withSlot(0);
-    mainTalon.setControl(request.withVelocity(8).withFeedForward(0.5));
-    rollerTalon.setControl(request.withVelocity(8).withFeedForward(0.5));
-  }
+  private final DutyCycleEncoder mAbsFlywheelEncoder = new DutyCycleEncoder(LauncherConstants.ABS_LAUNCHER_ENCODER_ID); 
+  //are there two encoders for the two flywheels TT
+  //private final RelativeEncoder mIndexerEncoder //is there an encoder for indexer
 
   public enum LauncherMode {
-    speaker, amp, off;
+    SPEAKER, AMP, OFF;
   }
 
-  /**
-   * Example command factory method.
-   *
-   * @return a command
-   */
-  public Command exampleMethodCommand() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(
-        () -> {
-          /* one-time action goes here */
-        });
-  }
+  LauncherMode mLauncherMode = LauncherMode.OFF;
 
-  public boolean getLauncherReady() {
-    return launcherReady;
-  }
+  double mSetVelocityIndexer = 0;
 
-  public void setLauncherMode(LauncherMode mode) {
-    this.launcherMode = mode;
-  }
+  double mSetVelocityMain = 0;
+  double mSetVelocityRoller = 0;
 
-  public void stopShooter() {
-    this.launcherMode = LauncherMode.off;
-    runLauncher();
-  }
+  boolean mNoteIndexed = false;
 
+  boolean mLauncherReady = false;
+
+
+  public Launcher() {
+    resetEncoders();
+
+    var slot0Configs = new Slot0Configs(); //very confused
+
+    slot0Configs.kS = LauncherConstants.LAUNCHER_MAIN_PID[0];
+    slot0Configs.kV = LauncherConstants.LAUNCHER_MAIN_PID[1];
+    slot0Configs.kP = LauncherConstants.LAUNCHER_MAIN_PID[2];
+    slot0Configs.kI = LauncherConstants.LAUNCHER_MAIN_PID[3];
+    slot0Configs.kD = LauncherConstants.LAUNCHER_MAIN_PID[4];
+
+    mMainFlywheel.getConfigurator().apply(slot0Configs);
+    mRollerFlywheel.getConfigurator().apply(slot0Configs);
+
+    final VelocityVoltage request = new VelocityVoltage(0).withSlot(0);
+
+    mMainFlywheel.setControl(request.withVelocity(0).withFeedForward(0));
+    mRollerFlywheel.setControl(request.withVelocity(0).withFeedForward(0));
+  }
 
   @Override
   public void periodic() {
-      //if certain toggle is pressed, update LauncherMode
-      if (joysticks.syncLauncherMode()) { //need joystick file?
-        if (launcherMode != LauncherMode.off) {
-          setLauncherMode(LauncherMode.off);
-        }
-        else {
-          setLauncherMode(modes[launcherModeIndex]);
-        }
-      }
-      //if button is pressed to set LauncherScrollPressed to false, set LauncherScrollPressed to false
-      if (joysticks.getNotPressed()) {
-        launcherScrollPressed = false;
-      }
-      //if joystick is scrolled right, increase LauncherModeIndex by 1
-      if (joysticks.getLauncherScrollRight() && !launcherScrollPressed){
-        if (launcherModeIndex < modes.length - 1){
-          launcherModeIndex ++;
-        }
-        launcherScrollPressed = true;
-      }
-      //if joystick is scrolled left, decrease LauncherModeIndex by 1
-      if (joysticks.getLauncherScrollLeft() && !launcherScrollPressed){
-        if (launcherModeIndex > 0){
-          launcherModeIndex --;
-        }
-        launcherScrollPressed = true;
-      }
-      //finally call runLauncher
+      //how do i convert encoder values to a value between -1 and 1
+      double actualVelocityFlywheel = mAbsFlywheelEncoder.getFrequency() / LauncherConstants.ENCODER_FLYWHEEL_INCREMENT * 60; //in HZ per second
+      mLauncherReady = Math.abs(Math.abs(mSetVelocityMain) - Math.abs(actualVelocityFlywheel)) <= LauncherConstants.FLYWHEEL_TOLERANCE &&
+                    Math.abs(Math.abs(mSetVelocityRoller) - Math.abs(mAbsFlywheelEncoder.getFrequency())) <= LauncherConstants.FLYWHEEL_TOLERANCE && 
+                    mSetVelocityMain != 0 && 
+                    mSetVelocityRoller != 0;
+      runIndexer();
       runLauncher();
   }
 
-    //runLauncher
-    public void runLauncher() {
-      //if LauncherMode is default, set predicted velocity values for main and roller
-      if (launcherMode == LauncherMode.speaker) {
-        setVelocityMain = 0; //TBD, value between -1 and 1
-        setVelocityRoller = 0; //TBD
-      }
-      else if (launcherMode == LauncherMode.amp) {
-        setVelocityMain = 0; //TBD
-        setVelocityRoller = 0; //TBD
-      }
-      else if (launcherMode == LauncherMode.off) {
-        setVelocityMain = 0; //TBD
-        setVelocityRoller = 0; //TBD
-      }
-      //unless predicted velocity values are 0, set velocity onto the two actual Talons
-      if (setVelocityMain == 0){
-        mainTalon.set(0);
-      }
-      else {
-        mainTalon.set(setVelocityMain);
-      }
-      //set Launcher to ready if: absolute difference between the predicted velocity and the actual velocity is less than deadzone for both main and roller and either velocity isn't 0
-      if (setVelocityMain == 0){
-        rollerTalon.set(0);
-      }
-      else {
-        rollerTalon.set(setVelocityMain);
-      }
-
-      launcherReady = Math.abs(Math.abs(setVelocityMain) - Math.abs(mainTalon.getVelocity().getValueAsDouble())) <= Constants.kLauncherTolerance &&
-                      Math.abs(Math.abs(setVelocityRoller) - Math.abs(rollerTalon.getVelocity().getValueAsDouble())) <= Constants.kLauncherTolerance && 
-                      setVelocityMain != 0 && 
-                      setVelocityRoller != 0;
+  public void runIndexer() {
+    if (mNoteIndexed || !mLauncherReady) {
+      mSetVelocityIndexer = 0;
     }
+    else {
+      mSetVelocityIndexer = 1; //TBD
+    }
+
+    mIndexer.set(mSetVelocityIndexer);
+  }
+
+
+  //runLauncher
+  public void runLauncher() {
+
+    //predicted velocity values
+    if (mLauncherMode == LauncherMode.SPEAKER) {
+      mSetVelocityMain = 1; //TBD
+      mSetVelocityRoller = -1; //all TBD
+    }
+    else if (mLauncherMode == LauncherMode.AMP) {
+      mSetVelocityMain = 0.1;
+      mSetVelocityRoller = -0.1;
+    }
+    else if (mLauncherMode == LauncherMode.OFF) {
+      mSetVelocityMain = 0;
+      mSetVelocityRoller = 0;
+    }
+
+    mMainFlywheel.set(mSetVelocityMain);
+    mRollerFlywheel.set(mSetVelocityRoller);
+  }
+  
+
+  public boolean getLauncherReady() {
+    return mLauncherReady;
+  }
+
+  public void setIsNoteIndexed(boolean containsNote) {
+    mNoteIndexed = containsNote;
+  }
+
+  public void setLauncherMode(LauncherMode mode) {
+    mLauncherMode = mode;
+    if (mode == LauncherMode.OFF) {
+      runLauncher();
+    }
+  }
+  
+  public void stopShooter() {
+    mLauncherMode = LauncherMode.OFF;
+    runLauncher();
+  }
+
+  private void resetEncoders() {
+    mMainFlywheel.setPosition(0);
+    mRollerFlywheel.setPosition(0);
+
+    mAbsFlywheelEncoder.reset();
+  }
 
   @Override
   public void simulationPeriodic() {
