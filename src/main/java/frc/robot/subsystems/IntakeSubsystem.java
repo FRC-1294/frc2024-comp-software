@@ -17,7 +17,7 @@ import frc.robot.constants.IntakeConstants;
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new Intake. */
   private final CANSparkMax mIntakeMotor = new CANSparkMax(IntakeConstants.INTAKE_SPARK_ID,MotorType.kBrushless);
-  //idk how to initialize beam break but you need to do it here TODO
+  //TODO: Initialize beam break  
   public IntakeSubsystem() {}
   public void configMotor(){
     mIntakeMotor.setSmartCurrentLimit(IntakeConstants.SMART_CURRENT_LIMIT); //set current limit as to not burn out motor
@@ -27,19 +27,18 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
   }
 
   public void intakeAtSpeed(double percentOutput){
-    //rotate motors to intake piece TODO
+    //TODO: rotate motors to intake piece 
   }
 
   public Command getTimedIntakeCommand(double wait_time, double intake_speed){
     return new SequentialCommandGroup(new InstantCommand(()-> intakeAtSpeed(intake_speed)), new WaitCommand(wait_time));
   }
 
-  public boolean getPieceInIntake(){
+  public boolean pieceInIntake(){
     return false;
-    //return the status of the beam break sensor to indicate if there is a piece in the intake TODO
+    //TODO: return the status of the beam break sensor to indicate if there is a piece in the intake
   }
 }
