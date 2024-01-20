@@ -38,7 +38,8 @@ public class IntakeSubsystem extends SubsystemBase {
     return new SequentialCommandGroup(new InstantCommand(()-> intakeAtSpeed(intake_speed)), new WaitCommand(wait_time));
   }
 
-  public void getPieceInIntake(){
-    //return the status of the beam break sensor to indicate if there is a piece in the intake
+  public boolean getPieceInIntake(){
+    return false;
+    //return the status of the beam break sensor to indicate if there is a piece in the intake TODO
   }
 }
