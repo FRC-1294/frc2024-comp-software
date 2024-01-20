@@ -12,6 +12,7 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -41,7 +42,7 @@ public class FollowPath extends Command {
                                 // here
       ), ()->false, mSwerve);
 
-    p = PathPlannerPath.fromPathFile("2_Meter");
+    p = PathPlannerPath.fromPathFile("Goofy_Loop");
     mFinalCmd = AutoBuilder.followPath(p);
     addRequirements(mSwerve);
   }
@@ -49,7 +50,13 @@ public class FollowPath extends Command {
   // Called when the command is iniqtially scheduled.
   @Override
   public void initialize() {
-    mSwerve.resetRobotPose(new Pose2d(p.getPoint(0).position, p.getPoint(0).rotationTarget.getTarget()));
+    
+    mSwerve.resetRobotPose(p.getPreviewStartingHolonomicPose());
+    // if (!p.getPoint(0).rotationTarget.getTarget().equals(null)){
+    //   mSwerve.resetRobotPose(new Pose2d(p.getPoint(0).position, p.getPoint(0).rotationTarget.getTarget()));
+    // }else{
+    //   mSwerve.resetRobotPose(new Pose2d(p.getPoint(0).position, new Rotation2d()));
+    // }
     mFinalCmd.schedule();
   }
 
