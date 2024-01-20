@@ -9,7 +9,7 @@ import frc.robot.subsystems.Intake;
 
 public class AutonomousIntakeCommand extends Command {
 
-  Intake _intake;
+  private Intake _intake;
   /** Creates a new DefaultIntakeCommand. */
   public AutonomousIntakeCommand(Intake intake) {
     _intake = intake;
