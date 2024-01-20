@@ -15,7 +15,8 @@ public class kV_Characterization extends Command {
   private final SwerveSubsystem mSwerve;
   private final SwerveModule[] mModules;
   private final Timer mTimer = new Timer();
-  private final double targVelMPS = 2;
+  private final double targVelMPS = 1;
+  private double increment = 0;
 
   private double [] expkV = new double[4];
   private double sampleNo = 0;
@@ -31,12 +32,14 @@ public class kV_Characterization extends Command {
   @Override
   public void initialize() {
     mTimer.reset();
-    mSwerve.setChassisSpeed(2, 0, 0);
+    mSwerve.resetGyro();
+    // mSwerve.setChassisSpeed(2, 0, 0, false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
     if(Math.abs(mSwerve.getChassisSpeeds().vxMetersPerSecond - targVelMPS)<0.1){
         if (!timerHasStarted){
             mTimer.start();
@@ -48,7 +51,10 @@ public class kV_Characterization extends Command {
             expkV[i] = (expkV[i]*(sampleNo-1)+curkV)/sampleNo;
             SmartDashboard.putNumber("avgkV"+i, expkV[i]);
         }
-    }    
+    }else{
+      mSwerve.setChassisSpeed(increment, 0, 0,true);
+      increment +=0.01;
+    }
   }
 
   // Called once the command ends or is interrupted.

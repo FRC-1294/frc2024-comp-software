@@ -6,6 +6,8 @@ package frc.robot;
 
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.FollowPath;
+import frc.robot.commands.kS_Characterization;
+import frc.robot.commands.kV_Characterization;
 import frc.robot.subsystems.SwerveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 

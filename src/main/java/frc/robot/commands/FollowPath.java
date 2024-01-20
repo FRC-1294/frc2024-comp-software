@@ -41,7 +41,7 @@ public class FollowPath extends Command {
                                 // here
       ), ()->false, mSwerve);
 
-    p = PathPlannerPath.fromPathFile("Goofy_Loop");
+    p = PathPlannerPath.fromPathFile("2_Meter");
     mFinalCmd = AutoBuilder.followPath(p);
     addRequirements(mSwerve);
   }

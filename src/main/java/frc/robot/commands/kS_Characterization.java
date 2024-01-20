@@ -26,19 +26,27 @@ public class kS_Characterization extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    curRequestedDutyCycle = 0;
+    expkS = new double[4];
+
+    for (int i = 0; i<4; i++){
+      modLock[i] = false;
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     curRequestedDutyCycle += 0.001;
+    SmartDashboard.putNumber("CharacterizationDutyCycle", curRequestedDutyCycle);
     mSwerve.setChassisSpeed(curRequestedDutyCycle, 0, 0,false);
     for (int i = 0; i<4; i++){
-      SmartDashboard.putNumber("expkS"+i, expkS[i]);
-      if (mModules[i].getTransVelocity()>0 && !modLock[i]){
-        expkS[i] = (mModules[i].getTransAppliedVolts()/mModules[i].getTranslationNominalVoltage())/mModules[i].getTransVelocity();
+      if (Math.abs(mModules[i].getTransVelocity())>0.000001 && !modLock[i]){
+        expkS[i] = Math.abs(mModules[i].getTransAppliedVolts()/mModules[i].getTranslationNominalVoltage());
         modLock[i] = true;
       }
+      SmartDashboard.putNumber("expkS"+i, expkS[i]);
+
     }
   }
 
@@ -55,6 +63,7 @@ public class kS_Characterization extends Command {
         flag = false;
       }
     }
+    SmartDashboard.putBoolean("kSFinished", flag);
     return flag;
   }
 }

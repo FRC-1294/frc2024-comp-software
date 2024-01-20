@@ -1,4 +1,8 @@
 {
+<<<<<<< HEAD
+=======
+  "java.format.settings.url": "google-style-formatter.xml",
+>>>>>>> 1b0cc2ae079db996ac571a655e33684bf923b311
   "java.configuration.updateBuildConfiguration": "automatic",
   "java.server.launchMode": "Standard",
   "files.exclude": {

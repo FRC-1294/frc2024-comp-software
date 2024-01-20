@@ -29,7 +29,7 @@ public class Util {
         public double mContinuousInputMin;
         public boolean mIsContinuousInput;
 
-        public PIDConstants(double kP, double kI, double kD, double kV, double kS, double continuousInputMax, double continuousInputMin){
+        public PIDConstants(double kP, double kI, double kD, double kS, double kV, double continuousInputMax, double continuousInputMin){
             mKP = kP;
             mKI = kI;
             mKD = kD;
@@ -41,7 +41,7 @@ public class Util {
         }
 
         public PIDConstants(double kP, double kI, double kD, double kS, double kV){
-            this(kP, kI, kD, kV, kS,0,0);
+            this(kP, kI, kD, kS, kV,0,0);
             mIsContinuousInput = false;
         }
 

@@ -71,10 +71,10 @@ public class SwerveConfig {
         public static final PIDConstants BACK_RIGHT_ROT_PID = new PIDConstants(0.35, 0, 0);
         public static final PIDConstants BACK_LEFT_ROT_PID = new PIDConstants(0.35, 0, 0);
 
-        public static final PIDConstants FRONT_LEFT_TRANS_PID = new PIDConstants(0.0, 0, 0,0.0087,0.208);
-        public static final PIDConstants FRONT_RIGHT_TRANS_PID = new PIDConstants(0.0, 0, 0,0.0087,0.207);
-        public static final PIDConstants BACK_RIGHT_TRANS_PID = new PIDConstants(0.0, 0, 0,0.0087,0.211);
-        public static final PIDConstants BACK_LEFT_TRANS_PID = new PIDConstants(0.0, 0, 0,0.0087,0.208);
+        public static final PIDConstants FRONT_LEFT_TRANS_PID = new PIDConstants(0.0, 0, 0,0.0099795525893569,0.21090956596760593);
+        public static final PIDConstants FRONT_RIGHT_TRANS_PID = new PIDConstants(0.0, 0, 0,0.008545182645320892,0.2099873992689063);
+        public static final PIDConstants BACK_RIGHT_TRANS_PID = new PIDConstants(0.0, 0, 0,0.01037629321217537,0.21397894176465337);
+        public static final PIDConstants BACK_LEFT_TRANS_PID = new PIDConstants(0.0, 0, 0,0.0099795525893569,0.2099731767248498);
 
 
         public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(

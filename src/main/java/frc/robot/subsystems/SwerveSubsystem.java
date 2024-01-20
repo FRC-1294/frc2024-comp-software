@@ -183,7 +183,7 @@ public class SwerveSubsystem extends SubsystemBase {
    *          reset these params
    */
   public void setChassisSpeed(double vxMPS, double vyMPS, double angleSpeedRADPS,
-      boolean fieldOriented) {
+    boolean fieldOriented) {
     ChassisSpeeds chassisSpeeds;
     if (fieldOriented) {
       chassisSpeeds =
