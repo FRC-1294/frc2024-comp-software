@@ -54,7 +54,7 @@ public class AimingConstants {
     // ID's
     public static final int LEFT_ELEVATOR_TALON_ID = 2;
     public static final int RIGHT_ELEVATOR_TALON_ID = 2;
-    public static final int ELEVATOR_TOF_ID = 2;
+    public static final int ELEVATOR_TOF_ID = 1;
 
     public static final int WRIST_SPARK_ID = 2; 
     public static final int WRIST_ENCODER_ID = 0;

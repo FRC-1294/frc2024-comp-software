@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.playingwithfusion.TimeOfFlight;
+import com.playingwithfusion.TimeOfFlight.RangingMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -26,7 +27,10 @@ public class AimingSubsystem extends SubsystemBase {
   // Elevator Hardware
   private final TalonFX mLeftFlywheelMotor = new TalonFX(AimingConstants.LEFT_ELEVATOR_TALON_ID,"rio");
   private final TalonFX mRightFlywheelMotor = new TalonFX(AimingConstants.RIGHT_ELEVATOR_TALON_ID,"rio");
+
+  // TOF
   private final TimeOfFlight mElevatorTOF = new TimeOfFlight(AimingConstants.ELEVATOR_TOF_ID);
+  
   // Wrist Hardware
   private final CANSparkMax mWristMotor = new CANSparkMax(AimingConstants.WRIST_SPARK_ID, MotorType.kBrushless);
   private final CANcoder mWristEncoder = new CANcoder(AimingConstants.WRIST_ENCODER_ID);
@@ -55,6 +59,10 @@ public class AimingSubsystem extends SubsystemBase {
 
     mElevatorController.setTolerance(AimingConstants.ELEVATOR_TOLERANCE_IN);
     mWristController.setTolerance(AimingConstants.WRIST_TOLERANCE_DEG);
+
+    //Initializes TOF Sensor
+    setTOFViewZone(8, 8, 12, 12);
+    setTOFRange("short", 20);
 
     configureDevices();
   }
@@ -91,6 +99,39 @@ public class AimingSubsystem extends SubsystemBase {
   private void debugSmartDashboard() {
 
     // TODO: Add debug statements
+  }
+
+  // Getters and Setters of TOF Sensor
+  /**
+   * 
+   * @return range in millimeters
+   */
+  public double getTOFRangeRaw() {
+    return mElevatorTOF.getRange() - 30.0;
+  }
+
+  public double getTOFRangeCentimeters() {
+    return getTOFRangeRaw()/10;
+  }
+
+  public double getTOFRangeInches() {
+    return Math.round(((getTOFRangeRaw())/(25.4))*100.0)/100.0;
+  }
+
+  public void setTOFViewZone(int topLeftX, int topLeftY, int bottomRightX, int bottomRightY) {
+    mElevatorTOF.setRangeOfInterest(topLeftX, topLeftY, bottomRightX, bottomRightY);
+  }
+
+  public void setTOFRange(String sMode, double sampleTime) {
+    switch(sMode.toLowerCase()) {
+      case "short": //Use short only if less than 1.3 meters off the ground and bright light
+        mElevatorTOF.setRangingMode(RangingMode.Short, sampleTime);
+      case "long": //Use for dark lighting up to 4 meters
+        mElevatorTOF.setRangingMode(RangingMode.Long, sampleTime);
+      case "medium": //Use medium if there could potentially be dark lighting
+        mElevatorTOF.setRangingMode(RangingMode.Medium, sampleTime);
+
+    }
   }
 
   // Getters and Setters of States
