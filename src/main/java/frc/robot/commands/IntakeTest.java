@@ -24,8 +24,9 @@ public class IntakeTest extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    //put tests here in init
+    testGetBeambreakID();
     testGetID();
-    //put the rest of the tests here in init
   }
 
   // Called every time the scheduler runs while the command is scheduled.
