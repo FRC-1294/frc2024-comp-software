@@ -6,7 +6,8 @@ package frc.robot.constants;
 
 /** Add your docs here. */
 public class IntakeConstants {
-    public static final int INTAKE_SPARK_ID = 0; //TODO
-    public static final boolean INTAKE_INVERTED = false; //TODO
+    public static final int INTAKE_SPARK_ID = 21; //TODO
+    public static final boolean INTAKE_INVERTED = true; //TODO
     public static final int SMART_CURRENT_LIMIT = 0; //TODO
+    public static final int INTAKE_BEAMBREAK_ID = 0;
 }

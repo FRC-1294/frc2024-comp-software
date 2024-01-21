@@ -5,45 +5,42 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Input;
 import frc.robot.subsystems.IntakeSubsystem;
 
-public class DefaultIntakeCommand extends Command {
+public class AutonomousIntakeCommand extends Command {
 
-  private IntakeSubsystem mIntake;
-  private boolean alreadyRunning = false;
+  private IntakeSubsystem _intake;
   /** Creates a new DefaultIntakeCommand. */
-  public DefaultIntakeCommand(IntakeSubsystem intake) {
-    mIntake = intake;
+  public AutonomousIntakeCommand(IntakeSubsystem intake) {
+    _intake = intake;
     addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    mIntake.stopMotor();
+    if (!_intake.pieceInIntake()) {
+      _intake.intakeAtSpeed(100);
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    if (alreadyRunning && mIntake.pieceInIntake()) {
-      mIntake.stopMotor();
-      alreadyRunning = false;
-    }
-    if (!alreadyRunning && Input.getLeftBumperXbox() && !mIntake.pieceInIntake()) {
-      mIntake.intakeAtSpeed(100.0);
-      alreadyRunning = true;
-    }
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if (_intake.pieceInIntake()) {
+      _intake.stopMotor();
+      return true;
+    }
     return false;
   }
 }
