@@ -10,8 +10,8 @@ import frc.robot.subsystems.Intake;
 
 public class DefaultIntakeCommand extends Command {
 
-  Intake _intake;
-  boolean alreadyRunning = false;
+  private Intake _intake;
+  private boolean alreadyRunning = false;
   /** Creates a new DefaultIntakeCommand. */
   public DefaultIntakeCommand(Intake intake) {
     _intake = intake;

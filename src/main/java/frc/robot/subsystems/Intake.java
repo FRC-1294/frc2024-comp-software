@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase{
-    int _id;
-    CANSparkMax _motor;
-    DigitalInput _beambreak;
+    private int _id;
+    private CANSparkMax _motor;
+    private DigitalInput _beambreak;
 
 
     /**
