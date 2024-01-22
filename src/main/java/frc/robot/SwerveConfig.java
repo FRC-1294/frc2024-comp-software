@@ -104,6 +104,6 @@ public class SwerveConfig {
                         BACK_LEFT_MODULE, BACK_RIGHT_MODULE};
 
         public static final PIDConstants[] SWERVE_MODULE_PIDs = {FRONT_LEFT_ROT_PID,
-                        FRONT_RIGHT_ROT_PID, BACK_LEFT_ROT_PID, BACK_LEFT_ROT_PID};
+                        FRONT_RIGHT_ROT_PID, BACK_LEFT_ROT_PID, BACK_RIGHT_ROT_PID};
 
 }
