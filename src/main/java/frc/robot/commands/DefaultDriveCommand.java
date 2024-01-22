@@ -35,15 +35,11 @@ public class DefaultDriveCommand extends Command {
     }
 
     if (Input.resetOdo()) {
-      mSwerve.resetOdometry();
+      mSwerve.resetRobotPose();
     }
 
     if (Input.getPrecisionToggle()) {
       mIsPrecisionToggle = !mIsPrecisionToggle;
-    }
-
-    if (Input.resetOdo()) {
-      mSwerve.resetOdometry();
     }
 
     if (mIsPrecisionToggle) {
