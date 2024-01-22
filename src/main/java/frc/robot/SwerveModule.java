@@ -26,7 +26,7 @@ public class SwerveModule {
     private final boolean mRotInverse;
     private final boolean mTransInverse;
     private final PIDController mRotPID;
-    private final SparkPIDController mTransPID;
+    private final PIDController mTransPID;
     private final SimpleMotorFeedforward mTransFF;
     // Hardware
     // Motor Controllers
@@ -75,14 +75,13 @@ public class SwerveModule {
 
         // ----Setting PID
         mRotPID = rotPID.toWPIController();
-        mTransPID = mTransMotor.getPIDController();
+        mTransPID = transPID.toWPIController();
         mTransFF = transPID.toWPIMotorFeedForward();
 
         // ----Setting PID Parameters
         mRotPID.enableContinuousInput(-Math.PI, Math.PI);
-        mTransPID.setP(transPID.mKP, 0);
-        mTransPID.setI(transPID.mKI, 0);
-        mTransPID.setD(transPID.mKD, 0);
+        
+
         //mTransPID.setFF(transPID.mKV, 0);
 
         // ----Setting Inversion
@@ -161,9 +160,8 @@ public class SwerveModule {
         // PID Controller for both translation and rotation
         mDesiredVel = desiredState.speedMetersPerSecond;
         feedforward = mTransFF.calculate(mDesiredVel);
-        mTransPID.setReference(mDesiredVel, ControlType.kVelocity, 0, feedforward,ArbFFUnits.kPercentOut);
-        double pidOutput = new PIDController(0.1, 0, 0).calculate(getTransVelocity(), mDesiredVel);
-        mTransMotor.set((pidOutput / SwerveConstants.PHYSICAL_MAX_SPEED_MPS) + feedforward);
+        double pidOutput = mTransPID.calculate(getTransVelocity(), mDesiredVel) / SwerveConstants.PHYSICAL_MAX_SPEED_MPS;
+        mTransMotor.set(pidOutput + feedforward);
         // mTransMotor.set(mDesiredVel/SwerveConstants.PHYSICAL_MAX_SPEED_MPS);
 
         mDesiredRadians = desiredState.angle.getRadians();
