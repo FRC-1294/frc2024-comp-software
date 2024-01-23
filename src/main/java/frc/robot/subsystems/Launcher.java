@@ -8,7 +8,6 @@ import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LauncherConstants;
 
@@ -20,10 +19,6 @@ public class Launcher extends SubsystemBase {
 
   private final TalonFX mMainFlywheel = new TalonFX(LauncherConstants.MAIN_FLYWHEEL_ID);
   private final TalonFX mRollerFlywheel = new TalonFX(LauncherConstants.ROLLER_FLYWHEEL_ID);
-
-  private final DutyCycleEncoder mAbsFlywheelEncoder = new DutyCycleEncoder(LauncherConstants.ABS_LAUNCHER_ENCODER_ID); 
-  //are there two encoders for the two flywheels TT
-  //private final RelativeEncoder mIndexerEncoder //is there an encoder for indexer
 
   public enum LauncherMode {
     SPEAKER, AMP, OFF;
@@ -44,16 +39,17 @@ public class Launcher extends SubsystemBase {
   public Launcher() {
     resetEncoders();
 
-    var slot0Configs = new Slot0Configs(); //very confused
+    Slot0Configs slotConfigs = new Slot0Configs(); //very confused
 
-    slot0Configs.kS = LauncherConstants.LAUNCHER_MAIN_PID[0];
-    slot0Configs.kV = LauncherConstants.LAUNCHER_MAIN_PID[1];
-    slot0Configs.kP = LauncherConstants.LAUNCHER_MAIN_PID[2];
-    slot0Configs.kI = LauncherConstants.LAUNCHER_MAIN_PID[3];
-    slot0Configs.kD = LauncherConstants.LAUNCHER_MAIN_PID[4];
+    slotConfigs.kV = LauncherConstants.LAUNCHER_MAIN_PID[0];
+    slotConfigs.kP = LauncherConstants.LAUNCHER_MAIN_PID[1];
+    slotConfigs.kI = LauncherConstants.LAUNCHER_MAIN_PID[2];
+    slotConfigs.kD = LauncherConstants.LAUNCHER_MAIN_PID[3];
 
-    mMainFlywheel.getConfigurator().apply(slot0Configs);
-    mRollerFlywheel.getConfigurator().apply(slot0Configs);
+
+
+    mMainFlywheel.getConfigurator().apply(slotConfigs);
+    mRollerFlywheel.getConfigurator().apply(slotConfigs);
 
     final VelocityVoltage request = new VelocityVoltage(0).withSlot(0);
 
@@ -63,12 +59,15 @@ public class Launcher extends SubsystemBase {
 
   @Override
   public void periodic() {
-      //how do i convert encoder values to a value between -1 and 1
-      double actualVelocityFlywheel = mAbsFlywheelEncoder.getFrequency() / LauncherConstants.ENCODER_FLYWHEEL_INCREMENT * 60; //in HZ per second
-      mLauncherReady = Math.abs(Math.abs(mSetVelocityMain) - Math.abs(actualVelocityFlywheel)) <= LauncherConstants.FLYWHEEL_TOLERANCE &&
-                    Math.abs(Math.abs(mSetVelocityRoller) - Math.abs(mAbsFlywheelEncoder.getFrequency())) <= LauncherConstants.FLYWHEEL_TOLERANCE && 
-                    mSetVelocityMain != 0 && 
-                    mSetVelocityRoller != 0;
+      double actualMainVelocity = mMainFlywheel.getVelocity().getValueAsDouble();
+      double actualRollerVelocity = mRollerFlywheel.getVelocity().getValueAsDouble();
+
+      double expectedVelocity = mSetVelocityMain * LauncherConstants.FLYWHEEL_MAX_VELOCITY;
+
+      mLauncherReady = Math.abs(Math.abs(expectedVelocity) - Math.abs(actualMainVelocity)) <= LauncherConstants.FLYWHEEL_TOLERANCE &&
+                       Math.abs(Math.abs(expectedVelocity) - Math.abs(actualRollerVelocity)) <= LauncherConstants.FLYWHEEL_TOLERANCE && 
+                       mSetVelocityMain != 0 && 
+                       mSetVelocityRoller != 0;
       runIndexer();
       runLauncher();
   }
@@ -122,7 +121,7 @@ public class Launcher extends SubsystemBase {
     }
   }
   
-  public void stopShooter() {
+  public void stopLauncher() {
     mLauncherMode = LauncherMode.OFF;
     runLauncher();
   }
@@ -130,8 +129,6 @@ public class Launcher extends SubsystemBase {
   private void resetEncoders() {
     mMainFlywheel.setPosition(0);
     mRollerFlywheel.setPosition(0);
-
-    mAbsFlywheelEncoder.reset();
   }
 
   @Override
