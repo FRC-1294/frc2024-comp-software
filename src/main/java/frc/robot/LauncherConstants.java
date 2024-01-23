@@ -23,9 +23,6 @@ public final class LauncherConstants {
 
   public static final int INDEXER_ID = 3;
 
-  public static final String mainFlyWheelCANbus = "x";
-  public static final String rollerFlyWheelCANbus = "y";
-
   public static final int ABS_LAUNCHER_ENCODER_ID = 4;
 
   public static final int ENCODER_FLYWHEEL_INCREMENT = 2000; //ask probably
