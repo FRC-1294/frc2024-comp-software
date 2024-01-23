@@ -15,7 +15,7 @@ package frc.robot;
 public final class LauncherConstants {
   public static final double FLYWHEEL_TOLERANCE = 0.01; //TBD all random numbers for now
 
-  public static final double[] LAUNCHER_MAIN_PID = new double [] {0, 0, 0, 0, 0};
+  public static final double[] LAUNCHER_MAIN_PID = new double [] {0, 0, 0, 0};
   //public static final double[] LAUNCHER_ROLLER_PID = new double [] {0.0, 0.0, 0.0, 0.0};
 
   public static final int MAIN_FLYWHEEL_ID = 1;
@@ -29,4 +29,6 @@ public final class LauncherConstants {
   public static final int ABS_LAUNCHER_ENCODER_ID = 4;
 
   public static final int ENCODER_FLYWHEEL_INCREMENT = 2000; //ask probably
+
+  public static final double FLYWHEEL_MAX_VELOCITY = 511.998046875;
 }
