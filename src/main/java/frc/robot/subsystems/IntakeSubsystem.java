@@ -20,7 +20,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private final DigitalInput mBeamBreak;
 
   public IntakeSubsystem() {
-    mIntakeMotor = new CANSparkMax(IntakeConstants.INTAKE_SPARK_ID,MotorType.kBrushless);
+    mIntakeMotor = new CANSparkMax(IntakeConstants.INTAKE_SPARK_ID, MotorType.kBrushless);
     mIntakeMotor.setSmartCurrentLimit(IntakeConstants.SMART_CURRENT_LIMIT); //set current limit as to not burn out motor
     mIntakeMotor.setInverted(IntakeConstants.INTAKE_INVERTED);
     mIntakeMotor.disableVoltageCompensation();//No voltage comp since we want intake to run at full power
