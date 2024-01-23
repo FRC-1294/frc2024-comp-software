@@ -9,7 +9,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.LauncherConstants;
+import frc.robot.constants.LauncherConstants;
 
 
 
@@ -33,6 +33,9 @@ public class Launcher extends SubsystemBase {
 
   boolean mNoteIndexed = false;
 
+  //toggle to transmit note
+  boolean mIndexToShooter = false;
+
   boolean mLauncherReady = false;
 
 
@@ -45,7 +48,6 @@ public class Launcher extends SubsystemBase {
     slotConfigs.kP = LauncherConstants.LAUNCHER_MAIN_PID[1];
     slotConfigs.kI = LauncherConstants.LAUNCHER_MAIN_PID[2];
     slotConfigs.kD = LauncherConstants.LAUNCHER_MAIN_PID[3];
-
 
 
     mMainFlywheel.getConfigurator().apply(slotConfigs);
@@ -62,10 +64,11 @@ public class Launcher extends SubsystemBase {
       double actualMainVelocity = mMainFlywheel.getVelocity().getValueAsDouble();
       double actualRollerVelocity = mRollerFlywheel.getVelocity().getValueAsDouble();
 
-      double expectedVelocity = mSetVelocityMain * LauncherConstants.FLYWHEEL_MAX_VELOCITY;
+      double expectedMainVelocity = mSetVelocityMain * LauncherConstants.FLYWHEEL_MAX_VELOCITY;
+      double expectedRollerVelocity = mSetVelocityMain * LauncherConstants.FLYWHEEL_MAX_VELOCITY;
 
-      mLauncherReady = Math.abs(Math.abs(expectedVelocity) - Math.abs(actualMainVelocity)) <= LauncherConstants.FLYWHEEL_TOLERANCE &&
-                       Math.abs(Math.abs(expectedVelocity) - Math.abs(actualRollerVelocity)) <= LauncherConstants.FLYWHEEL_TOLERANCE && 
+      mLauncherReady = Math.abs(Math.abs(expectedMainVelocity) - Math.abs(actualMainVelocity)) <= LauncherConstants.FLYWHEEL_TOLERANCE &&
+                       Math.abs(Math.abs(expectedRollerVelocity) - Math.abs(actualRollerVelocity)) <= LauncherConstants.FLYWHEEL_TOLERANCE && 
                        mSetVelocityMain != 0 && 
                        mSetVelocityRoller != 0;
       runIndexer();
@@ -73,7 +76,7 @@ public class Launcher extends SubsystemBase {
   }
 
   public void runIndexer() {
-    if (mNoteIndexed || !mLauncherReady) {
+    if (!mNoteIndexed || !mLauncherReady || !mIndexToShooter) {
       mSetVelocityIndexer = 0;
     }
     else {
@@ -89,11 +92,11 @@ public class Launcher extends SubsystemBase {
 
     //predicted velocity values
     if (mLauncherMode == LauncherMode.SPEAKER) {
-      mSetVelocityMain = 1; //TBD
-      mSetVelocityRoller = -1; //all TBD
+      mSetVelocityMain = 1;
+      mSetVelocityRoller = -1;
     }
     else if (mLauncherMode == LauncherMode.AMP) {
-      mSetVelocityMain = 0.1;
+      mSetVelocityMain = 0.1; //TBD
       mSetVelocityRoller = -0.1;
     }
     else if (mLauncherMode == LauncherMode.OFF) {
@@ -104,7 +107,10 @@ public class Launcher extends SubsystemBase {
     mMainFlywheel.set(mSetVelocityMain);
     mRollerFlywheel.set(mSetVelocityRoller);
   }
-  
+
+  public void turnIndexerOn(boolean indexerOn){
+    mIndexToShooter = indexerOn;
+  }
 
   public boolean getLauncherReady() {
     return mLauncherReady;
