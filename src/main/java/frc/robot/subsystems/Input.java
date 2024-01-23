@@ -16,7 +16,7 @@ public class Input {
 
   private static final Joystick mRotJoystick = new Joystick(JoystickConstants.ROT_JOYSTICK_PORT);
   private static final Joystick mTransJoystick = new Joystick(JoystickConstants.TRANS_JOY_PORT);
-  private static final XboxController mXBOX = new XboxController(JoystickConstants.XBOX_CONTROLLER_PORT);
+  private static final XboxController mXboxController = new XboxController(JoystickConstants.XBOX_CONTROLLER_PORT);
 
 
   public static final int DPADUP = 0;
@@ -66,7 +66,7 @@ public class Input {
   }
 
   public static boolean getLeftBumperXbox() {
-    return mXBOX.getLeftBumper();
+    return mXboxController.getLeftBumper();
   }
 }
 

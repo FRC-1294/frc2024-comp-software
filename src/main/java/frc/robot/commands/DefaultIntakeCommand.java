@@ -5,13 +5,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.constants.IntakeConstants;
 import frc.robot.subsystems.Input;
 import frc.robot.subsystems.IntakeSubsystem;
 
 public class DefaultIntakeCommand extends Command {
 
   private IntakeSubsystem mIntake;
-  private boolean alreadyRunning = false;
   /** Creates a new DefaultIntakeCommand. */
   public DefaultIntakeCommand(IntakeSubsystem intake) {
     mIntake = intake;
@@ -27,13 +27,11 @@ public class DefaultIntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (alreadyRunning && mIntake.pieceInIntake()) {
+    if (mIntake.pieceInIntake()) {
       mIntake.stopMotor();
-      alreadyRunning = false;
     }
-    if (!alreadyRunning && Input.getLeftBumperXbox() && !mIntake.pieceInIntake()) {
-      mIntake.intakeAtSpeed(100.0);
-      alreadyRunning = true;
+    if (Input.getLeftBumperXbox() && !mIntake.pieceInIntake()) {
+      mIntake.intakeAtSpeed(IntakeConstants.INTAKE_SPEED);
     }
   }
 

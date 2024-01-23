@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -33,10 +34,10 @@ public class IntakeSubsystem extends SubsystemBase {
 
   /**
    * Running the Motors with no PID
-   * @param percentOutput Percent to running (from -100 to 100)
+   * @param percentOutput Percent to running (from -1.0 to 1.0)
    */
   public void intakeAtSpeed(double percentOutput){
-    mIntakeMotor.set(percentOutput/100);
+    mIntakeMotor.set(percentOutput);
   }
 
   public void stopMotor() {
@@ -47,7 +48,12 @@ public class IntakeSubsystem extends SubsystemBase {
     return new SequentialCommandGroup(new InstantCommand(()-> intakeAtSpeed(intake_speed)), new WaitCommand(wait_time));
   }
 
+  public Command getAutomousIntakeCommand() {
+    return new FunctionalCommand(() -> intakeAtSpeed(IntakeConstants.INTAKE_SPEED), null, interrupted -> stopMotor(), this::pieceInIntake, this);    
+  }
+
   public boolean pieceInIntake(){
     return !mBeamBreak.get();
   }
+
 }
