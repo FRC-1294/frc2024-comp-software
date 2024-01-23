@@ -3,14 +3,18 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
+import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.playingwithfusion.TimeOfFlight;
 import com.playingwithfusion.TimeOfFlight.RangingMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -22,7 +26,7 @@ import frc.robot.constants.AimingConstants.AimState;
 
 
 public class AimingSubsystem extends SubsystemBase {
-  public enum AimingMotorMode {COAST, BRAKE, OFF}
+  public enum AimingMotorMode {COAST, BRAKE}
 
   // Elevator Hardware
   private final TalonFX mLeftFlywheelMotor = new TalonFX(AimingConstants.LEFT_ELEVATOR_TALON_ID,"rio");
@@ -32,7 +36,7 @@ public class AimingSubsystem extends SubsystemBase {
   private final TimeOfFlight mElevatorTOF = new TimeOfFlight(AimingConstants.ELEVATOR_TOF_ID);
   
   // Wrist Hardware
-  private final CANSparkMax mWristMotor = new CANSparkMax(AimingConstants.WRIST_SPARK_ID, MotorType.kBrushless);
+  private final TalonFX mWristMotor = new TalonFX(AimingConstants.WRIST_SPARK_ID, "rio");
   private final CANcoder mWristEncoder = new CANcoder(AimingConstants.WRIST_ENCODER_ID);
 
   // Current States
@@ -47,18 +51,14 @@ public class AimingSubsystem extends SubsystemBase {
   private final SendableChooser<AimingMotorMode> mChooser = new SendableChooser<>();
 
   // PID Controllers
-  private final PIDController mElevatorController = AimingConstants.mElevatorPIDConstants.toWPIController();
-  private final PIDController mWristController = AimingConstants.mWristPIDConstants.toWPIController();
-
-
+  Slot0Configs mElevatorController = new Slot0Configs();
+  Slot0Configs mWristController = new Slot0Configs();  
 
   public AimingSubsystem() {
     mChooser.addOption("Brake", AimingMotorMode.BRAKE);
     mChooser.addOption("Coast", AimingMotorMode.COAST);
     mChooser.setDefaultOption("Brake", AimingConstants.INITIAL_MOTOR_MODE);
 
-    mElevatorController.setTolerance(AimingConstants.ELEVATOR_TOLERANCE_IN);
-    mWristController.setTolerance(AimingConstants.WRIST_TOLERANCE_DEG);
 
     //Initializes TOF Sensor
     setTOFViewZone(8, 8, 12, 12);
@@ -71,28 +71,59 @@ public class AimingSubsystem extends SubsystemBase {
   public void configureDevices() {
     //TODO: Set the Converstions and Inversions
 
+    //initialize PID Controller Constants
+    mElevatorController.kP = AimingConstants.mElevatorPIDConstants.mKP;
+    mElevatorController.kI = AimingConstants.mElevatorPIDConstants.mKI;
+    mElevatorController.kD = AimingConstants.mElevatorPIDConstants.mKD;
+
+    mWristController.kP = AimingConstants.mWristPIDConstants.mKP;
+    mWristController.kI = AimingConstants.mWristPIDConstants.mKI;
+    mWristController.kD = AimingConstants.mWristPIDConstants.mKD;
+
+    mLeftFlywheelMotor.getConfigurator().apply(mElevatorController);
+    mRightFlywheelMotor.getConfigurator().apply(mElevatorController);
+    mWristMotor.getConfigurator().apply(mWristController);
+
+    mLeftFlywheelMotor.setInverted(true);
   }
 
   @Override
   public void periodic() {
+    updateMotorModes();
     elevatorPeriodic();
     wristPeriodic();
-    //TODO: Implement This
   }
 
   private void elevatorPeriodic() {
-      //TODO: Add Clamps, PID, and Run Motor
+    //TODO: Add Clamps, PID, and Run Motor
+
+    PositionVoltage elevatorVoltage = new PositionVoltage(0).withSlot(0);
+    mLeftFlywheelMotor.setControl(elevatorVoltage.withPosition(getDesiredElevatorDistance()));
+    mRightFlywheelMotor.setControl(elevatorVoltage.withPosition(getDesiredElevatorDistance()));
+
+    mCurrentElevatorDistanceIn = mLeftFlywheelMotor.getRotorPosition().getValueAsDouble() * AimingConstants.ELEVATOR_ROTATIONS_TO_INCHES;
   }
 
   private void wristPeriodic() {
     //TODO: Add Clamps, PID, and Run Motor
+
+    PositionVoltage wristVoltage = new PositionVoltage(0).withSlot(0);
+    mWristMotor.setControl(wristVoltage.withPosition(getDesiredWristRotation()));
+    mCurrentWristRotationDeg = mWristMotor.getRotorPosition().getValueAsDouble() * 360;
   }
 
   private void updateMotorModes() {
     SmartDashboard.updateValues();
 
     AimingMotorMode mode = mChooser.getSelected();
-    //TODO: Logic
+    
+    // Motors go towards setpoints
+    NeutralModeValue neutralmode = mode == AimingMotorMode.BRAKE ? NeutralModeValue.Brake : NeutralModeValue.Coast;
+
+    mLeftFlywheelMotor.setNeutralMode(neutralmode);
+    mRightFlywheelMotor.setNeutralMode(neutralmode);
+    mWristMotor.setNeutralMode(neutralmode);
+
   }
 
   // Contains Smart Dashboard Statements ONLY ON DEBUG
@@ -135,6 +166,10 @@ public class AimingSubsystem extends SubsystemBase {
   }
 
   // Getters and Setters of States
+  public double getCurrentElevatorDistance() {
+    return mCurrentElevatorDistanceIn;
+  }
+
   public double getDesiredElevatorDistance() {
     return mDesiredElevatorDistanceIn;
   }
@@ -143,25 +178,45 @@ public class AimingSubsystem extends SubsystemBase {
     return mDesiredWristRotationDeg;
   }
 
-  public double getCurrentElevatorDistance() {
-    return mCurrentElevatorDistanceIn;
-  }
-
   public void setDesiredElevatorDistance(double distance) {
     mDesiredElevatorDistanceIn = distance;
-  }
-
-  public void setDesiredSetpoint(AimState state) {
-    mDesiredElevatorDistanceIn = state.elevatorDistIn;
-    mDesiredWristRotationDeg = state.wristAngleDeg;
   }
 
   public void setDesiredWristRotation(double rotation) {
     mDesiredWristRotationDeg = rotation;
   }
 
-  public boolean atElevatorSetpoint(){return mElevatorController.atSetpoint();}
-  public boolean atWristSetpoint() {return mWristController.atSetpoint();}
+  public void setDesiredSetpoint(AimState state) {
+    mDesiredElevatorDistanceIn = state.elevatorDistIn;
+    mDesiredWristRotationDeg = state.wristAngleDeg;
+  }
+  public void changeDesiredElevatorPosition(double rate) {
+    mDesiredElevatorDistanceIn += rate;
+  }
+
+  public void changeDesiredWristRotation(double rate) {
+    mDesiredWristRotationDeg += rate;
+  }
+
+  public boolean atElevatorSetpoint() {
+
+    // ENCODER VERSION
+    // if (mLeftFlywheelMotor.getRotorPosition().getValueAsDouble() * AimingConstants.ELEVATOR_ROTATIONS_TO_INCHES) < AimingConstants.ELEVATOR_TOLERANCE_IN) {
+    //   return true;
+    // }
+ 
+    if (Math.abs(AimingConstants.MAX_ELEVATOR_DIST - getTOFRangeInches()) <= AimingConstants.ELEVATOR_TOLERANCE_IN) {
+      return true;
+    }
+    return false;
+  }
+  public boolean atWristSetpoint() {
+    if (Math.abs(mWristEncoder.getPosition().getValueAsDouble() - mWristMotor.getRotorPosition().getValueAsDouble()) * 360 <= AimingConstants.WRIST_TOLERANCE_DEG) {
+      return true;
+    }
+
+    return false;
+  }
   public boolean atSetpoints() {return atElevatorSetpoint() && atWristSetpoint();}
 
   public Command waitUntilSetpoint(AimState state) {
