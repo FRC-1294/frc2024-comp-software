@@ -39,9 +39,9 @@ public class kS_Characterization extends Command {
   public void execute() {
     curRequestedDutyCycle += 0.001;
     SmartDashboard.putNumber("CharacterizationDutyCycle", curRequestedDutyCycle);
-    mSwerve.setChassisSpeed(curRequestedDutyCycle, 0, 0,false);
+    mSwerve.setChassisSpeed(curRequestedDutyCycle, 0, 0,false,true);
     for (int i = 0; i<4; i++){
-      if (Math.abs(mModules[i].getTransVelocity())>0.000001 && !modLock[i]){
+      if (Math.abs(mModules[i].getTransVelocity())>0.00001 && !modLock[i]){
         expkS[i] = Math.abs(mModules[i].getTransAppliedVolts()/mModules[i].getTranslationNominalVoltage());
         modLock[i] = true;
       }
@@ -57,8 +57,11 @@ public class kS_Characterization extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+
     boolean flag = true;
     for(int i=0; i<4; i++){
+      SmartDashboard.putNumber("expkS"+i, expkS[i]);
+
       if (!modLock[i]){
         flag = false;
       }

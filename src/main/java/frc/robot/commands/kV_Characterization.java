@@ -39,7 +39,6 @@ public class kV_Characterization extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
     if(Math.abs(mSwerve.getChassisSpeeds().vxMetersPerSecond - targVelMPS)<0.1){
         if (!timerHasStarted){
             mTimer.start();
@@ -52,7 +51,7 @@ public class kV_Characterization extends Command {
             SmartDashboard.putNumber("avgkV"+i, expkV[i]);
         }
     }else{
-      mSwerve.setChassisSpeed(increment, 0, 0,true);
+      mSwerve.setChassisSpeed(increment, 0, 0,false,true);
       increment +=0.01;
     }
   }

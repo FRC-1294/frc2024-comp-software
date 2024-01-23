@@ -4,10 +4,24 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 import com.revrobotics.CANSparkLowLevel;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
+import frc.robot.commands.FollowPath;
+import frc.robot.commands.InitializePathPlanner;
+import frc.robot.commands.kS_Characterization;
+import frc.robot.commands.kV_Characterization;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -19,6 +33,8 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+  public SendableChooser<Command> pathSelector = new SendableChooser<>();
+
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -28,7 +44,31 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
+    SmartDashboard.putData("Pick your Auton...",pathSelector);
     m_robotContainer = new RobotContainer();
+    AutoBuilder.configureHolonomic(
+    m_robotContainer.getSwerveSubsystem()::getRobotPose, 
+    (Pose2d pose)->m_robotContainer.getSwerveSubsystem().resetRobotPose(pose),
+    m_robotContainer.getSwerveSubsystem()::getChassisSpeeds, 
+    (ChassisSpeeds speeds)->m_robotContainer.getSwerveSubsystem().setChassisSpeed(speeds),
+    new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in
+                                      // your Constants class
+          new PIDConstants(3.0, 0.0, 0.0), // Translation PID constants
+          new PIDConstants(3.0, 0.0, 0.0), // Rotation PID constants
+          4.5, // Max module speed, in m/s
+          0.4669, // Drive base radius in meters. Distance from robot center to furthest module.
+          new ReplanningConfig() // Default path replanning config. See the API for the options
+                              // here
+                              
+    ), ()->false, m_robotContainer.getSwerveSubsystem());
+    // new InitializePathPlanner(m_robotContainer.getSwerveSubsystem()).schedule();
+
+    pathSelector.addOption("5_meter_return", new FollowPath(m_robotContainer.getSwerveSubsystem(), "5_Meter_Return"));
+    pathSelector.addOption("2_meter", new FollowPath(m_robotContainer.getSwerveSubsystem(), "2_Meter"));
+    pathSelector.addOption("None", new PrintCommand("Damn that sucks"));
+    pathSelector.addOption("kSCharacterization", new kS_Characterization(m_robotContainer.getSwerveSubsystem()));
+    pathSelector.addOption("kVCharacterization", new kV_Characterization(m_robotContainer.getSwerveSubsystem()));
+    
   }
 
   /**
@@ -45,6 +85,8 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    SmartDashboard.putData("Pick your Auton...",pathSelector);
+    SmartDashboard.updateValues();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -57,7 +99,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = pathSelector.getSelected();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {

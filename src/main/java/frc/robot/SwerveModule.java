@@ -26,6 +26,7 @@ public class SwerveModule {
     private final boolean mRotInverse;
     private final boolean mTransInverse;
     private final PIDController mRotPID;
+    private final PIDController mTransPIDWPI;
     private final SparkPIDController mTransPID;
     private final SimpleMotorFeedforward mTransFF;
     // Hardware
@@ -51,6 +52,7 @@ public class SwerveModule {
     public SwerveModule(int rotID, int transID, int rotEncoderID, boolean rotInverse,
             boolean transInverse, PIDConstants rotPID, PIDConstants transPID) {
         // Setting Parameters
+    
         prevTS = Timer.getFPGATimestamp();
         mRotID = rotID;
         mTransID = transID;
@@ -64,7 +66,8 @@ public class SwerveModule {
         // Motor Controllers
         mRotMotor = new CANSparkMax(mRotID, MotorType.kBrushless);
         mTransMotor = new CANSparkMax(mTransID, MotorType.kBrushless);
-
+        mRotMotor.restoreFactoryDefaults();
+        mTransMotor.restoreFactoryDefaults();
 
         // Encoders
         mRotEncoder = new CANcoder(mRotEncoderID,"SWERVE_ENC");
@@ -77,13 +80,14 @@ public class SwerveModule {
         mRotPID = rotPID.toWPIController();
         mTransPID = mTransMotor.getPIDController();
         mTransFF = transPID.toWPIMotorFeedForward();
+        mTransPIDWPI = transPID.toWPIController();
 
         // ----Setting PID Parameters
         mRotPID.enableContinuousInput(-Math.PI, Math.PI);
         mTransPID.setP(transPID.mKP, 0);
         mTransPID.setI(transPID.mKI, 0);
         mTransPID.setD(transPID.mKD, 0);
-        //mTransPID.setFF(transPID.mKV, 0);
+        mTransPID.setFF(transPID.mKV, 0);
 
         // ----Setting Inversion
         mRotMotor.setInverted(mRotInverse);
@@ -135,6 +139,35 @@ public class SwerveModule {
 
     }
 
+    public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop){
+        if (isOpenLoop){
+            double curVel = getTransVelocity();
+            mCurAccel = (Math.abs(curVel)-Math.abs(prevVel))/(Timer.getFPGATimestamp()-prevTS);
+            if (mCurAccel>mMaxAccel){
+                mMaxAccel = mCurAccel;
+            }
+            prevTS = Timer.getFPGATimestamp();
+            prevVel = curVel;
+            // Stops returning to original rotation
+            if (Math.abs(desiredState.speedMetersPerSecond) < 0.0000000001) {
+                stop();
+                return;
+            }
+
+            // No turning motors over 90 degrees
+            desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
+
+            mDesiredVel = desiredState.speedMetersPerSecond;
+            mTransMotor.set(mDesiredVel/SwerveConstants.PHYSICAL_MAX_SPEED_MPS);
+
+            mDesiredRadians = desiredState.angle.getRadians();
+            mPIDOutput = mRotPID.calculate(getRotPosition(), desiredState.angle.getRadians());
+            mRotMotor.set(mPIDOutput); 
+        }else{
+            setDesiredState(desiredState);
+        }
+
+    }
     /**
      * Sets the motor speeds passed into constructor
      * 
@@ -161,8 +194,8 @@ public class SwerveModule {
         // PID Controller for both translation and rotation
         mDesiredVel = desiredState.speedMetersPerSecond;
         feedforward = mTransFF.calculate(mDesiredVel);
-        mTransPID.setReference(mDesiredVel, ControlType.kVelocity, 0, feedforward,ArbFFUnits.kPercentOut);
-        double pidOutput = new PIDController(0.1, 0, 0).calculate(getTransVelocity(), mDesiredVel);
+        // mTransPID.setReference(mDesiredVel, ControlType.kVelocity, 0, feedforward,ArbFFUnits.kPercentOut);
+        double pidOutput = mTransPIDWPI.calculate(getTransVelocity(), mDesiredVel);
         mTransMotor.set((pidOutput / SwerveConstants.PHYSICAL_MAX_SPEED_MPS) + feedforward);
         // mTransMotor.set(mDesiredVel/SwerveConstants.PHYSICAL_MAX_SPEED_MPS);
 

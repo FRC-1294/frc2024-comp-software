@@ -5,11 +5,7 @@
 package frc.robot;
 
 import frc.robot.commands.DefaultDriveCommand;
-import frc.robot.commands.FollowPath;
-import frc.robot.commands.kS_Characterization;
-import frc.robot.commands.kV_Characterization;
 import frc.robot.subsystems.SwerveSubsystem;
-import edu.wpi.first.wpilibj2.command.Command;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -28,14 +24,8 @@ public class RobotContainer {
     mSwerveSubsystem.setDefaultCommand(new DefaultDriveCommand(mSwerveSubsystem));
 
   }
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return new FollowPath(mSwerveSubsystem);
+  public SwerveSubsystem getSwerveSubsystem() {
+      return mSwerveSubsystem;
   }
+
 }

@@ -26,13 +26,13 @@ public class SwerveConfig {
         private static final int FRONT_RIGHT_ROT_ID = 3;
         private static final int FRONT_RIGHT_ROT_ENC_ID = 23;
 
-        private static final int BACK_RIGHT_TRANS_ID = 9;
-        private static final int BACK_RIGHT_ROT_ID = 6;
-        private static final int BACK_RIGHT_ROT_ENC_ID = 20;
-
         private static final int BACK_LEFT_TRANS_ID = 5;
         private static final int BACK_LEFT_ROT_ID = 4;
         private static final int BACK_LEFT_ROT_ENC_ID = 21;
+
+        private static final int BACK_RIGHT_TRANS_ID = 9;
+        private static final int BACK_RIGHT_ROT_ID = 6;
+        private static final int BACK_RIGHT_ROT_ENC_ID = 20;
 
 
         public static final int PIGEON_ID = 25;
@@ -68,13 +68,18 @@ public class SwerveConfig {
         // PID Controllers
         public static final PIDConstants FRONT_LEFT_ROT_PID = new PIDConstants(0.35, 0, 0);
         public static final PIDConstants FRONT_RIGHT_ROT_PID = new PIDConstants(0.35, 0, 0);
-        public static final PIDConstants BACK_RIGHT_ROT_PID = new PIDConstants(0.35, 0, 0);
         public static final PIDConstants BACK_LEFT_ROT_PID = new PIDConstants(0.35, 0, 0);
+        public static final PIDConstants BACK_RIGHT_ROT_PID = new PIDConstants(0.35, 0, 0);
 
-        public static final PIDConstants FRONT_LEFT_TRANS_PID = new PIDConstants(0.0, 0, 0,0.0099795525893569,0.21090956596760593);
-        public static final PIDConstants FRONT_RIGHT_TRANS_PID = new PIDConstants(0.0, 0, 0,0.008545182645320892,0.2099873992689063);
-        public static final PIDConstants BACK_RIGHT_TRANS_PID = new PIDConstants(0.0, 0, 0,0.01037629321217537,0.21397894176465337);
-        public static final PIDConstants BACK_LEFT_TRANS_PID = new PIDConstants(0.0, 0, 0,0.0099795525893569,0.2099731767248498);
+        public static final PIDConstants FRONT_LEFT_TRANS_PID = new PIDConstants(0.1, 0, 0,0.0099795525893569,0.21090956596760593);
+        public static final PIDConstants FRONT_RIGHT_TRANS_PID = new PIDConstants(0.1, 0, 0,0.008545182645320892,0.2099873992689063);
+        public static final PIDConstants BACK_LEFT_TRANS_PID = new PIDConstants(0.1, 0, 0,0.0099795525893569,0.2099731767248498);
+        public static final PIDConstants BACK_RIGHT_TRANS_PID = new PIDConstants(0.1, 0, 0,0.01037629321217537,0.21397894176465337);
+
+        public static final PIDConstants FRONT_LEFT_TRANS_CARPET_PID = new PIDConstants(0.1, 0, 0,0.010559404268860817,0.2143581312619372);
+        public static final PIDConstants FRONT_RIGHT_TRANS_CARPET_PID = new PIDConstants(0.1, 0, 0,0.010345774702727795,0.2147905172579474);
+        public static final PIDConstants BACK_LEFT_TRANS_CARPET_PID = new PIDConstants(0.1, 0, 0,0.011993774212896824,0.21911519031435608);
+        public static final PIDConstants BACK_RIGHT_TRANS_CARPET_PID = new PIDConstants(0.1, 0, 0,0.010132145136594772,0.21575530586570696);
 
 
         public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
@@ -85,25 +90,25 @@ public class SwerveConfig {
         // Swerve Modules and Other Hardware
         public static final SwerveModule FRONT_LEFT_MODULE = new SwerveModule(FRONT_LEFT_ROT_ID,
                         FRONT_LEFT_TRANS_ID, FRONT_LEFT_ROT_ENC_ID, FRONT_LEFT_ROT_INVERSE,
-                        FRONT_LEFT_TRANS_INVERSE, FRONT_LEFT_ROT_PID,FRONT_LEFT_TRANS_PID);
+                        FRONT_LEFT_TRANS_INVERSE, FRONT_LEFT_ROT_PID,FRONT_LEFT_TRANS_CARPET_PID);
 
         public static final SwerveModule FRONT_RIGHT_MODULE = new SwerveModule(FRONT_RIGHT_ROT_ID,
                         FRONT_RIGHT_TRANS_ID, FRONT_RIGHT_ROT_ENC_ID, FRONT_RIGHT_ROT_INVERSE,
-                        FRONT_RIGHT_TRANS_INVERSE, FRONT_RIGHT_ROT_PID,FRONT_RIGHT_TRANS_PID);
+                        FRONT_RIGHT_TRANS_INVERSE, FRONT_RIGHT_ROT_PID,FRONT_RIGHT_TRANS_CARPET_PID);
 
         public static final SwerveModule BACK_LEFT_MODULE = new SwerveModule(BACK_LEFT_ROT_ID,
                 BACK_LEFT_TRANS_ID, BACK_LEFT_ROT_ENC_ID, BACK_LEFT_ROT_INVERSE,
-                BACK_LEFT_TRANS_INVERSE, BACK_LEFT_ROT_PID,BACK_LEFT_TRANS_PID);
+                BACK_LEFT_TRANS_INVERSE, BACK_LEFT_ROT_PID,BACK_LEFT_TRANS_CARPET_PID);
 
         public static final SwerveModule BACK_RIGHT_MODULE = new SwerveModule(BACK_RIGHT_ROT_ID,
                         BACK_RIGHT_TRANS_ID, BACK_RIGHT_ROT_ENC_ID, BACK_RIGHT_ROT_INVERSE,
-                        BACK_RIGHT_TRANS_INVERSE, BACK_RIGHT_ROT_PID,BACK_RIGHT_TRANS_PID);
+                        BACK_RIGHT_TRANS_INVERSE, BACK_RIGHT_ROT_PID,BACK_RIGHT_TRANS_CARPET_PID);
 
 
         public static final SwerveModule[] SWERVE_MODULES = {FRONT_LEFT_MODULE, FRONT_RIGHT_MODULE,
                         BACK_LEFT_MODULE, BACK_RIGHT_MODULE};
 
         public static final PIDConstants[] SWERVE_MODULE_PIDs = {FRONT_LEFT_ROT_PID,
-                        FRONT_RIGHT_ROT_PID, BACK_LEFT_ROT_PID, BACK_LEFT_ROT_PID};
+                        FRONT_RIGHT_ROT_PID, BACK_LEFT_ROT_PID, BACK_RIGHT_ROT_PID};
 
 }
