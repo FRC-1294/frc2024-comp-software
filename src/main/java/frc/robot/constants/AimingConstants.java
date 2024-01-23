@@ -36,9 +36,9 @@ public class AimingConstants {
     public static PIDConstants mElevatorPIDConstants = new PIDConstants(0.1, 0, 0);
     public static PIDConstants mWristPIDConstants = new PIDConstants(0.1, 0, 0);
 
-
     public static final AimingMotorMode INITIAL_MOTOR_MODE = AimingMotorMode.BRAKE;
 
+    public static double ELEVATOR_ROTATIONS_TO_INCHES = 1; // TODO: convert gear ratio of flywheel to inches
 
     // Tolerances
     public static final double ELEVATOR_TOLERANCE_IN = 0;
