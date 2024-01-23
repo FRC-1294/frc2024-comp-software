@@ -12,7 +12,6 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-<<<<<<<< HEAD:src/main/java/frc/robot/LauncherConstants.java
 public final class LauncherConstants {
   public static final double FLYWHEEL_TOLERANCE = 0.01; //TBD all random numbers for now
 
@@ -29,16 +28,5 @@ public final class LauncherConstants {
   public static final int ENCODER_FLYWHEEL_INCREMENT = 2000; //ask probably
 
   public static final double FLYWHEEL_MAX_VELOCITY = 511.998046875;
-========
-public final class Constants {
-  public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
-  }
 
-  //launcher
-  public static final double kLauncherTolerance = 0; //TBD
-  public static final double[] kLauncherMainPID = new double [] {0.0, 0.0, 0.0, 0.0};
-  public static final double[] kLauncherRollerPID = new double [] {0.0, 0.0, 0.0, 0.0};
-
->>>>>>>> 4bce559c84da19961a7287f126719f4d7a6d5f71:src/main/java/frc/robot/Constants.java
 }
