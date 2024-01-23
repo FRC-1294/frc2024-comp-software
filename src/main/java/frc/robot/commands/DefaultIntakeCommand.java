@@ -11,6 +11,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 public class DefaultIntakeCommand extends Command {
 
+  private boolean fullPower = false;
   private IntakeSubsystem mIntake;
   /** Creates a new DefaultIntakeCommand. */
   public DefaultIntakeCommand(IntakeSubsystem intake) {
@@ -27,10 +28,13 @@ public class DefaultIntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (Input.getFullPower()) {
+      fullPower = !fullPower;
+    }
     if (mIntake.pieceInIntake()) {
       mIntake.stopMotor();
     }
-    if (Input.getLeftBumperXbox() && !mIntake.pieceInIntake()) {
+    if (fullPower || (Input.getIntake() && !mIntake.pieceInIntake())) {
       mIntake.intakeAtSpeed(IntakeConstants.INTAKE_SPEED);
     }
   }
