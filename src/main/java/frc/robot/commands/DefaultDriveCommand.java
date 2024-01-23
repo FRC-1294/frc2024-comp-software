@@ -35,7 +35,7 @@ public class DefaultDriveCommand extends Command {
     }
 
     if (Input.resetOdo()) {
-      mSwerve.resetOdometry();
+      mSwerve.resetRobotPose();
     }
 
     if (Input.getPrecisionToggle()) {

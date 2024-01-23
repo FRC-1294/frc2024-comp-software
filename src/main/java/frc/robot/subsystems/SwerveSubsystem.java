@@ -137,13 +137,6 @@ public class SwerveSubsystem extends SubsystemBase {
     return -mPigeon2.getRate();
   }
 
-  /**
-   * Resets pose to origin, keeps heading from gyro, keeps current module positions
-   */
-
-  public void resetOdometry() {
-    mOdometry.resetPosition(getRotation2d(), getModulePositions(), new Pose2d());
-  }
 
   /**
    * this gets the Yaw degrees of the gyro in continuous input (360 == 0) CCW (with neg)
@@ -265,6 +258,14 @@ public class SwerveSubsystem extends SubsystemBase {
   public void resetRobotPose(Pose2d pose) {
     resetGyro(pose.getRotation().getDegrees());
     mOdometry.resetPosition(pose.getRotation(), getModulePositions(), pose);
+  }
+
+    /**
+   * Resets pose to origin, keeps heading from gyro, keeps current module positions
+   */
+
+  public void resetRobotPose() {
+    mOdometry.resetPosition(getRotation2d(), getModulePositions(), new Pose2d());
   }
 
 

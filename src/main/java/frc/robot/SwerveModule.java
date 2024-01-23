@@ -194,9 +194,8 @@ public class SwerveModule {
         // PID Controller for both translation and rotation
         mDesiredVel = desiredState.speedMetersPerSecond;
         feedforward = mTransFF.calculate(mDesiredVel);
-        // mTransPID.setReference(mDesiredVel, ControlType.kVelocity, 0, feedforward,ArbFFUnits.kPercentOut);
-        double pidOutput = mTransPIDWPI.calculate(getTransVelocity(), mDesiredVel);
-        mTransMotor.set((pidOutput / SwerveConstants.PHYSICAL_MAX_SPEED_MPS) + feedforward);
+        double pidOutput = mTransPIDWPI.calculate(getTransVelocity(), mDesiredVel) / SwerveConstants.PHYSICAL_MAX_SPEED_MPS;
+        mTransMotor.set(pidOutput + feedforward);
         // mTransMotor.set(mDesiredVel/SwerveConstants.PHYSICAL_MAX_SPEED_MPS);
 
         mDesiredRadians = desiredState.angle.getRadians();
