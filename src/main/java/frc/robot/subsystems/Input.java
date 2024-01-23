@@ -65,8 +65,12 @@ public class Input {
     return mRotJoystick.getTriggerReleased();
   }
 
-  public static boolean getLeftBumperXbox() {
+  public static boolean getIntake() {
     return mXboxController.getLeftBumper();
+  }
+
+  public static boolean getFullPower() {
+    return mXboxController.getRightStickButton();
   }
 }
 
