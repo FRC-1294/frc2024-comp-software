@@ -109,6 +109,10 @@ public class Launcher extends SubsystemBase {
     mIndexToShooter = indexerOn;
   }
 
+  public boolean isIndexerOn() {
+    return mIndexToShooter;
+  }
+
   public boolean isLauncherReady() {
     return mLauncherReady;
   }
