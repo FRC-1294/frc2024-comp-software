@@ -11,7 +11,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 public class DefaultIntakeCommand extends Command {
 
-  private boolean fullPower = false;
+  private boolean goBreakSomeRules = false; // use sparingly ... ah, who am i kidding, just make sure the refs aren't looking
   private IntakeSubsystem mIntake;
   /** Creates a new DefaultIntakeCommand. */
   public DefaultIntakeCommand(IntakeSubsystem intake) {
@@ -28,13 +28,13 @@ public class DefaultIntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (Input.getFullPower()) {
-      fullPower = !fullPower;
+    if (Input.getBreakRules()) {
+      goBreakSomeRules = !goBreakSomeRules;
     }
     if (mIntake.pieceInIntake()) {
       mIntake.stopMotor();
     }
-    if (fullPower || (Input.getIntake() && !mIntake.pieceInIntake())) {
+    if (goBreakSomeRules || (Input.getIntake() && !mIntake.pieceInIntake())) {
       mIntake.intakeAtSpeed(IntakeConstants.INTAKE_SPEED);
     }
   }
