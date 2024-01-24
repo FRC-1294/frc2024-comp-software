@@ -69,7 +69,7 @@ public class Input {
     return mXboxController.getLeftBumper();
   }
 
-  public static boolean getShouldCheckIndexer() {
+  public static boolean getOnePiece() {
     return mXboxController.getRightStickButton();
   }
 }

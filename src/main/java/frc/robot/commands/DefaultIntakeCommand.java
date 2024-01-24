@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.IntakeConstants;
 import frc.robot.subsystems.Input;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.constants.CompConstants;
 
 public class DefaultIntakeCommand extends Command {
 
-  private boolean dontCheckIndexer = false;
   private IntakeSubsystem mIntake;
   /** Creates a new DefaultIntakeCommand. */
   public DefaultIntakeCommand(IntakeSubsystem intake) {
@@ -28,13 +28,13 @@ public class DefaultIntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (Input.getShouldCheckIndexer()) {
-      dontCheckIndexer = !dontCheckIndexer;
+    if (Input.getOnePiece()) {
+      CompConstants.ONE_PIECE = !CompConstants.ONE_PIECE;
     }
     if (mIntake.pieceInIntake()) {
       mIntake.stopMotor();
     }
-    if (Input.getIntake() && (!mIntake.pieceInIntake() || dontCheckIndexer)) {
+    if (Input.getIntake() && (!mIntake.pieceInIntake() || !CompConstants.ONE_PIECE)) {
       mIntake.intakeAtSpeed(IntakeConstants.INTAKE_SPEED);
     }
   }
