@@ -69,7 +69,7 @@ public class Input {
     return mXboxController.getLeftBumper();
   }
 
-  public static boolean getFullPower() {
+  public static boolean getBreakRules() {
     return mXboxController.getRightStickButton();
   }
 }
