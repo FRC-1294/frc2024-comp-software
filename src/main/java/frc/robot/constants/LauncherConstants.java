@@ -4,6 +4,9 @@
 
 package frc.robot.constants;
 
+import edu.wpi.first.math.controller.PIDController;
+
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -13,15 +16,41 @@ package frc.robot.constants;
  * constants are needed, to reduce verbosity.
  */
 public final class LauncherConstants {
-  public static final double FLYWHEEL_TOLERANCE = 0.01; //TBD all random numbers for now
 
-  public static final double[] LAUNCHER_MAIN_PID = new double [] {0, 0, 0, 0};
-
-  public static final int MAIN_FLYWHEEL_ID = 1;
+  //IDs
+  public static final int MAIN_FLYWHEEL_ID = 1; //IDs TBD
   public static final int ROLLER_FLYWHEEL_ID = 2;
 
   public static final int INDEXER_ID = 3;
 
-  public static final double FLYWHEEL_MAX_VELOCITY = 511.998046875;
+
+  //current flywheel mode
+  public enum LauncherMode {
+    SPEAKER, AMP, OFF;
+  }
+
+  //setpoints
+  public enum LauncherState {
+
+    SPEAKER_DEFAULT(1.0, 1.0), //TBD
+
+    AMP_DEFAULT(0.1, 0.1); //TBD, -1 to 1 speed
+    
+    
+    public final double mainVelocity;
+    public final double rollerVelocity;
+
+    private LauncherState(double mainVelocity, double rollerVelocity) {
+      this.mainVelocity = mainVelocity;
+      this.rollerVelocity = rollerVelocity;
+    }
+  }
+  
+  public static final PIDController LAUNCHER_PID_CONTROLLER = new PIDController(0, 0, 0, 0);
+
+
+  public static final double FLYWHEEL_TOLERANCE = 0.01; //TBD
+
+  public static final double FLYWHEEL_MAX_VELOCITY = 511.998046875; //rpm
 
 }

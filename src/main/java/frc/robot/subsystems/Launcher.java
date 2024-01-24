@@ -10,6 +10,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.LauncherConstants;
+import frc.robot.constants.LauncherConstants.LauncherMode;
+import frc.robot.constants.LauncherConstants.LauncherState;
 
 
 
@@ -20,16 +22,13 @@ public class Launcher extends SubsystemBase {
   private final TalonFX mMainFlywheel = new TalonFX(LauncherConstants.MAIN_FLYWHEEL_ID);
   private final TalonFX mRollerFlywheel = new TalonFX(LauncherConstants.ROLLER_FLYWHEEL_ID);
 
-  public enum LauncherMode {
-    SPEAKER, AMP, OFF;
-  }
 
   LauncherMode mLauncherMode = LauncherMode.OFF;
 
-  double mSetVelocityIndexer = 0;
+  double mDesiredVelocityIndexer = 0;
 
-  double mSetVelocityMain = 0;
-  double mSetVelocityRoller = 0;
+  double mDesiredVelocityMain = 0;
+  double mDesiredVelocityRoller = 0;
 
   boolean mNoteIndexed = false;
 
@@ -42,12 +41,11 @@ public class Launcher extends SubsystemBase {
   public Launcher() {
     resetEncoders();
 
-    Slot0Configs slotConfigs = new Slot0Configs(); //very confused
+    Slot0Configs slotConfigs = new Slot0Configs();
 
-    slotConfigs.kV = LauncherConstants.LAUNCHER_MAIN_PID[0];
-    slotConfigs.kP = LauncherConstants.LAUNCHER_MAIN_PID[1];
-    slotConfigs.kI = LauncherConstants.LAUNCHER_MAIN_PID[2];
-    slotConfigs.kD = LauncherConstants.LAUNCHER_MAIN_PID[3];
+    slotConfigs.kP = LauncherConstants.LAUNCHER_PID_CONTROLLER.getP();
+    slotConfigs.kI = LauncherConstants.LAUNCHER_PID_CONTROLLER.getI();
+    slotConfigs.kD = LauncherConstants.LAUNCHER_PID_CONTROLLER.getD();
 
 
     mMainFlywheel.getConfigurator().apply(slotConfigs);
@@ -64,55 +62,54 @@ public class Launcher extends SubsystemBase {
       double actualMainVelocity = mMainFlywheel.getVelocity().getValueAsDouble();
       double actualRollerVelocity = mRollerFlywheel.getVelocity().getValueAsDouble();
 
-      double expectedMainVelocity = mSetVelocityMain * LauncherConstants.FLYWHEEL_MAX_VELOCITY;
-      double expectedRollerVelocity = mSetVelocityMain * LauncherConstants.FLYWHEEL_MAX_VELOCITY;
+      double expectedMainVelocity = mDesiredVelocityMain * LauncherConstants.FLYWHEEL_MAX_VELOCITY;
+      double expectedRollerVelocity = mDesiredVelocityMain * LauncherConstants.FLYWHEEL_MAX_VELOCITY;
 
       mLauncherReady = Math.abs(Math.abs(expectedMainVelocity) - Math.abs(actualMainVelocity)) <= LauncherConstants.FLYWHEEL_TOLERANCE &&
                        Math.abs(Math.abs(expectedRollerVelocity) - Math.abs(actualRollerVelocity)) <= LauncherConstants.FLYWHEEL_TOLERANCE && 
-                       mSetVelocityMain != 0 && 
-                       mSetVelocityRoller != 0;
+                       mDesiredVelocityMain != 0 && 
+                       mDesiredVelocityRoller != 0;
       runIndexer();
       runLauncher();
   }
 
   public void runIndexer() {
     if (!mNoteIndexed || !mLauncherReady || !mIndexToShooter) {
-      mSetVelocityIndexer = 0;
+      mDesiredVelocityIndexer = 0;
     }
     else {
-      mSetVelocityIndexer = 1; //TBD
+      mDesiredVelocityIndexer = 1; //TBD?
     }
 
-    mIndexer.set(mSetVelocityIndexer);
+    mIndexer.set(mDesiredVelocityIndexer);
   }
 
-
-  //runLauncher
+  
   public void runLauncher() {
 
     //predicted velocity values
     if (mLauncherMode == LauncherMode.SPEAKER) {
-      mSetVelocityMain = 1;
-      mSetVelocityRoller = -1;
+      mDesiredVelocityMain = LauncherState.SPEAKER_DEFAULT.mainVelocity;
+      mDesiredVelocityRoller = LauncherState.SPEAKER_DEFAULT.rollerVelocity;
     }
     else if (mLauncherMode == LauncherMode.AMP) {
-      mSetVelocityMain = 0.1; //TBD
-      mSetVelocityRoller = -0.1;
+      mDesiredVelocityMain = LauncherState.AMP_DEFAULT.mainVelocity;
+      mDesiredVelocityRoller = LauncherState.AMP_DEFAULT.rollerVelocity;
     }
     else if (mLauncherMode == LauncherMode.OFF) {
-      mSetVelocityMain = 0;
-      mSetVelocityRoller = 0;
+      mDesiredVelocityMain = 0;
+      mDesiredVelocityRoller = 0;
     }
 
-    mMainFlywheel.set(mSetVelocityMain);
-    mRollerFlywheel.set(mSetVelocityRoller);
+    mMainFlywheel.set(mDesiredVelocityMain);
+    mRollerFlywheel.set(mDesiredVelocityRoller);
   }
 
   public void turnIndexerOn(boolean indexerOn){
     mIndexToShooter = indexerOn;
   }
 
-  public boolean getLauncherReady() {
+  public boolean isLauncherReady() {
     return mLauncherReady;
   }
 
