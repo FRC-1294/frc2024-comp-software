@@ -11,7 +11,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 public class DefaultIntakeCommand extends Command {
 
-  private boolean checkIndexer = false; // use sparingly ... ah, who am i kidding, just make sure the refs aren't looking /j
+  private boolean dontCheckIndexer = false;
   private IntakeSubsystem mIntake;
   /** Creates a new DefaultIntakeCommand. */
   public DefaultIntakeCommand(IntakeSubsystem intake) {
@@ -28,13 +28,13 @@ public class DefaultIntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (Input.getCheckIndexer()) {
-      checkIndexer = !checkIndexer;
+    if (Input.getShouldCheckIndexer()) {
+      dontCheckIndexer = !dontCheckIndexer;
     }
     if (mIntake.pieceInIntake()) {
       mIntake.stopMotor();
     }
-    if (checkIndexer || (Input.getIntake() && !mIntake.pieceInIntake())) {
+    if (Input.getIntake() && (!mIntake.pieceInIntake() || dontCheckIndexer)) {
       mIntake.intakeAtSpeed(IntakeConstants.INTAKE_SPEED);
     }
   }
