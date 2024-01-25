@@ -51,7 +51,6 @@ public class Launcher extends SubsystemBase {
     slotConfigs.kD = LauncherConstants.LAUNCHER_PID_CONTROLLER.getD();
     slotConfigs.kS = LauncherConstants.LAUNCHER_FF_CONTROLLER.ks;
     slotConfigs.kV = LauncherConstants.LAUNCHER_FF_CONTROLLER.kv;
-    slotConfigs.kA = LauncherConstants.LAUNCHER_FF_CONTROLLER.ka;
 
     mMainFlywheel.getConfigurator().apply(slotConfigs);
     mRollerFlywheel.getConfigurator().apply(slotConfigs);

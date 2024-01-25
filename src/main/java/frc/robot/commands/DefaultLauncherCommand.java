@@ -7,8 +7,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.constants.JoystickConstants;
-import frc.robot.constants.LauncherConstants;
 import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.subsystems.Input;
 import frc.robot.subsystems.Launcher;
@@ -63,7 +61,7 @@ public class DefaultLauncherCommand extends Command {
       );
       command.schedule();
     }
-    else if (Input.getZ()) { //index to launch, button TBD
+    else if (Input.getLeftBumper()) { //index to launch, button TBD
       SequentialCommandGroup command = new SequentialCommandGroup(
 
       new InstantCommand(

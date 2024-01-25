@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.constants.JoystickConstants;
 
 // Input Class For Joystick/Controller Input Functions
@@ -15,6 +16,9 @@ public class Input {
 
   private static final Joystick mRotJoystick = new Joystick(JoystickConstants.ROT_JOYSTICK_PORT);
   private static final Joystick mTransJoystick = new Joystick(JoystickConstants.TRANS_JOY_PORT);
+
+  private static final XboxController mXboxController =
+    new XboxController(JoystickConstants.XBOX_PORT);
 
 
   public static final int DPADUP = 0;
@@ -37,6 +41,46 @@ public class Input {
 
   public static double getJoystickY() {
     return mTransJoystick.getY();
+  }
+
+  public static boolean getA() {
+    return mXboxController.getAButtonPressed();
+  }
+
+  public static boolean getB() {
+    return mXboxController.getBButtonPressed();
+  }
+
+  public static boolean getX() {
+    return mXboxController.getXButtonPressed();
+  }
+
+  public static boolean getY() {
+    return mXboxController.getYButtonPressed();
+  }
+
+  public static boolean getLeftBumper() {
+    return mXboxController.getLeftBumper();
+  }
+
+  public static boolean getRightBumper() {
+    return mXboxController.getRightBumperPressed();
+  }
+
+  public static double getLeftTrigger() {
+    return mXboxController.getLeftTriggerAxis();
+  }
+
+  public static double getRightTrigger() {
+    return mXboxController.getRightTriggerAxis();
+  }
+
+  public static double getLeftStickY() {
+    return -mXboxController.getLeftY();
+  }
+
+  public static double getRightStickY() {
+    return -mXboxController.getRightY();
   }
 
   public static double getRot() {
