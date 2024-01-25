@@ -93,7 +93,6 @@ public class SwerveModule {
 
     public void setRotMotorRaw(double speed) {
         mRotMotor.set(speed);
-
     }
 
     /**
