@@ -13,6 +13,8 @@ import com.playingwithfusion.TimeOfFlight.RangingMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -59,7 +61,6 @@ public class AimingSubsystem extends SubsystemBase {
     mChooser.addOption("Coast", AimingMotorMode.COAST);
     mChooser.setDefaultOption("Brake", AimingConstants.INITIAL_MOTOR_MODE);
 
-
     //Initializes TOF Sensor
     setTOFViewZone(8, 8, 12, 12);
     setTOFRange("short", 20);
@@ -69,21 +70,25 @@ public class AimingSubsystem extends SubsystemBase {
 
   // Setting Conversions and Inversions
   public void configureDevices() {
-    //TODO: Set the Converstions and Inversions
 
     //initialize PID Controller Constants
     mElevatorController.kP = AimingConstants.mElevatorPIDConstants.mKP;
     mElevatorController.kI = AimingConstants.mElevatorPIDConstants.mKI;
     mElevatorController.kD = AimingConstants.mElevatorPIDConstants.mKD;
+    mElevatorController.kS = AimingConstants.mElevatorPIDConstants.mKS;
+    mElevatorController.kV = AimingConstants.mElevatorPIDConstants.mKV;
 
     mWristController.kP = AimingConstants.mWristPIDConstants.mKP;
     mWristController.kI = AimingConstants.mWristPIDConstants.mKI;
     mWristController.kD = AimingConstants.mWristPIDConstants.mKD;
+    mWristController.kS = AimingConstants.mElevatorPIDConstants.mKS;
+    mWristController.kV = AimingConstants.mElevatorPIDConstants.mKV;
 
     mLeftFlywheelMotor.getConfigurator().apply(mElevatorController);
     mRightFlywheelMotor.getConfigurator().apply(mElevatorController);
     mWristMotor.getConfigurator().apply(mWristController);
-
+    //note: configuration uses internal encoders inside the motors, subject to change
+  
     mLeftFlywheelMotor.setInverted(true);
   }
 
@@ -95,9 +100,10 @@ public class AimingSubsystem extends SubsystemBase {
   }
 
   private void elevatorPeriodic() {
-    //TODO: Add Clamps, PID, and Run Motor
+    //Clamping Rotation between domain
+    mDesiredElevatorDistanceIn = MathUtil.clamp(mDesiredElevatorDistanceIn, AimingConstants.MIN_ELEVATOR_DIST_IN, AimingConstants.MAX_ELEVATOR_DIST);
 
-    PositionVoltage elevatorVoltage = new PositionVoltage(0).withSlot(0);
+    PositionVoltage elevatorVoltage = new PositionVoltage(getCurrentElevatorDistance()).withSlot(0);
     mLeftFlywheelMotor.setControl(elevatorVoltage.withPosition(getDesiredElevatorDistance()));
     mRightFlywheelMotor.setControl(elevatorVoltage.withPosition(getDesiredElevatorDistance()));
 
@@ -105,9 +111,11 @@ public class AimingSubsystem extends SubsystemBase {
   }
 
   private void wristPeriodic() {
-    //TODO: Add Clamps, PID, and Run Motor
 
-    PositionVoltage wristVoltage = new PositionVoltage(0).withSlot(0);
+    //Clamping Rotation between domain
+    mDesiredWristRotationDeg = MathUtil.clamp(mDesiredWristRotationDeg, AimingConstants.MIN_WRIST_ROTATION_DEG, AimingConstants.MAX_WRIST_ROTATION);
+  
+    PositionVoltage wristVoltage = new PositionVoltage(getDesiredWristRotation()).withSlot(0);
     mWristMotor.setControl(wristVoltage.withPosition(getDesiredWristRotation()));
     mCurrentWristRotationDeg = mWristMotor.getRotorPosition().getValueAsDouble() * 360;
   }
