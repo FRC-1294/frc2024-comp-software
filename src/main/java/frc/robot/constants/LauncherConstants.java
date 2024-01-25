@@ -26,7 +26,7 @@ public final class LauncherConstants {
 
   //current flywheel mode
   public enum LauncherMode {
-    SPEAKER, AMP, OFF;
+    SPEAKER, AMP, TRAP, OFF;
   }
 
   //setpoints
@@ -34,9 +34,11 @@ public final class LauncherConstants {
 
     SPEAKER_DEFAULT(1.0, 1.0), //TBD
 
-    AMP_DEFAULT(0.1, 0.1); //TBD, -1 to 1 speed
+    AMP_DEFAULT(0.1, 0.1), //TBD, -1 to 1 speed
+
+    TRAP_DEFAULT(0.5, 0.5);
     
-    
+
     public final double mainVelocity;
     public final double rollerVelocity;
 

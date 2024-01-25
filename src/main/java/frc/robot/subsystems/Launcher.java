@@ -96,6 +96,10 @@ public class Launcher extends SubsystemBase {
       mDesiredVelocityMain = LauncherState.AMP_DEFAULT.mainVelocity;
       mDesiredVelocityRoller = LauncherState.AMP_DEFAULT.rollerVelocity;
     }
+    else if (mLauncherMode == LauncherMode.TRAP) {
+      mDesiredVelocityMain = LauncherState.TRAP_DEFAULT.mainVelocity;
+      mDesiredVelocityRoller = LauncherState.TRAP_DEFAULT.rollerVelocity;
+    }
     else if (mLauncherMode == LauncherMode.OFF) {
       mDesiredVelocityMain = 0;
       mDesiredVelocityRoller = 0;
