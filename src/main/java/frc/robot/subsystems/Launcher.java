@@ -13,30 +13,25 @@ import frc.robot.constants.LauncherConstants;
 import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.constants.LauncherConstants.LauncherState;
 
-
-
 public class Launcher extends SubsystemBase {
-
   private final CANSparkMax mIndexer = new CANSparkMax(LauncherConstants.INDEXER_ID, MotorType.kBrushless);
 
   private final TalonFX mMainFlywheel = new TalonFX(LauncherConstants.MAIN_FLYWHEEL_ID);
   private final TalonFX mRollerFlywheel = new TalonFX(LauncherConstants.ROLLER_FLYWHEEL_ID);
 
+  private double mDesiredVelocityIndexer = 0;
 
-  LauncherMode mLauncherMode = LauncherMode.OFF;
+  private double mDesiredVelocityMain = 0;
+  private double mDesiredVelocityRoller = 0;
 
-  double mDesiredVelocityIndexer = 0;
+  private LauncherMode mLauncherMode = LauncherMode.OFF;
 
-  double mDesiredVelocityMain = 0;
-  double mDesiredVelocityRoller = 0;
-
-  boolean mNoteIndexed = false;
+  private boolean mNoteIndexed = false;
 
   //toggle to transmit note
-  boolean mIndexToShooter = false;
+  private boolean mIndexToShooter = false;
 
-  boolean mLauncherReady = false;
-
+  private boolean mLauncherReady = false;
 
   public Launcher() {
     resetEncoders();
@@ -62,9 +57,9 @@ public class Launcher extends SubsystemBase {
     double actualRollerVelocity = mRollerFlywheel.getVelocity().getValueAsDouble();
 
     mLauncherReady = Math.abs(Math.abs(mDesiredVelocityMain) - Math.abs(actualMainVelocity)) <= LauncherConstants.FLYWHEEL_TOLERANCE &&
-                      Math.abs(Math.abs(mDesiredVelocityRoller) - Math.abs(actualRollerVelocity)) <= LauncherConstants.FLYWHEEL_TOLERANCE && 
-                      mDesiredVelocityMain != 0 && 
-                      mDesiredVelocityRoller != 0;
+                     Math.abs(Math.abs(mDesiredVelocityRoller) - Math.abs(actualRollerVelocity)) <= LauncherConstants.FLYWHEEL_TOLERANCE && 
+                     mDesiredVelocityMain != 0 && 
+                     mDesiredVelocityRoller != 0;
                       
     runIndexer();
     runLauncher();
@@ -80,10 +75,8 @@ public class Launcher extends SubsystemBase {
 
     mIndexer.set(mDesiredVelocityIndexer);
   }
-
   
   public void runLauncher() {
-
     //predicted velocity values
     if (mLauncherMode == LauncherMode.SPEAKER) {
       mDesiredVelocityMain = LauncherState.SPEAKER_DEFAULT.mainVelocity;

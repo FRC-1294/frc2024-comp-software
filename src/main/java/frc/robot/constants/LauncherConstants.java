@@ -7,7 +7,6 @@ package frc.robot.constants;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 
-
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -24,7 +23,6 @@ public final class LauncherConstants {
 
   public static final int INDEXER_ID = 3;
 
-
   //current flywheel mode
   public enum LauncherMode {
     SPEAKER, AMP, TRAP, OFF;
@@ -38,7 +36,6 @@ public final class LauncherConstants {
     AMP_DEFAULT(50, 50),
 
     TRAP_DEFAULT(50, 50);
-    
 
     public final double mainVelocity;
     public final double rollerVelocity;
@@ -54,7 +51,6 @@ public final class LauncherConstants {
   public static final PIDController LAUNCHER_PID_CONTROLLER = new PIDController(0, 0, 0, 0);
 
   public static final SimpleMotorFeedforward LAUNCHER_FF_CONTROLLER = new SimpleMotorFeedforward(0, 0, 0);
-
 
   public static final double FLYWHEEL_TOLERANCE = 0.01; //TBD
 
