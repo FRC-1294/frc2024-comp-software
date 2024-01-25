@@ -30,11 +30,13 @@ public class AimingConstants {
           wristAngleDeg = rot;
         }
     }
-
+    public static final int MAX_ELEVATOR_EXTENSION_VELOCITY = 0;
+    public static final double MAX_WRIST_ROTATION_VELOCITY = 0;
     
     // PID Constants
     public static PIDConstants mElevatorPIDConstants = new PIDConstants(0.1, 0, 0);
     public static PIDConstants mWristPIDConstants = new PIDConstants(0.1, 0, 0);
+
 
     public static final AimingMotorMode INITIAL_MOTOR_MODE = AimingMotorMode.BRAKE;
 
@@ -59,5 +61,6 @@ public class AimingConstants {
 
     public static final int WRIST_SPARK_ID = 2; 
     public static final int WRIST_ENCODER_ID = 0;
+
 
 }

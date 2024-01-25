@@ -45,6 +45,33 @@ public class Input {
     return mRotJoystick.getX();
   }
 
+  public static boolean getA() {
+    return mXboxController.getAButtonPressed();
+  }
+
+  public static boolean getB() {
+    return mXboxController.getBButtonPressed();
+  }
+
+  public static boolean getX() {
+    return mXboxController.getXButtonPressed();
+  }
+
+  public static boolean getY() {
+    return mXboxController.getYButtonPressed();
+  }
+
+  public static double getDPad() {
+    return mXboxController.getPOV();
+  }
+  public static double getLeftStickY() {
+    return -mXboxController.getLeftY();
+  }
+
+  public static double getRightStickY() {
+    return -mXboxController.getRightY();
+  }
+
   public static boolean getResetGyro() {
     return mRotJoystick.getRawButton(3);
   }
