@@ -40,37 +40,35 @@ public class Launcher extends SubsystemBase {
 
   public Launcher() {
     resetEncoders();
-
+    configureDevices();
+  }
+  
+  public void configureDevices() {
     Slot0Configs slotConfigs = new Slot0Configs();
 
     slotConfigs.kP = LauncherConstants.LAUNCHER_PID_CONTROLLER.getP();
     slotConfigs.kI = LauncherConstants.LAUNCHER_PID_CONTROLLER.getI();
     slotConfigs.kD = LauncherConstants.LAUNCHER_PID_CONTROLLER.getD();
-
+    slotConfigs.kS = LauncherConstants.LAUNCHER_FF_CONTROLLER.ks;
+    slotConfigs.kV = LauncherConstants.LAUNCHER_FF_CONTROLLER.kv;
+    slotConfigs.kA = LauncherConstants.LAUNCHER_FF_CONTROLLER.ka;
 
     mMainFlywheel.getConfigurator().apply(slotConfigs);
     mRollerFlywheel.getConfigurator().apply(slotConfigs);
-
-    final VelocityVoltage request = new VelocityVoltage(0).withSlot(0);
-
-    mMainFlywheel.setControl(request.withVelocity(0).withFeedForward(0));
-    mRollerFlywheel.setControl(request.withVelocity(0).withFeedForward(0));
   }
 
   @Override
   public void periodic() {
-      double actualMainVelocity = mMainFlywheel.getVelocity().getValueAsDouble();
-      double actualRollerVelocity = mRollerFlywheel.getVelocity().getValueAsDouble();
+    double actualMainVelocity = mMainFlywheel.getVelocity().getValueAsDouble();
+    double actualRollerVelocity = mRollerFlywheel.getVelocity().getValueAsDouble();
 
-      double expectedMainVelocity = mDesiredVelocityMain * LauncherConstants.FLYWHEEL_MAX_VELOCITY;
-      double expectedRollerVelocity = mDesiredVelocityMain * LauncherConstants.FLYWHEEL_MAX_VELOCITY;
-
-      mLauncherReady = Math.abs(Math.abs(expectedMainVelocity) - Math.abs(actualMainVelocity)) <= LauncherConstants.FLYWHEEL_TOLERANCE &&
-                       Math.abs(Math.abs(expectedRollerVelocity) - Math.abs(actualRollerVelocity)) <= LauncherConstants.FLYWHEEL_TOLERANCE && 
-                       mDesiredVelocityMain != 0 && 
-                       mDesiredVelocityRoller != 0;
-      runIndexer();
-      runLauncher();
+    mLauncherReady = Math.abs(Math.abs(mDesiredVelocityMain) - Math.abs(actualMainVelocity)) <= LauncherConstants.FLYWHEEL_TOLERANCE &&
+                      Math.abs(Math.abs(mDesiredVelocityRoller) - Math.abs(actualRollerVelocity)) <= LauncherConstants.FLYWHEEL_TOLERANCE && 
+                      mDesiredVelocityMain != 0 && 
+                      mDesiredVelocityRoller != 0;
+                      
+    runIndexer();
+    runLauncher();
   }
 
   public void runIndexer() {
@@ -78,7 +76,7 @@ public class Launcher extends SubsystemBase {
       mDesiredVelocityIndexer = 0;
     }
     else {
-      mDesiredVelocityIndexer = 1; //TBD?
+      mDesiredVelocityIndexer = LauncherConstants.INDEXER_VELOCITY_DEFAULT;
     }
 
     mIndexer.set(mDesiredVelocityIndexer);
@@ -105,8 +103,8 @@ public class Launcher extends SubsystemBase {
       mDesiredVelocityRoller = 0;
     }
 
-    mMainFlywheel.set(mDesiredVelocityMain);
-    mRollerFlywheel.set(mDesiredVelocityRoller);
+    mMainFlywheel.setControl(new VelocityVoltage(mDesiredVelocityMain).withSlot(0));
+    mRollerFlywheel.setControl(new VelocityVoltage(mDesiredVelocityMain).withSlot(0));
   }
 
   public void turnIndexerOn(boolean indexerOn){

@@ -22,10 +22,14 @@ public class DefaultLauncherCommand extends Command {
     addRequirements(mLauncher);
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void initialize() {
+    mLauncher.stopLauncher();
+  }
+
   @Override
   public void execute() {
-    if (Input.getY()) {
+    if (Input.getY()) { //stop button TBD
       SequentialCommandGroup command = new SequentialCommandGroup(
 
       new InstantCommand(
@@ -34,7 +38,7 @@ public class DefaultLauncherCommand extends Command {
       command.schedule();
     }
     //speaker
-    else if (Input.getA()) { 
+    else if (Input.getA()) { //speaker button TBD 
       SequentialCommandGroup command = new SequentialCommandGroup(
 
       new InstantCommand(
@@ -43,7 +47,7 @@ public class DefaultLauncherCommand extends Command {
       command.schedule();
     } 
     //amp
-    else if (Input.getB()) { 
+    else if (Input.getB()) {  //amp button TBD
       SequentialCommandGroup command = new SequentialCommandGroup(
 
       new InstantCommand(
@@ -51,7 +55,15 @@ public class DefaultLauncherCommand extends Command {
       );
       command.schedule();
     }
-    else if (Input.getX()) { //index to launch
+    else if (Input.getX()) { //trap button TBD
+      SequentialCommandGroup command = new SequentialCommandGroup(
+
+      new InstantCommand(
+          () -> mLauncher.setLauncherMode(LauncherMode.TRAP), mLauncher)
+      );
+      command.schedule();
+    }
+    else if (Input.getZ()) { //index to launch, button TBD
       SequentialCommandGroup command = new SequentialCommandGroup(
 
       new InstantCommand(
@@ -61,7 +73,6 @@ public class DefaultLauncherCommand extends Command {
     }
   }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;

@@ -5,6 +5,7 @@
 package frc.robot.constants;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 
 
 /**
@@ -32,11 +33,11 @@ public final class LauncherConstants {
   //setpoints
   public enum LauncherState {
 
-    SPEAKER_DEFAULT(1.0, 1.0), //TBD
+    SPEAKER_DEFAULT(300, 300), //rps, TBD
 
-    AMP_DEFAULT(0.1, 0.1), //TBD, -1 to 1 speed
+    AMP_DEFAULT(50, 50),
 
-    TRAP_DEFAULT(0.5, 0.5);
+    TRAP_DEFAULT(50, 50);
     
 
     public final double mainVelocity;
@@ -47,12 +48,16 @@ public final class LauncherConstants {
       this.rollerVelocity = rollerVelocity;
     }
   }
+
+  public static final double INDEXER_VELOCITY_DEFAULT = 1; //speed [-1, 1]
   
   public static final PIDController LAUNCHER_PID_CONTROLLER = new PIDController(0, 0, 0, 0);
+
+  public static final SimpleMotorFeedforward LAUNCHER_FF_CONTROLLER = new SimpleMotorFeedforward(0, 0, 0);
 
 
   public static final double FLYWHEEL_TOLERANCE = 0.01; //TBD
 
-  public static final double FLYWHEEL_MAX_VELOCITY = 511.998046875; //rpm
+  public static final double FLYWHEEL_MAX_VELOCITY = 511.998046875; //rps
 
 }
