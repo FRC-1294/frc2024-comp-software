@@ -12,6 +12,8 @@ public class CompConstants {
 
     // Not Set Up
     public static final boolean PID_TUNE_MODE = false;
-
+    
+    // Intake
+    public static boolean ONE_PIECE = true;
 
 }
