@@ -2,8 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.LauncherConstants.LauncherMode;
-import frc.robot.constants.LauncherConstants.LauncherState;
-import frc.robot.subsystems.Launcher; 
+
 public class LauncherTest extends SubsystemBase{
 
 private double amp_length = 1.5; 
@@ -11,12 +10,10 @@ private double amp_length = 1.5;
 private double speaker_length = 6.5; 
 //private double speaker_width = 3;
 private double robot_pos; 
-private double robot_shoot_angle;
 private LauncherMode mLauncherMode;
 private double mvelocity; 
-    public LauncherTest(double pos, double angle, LauncherMode LauncherMode, double velocity){
+    public LauncherTest(double pos, LauncherMode LauncherMode, double velocity){
         robot_pos = pos; 
-        robot_shoot_angle = angle; 
         mLauncherMode = LauncherMode; 
         mvelocity = velocity; 
     }
