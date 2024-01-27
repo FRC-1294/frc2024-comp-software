@@ -45,6 +45,7 @@ public class DefaultIntakeCommand extends Command {
     // Not needed because it is a default command
   }
 
+
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
