@@ -21,8 +21,8 @@ public class VisionConstants {
 
   // These are the names as they appear in photonvision of the cameras. These can be changed in the
   // photonvision dashboard
-  public static final String CAMERA_NAME_FRONT = "Global_Shutter_Camera";
-  public static final String CAMERA_NAME_BACK = "OV9281";
+  public static final String CAMERA_NAME_FRONT = "AgniVision1";
+  public static final String CAMERA_NAME_BACK = "AgniVision2";
 
   // These are tunable constants for the reliability of odometry and vision measurements in the form
   // of a vector of (x, y, theta), in meters, meters, and radians respectively

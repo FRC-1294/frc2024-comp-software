@@ -52,7 +52,7 @@ public class PhotonCameras {
      *         and targets used to create the estimate
      */
     public Optional<EstimatedRobotPose> getEstimatedGlobalPoseFront(Pose2d prevEstimatedRobotPose) {
-        if (mPhotonPoseEstimatorFront == null) {
+        if (!mPhotonCameraFront.isConnected()) {
             // The field layout failed to load, so we cannot estimate poses.
             return Optional.empty();
         }
@@ -66,7 +66,7 @@ public class PhotonCameras {
      *         targets used to create the estimate
      */
     public Optional<EstimatedRobotPose> getEstimatedGlobalPoseBack(Pose2d prevEstimatedRobotPose) {
-        if (mPhotonPoseEstimatorBack == null) {
+        if (!mPhotonCameraBack.isConnected()) {
             // The field layout failed to load, so we cannot estimate poses.
             return Optional.empty();
         }
