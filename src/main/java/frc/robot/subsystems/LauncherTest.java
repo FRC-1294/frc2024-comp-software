@@ -41,8 +41,8 @@ private double mvelocity;
     }
     
 
-    public String test_shot() {
-      return null; 
+    public Boolean test_distances() {
+       
 
     }
 
