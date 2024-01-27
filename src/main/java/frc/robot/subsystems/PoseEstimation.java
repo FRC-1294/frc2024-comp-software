@@ -26,8 +26,8 @@ public class PoseEstimation extends SubsystemBase {
   private final Field2d mField = new Field2d();
 
 
-  public PoseEstimation(PhotonCameras lime, SwerveSubsystem swerve) {
-    mCameras = lime;
+  public PoseEstimation(PhotonCameras cams, SwerveSubsystem swerve) {
+    mCameras = cams;
     mSwerve = swerve;
 
     mPoseEstimator = new SwerveDrivePoseEstimator(SwerveConfig.SWERVE_KINEMATICS,
