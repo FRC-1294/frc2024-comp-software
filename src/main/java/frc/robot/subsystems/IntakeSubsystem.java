@@ -30,7 +30,9 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {}
+  public void periodic() {
+    // Unneeded for subsystem
+  }
 
   /**
    * Running the Motors with no PID
@@ -44,8 +46,8 @@ public class IntakeSubsystem extends SubsystemBase {
     mIntakeMotor.set(0.0);
   }
 
-  public Command getTimedIntakeCommand(double wait_time, double intake_speed){
-    return new SequentialCommandGroup(new InstantCommand(()-> intakeAtSpeed(intake_speed)), new WaitCommand(wait_time));
+  public Command getTimedIntakeCommand(double waitTime, double intakeSpeed){
+    return new SequentialCommandGroup(new InstantCommand(()-> intakeAtSpeed(intakeSpeed)), new WaitCommand(waitTime));
   }
 
   public Command getAutomousIntakeCommand() {
