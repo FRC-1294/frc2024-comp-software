@@ -4,7 +4,10 @@
 
 package frc.robot.commands;
 
+import javax.swing.plaf.TreeUI;
+
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
@@ -13,15 +16,27 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.SwerveSubsystem;
 
-public class InitializePathPlanner extends Command {
+public class InitializePathPlanner{
   /** Creates a new InitializePathPlanner. */
   private final SwerveSubsystem mSwerve;
-  private final Command mFinalCmd;
   public InitializePathPlanner(SwerveSubsystem swerve) {
     mSwerve = swerve;
-    mFinalCmd = new InstantCommand(()->AutoBuilder.configureHolonomic(
+
+}
+  public void initializeNamedCOmmands(){
+    NamedCommands.registerCommand("IntakeUntilNote", new SequentialCommandGroup(new PrintCommand("Intaking until note enters")));
+    NamedCommands.registerCommand("Handoff", new SequentialCommandGroup(new PrintCommand("Handoff"), new WaitCommand(1)));
+    NamedCommands.registerCommand("ShootDynamic", new SequentialCommandGroup(new PrintCommand("Shoot Note"), new WaitCommand(0.5)));
+  }
+
+  // Called when the command is initially scheduled.
+  public void initialize() {
+    AutoBuilder.configureHolonomic(
     mSwerve::getRobotPose, 
     (Pose2d pose)->mSwerve.resetRobotPose(pose),
     mSwerve::getChassisSpeeds, 
@@ -35,27 +50,7 @@ public class InitializePathPlanner extends Command {
           new ReplanningConfig(false, true) // Default path replanning config. See the API for the options
                               // here
                               
-    ), ()->false, mSwerve),mSwerve);
-    addRequirements(mSwerve);
-}
-
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    mFinalCmd.schedule();
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {}
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {}
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return mFinalCmd.isFinished();
+    ), ()->false, mSwerve);
+    initializeNamedCOmmands();
   }
 }

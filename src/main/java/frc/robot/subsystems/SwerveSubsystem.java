@@ -10,6 +10,7 @@ import com.ctre.phoenix6.hardware.Pigeon2;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -34,15 +35,19 @@ public class SwerveSubsystem extends SubsystemBase {
   private double mTargetSpeed = 0;
   private double mAvgSpeed = 0;
   private double maxSpeed = 0;
-  private PIDController chassisRotPID =  new PIDController(0.12, 0, 0);
-  private PIDController chassisXPID = new PIDController(0.12, 0, 0);
-  private PIDController chassisYPID = new PIDController(0.15, 0, 0);
+  private PIDController chassisRotPID =  new PIDController(0.1, 0, 0);
+  private PIDController chassisXPID = new PIDController(0.1, 0, 0);
+  private PIDController chassisYPID = new PIDController(0.3, 0, 0);
 
   private ChassisSpeeds desiredChassisSpeeds = new ChassisSpeeds();
 
 
   public SwerveSubsystem() {
     // Populating Instance Variables
+
+    chassisRotPID.setTolerance(0.2);
+    chassisXPID.setTolerance(0.2);
+    chassisYPID.setTolerance(0.2);
     
     mKinematics = SwerveConfig.SWERVE_KINEMATICS;
     mPigeon2 = new Pigeon2(SwerveConfig.PIGEON_ID,"SWERVE_ENC");
@@ -55,18 +60,19 @@ public class SwerveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    double ts4 = ((double) System.nanoTime())/1000000;
+    
     mOdometry.update(getRotation2d(), getModulePositions());
+    ////System.out.println("Update Odom Nano: " + ((double)System.nanoTime()/1000000-ts4));
+      SmartDashboard.putNumber("XPos", mOdometry.getPoseMeters().getX());
+      SmartDashboard.putNumber("YPos", mOdometry.getPoseMeters().getY());
+      SmartDashboard.putNumber("Heading", getRotation2d().getDegrees());
     if (CompConstants.DEBUG_MODE) {
       SmartDashboard.putData("Swerve", this);
       SmartDashboard.putNumber("FLPIDOutput", mModules[0].getPIDOutputRot());
       SmartDashboard.putNumber("FRPIDOutput", mModules[1].getPIDOutputRot());
       SmartDashboard.putNumber("BLPIDOutput", mModules[2].getPIDOutputRot());
       SmartDashboard.putNumber("BRPIDOutput", mModules[3].getPIDOutputRot());
-
-
-      SmartDashboard.putNumber("XPos", mOdometry.getPoseMeters().getX());
-      SmartDashboard.putNumber("YPos", mOdometry.getPoseMeters().getY());
-      SmartDashboard.putNumber("Heading", getRotation2d().getDegrees());
 
       SmartDashboard.putNumber("DesiredChassisRotDeg", Math.toDegrees(desiredChassisSpeeds.omegaRadiansPerSecond));
       SmartDashboard.putNumber("DesiredChassisXMPS", desiredChassisSpeeds.vxMetersPerSecond);
@@ -79,11 +85,6 @@ public class SwerveSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("ChassisSpeedErrorRotDeg", Math.toDegrees(desiredChassisSpeeds.omegaRadiansPerSecond-getChassisSpeeds().omegaRadiansPerSecond));
       SmartDashboard.putNumber("ChassisSpeedErrorXMPS", desiredChassisSpeeds.vxMetersPerSecond-getChassisSpeeds().vxMetersPerSecond);
       SmartDashboard.putNumber("ChassisSpeedErrorYMPS", desiredChassisSpeeds.vyMetersPerSecond-getChassisSpeeds().vyMetersPerSecond);
-
-
-
-
-
 
       SmartDashboard.putNumber("FPGA_TS",Timer.getFPGATimestamp());
       for (int i = 0; i < mModules.length; i++) {
@@ -167,11 +168,13 @@ public class SwerveSubsystem extends SubsystemBase {
    */
 
   public void setModuleStates(SwerveModuleState[] desiredStates,boolean isOpenLoop) {
+    double ts3 = ((double)System.nanoTime())/1000000;
     SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, SwerveConstants.TELE_MAX_SPEED_MPS);
-
     for (int i = 0; i < desiredStates.length; i++) {
       mModules[i].setDesiredState(desiredStates[i],isOpenLoop);
     }
+    ////System.out.println("Set Module States Nano: " + ((double)System.nanoTime()/1000000-ts3));
+
 
   }
 
@@ -198,34 +201,68 @@ public class SwerveSubsystem extends SubsystemBase {
    * @param vyMPS this is the sideways velocity in meter/second (left is positive)
    * @param angleSpeedRADPS this is in radians/second counterclockwise
    * @param fieldOriented this is a boolean that determines if the robot is field oriented or not
+   * @param isOpenLoop this is a boolean that determines if the robot is to use PID+FF for translation and rotation. Highly recommended for auton
    * 
    * @apiNote Keep in mind all of this is field relative so resetting the gyro midmatch will also
    *          reset these params
    */
   public void setChassisSpeed(double vxMPS, double vyMPS, double angleSpeedRADPS,
     boolean fieldOriented, boolean isOpenLoop) {
+    double ts1 = (double) System.nanoTime()/1000000;
     ChassisSpeeds chassisSpeeds;
-    desiredChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(vxMPS, vyMPS, angleSpeedRADPS, getRotation2d());
     if (fieldOriented) {
       if (!isOpenLoop){
-        chassisSpeeds =  ChassisSpeeds.fromFieldRelativeSpeeds(vxMPS+chassisXPID.calculate(getChassisSpeeds().vxMetersPerSecond,vxMPS),
-                                                               vyMPS+chassisYPID.calculate(getChassisSpeeds().vyMetersPerSecond,vyMPS), 
-                                                               angleSpeedRADPS+chassisRotPID.calculate(Math.toRadians(getRate()),angleSpeedRADPS), getRotation2d());
+        
+        double xPID = chassisXPID.calculate(getChassisSpeeds().vxMetersPerSecond,vxMPS);
+        double yPID = chassisYPID.calculate(getChassisSpeeds().vyMetersPerSecond,vyMPS);
+        double rotPID = chassisRotPID.calculate(Math.toRadians(getRate()),angleSpeedRADPS);
+        
+        if(chassisXPID.atSetpoint()){
+          xPID = 0;
+        }
+        if(chassisYPID.atSetpoint()){
+          yPID = 0;
+        }
+        if(chassisRotPID.atSetpoint()){
+          rotPID = 0;
+        }
+       
+        SmartDashboard.putNumber("ChassisSpeedXPID", xPID);
+        SmartDashboard.putNumber("ChassisSpeedYPID", yPID);
+        SmartDashboard.putNumber("ChassisSpeedRotPID", rotPID);
+
+        SmartDashboard.putNumber("ChassisSpeedX", vxMPS);
+        SmartDashboard.putNumber("ChassisSpeedy", vyMPS);
+        SmartDashboard.putNumber("ChassisSpeedRot", angleSpeedRADPS);
+
+        SmartDashboard.putNumber("ChassisSpeedXError", chassisXPID.getPositionError());
+        SmartDashboard.putNumber("ChassisSpeedYError", chassisYPID.getPositionError());
+        SmartDashboard.putNumber("ChassisSpeedRotError", chassisRotPID.getPositionError());
+        chassisSpeeds =  ChassisSpeeds.fromFieldRelativeSpeeds(vxMPS+xPID,
+                                                        vyMPS+yPID, 
+                                                        angleSpeedRADPS+rotPID, getRotation2d());
       }else{
         chassisSpeeds =  ChassisSpeeds.fromFieldRelativeSpeeds(vxMPS, vyMPS, angleSpeedRADPS, getRotation2d());
       }
+      
+
     } else {
       chassisSpeeds = new ChassisSpeeds(vxMPS, vyMPS, angleSpeedRADPS);
     }
+    desiredChassisSpeeds = chassisSpeeds;
+    //////System.out.println("Create Chassis' Speed Time Nano: "+ ((double)System.nanoTime()/1000000-ts1));
     setChassisSpeed(chassisSpeeds,isOpenLoop);
 
   }
 
   public void setChassisSpeed(ChassisSpeeds chassisSpeeds,boolean isOpenLoop){
+    double ts2 = (double) System.nanoTime()/1000000;
+    chassisSpeeds = ChassisSpeeds.discretize(chassisSpeeds, CompConstants.loopTime);
     SwerveModuleState[] moduleStates = mKinematics.toSwerveModuleStates(chassisSpeeds);
     if (CompConstants.DEBUG_MODE){
       mTargetSpeed = moduleStates[0].speedMetersPerSecond;
     }
+    //////System.out.println("Set Chassis Speed Time Nano: " + ((double) System.nanoTime()/1000000-ts2));
     setModuleStates(moduleStates,isOpenLoop);
   }
 
@@ -234,7 +271,7 @@ public class SwerveSubsystem extends SubsystemBase {
     if (CompConstants.DEBUG_MODE){
       mTargetSpeed = moduleStates[0].speedMetersPerSecond;
     }
-    setModuleStates(moduleStates,false);
+    setModuleStates(moduleStates,true);
   }
 
   public ChassisSpeeds getChassisSpeeds(){

@@ -17,8 +17,8 @@ public class SwerveConstants {
       (TRANS_GEAR_RATIO_ROT * WHEEL_CIRCUMFERENCE_METERS) / 60;
 
   // Track dimensions in meters
-  public static final double TRACK_WIDTH_METERS = .54;
-  public static final double TRACK_LENGTH_METERS = .54;
+  public static final double TRACK_WIDTH_METERS = .559;
+  public static final double TRACK_LENGTH_METERS = .559;
 
 
   // Physical Max

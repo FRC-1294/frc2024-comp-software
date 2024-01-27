@@ -18,8 +18,7 @@ public class FollowPath extends Command {
   PathPlannerPath p;
   public FollowPath(SwerveSubsystem swerveSubsystem,String s) {
     mSwerve = swerveSubsystem;
-    p = PathPlannerPath.fromPathFile(s);
-    mFinalCmd = AutoBuilder.followPath(p);
+    mFinalCmd = AutoBuilder.buildAuto(s);
     addRequirements(mSwerve);
   }
 
@@ -27,7 +26,7 @@ public class FollowPath extends Command {
   @Override
   public void initialize() {
     
-    mSwerve.resetRobotPose(p.getPreviewStartingHolonomicPose());
+    // mSwerve.resetRobotPose(p.getPreviewStartingHolonomicPose());
     mFinalCmd.schedule();
   }
 
