@@ -6,6 +6,9 @@ package frc.robot.constants;
 
 /** Handy Constants when dealing with the intake */
 public class IntakeConstants {
+    private IntakeConstants() {
+        throw new IllegalStateException("Constants Class");
+    }
     public static final int INTAKE_SPARK_ID = 21; // https://github.com/FRC-1294/frc2024/issues/239
     public static final boolean INTAKE_INVERTED = true; // https://github.com/FRC-1294/frc2024/issues/239
     public static final int SMART_CURRENT_LIMIT = 0; // https://github.com/FRC-1294/frc2024/issues/239
