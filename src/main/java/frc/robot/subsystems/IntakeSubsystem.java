@@ -48,6 +48,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public Command getTimedIntakeCommand(double waitTime, double intakeSpeed){
     return new SequentialCommandGroup(new InstantCommand(()-> intakeAtSpeed(intakeSpeed)), new WaitCommand(waitTime));
+
   }
 
   public Command getAutomousIntakeCommand() {
