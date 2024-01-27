@@ -30,7 +30,9 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {}
+  public void periodic() {
+    // unneeded, this is a subsystem
+  }
 
   /**
    * Running the Motors with no PID
