@@ -27,31 +27,23 @@ public class PhotonCameras {
         mPhotonCameraFront = new PhotonCamera(VisionConstants.CAMERA_NAME_FRONT);
         mPhotonCameraBack = new PhotonCamera(VisionConstants.CAMERA_NAME_BACK);
 
-        try {
-            // Attempt to load the AprilTagFieldLayout that will tell us where the tags are on the
-            // field.
-            AprilTagFieldLayout fieldLayout =
-                    AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
-            // Create pose estimator
-            mPhotonPoseEstimatorFront =
-                    new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP,
-                            mPhotonCameraFront, VisionConstants.ROBOT_TO_CAM_VEC_FRONT);
-            mPhotonPoseEstimatorFront
-                    .setMultiTagFallbackStrategy(PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
+        
+        AprilTagFieldLayout fieldLayout =
+                AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
+        // Create pose estimator
+        mPhotonPoseEstimatorFront =
+                new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+                        mPhotonCameraFront, VisionConstants.ROBOT_TO_CAM_VEC_FRONT);
+        mPhotonPoseEstimatorFront
+                .setMultiTagFallbackStrategy(PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
 
-            mPhotonPoseEstimatorBack =
-                    new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP,
-                            mPhotonCameraBack, VisionConstants.ROBOT_TO_CAM_VEC_BACK);
-            mPhotonPoseEstimatorBack
-                    .setMultiTagFallbackStrategy(PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
-        } catch (IOException e) {
-            // The AprilTagFieldLayout failed to load. We won't be able to estimate poses if we
-            // don't know
-            // where the tags are.
-            DriverStation.reportError("Failed to load AprilTagFieldLayout", e.getStackTrace());
-            mPhotonPoseEstimatorFront = null;
-            mPhotonPoseEstimatorBack = null;
-        }
+        mPhotonPoseEstimatorBack =
+                new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+                        mPhotonCameraBack, VisionConstants.ROBOT_TO_CAM_VEC_BACK);
+        mPhotonPoseEstimatorBack
+                .setMultiTagFallbackStrategy(PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
+
+
     }
 
     /**
