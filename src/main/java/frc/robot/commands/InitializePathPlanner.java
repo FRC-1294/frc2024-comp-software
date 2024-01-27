@@ -19,15 +19,17 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.subsystems.PoseEstimation;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class InitializePathPlanner{
   /** Creates a new InitializePathPlanner. */
   private final SwerveSubsystem mSwerve;
-  public InitializePathPlanner(SwerveSubsystem swerve) {
+  private final PoseEstimation mPoseEstimation;
+  public InitializePathPlanner(SwerveSubsystem swerve, PoseEstimation poseSupplier) {
     mSwerve = swerve;
-
-}
+    mPoseEstimation = poseSupplier;
+  }
   public void initializeNamedCOmmands(){
     NamedCommands.registerCommand("IntakeUntilNote", new SequentialCommandGroup(new PrintCommand("Intaking until note enters")));
     NamedCommands.registerCommand("Handoff", new SequentialCommandGroup(new PrintCommand("Handoff"), new WaitCommand(1)));
@@ -37,7 +39,7 @@ public class InitializePathPlanner{
   // Called when the command is initially scheduled.
   public void initialize() {
     AutoBuilder.configureHolonomic(
-    mSwerve::getRobotPose, 
+    mPoseEstimation::getRobotPose, 
     (Pose2d pose)->mSwerve.resetRobotPose(pose),
     mSwerve::getChassisSpeeds, 
     (ChassisSpeeds speeds)->mSwerve.setChassisSpeed(speeds),

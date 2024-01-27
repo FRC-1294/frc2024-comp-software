@@ -38,6 +38,5 @@ public class VisionConstants {
       new Transform3d(new Translation3d(.0496, .0626872, 1.28),
           new Rotation3d(0, -Math.toRadians(15), Math.toRadians(180)));
 
-
   public static final double SINGLE_TAG_AMBIGUITY_THRESH = 0.15;
 }
