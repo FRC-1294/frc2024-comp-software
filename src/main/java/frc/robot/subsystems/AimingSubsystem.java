@@ -31,8 +31,8 @@ public class AimingSubsystem extends SubsystemBase {
   public enum AimingMotorMode {COAST, BRAKE}
 
   // Elevator Hardware
-  private final TalonFX mLeftFlywheelMotor = new TalonFX(AimingConstants.LEFT_ELEVATOR_TALON_ID,"rio");
-  private final TalonFX mRightFlywheelMotor = new TalonFX(AimingConstants.RIGHT_ELEVATOR_TALON_ID,"rio");
+  private final TalonFX mLeftElevatorMotor = new TalonFX(AimingConstants.LEFT_ELEVATOR_TALON_ID,"rio");
+  private final TalonFX mRightElevatorMotor = new TalonFX(AimingConstants.RIGHT_ELEVATOR_TALON_ID,"rio");
 
   // TOF
   private final TimeOfFlight mElevatorTOF = new TimeOfFlight(AimingConstants.ELEVATOR_TOF_ID);
@@ -84,12 +84,12 @@ public class AimingSubsystem extends SubsystemBase {
     mWristController.kS = AimingConstants.mElevatorPIDConstants.mKS;
     mWristController.kV = AimingConstants.mElevatorPIDConstants.mKV;
 
-    mLeftFlywheelMotor.getConfigurator().apply(mElevatorController);
-    mRightFlywheelMotor.getConfigurator().apply(mElevatorController);
+    mLeftElevatorMotor.getConfigurator().apply(mElevatorController);
+    mRightElevatorMotor.getConfigurator().apply(mElevatorController);
     mWristMotor.getConfigurator().apply(mWristController);
     //note: configuration uses internal encoders inside the motors, subject to change
   
-    mLeftFlywheelMotor.setInverted(true);
+    mLeftElevatorMotor.setInverted(true);
   }
 
   @Override
@@ -104,10 +104,10 @@ public class AimingSubsystem extends SubsystemBase {
     mDesiredElevatorDistanceIn = MathUtil.clamp(mDesiredElevatorDistanceIn, AimingConstants.MIN_ELEVATOR_DIST_IN, AimingConstants.MAX_ELEVATOR_DIST);
 
     PositionVoltage elevatorVoltage = new PositionVoltage(getCurrentElevatorDistance()).withSlot(0);
-    mLeftFlywheelMotor.setControl(elevatorVoltage.withPosition(getDesiredElevatorDistance()));
-    mRightFlywheelMotor.setControl(elevatorVoltage.withPosition(getDesiredElevatorDistance()));
+    mLeftElevatorMotor.setControl(elevatorVoltage.withPosition(getDesiredElevatorDistance()));
+    mRightElevatorMotor.setControl(elevatorVoltage.withPosition(getDesiredElevatorDistance()));
 
-    mCurrentElevatorDistanceIn = mLeftFlywheelMotor.getRotorPosition().getValueAsDouble() * AimingConstants.ELEVATOR_ROTATIONS_TO_INCHES;
+    mCurrentElevatorDistanceIn = mLeftElevatorMotor.getRotorPosition().getValueAsDouble() * AimingConstants.ELEVATOR_ROTATIONS_TO_INCHES;
   }
 
   private void wristPeriodic() {
@@ -128,8 +128,8 @@ public class AimingSubsystem extends SubsystemBase {
     // Motors go towards setpoints
     NeutralModeValue neutralmode = mode == AimingMotorMode.BRAKE ? NeutralModeValue.Brake : NeutralModeValue.Coast;
 
-    mLeftFlywheelMotor.setNeutralMode(neutralmode);
-    mRightFlywheelMotor.setNeutralMode(neutralmode);
+    mLeftElevatorMotor.setNeutralMode(neutralmode);
+    mRightElevatorMotor.setNeutralMode(neutralmode);
     mWristMotor.setNeutralMode(neutralmode);
 
   }
@@ -209,7 +209,7 @@ public class AimingSubsystem extends SubsystemBase {
   public boolean atElevatorSetpoint() {
 
     // ENCODER VERSION
-    // if (mLeftFlywheelMotor.getRotorPosition().getValueAsDouble() * AimingConstants.ELEVATOR_ROTATIONS_TO_INCHES) < AimingConstants.ELEVATOR_TOLERANCE_IN) {
+    // if (mLeftElevatorMotor.getRotorPosition().getValueAsDouble() * AimingConstants.ELEVATOR_ROTATIONS_TO_INCHES) < AimingConstants.ELEVATOR_TOLERANCE_IN) {
     //   return true;
     // }
  

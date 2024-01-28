@@ -26,6 +26,7 @@ public class JoystickConstants {
     public static final double DRIVE_REG_Y_DEADZONE = 0.10;
     public static final double DRIVE_REG_ROT_DEADZONE = 0.15;
 
+    //Maximum value the joysticks can output, need to be calculated. TODO
     public static final double MAX_XBOX_JOYSTICK_L_MAGNITUDE = 0;
     public static final double MAX_XBOX_JOYSTICK_R_MAGNITUDE = 0;
 
