@@ -30,8 +30,8 @@ public class AimingConstants {
           wristAngleDeg = rot;
         }
     }
-    public static final int MAX_ELEVATOR_EXTENSION_VELOCITY = 0;
-    public static final double MAX_WRIST_ROTATION_VELOCITY = 0;
+    
+    
     
     // PID Constants
     public static PIDConstants mElevatorPIDConstants = new PIDConstants(0.1, 0, 0);
@@ -49,10 +49,11 @@ public class AimingConstants {
     // Soft Limits
     public static final double MAX_ELEVATOR_DIST = 0;
     public static final double MIN_ELEVATOR_DIST_IN = 0;
+    public static final double MAX_ELEVATOR_EXTENSION_VELOCITY = 0;
 
     public static final double MAX_WRIST_ROTATION = 0;
     public static final double MIN_WRIST_ROTATION_DEG = 0;
-
+    public static final double MAX_WRIST_ROTATION_VELOCITY = 0;
 
     // ID's
     public static final int LEFT_ELEVATOR_TALON_ID = 2;
