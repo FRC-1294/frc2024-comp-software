@@ -45,6 +45,10 @@ public class PoseEstimation extends SubsystemBase {
     mField.setRobotPose(pose);
     SmartDashboard.putData("Field", mField);
 
+    if (Input.resetOdo()) {
+      resetPose();
+    }
+
     if (CompConstants.DEBUG_MODE) {
       SmartDashboard.putNumber("PoseEst X", pose.getX());
       SmartDashboard.putNumber("PoseEst Y", pose.getY());
