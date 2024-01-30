@@ -22,7 +22,7 @@ public class DefaultLauncherCommand extends Command {
 
   @Override
   public void initialize() {
-    mLauncher.stopLauncher();
+    mLauncher.stopLauncher(); 
   }
 
   @Override
