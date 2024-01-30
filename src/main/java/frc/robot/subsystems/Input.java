@@ -17,7 +17,7 @@ public class Input {
   private static final Joystick mRotJoystick = new Joystick(JoystickConstants.ROT_JOYSTICK_PORT);
   private static final Joystick mTransJoystick = new Joystick(JoystickConstants.TRANS_JOY_PORT);
 
-  private static final XboxController mXboxController2 =
+  private static final XboxController mControllerXbox =
     new XboxController(JoystickConstants.XBOX_PORT);
 
 
@@ -44,43 +44,43 @@ public class Input {
   }
 
   public static boolean getA() {
-    return mXboxController2.getAButtonPressed();
+    return mControllerXbox.getAButtonPressed();
   }
 
   public static boolean getB() {
-    return mXboxController2.getBButtonPressed();
+    return mControllerXbox.getBButtonPressed();
   }
 
   public static boolean getX() {
-    return mXboxController2.getXButtonPressed();
+    return mControllerXbox.getXButtonPressed();
   }
 
   public static boolean getY() {
-    return mXboxController2.getYButtonPressed();
+    return mControllerXbox.getYButtonPressed();
   }
 
   public static boolean getLeftBumper() {
-    return mXboxController2.getLeftBumper();
+    return mControllerXbox.getLeftBumper();
   }
 
   public static boolean getRightBumper() {
-    return mXboxController2.getRightBumperPressed();
+    return mControllerXbox.getRightBumperPressed();
   }
 
   public static double getLeftTrigger() {
-    return mXboxController2.getLeftTriggerAxis();
+    return mControllerXbox.getLeftTriggerAxis();
   }
 
   public static double getRightTrigger() {
-    return mXboxController2.getRightTriggerAxis();
+    return mControllerXbox.getRightTriggerAxis();
   }
 
   public static double getLeftStickY() {
-    return -mXboxController2.getLeftY();
+    return -mControllerXbox.getLeftY();
   }
 
   public static double getRightStickY() {
-    return -mXboxController2.getRightY();
+    return -mControllerXbox.getRightY();
   }
 
   public static double getRot() {

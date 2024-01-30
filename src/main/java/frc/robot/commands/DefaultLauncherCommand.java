@@ -31,8 +31,8 @@ public class DefaultLauncherCommand extends Command {
       SequentialCommandGroup command = new SequentialCommandGroup(
 
       new InstantCommand(
-          () -> mLauncher.stopLauncher(), mLauncher)
-      );
+          mLauncher::stopLauncher, mLauncher
+      ));
       command.schedule();
     }
     //speaker

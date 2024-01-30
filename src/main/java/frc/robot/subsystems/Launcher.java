@@ -19,8 +19,6 @@ public class Launcher extends SubsystemBase {
   private final TalonFX mMainFlywheel = new TalonFX(LauncherConstants.MAIN_FLYWHEEL_ID);
   private final TalonFX mRollerFlywheel = new TalonFX(LauncherConstants.ROLLER_FLYWHEEL_ID);
 
-  private double mDesiredVelocityIndexer = 0;
-
   private double mDesiredVelocityMain = 0;
   private double mDesiredVelocityRoller = 0;
 
@@ -66,14 +64,15 @@ public class Launcher extends SubsystemBase {
   }
 
   public void runIndexer() {
+    double desiredVelocityIndexer = 0;
     if (!mNoteIndexed || !mLauncherReady || !mIndexToLauncher) {
-      mDesiredVelocityIndexer = 0;
+      desiredVelocityIndexer = 0;
     }
     else {
-      mDesiredVelocityIndexer = LauncherConstants.INDEXER_VELOCITY_DEFAULT;
+      desiredVelocityIndexer = LauncherConstants.INDEXER_VELOCITY_DEFAULT;
     }
 
-    mIndexer.set(mDesiredVelocityIndexer);
+    mIndexer.set(desiredVelocityIndexer);
   }
   
   public void runLauncher() {
