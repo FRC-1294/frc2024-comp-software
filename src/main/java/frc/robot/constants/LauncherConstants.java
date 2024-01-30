@@ -18,24 +18,24 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 public final class LauncherConstants {
 
   //IDs
-  public static final int MAIN_FLYWHEEL_ID = 1; //IDs TBD
-  public static final int ROLLER_FLYWHEEL_ID = 2;
+  public static final int MAIN_FLYWHEEL_ID = 1; //TBD https://github.com/FRC-1294/frc2024/issues/241
+  public static final int ROLLER_FLYWHEEL_ID = 2; //TBD https://github.com/FRC-1294/frc2024/issues/241
 
-  public static final int INDEXER_ID = 3;
+  public static final int INDEXER_ID = 3; //TBD https://github.com/FRC-1294/frc2024/issues/241
 
   //current flywheel mode
   public enum LauncherMode {
     SPEAKER, AMP, TRAP, OFF;
   }
 
-  //setpoints
+  //flywheel setpoints
   public enum LauncherState {
 
-    SPEAKER_DEFAULT(300, 300), //rps, TBD
+    SPEAKER_DEFAULT(300, 300), //TBD https://github.com/FRC-1294/frc2024/issues/241
 
-    AMP_DEFAULT(50, 50),
+    AMP_DEFAULT(50, 50), //TBD https://github.com/FRC-1294/frc2024/issues/241
 
-    TRAP_DEFAULT(50, 50);
+    TRAP_DEFAULT(50, 50); //TBD https://github.com/FRC-1294/frc2024/issues/241
 
     public final double mainVelocity;
     public final double rollerVelocity;
@@ -46,13 +46,14 @@ public final class LauncherConstants {
     }
   }
 
-  public static final double INDEXER_VELOCITY_DEFAULT = 1; //speed [-1, 1]
+  //indexer setpoint
+  public static final double INDEXER_VELOCITY_DEFAULT = 1; //TBD https://github.com/FRC-1294/frc2024/issues/241
   
   public static final PIDController LAUNCHER_PID_CONTROLLER = new PIDController(0, 0, 0, 0);
 
   public static final SimpleMotorFeedforward LAUNCHER_FF_CONTROLLER = new SimpleMotorFeedforward(0, 0, 0);
 
-  public static final double FLYWHEEL_TOLERANCE = 0.01; //TBD
+  public static final double FLYWHEEL_TOLERANCE = 0.01; //TBD https://github.com/FRC-1294/frc2024/issues/241
 
   public static final double FLYWHEEL_MAX_VELOCITY = 511.998046875; //rps
 

@@ -29,7 +29,7 @@ public class Launcher extends SubsystemBase {
   private boolean mNoteIndexed = false;
 
   //toggle to transmit note
-  private boolean mIndexToShooter = false;
+  private boolean mIndexToLauncher = false;
 
   private boolean mLauncherReady = false;
 
@@ -66,7 +66,7 @@ public class Launcher extends SubsystemBase {
   }
 
   public void runIndexer() {
-    if (!mNoteIndexed || !mLauncherReady || !mIndexToShooter) {
+    if (!mNoteIndexed || !mLauncherReady || !mIndexToLauncher) {
       mDesiredVelocityIndexer = 0;
     }
     else {
@@ -100,11 +100,11 @@ public class Launcher extends SubsystemBase {
   }
 
   public void turnIndexerOn(boolean indexerOn){
-    mIndexToShooter = indexerOn;
+    mIndexToLauncher = indexerOn;
   }
 
   public boolean isIndexerOn() {
-    return mIndexToShooter;
+    return mIndexToLauncher;
   }
 
   public boolean isLauncherReady() {

@@ -27,7 +27,7 @@ public class DefaultLauncherCommand extends Command {
 
   @Override
   public void execute() {
-    if (Input.getY()) { //stop button TBD
+    if (Input.getY()) { //TBD https://github.com/FRC-1294/frc2024/issues/241
       SequentialCommandGroup command = new SequentialCommandGroup(
 
       new InstantCommand(
@@ -36,7 +36,7 @@ public class DefaultLauncherCommand extends Command {
       command.schedule();
     }
     //speaker
-    else if (Input.getA()) { //speaker button TBD 
+    else if (Input.getA()) { //TBD https://github.com/FRC-1294/frc2024/issues/241
       SequentialCommandGroup command = new SequentialCommandGroup(
 
       new InstantCommand(
@@ -45,7 +45,7 @@ public class DefaultLauncherCommand extends Command {
       command.schedule();
     } 
     //amp
-    else if (Input.getB()) {  //amp button TBD
+    else if (Input.getB()) { //TBD https://github.com/FRC-1294/frc2024/issues/241
       SequentialCommandGroup command = new SequentialCommandGroup(
 
       new InstantCommand(
@@ -53,7 +53,7 @@ public class DefaultLauncherCommand extends Command {
       );
       command.schedule();
     }
-    else if (Input.getX()) { //trap button TBD
+    else if (Input.getX()) { //TBD https://github.com/FRC-1294/frc2024/issues/241
       SequentialCommandGroup command = new SequentialCommandGroup(
 
       new InstantCommand(
@@ -61,7 +61,7 @@ public class DefaultLauncherCommand extends Command {
       );
       command.schedule();
     }
-    else if (Input.getLeftBumper()) { //index to launch, button TBD
+    else if (Input.getLeftBumper()) { //TBD https://github.com/FRC-1294/frc2024/issues/241
       SequentialCommandGroup command = new SequentialCommandGroup(
 
       new InstantCommand(
