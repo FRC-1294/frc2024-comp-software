@@ -56,6 +56,9 @@ public class AimingSubsystem extends SubsystemBase {
   Slot0Configs mElevatorController = new Slot0Configs();
   Slot0Configs mWristController = new Slot0Configs();  
 
+  PositionVoltage elevatorVoltage = new PositionVoltage(getDesiredElevatorDistance()).withSlot(0);
+  PositionVoltage wristVoltage = new PositionVoltage(getDesiredWristRotation()).withSlot(0);
+
   public AimingSubsystem() {
     mChooser.addOption("Brake", AimingMotorMode.BRAKE);
     mChooser.addOption("Coast", AimingMotorMode.COAST);
@@ -103,7 +106,6 @@ public class AimingSubsystem extends SubsystemBase {
     //Clamping Rotation between domain
     mDesiredElevatorDistanceIn = MathUtil.clamp(mDesiredElevatorDistanceIn, AimingConstants.MIN_ELEVATOR_DIST_IN, AimingConstants.MAX_ELEVATOR_DIST);
 
-    PositionVoltage elevatorVoltage = new PositionVoltage(getCurrentElevatorDistance()).withSlot(0);
     mLeftElevatorMotor.setControl(elevatorVoltage.withPosition(getDesiredElevatorDistance()));
     mRightElevatorMotor.setControl(elevatorVoltage.withPosition(getDesiredElevatorDistance()));
 
@@ -115,7 +117,7 @@ public class AimingSubsystem extends SubsystemBase {
     //Clamping Rotation between domain
     mDesiredWristRotationDeg = MathUtil.clamp(mDesiredWristRotationDeg, AimingConstants.MIN_WRIST_ROTATION_DEG, AimingConstants.MAX_WRIST_ROTATION);
   
-    PositionVoltage wristVoltage = new PositionVoltage(getDesiredWristRotation()).withSlot(0);
+    
     mWristMotor.setControl(wristVoltage.withPosition(getDesiredWristRotation()));
     mCurrentWristRotationDeg = mWristMotor.getRotorPosition().getValueAsDouble() * 360;
   }
@@ -126,7 +128,20 @@ public class AimingSubsystem extends SubsystemBase {
     AimingMotorMode mode = mChooser.getSelected();
     
     // Motors go towards setpoints
-    NeutralModeValue neutralmode = mode == AimingMotorMode.BRAKE ? NeutralModeValue.Brake : NeutralModeValue.Coast;
+    NeutralModeValue neutralmode;
+
+    switch (mode) {
+        case BRAKE:
+            neutralmode = NeutralModeValue.Brake;
+            break;
+        case COAST:
+            neutralmode = NeutralModeValue.Coast;
+            break;
+        default:
+            neutralmode = NeutralModeValue.Brake;
+            break;
+}
+
 
     mLeftElevatorMotor.setNeutralMode(neutralmode);
     mRightElevatorMotor.setNeutralMode(neutralmode);
@@ -209,14 +224,10 @@ public class AimingSubsystem extends SubsystemBase {
   public boolean atElevatorSetpoint() {
 
     // ENCODER VERSION
-    // if (mLeftElevatorMotor.getRotorPosition().getValueAsDouble() * AimingConstants.ELEVATOR_ROTATIONS_TO_INCHES) < AimingConstants.ELEVATOR_TOLERANCE_IN) {
-    //   return true;
-    // }
+    // return mLeftElevatorMotor.getRotorPosition().getValueAsDouble() * AimingConstants.ELEVATOR_ROTATIONS_TO_INCHES) < AimingConstants.ELEVATOR_TOLERANCE_IN
  
-    if (Math.abs(AimingConstants.MAX_ELEVATOR_DIST - getTOFRangeInches()) <= AimingConstants.ELEVATOR_TOLERANCE_IN) {
-      return true;
-    }
-    return false;
+    return Math.abs(AimingConstants.MAX_ELEVATOR_DIST - getTOFRangeInches()) <= AimingConstants.ELEVATOR_TOLERANCE_IN;
+
   }
   public boolean atWristSetpoint() {
     if (Math.abs(mWristEncoder.getPosition().getValueAsDouble() - mWristMotor.getRotorPosition().getValueAsDouble()) * 360 <= AimingConstants.WRIST_TOLERANCE_DEG) {
