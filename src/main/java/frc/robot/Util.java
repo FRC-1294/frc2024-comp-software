@@ -19,7 +19,7 @@ public class Util {
         return(new Translation3d(vec.getX()/vec.getNorm(), vec.getY()/vec.getNorm(), vec.getZ()/vec.getNorm()));
     }
 
-    public static class PIDConstants{
+    public static class PIDParameters{
         public double mKP;
         public double mKI;
         public double mKD;
@@ -29,7 +29,7 @@ public class Util {
         public double mContinuousInputMin;
         public boolean mIsContinuousInput;
 
-        public PIDConstants(double kP, double kI, double kD, double kS, double kV, double continuousInputMax, double continuousInputMin){
+        public PIDParameters(double kP, double kI, double kD, double kS, double kV, double continuousInputMax, double continuousInputMin){
             mKP = kP;
             mKI = kI;
             mKD = kD;
@@ -40,12 +40,12 @@ public class Util {
             mIsContinuousInput = true;
         }
 
-        public PIDConstants(double kP, double kI, double kD, double kS, double kV){
+        public PIDParameters(double kP, double kI, double kD, double kS, double kV){
             this(kP, kI, kD, kS, kV,0,0);
             mIsContinuousInput = false;
         }
 
-        public PIDConstants(double kP, double kI, double kD){
+        public PIDParameters(double kP, double kI, double kD){
             this(kP, kI, kD, 0, 0,0,0);
             mIsContinuousInput = false;
         }
@@ -53,7 +53,9 @@ public class Util {
 
         public PIDController toWPIController(){
             PIDController pid = new PIDController(mKP, mKI, mKD);
-            if(mIsContinuousInput){pid.enableContinuousInput(mContinuousInputMin, mContinuousInputMax);}
+            if(mIsContinuousInput){
+                pid.enableContinuousInput(mContinuousInputMin, mContinuousInputMax);
+            }
             return pid;
         }
 
@@ -67,10 +69,12 @@ public class Util {
             config.ClosedLoopGeneral.ContinuousWrap = mIsContinuousInput;
             return config;
         }
+        
         public SimpleMotorFeedforward toWPIMotorFeedForward(){
             return new SimpleMotorFeedforward(mKS, mKV);
         }
     }
+
     public enum POV{
         DPADUP(0),
         DPADRIGHT(90),
@@ -82,6 +86,7 @@ public class Util {
             mAngle = angle;
         }
     }
+
     public static class TBHController{
         private double mCurOutput = 0;
         private double mPrevError = 0;
@@ -114,9 +119,11 @@ public class Util {
             }
             return mCurOutput;
         }
+
         public void setSpNoSpinUp(double f){
             mSetPoint = f;
         }
+
         public void spinUp(double targetOutput){
             if(mSetPoint > targetOutput){
                 mPrevError = 1;
@@ -126,6 +133,7 @@ public class Util {
             mTBHConstant = 2*(targetOutput/mMaxOutput)-1;
             mSetPoint = targetOutput;
         }
+
         public boolean atSetpoint(){
             return Math.abs(mCurOutput-mSetPoint) <= mTolerance;
         }
@@ -136,9 +144,20 @@ public class Util {
             SmartDashboard.putBoolean("TBH Controller", atSetpoint());
         }
 
-        public double getCurOutput(){return mCurOutput;}
-        public double getPrevError(){return mPrevError;}
-        public double getSetpoint(){return mSetPoint;}
-        public double getTBHConstant(){return mTBHConstant;}
+        public double getCurOutput(){
+            return mCurOutput;
+        }
+
+        public double getPrevError(){
+            return mPrevError;
+        }
+
+        public double getSetpoint(){
+            return mSetPoint;
+        }
+
+        public double getTBHConstant(){
+            return mTBHConstant;
+        }
     }
 }

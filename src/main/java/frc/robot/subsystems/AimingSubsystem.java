@@ -16,6 +16,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -33,13 +34,14 @@ public class AimingSubsystem extends SubsystemBase {
   // Elevator Hardware
   private final TalonFX mLeftElevatorMotor = new TalonFX(AimingConstants.LEFT_ELEVATOR_TALON_ID,"rio");
   private final TalonFX mRightElevatorMotor = new TalonFX(AimingConstants.RIGHT_ELEVATOR_TALON_ID,"rio");
+  private final DutyCycleEncoder ThroughBoreEncoder = new DutyCycleEncoder(AimingConstants.ELEVATOR_THROUGHBORE_ECONDER_ID);
 
   // TOF
   private final TimeOfFlight mElevatorTOF = new TimeOfFlight(AimingConstants.ELEVATOR_TOF_ID);
   
   // Wrist Hardware
-  private final TalonFX mWristMotor = new TalonFX(AimingConstants.WRIST_SPARK_ID, "rio");
-  private final CANcoder mWristEncoder = new CANcoder(AimingConstants.WRIST_ENCODER_ID);
+  private final CANSparkMax mWristMotorLeft = new CANSparkMax(AimingConstants.WRIST_LEFT_ENCODER_ID, MotorType.kBrushless);
+  private final CANSparkMax mWristMotorRight = new CANSparkMax(AimingConstants.WRIST_RIGHT_ENCODER_ID, MotorType.kBrushless);
 
   // Current States
   private double mCurrentElevatorDistanceIn = AimingConstants.MIN_ELEVATOR_DIST_IN;
@@ -236,6 +238,7 @@ public class AimingSubsystem extends SubsystemBase {
 
     return false;
   }
+
   public boolean atSetpoints() {return atElevatorSetpoint() && atWristSetpoint();}
 
   public Command waitUntilSetpoint(AimState state) {

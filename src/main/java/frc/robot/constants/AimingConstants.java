@@ -6,7 +6,7 @@ package frc.robot.constants;
 
 import java.util.Map;
 
-import frc.robot.Util.PIDConstants;
+import frc.robot.Util.PIDParameters;
 import frc.robot.subsystems.AimingSubsystem.AimingMotorMode;
 
 /** Add your docs here. */
@@ -34,8 +34,8 @@ public class AimingConstants {
     
     
     // PID Constants
-    public static PIDConstants mElevatorPIDConstants = new PIDConstants(0.1, 0, 0);
-    public static PIDConstants mWristPIDConstants = new PIDConstants(0.1, 0, 0);
+    public static PIDParameters mElevatorPIDConstants = new PIDParameters(0.1, 0, 0);
+    public static PIDParameters mWristPIDConstants = new PIDParameters(0.1, 0, 0);
 
 
     public static final AimingMotorMode INITIAL_MOTOR_MODE = AimingMotorMode.BRAKE;
@@ -60,8 +60,13 @@ public class AimingConstants {
     public static final int RIGHT_ELEVATOR_TALON_ID = 2;
     public static final int ELEVATOR_TOF_ID = 1;
 
-    public static final int WRIST_SPARK_ID = 2; 
-    public static final int WRIST_ENCODER_ID = 0;
+    public static final int WRIST_LEFT_SPARK_ID = 2; 
+    public static final int WRIST_LEFT_ENCODER_ID = 0;
+
+    public static final int WRIST_RIGHT_SPARK_ID = 2; 
+    public static final int WRIST_RIGHT_ENCODER_ID = 0;
+
+    public static final int ELEVATOR_THROUGHBORE_ECONDER_ID = 0;
 
 
 }
