@@ -16,15 +16,14 @@ import frc.robot.constants.SwerveConstants;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 
 /** Add your docs here. */
 public class KrakenSwerveModule {
+
      // Parameters
     private final int mRotID;
     private final int mTransID;
-    private final int mRotEncoderID;
-    private final boolean mRotInverse;
-    private final boolean mTransInverse;
     private final PIDController mRotPID;
 
     // Motors
@@ -51,9 +50,6 @@ public class KrakenSwerveModule {
     public KrakenSwerveModule(int rotID, int transID, int rotEncoderID, boolean rotInverse, boolean transInverse, PIDController rotPID) {
         mRotID = rotID;
         mTransID = transID;
-        mRotEncoderID = rotEncoderID;
-        mRotInverse = rotInverse;
-        mTransInverse = transInverse;
         mRotPID = rotPID;
         mRotPID.enableContinuousInput(-Math.PI, Math.PI);
 
@@ -109,10 +105,18 @@ public class KrakenSwerveModule {
         return mTransMotor.getPosition().getValueAsDouble();
     }
 
+    /**
+     * 
+     * @return Returns rotation in RADIANS of rotation motor AFTER GEAR RATIO
+     */
     public double getRotPosition() {
         return getRotPositionRaw() * KrakenSwerveConstants.ABS_ENC_GEAR_RATIO_ROT;
     }
 
+    /**
+     * 
+     * @return Returns translation motor AFTER GEAR RATIO and Meters
+     */
     public double getTransPosition() {
         return getTransPositionRaw() * KrakenSwerveConstants.TRANS_GEAR_RATIO_ROT * KrakenSwerveConstants.WHEEL_CIRCUMFERENCE_METERS;
     }
@@ -128,13 +132,132 @@ public class KrakenSwerveModule {
         return mRotRelativeEncoder.getPosition() * KrakenSwerveConstants.REL_ENC_GEAR_RATIO_ROT;
     }
 
+    /**
+     * 
+     * @return Returns velocity of translation motor with conversion
+     */
     public double getTransVelocity() {
         return getTransVelocityRaw() * SwerveConstants.TRANS_RPM_TO_MPS;
     }
 
+    /**
+     * 
+     * @return the total distance traveled by the module (Meters) and Rotation value (Rad) in the
+     *         form of a SwerveModulePostion object
+     * @see SwerveModulePosition
+     */
     public SwerveModulePosition getModulePos() {
         return new SwerveModulePosition(getTransPosition(), Rotation2d.fromRadians(getRotPosition()));
     }
 
-    
+    /**
+     * 
+     * @return a swerve module state object describing the current speed of the translation and
+     *         rotation motors
+     * @see SwerveModuleState
+     */
+    public SwerveModuleState getState() {
+        return new SwerveModuleState(getTransVelocity(), Rotation2d.fromRadians(getRotPosition()));
+    }
+
+    /**
+     * Sets the motor speeds passed into constructor
+     * 
+     * @param desiredState takes in SwerveModule state
+     * @see SwerveModuleState
+     */
+    public void setDesiredState(SwerveModuleState desiredState) {
+
+        // Stops returning to original rotation
+        if (Math.abs(desiredState.speedMetersPerSecond) < 0.001) {
+            stop();
+            return;
+        }
+
+        // No turning motors over 90 degrees
+        desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
+
+        // PID Controller for both translation and rotation
+        mTransMotor.set(desiredState.speedMetersPerSecond / SwerveConstants.PHYSICAL_MAX_SPEED_MPS);
+        mDesiredRadians = desiredState.angle.getRadians();
+        mPIDOutput = mRotPID.calculate(getRotPosition(), desiredState.angle.getRadians());
+
+        mRotMotor.set(mPIDOutput);
+
+    }
+
+    /**
+     * Stops the both motors
+     */
+    public void stop() {
+        mTransMotor.set(0);
+        mRotMotor.set(0);
+    }
+
+
+    public void setPID(double degrees) {
+        mPIDOutput = mRotPID.calculate(getRotPosition(), Math.toRadians(degrees));
+        mRotMotor.set(mPIDOutput);
+
+    }
+
+    /**
+     * Reset ONLY the translation encoder
+     */
+    public void resetEncoders() {
+        mTransMotor.setPosition(0);
+    }
+
+    /**
+     * 
+     * @return steering PID controller.
+     */
+    public PIDController getPIDController() {
+        return mRotPID;
+    }
+
+    /**
+     * Sets the mode of the translation motor
+     * 
+     * @param mode use a kraken idle mode (brake or coast)
+     * @see NeutralModeValue
+     */
+    public void setModeTrans(NeutralModeValue mode) {
+        mTransMotor.setNeutralMode(mode);
+    }
+
+    /**
+     * Sets the mode of the rotation motor
+     * 
+     * @param mode use a spark max idle mode (brake or coast)
+     * @see IdleMode
+     */
+    public void setModeRot(IdleMode mode) {
+        mRotMotor.setIdleMode(mode);
+    }
+
+    /**
+     * Permanently burns settings into the rot spark
+     * 
+     * @see setModeRot
+     * @see setModeTrans
+     */
+    public void burnRotSpark() {
+        mRotMotor.burnFlash();
+    }
+
+    /**
+     * Retrives the rotation PID output provided to the motors after desaturation and optimization
+     */
+    public double getPIDOutputRot() {
+        return mPIDOutput;
+    }
+
+    /**
+     * Retrives the desired radian setpoint of rotation of the motors after desaturation and
+     * optimization.
+     */
+    public double getDesiredRadiansRot() {
+        return mDesiredRadians;
+    }
 }
