@@ -64,12 +64,11 @@ public class Robot extends TimedRobot {
     new InitializePathPlanner(m_robotContainer.getSwerveSubsystem(), m_robotContainer.getPoseEstimator()).initialize();
 
     pathSelector.addOption("5_meter_return", new FollowPath(m_robotContainer.getSwerveSubsystem(), "5_Meter_Return"));
-    pathSelector.addOption("Simpy", new FollowPath(m_robotContainer.getSwerveSubsystem(), "Simpy"));
-    pathSelector.addOption("2_meter", new FollowPath(m_robotContainer.getSwerveSubsystem(), "2_Meter"));
     pathSelector.addOption("None", new PrintCommand("Damn that sucks"));
     pathSelector.addOption("kSCharacterization", new kS_Characterization(m_robotContainer.getSwerveSubsystem()));
     pathSelector.addOption("kVCharacterization", new kV_Characterization(m_robotContainer.getSwerveSubsystem()));
-    pathSelector.addOption("Goofy Loop", new FollowPath(m_robotContainer.getSwerveSubsystem(), "Goofy Loop"));
+    pathSelector.addOption("Goofy Loop", new FollowPath(m_robotContainer.getSwerveSubsystem(), "Goofy_Loop"));
+    pathSelector.addOption("Shah_Man", new FollowPath(m_robotContainer.getSwerveSubsystem(), "Shah_Man"));
 
   }
 

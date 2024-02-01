@@ -4,7 +4,10 @@
 
 package frc.robot.commands;
 
+import org.json.simple.JSONObject;
+
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -15,9 +18,13 @@ public class FollowPath extends Command {
   /** Creates a new FollowPath. */
   private final SwerveSubsystem mSwerve;
   private final Command mFinalCmd;
+  private final String pathPlannerAutoPath;
   PathPlannerPath p;
   public FollowPath(SwerveSubsystem swerveSubsystem,String s) {
     mSwerve = swerveSubsystem;
+    pathPlannerAutoPath = s;
+    p = PathPlannerPath.fromPathFile(s);
+
     mFinalCmd = AutoBuilder.buildAuto(s);
     addRequirements(mSwerve);
   }
@@ -25,8 +32,7 @@ public class FollowPath extends Command {
   // Called when the command is iniqtially scheduled.
   @Override
   public void initialize() {
-    
-    // mSwerve.resetRobotPose(p.getPreviewStartingHolonomicPose());
+    mSwerve.resetRobotPose(PathPlannerAuto.getPathGroupFromAutoFile(pathPlannerAutoPath).get(0).getPreviewStartingHolonomicPose());
     mFinalCmd.schedule();
   }
 
