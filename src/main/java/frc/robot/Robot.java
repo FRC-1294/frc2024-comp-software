@@ -63,13 +63,14 @@ public class Robot extends TimedRobot {
     // ), ()->false, m_robotContainer.getSwerveSubsystem());
     new InitializePathPlanner(m_robotContainer.getSwerveSubsystem(), m_robotContainer.getPoseEstimator()).initialize();
 
-    pathSelector.addOption("5_meter_return", new FollowPath(m_robotContainer.getSwerveSubsystem(), "5_Meter_Return"));
+    pathSelector.addOption("5_meter_return", new FollowPath(m_robotContainer.getSwerveSubsystem(), m_robotContainer.getPoseEstimator(), "5_Meter_Return"));
+    pathSelector.addOption("Simpy", new FollowPath(m_robotContainer.getSwerveSubsystem(), m_robotContainer.getPoseEstimator(), "Simpy"));
+    pathSelector.addOption("2_meter", new FollowPath(m_robotContainer.getSwerveSubsystem(), m_robotContainer.getPoseEstimator(), "2_Meter"));
     pathSelector.addOption("None", new PrintCommand("Damn that sucks"));
     pathSelector.addOption("kSCharacterization", new kS_Characterization(m_robotContainer.getSwerveSubsystem()));
     pathSelector.addOption("kVCharacterization", new kV_Characterization(m_robotContainer.getSwerveSubsystem()));
-    pathSelector.addOption("Goofy Loop", new FollowPath(m_robotContainer.getSwerveSubsystem(), "Goofy_Loop"));
-    pathSelector.addOption("Shah_Man", new FollowPath(m_robotContainer.getSwerveSubsystem(), "Shah_Man"));
-
+    pathSelector.addOption("Goofy Loop", new FollowPath(m_robotContainer.getSwerveSubsystem(), m_robotContainer.getPoseEstimator(), "Goofy Loop"));
+    pathSelector.addOption("3_Piece_Dynamic", new FollowPath(m_robotContainer.getSwerveSubsystem(), m_robotContainer.getPoseEstimator(), "3_Piece_Dynamic"));
   }
 
   /**

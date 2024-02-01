@@ -40,7 +40,7 @@ public class InitializePathPlanner{
   public void initialize() {
     AutoBuilder.configureHolonomic(
     mPoseEstimation::getRobotPose, 
-    (Pose2d pose)->mSwerve.resetRobotPose(pose),
+    (Pose2d pose)->mPoseEstimation.resetPose(pose),
     mSwerve::getChassisSpeeds, 
     (ChassisSpeeds speeds)->mSwerve.setChassisSpeed(speeds),
     new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in

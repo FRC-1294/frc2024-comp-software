@@ -10,7 +10,9 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.PoseEstimation;
 import frc.robot.subsystems.SwerveSubsystem;
 
 
@@ -18,13 +20,13 @@ public class FollowPath extends Command {
   /** Creates a new FollowPath. */
   private final SwerveSubsystem mSwerve;
   private final Command mFinalCmd;
-  private final String pathPlannerAutoPath;
-  PathPlannerPath p;
-  public FollowPath(SwerveSubsystem swerveSubsystem,String s) {
+  private PoseEstimation mPoseEstimator;
+  private Pose2d mStartingPose = new Pose2d();
+  public FollowPath(SwerveSubsystem swerveSubsystem, PoseEstimation poseEstimator, String s) {
     mSwerve = swerveSubsystem;
-    pathPlannerAutoPath = s;
-    p = PathPlannerPath.fromPathFile(s);
+    mPoseEstimator = poseEstimator;
 
+    //mStartingPose = PathPlannerAuto.getPathGroupFromAutoFile(s).get(0).getPreviewStartingHolonomicPose();
     mFinalCmd = AutoBuilder.buildAuto(s);
     addRequirements(mSwerve);
   }
@@ -32,7 +34,9 @@ public class FollowPath extends Command {
   // Called when the command is iniqtially scheduled.
   @Override
   public void initialize() {
-    mSwerve.resetRobotPose(PathPlannerAuto.getPathGroupFromAutoFile(pathPlannerAutoPath).get(0).getPreviewStartingHolonomicPose());
+    //mPoseEstimator.resetPose(mStartingPose);
+
+    // mSwerve.resetRobotPose(p.getPreviewStartingHolonomicPose());
     mFinalCmd.schedule();
   }
 
