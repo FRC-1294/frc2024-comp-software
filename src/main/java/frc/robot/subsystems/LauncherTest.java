@@ -9,13 +9,15 @@ private double amp_length = 1.5;
 //private double amp_width = 2; 
 private double speaker_length = 6.5; 
 //private double speaker_width = 3;
-private double robot_pos; 
+private double robot_pos;  
 private LauncherMode mLauncherMode;
 private double mvelocity; 
-    public LauncherTest(double pos, LauncherMode LauncherMode, double velocity){
+private double distance; 
+    public LauncherTest(double pos, LauncherMode LauncherMode, double velocity, double _distance){
         robot_pos = pos; 
         mLauncherMode = LauncherMode; 
         mvelocity = velocity; 
+        distance = _distance; 
     }
 
 
@@ -41,9 +43,10 @@ private double mvelocity;
     }
     
 
-    public Boolean test_distances() {
-       
-
-    }
-
-} 
+    public Boolean test_distances(){
+        if (distance == calculate_distance()){
+            return true; 
+        }
+        return false; 
+    } 
+}
