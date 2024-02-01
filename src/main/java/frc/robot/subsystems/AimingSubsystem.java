@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -15,6 +16,8 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
@@ -34,14 +37,14 @@ public class AimingSubsystem extends SubsystemBase {
   // Elevator Hardware
   private final TalonFX mLeftElevatorMotor = new TalonFX(AimingConstants.LEFT_ELEVATOR_TALON_ID,"rio");
   private final TalonFX mRightElevatorMotor = new TalonFX(AimingConstants.RIGHT_ELEVATOR_TALON_ID,"rio");
-  private final DutyCycleEncoder ThroughBoreEncoder = new DutyCycleEncoder(AimingConstants.ELEVATOR_THROUGHBORE_ECONDER_ID);
-
+  
   // TOF
   private final TimeOfFlight mElevatorTOF = new TimeOfFlight(AimingConstants.ELEVATOR_TOF_ID);
   
   // Wrist Hardware
-  private final CANSparkMax mWristMotorLeft = new CANSparkMax(AimingConstants.WRIST_LEFT_ENCODER_ID, MotorType.kBrushless);
-  private final CANSparkMax mWristMotorRight = new CANSparkMax(AimingConstants.WRIST_RIGHT_ENCODER_ID, MotorType.kBrushless);
+  private final CANSparkMax mLeftWristMotor = new CANSparkMax(AimingConstants.LEFT_WRIST_SPARK_ID, MotorType.kBrushless);
+  private final CANSparkMax mRightWristMotor = new CANSparkMax(AimingConstants.RIGHT_WRIST_SPARK_ID, MotorType.kBrushless);
+  private final DutyCycleEncoder mWristThroughBoreEncoder = new DutyCycleEncoder(AimingConstants.ELEVATOR_THROUGHBORE_ENCODER_ID);
 
   // Current States
   private double mCurrentElevatorDistanceIn = AimingConstants.MIN_ELEVATOR_DIST_IN;
@@ -54,12 +57,17 @@ public class AimingSubsystem extends SubsystemBase {
   // MotorMode Chooser
   private final SendableChooser<AimingMotorMode> mChooser = new SendableChooser<>();
 
-  // PID Controllers
+  // PID Controllers and Motor Configs
   Slot0Configs mElevatorController = new Slot0Configs();
-  Slot0Configs mWristController = new Slot0Configs();  
+  ElevatorFeedforward mElevatorFeedforward = new ElevatorFeedforward(AimingConstants.mElevatorPIDConstants.mKS, AimingConstants.mElevatorkG, AimingConstants.mElevatorPIDConstants.mKS);
+
+  PIDController mWristController = AimingConstants.mWristPIDConstants.toWPIController();  
+  ArmFeedforward mWristFeedforwardController = new ArmFeedforward(AimingConstants.mWristPIDConstants.mKS, AimingConstants.mWristkG, AimingConstants.mWristPIDConstants.mKS);
+
+  MotorOutputConfigs mLeftWristMotorOutputConfigs = new MotorOutputConfigs();
+  MotorOutputConfigs mRightWristMotorOutputConfigs = new MotorOutputConfigs();
 
   PositionVoltage elevatorVoltage = new PositionVoltage(getDesiredElevatorDistance()).withSlot(0);
-  PositionVoltage wristVoltage = new PositionVoltage(getDesiredWristRotation()).withSlot(0);
 
   public AimingSubsystem() {
     mChooser.addOption("Brake", AimingMotorMode.BRAKE);
@@ -69,7 +77,6 @@ public class AimingSubsystem extends SubsystemBase {
     //Initializes TOF Sensor
     setTOFViewZone(8, 8, 12, 12);
     setTOFRange("short", 20);
-
     configureDevices();
   }
 
@@ -83,18 +90,17 @@ public class AimingSubsystem extends SubsystemBase {
     mElevatorController.kS = AimingConstants.mElevatorPIDConstants.mKS;
     mElevatorController.kV = AimingConstants.mElevatorPIDConstants.mKV;
 
-    mWristController.kP = AimingConstants.mWristPIDConstants.mKP;
-    mWristController.kI = AimingConstants.mWristPIDConstants.mKI;
-    mWristController.kD = AimingConstants.mWristPIDConstants.mKD;
-    mWristController.kS = AimingConstants.mElevatorPIDConstants.mKS;
-    mWristController.kV = AimingConstants.mElevatorPIDConstants.mKV;
 
     mLeftElevatorMotor.getConfigurator().apply(mElevatorController);
     mRightElevatorMotor.getConfigurator().apply(mElevatorController);
-    mWristMotor.getConfigurator().apply(mWristController);
+    
+    mWristController = AimingConstants.mWristPIDConstants.toWPIController();
     //note: configuration uses internal encoders inside the motors, subject to change
   
     mLeftElevatorMotor.setInverted(true);
+    mLeftWristMotor.setInverted(true);
+    mWristController.setTolerance(AimingConstants.WRIST_TOLERANCE_DEG);
+
   }
 
   @Override
@@ -108,8 +114,8 @@ public class AimingSubsystem extends SubsystemBase {
     //Clamping Rotation between domain
     mDesiredElevatorDistanceIn = MathUtil.clamp(mDesiredElevatorDistanceIn, AimingConstants.MIN_ELEVATOR_DIST_IN, AimingConstants.MAX_ELEVATOR_DIST);
 
-    mLeftElevatorMotor.setControl(elevatorVoltage.withPosition(getDesiredElevatorDistance()));
-    mRightElevatorMotor.setControl(elevatorVoltage.withPosition(getDesiredElevatorDistance()));
+    mLeftElevatorMotor.setControl(elevatorVoltage.withPosition(mDesiredElevatorDistanceIn));
+    mRightElevatorMotor.setControl(elevatorVoltage.withPosition(mDesiredElevatorDistanceIn));
 
     mCurrentElevatorDistanceIn = mLeftElevatorMotor.getRotorPosition().getValueAsDouble() * AimingConstants.ELEVATOR_ROTATIONS_TO_INCHES;
   }
@@ -118,10 +124,12 @@ public class AimingSubsystem extends SubsystemBase {
 
     //Clamping Rotation between domain
     mDesiredWristRotationDeg = MathUtil.clamp(mDesiredWristRotationDeg, AimingConstants.MIN_WRIST_ROTATION_DEG, AimingConstants.MAX_WRIST_ROTATION);
-  
-    
-    mWristMotor.setControl(wristVoltage.withPosition(getDesiredWristRotation()));
-    mCurrentWristRotationDeg = mWristMotor.getRotorPosition().getValueAsDouble() * 360;
+    mCurrentWristRotationDeg = mWristThroughBoreEncoder.getAbsolutePosition();
+
+    double offset = (Math.PI / 2);
+    double pidCalculation = mWristController.calculate(mCurrentWristRotationDeg, mDesiredWristRotationDeg);    
+    // double ffCalculation = mWristFeedforwardController.calculate(Math.toRadians(mDesiredWristRotationDeg) + offset, );
+    mRightWristMotor.set(pidCalculation + 0);
   }
 
   private void updateMotorModes() {
@@ -144,11 +152,10 @@ public class AimingSubsystem extends SubsystemBase {
             break;
 }
 
-
     mLeftElevatorMotor.setNeutralMode(neutralmode);
     mRightElevatorMotor.setNeutralMode(neutralmode);
-    mWristMotor.setNeutralMode(neutralmode);
-
+    mLeftWristMotorOutputConfigs.NeutralMode = neutralmode;
+    mRightWristMotorOutputConfigs.NeutralMode = neutralmode;
   }
 
   // Contains Smart Dashboard Statements ONLY ON DEBUG
@@ -232,11 +239,12 @@ public class AimingSubsystem extends SubsystemBase {
 
   }
   public boolean atWristSetpoint() {
-    if (Math.abs(mWristEncoder.getPosition().getValueAsDouble() - mWristMotor.getRotorPosition().getValueAsDouble()) * 360 <= AimingConstants.WRIST_TOLERANCE_DEG) {
-      return true;
-    }
+    // if (Math.abs(mRightWristMotor.getPosition().getValueAsDouble() - mRightWristMotor.getRotorPosition().getValueAsDouble()) * 360 <= AimingConstants.WRIST_TOLERANCE_DEG) {
+    //   return true;
+    // }
 
-    return false;
+    // return false;
+    return mWristController.atSetpoint();
   }
 
   public boolean atSetpoints() {return atElevatorSetpoint() && atWristSetpoint();}
