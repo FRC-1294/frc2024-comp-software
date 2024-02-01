@@ -33,17 +33,17 @@ public class AimingConstants {
     
     
     
-    // PID Constants
+    // PID Constantss
     public static PIDParameters mElevatorPIDConstants = new PIDParameters(0.1, 0, 0);
-    public static PIDParameters mWristPIDConstants = new PIDParameters(0.1, 0, 0);
+    public static PIDParameters mWristPIDConstants = new PIDParameters(0.1, 0, 0, 0, 0);
+    public static double mWristkG = 0.0;
+    public static double mElevatorkG;
 
 
     public static final AimingMotorMode INITIAL_MOTOR_MODE = AimingMotorMode.BRAKE;
 
     public static double ELEVATOR_ROTATIONS_TO_INCHES = 1; // TODO: convert gear ratio of flywheel to inches
-
-    // Tolerances
-    public static final double ELEVATOR_TOLERANCE_IN = 0;
+	  public final static double ELEVATOR_TOLERANCE_IN = 0;
     public static final double WRIST_TOLERANCE_DEG = 0;
 
     // Soft Limits
@@ -60,13 +60,13 @@ public class AimingConstants {
     public static final int RIGHT_ELEVATOR_TALON_ID = 2;
     public static final int ELEVATOR_TOF_ID = 1;
 
-    public static final int WRIST_LEFT_SPARK_ID = 2; 
-    public static final int WRIST_LEFT_ENCODER_ID = 0;
+    public static final int LEFT_WRIST_SPARK_ID = 2; 
+    public static final int LEFT_WRIST_ENCODER_ID = 0;
 
-    public static final int WRIST_RIGHT_SPARK_ID = 2; 
-    public static final int WRIST_RIGHT_ENCODER_ID = 0;
+    public static final int RIGHT_WRIST_SPARK_ID = 2; 
+    public static final int RIGHT_WRIST_ENCODER_ID = 0;
 
-    public static final int ELEVATOR_THROUGHBORE_ECONDER_ID = 0;
+    public static final int ELEVATOR_THROUGHBORE_ENCODER_ID = 0;
 
 
 }
