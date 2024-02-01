@@ -11,6 +11,7 @@ public class JoystickConstants {
     }
 
     public static final int ROT_JOYSTICK_PORT = 0;
+    public static final int XBOX_CONTROLLER_PORT = 1;
     public static final int TRANS_JOY_PORT = 2;
     public static final int XBOX_PORT = 1; //TBD https://github.com/FRC-1294/frc2024/issues/241
 

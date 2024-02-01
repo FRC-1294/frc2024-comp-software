@@ -16,6 +16,7 @@ public class Input {
 
   private static final Joystick mRotJoystick = new Joystick(JoystickConstants.ROT_JOYSTICK_PORT);
   private static final Joystick mTransJoystick = new Joystick(JoystickConstants.TRANS_JOY_PORT);
+  private static final XboxController mXboxController = new XboxController(JoystickConstants.XBOX_CONTROLLER_PORT);
 
   private static final XboxController mControllerXbox =
     new XboxController(JoystickConstants.XBOX_PORT);
@@ -105,6 +106,14 @@ public class Input {
 
   public static boolean togglePIDTuning() {
     return mRotJoystick.getTriggerReleased();
+  }
+
+  public static boolean getIntake() {
+    return mXboxController.getLeftBumper();
+  }
+
+  public static boolean getOnePiece() {
+    return mXboxController.getRightStickButton();
   }
 }
 
