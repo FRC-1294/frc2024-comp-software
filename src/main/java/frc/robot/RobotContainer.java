@@ -17,7 +17,7 @@ import frc.robot.subsystems.SwerveSubsystem;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final SwerveSubsystem mSwerveSubsystem = new SwerveSubsystem();
+  private final SwerveSubsystem mSwerveSubsystem = new SwerveSubsystem(new SwerveConfig());
   private final PoseEstimation mEstimation = new PoseEstimation(new PhotonCameras(), mSwerveSubsystem);
   
 

@@ -30,7 +30,7 @@ public class PoseEstimation extends SubsystemBase {
     mCameras = cams;
     mSwerve = swerve;
 
-    mPoseEstimator = new SwerveDrivePoseEstimator(SwerveConfig.SWERVE_KINEMATICS,
+    mPoseEstimator = new SwerveDrivePoseEstimator(swerve.getKinematics(),
         mSwerve.getRotation2d(), mSwerve.getModulePositions(), mSwerve.getRobotPose(),
         VisionConstants.STATE_STD_DEVS, VisionConstants.VISION_MEASUREMENTS_STD_DEVS);
     SmartDashboard.putData("Field", mField);

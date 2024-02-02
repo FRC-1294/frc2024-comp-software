@@ -10,7 +10,6 @@ import com.ctre.phoenix6.hardware.Pigeon2;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -38,20 +37,21 @@ public class SwerveSubsystem extends SubsystemBase {
   private PIDController chassisRotPID =  new PIDController(0.1, 0, 0);
   private PIDController chassisXPID = new PIDController(0.1, 0, 0);
   private PIDController chassisYPID = new PIDController(0.3, 0, 0);
-
+  private final SwerveConfig config;
   private ChassisSpeeds desiredChassisSpeeds = new ChassisSpeeds();
 
 
-  public SwerveSubsystem() {
+  public SwerveSubsystem(SwerveConfig configuration) {
     // Populating Instance Variables
 
     chassisRotPID.setTolerance(0.2);
     chassisXPID.setTolerance(0.2);
     chassisYPID.setTolerance(0.2);
     
-    mKinematics = SwerveConfig.SWERVE_KINEMATICS;
-    mPigeon2 = new Pigeon2(SwerveConfig.PIGEON_ID,"SWERVE_ENC");
-    mModules = SwerveConfig.SWERVE_MODULES;
+    config = configuration;
+    mKinematics = config.SWERVE_KINEMATICS;
+    mPigeon2 = new Pigeon2(config.PIGEON_ID,"SWERVE_ENC");
+    mModules = config.SWERVE_MODULES;
     mOdometry = new SwerveDriveOdometry(mKinematics, getRotation2d(), getModulePositions());
     resetGyro();
     resetRobotPose(new Pose2d());
@@ -138,6 +138,9 @@ public class SwerveSubsystem extends SubsystemBase {
     return -mPigeon2.getRate();
   }
 
+  public SwerveDriveKinematics getKinematics(){
+    return mKinematics;
+  }
 
   /**
    * this gets the Yaw degrees of the gyro in continuous input (360 == 0) CCW (with neg)
@@ -277,7 +280,7 @@ public class SwerveSubsystem extends SubsystemBase {
   public ChassisSpeeds getChassisSpeeds(){
     SwerveModuleState[] moduleStates = new SwerveModuleState[4];
     for (int i = 0; i<4; i++){
-      moduleStates[i] = SwerveConfig.SWERVE_MODULES[i].getState();
+      moduleStates[i] = config.SWERVE_MODULES[i].getState();
     }
     return mKinematics.toChassisSpeeds(moduleStates);
   }
