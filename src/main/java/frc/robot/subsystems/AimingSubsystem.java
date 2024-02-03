@@ -94,6 +94,8 @@ public class AimingSubsystem extends SubsystemBase {
     mElevatorControllerSlot0Configs.kP = AimingConstants.mElevatorPIDConstants.mKP;
     mElevatorControllerSlot0Configs.kI = AimingConstants.mElevatorPIDConstants.mKI;
     mElevatorControllerSlot0Configs.kD = AimingConstants.mElevatorPIDConstants.mKD;
+    mElevatorControllerSlot0Configs.kS = AimingConstants.mElevatorPIDConstants.mKS;
+    mElevatorControllerSlot0Configs.kV = AimingConstants.mElevatorPIDConstants.mKV;
 
     mLeftElevatorMotor.getConfigurator().apply(mElevatorControllerSlot0Configs);
     mRightElevatorMotor.getConfigurator().apply(mElevatorControllerSlot0Configs);
