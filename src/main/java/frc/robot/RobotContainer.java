@@ -6,7 +6,6 @@ package frc.robot;
 
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.robots.PracticeBotSwerveConfig;
-import frc.robot.subsystems.PhotonCameras;
 import frc.robot.subsystems.PoseEstimation;
 import frc.robot.subsystems.SwerveSubsystem;
 
@@ -19,7 +18,7 @@ import frc.robot.subsystems.SwerveSubsystem;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem mSwerveSubsystem = new SwerveSubsystem(new PracticeBotSwerveConfig());
-  private final PoseEstimation mEstimation = new PoseEstimation(new PhotonCameras(), mSwerveSubsystem);
+  private final PoseEstimation mEstimation = new PoseEstimation();
   
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -29,10 +28,6 @@ public class RobotContainer {
   }
   public SwerveSubsystem getSwerveSubsystem() {
       return mSwerveSubsystem;
-  }
-
-  public PoseEstimation getPoseEstimator(){
-    return mEstimation;
   }
 
 }

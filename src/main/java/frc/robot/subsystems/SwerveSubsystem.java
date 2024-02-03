@@ -24,12 +24,12 @@ import frc.robot.swerve.SwerveModuleAbstract;
 
 public class SwerveSubsystem extends SubsystemBase {
   /** Creates a new SwerveSubsystem. */
-  private final SwerveDriveKinematics mKinematics;
-  private final SwerveDriveOdometry mOdometry;
+  private static SwerveDriveKinematics mKinematics;
+  private static SwerveDriveOdometry mOdometry;
 
-  private final Pigeon2 mPigeon2;
+  private static Pigeon2 mPigeon2;
 
-  private final SwerveModuleAbstract[] mModules;
+  private static SwerveModuleAbstract[] mModules;
   private double mTargetSpeed = 0;
   private double mAvgSpeed = 0;
   private double maxSpeed = 0;
@@ -111,22 +111,22 @@ public class SwerveSubsystem extends SubsystemBase {
   /**
    * Sets the current YAW heading as the 0'd heading
    */
-  public void resetGyro() {
+  public static void resetGyro() {
     mPigeon2.reset();
   }
 
-  public void resetGyro(double yaw) {
+  public static void resetGyro(double yaw) {
     mPigeon2.setYaw(yaw);
   }
 
   /**
    * returns the rate of rotation from the pidgeon in deg/sec CCW positive
    */
-  public double getRate() {
+  public static double getRate() {
     return -mPigeon2.getRate();
   }
 
-  public SwerveDriveKinematics getKinematics(){
+  public static SwerveDriveKinematics getKinematics(){
     return mKinematics;
   }
 
@@ -135,7 +135,7 @@ public class SwerveSubsystem extends SubsystemBase {
    * 
    * @return the degrees at which the gyro is at
    */
-  public double getHeading() {
+  public static double getHeading() {
     return -mPigeon2.getAngle()%360;
   }
 
@@ -145,8 +145,7 @@ public class SwerveSubsystem extends SubsystemBase {
    * @return the Rotation2d of the gyro CCW POSITIVE(Unit Circle Rise UP)
    * @see Rotation2d
    */
-  public Rotation2d getRotation2d() {
-
+  public static Rotation2d getRotation2d() {
     return Rotation2d.fromDegrees(getHeading());
   }
 
@@ -175,7 +174,7 @@ public class SwerveSubsystem extends SubsystemBase {
    *         backright]
    * @see SwerveModulePosition
    */
-  public SwerveModulePosition[] getModulePositions() {
+  public static SwerveModulePosition[] getModulePositions() {
     SwerveModulePosition[] positions = new SwerveModulePosition[mModules.length];
 
     for (int i = 0; i < mModules.length; i++) {
@@ -265,10 +264,10 @@ public class SwerveSubsystem extends SubsystemBase {
     setModuleStates(moduleStates,true);
   }
 
-  public ChassisSpeeds getChassisSpeeds(){
+  public static ChassisSpeeds getChassisSpeeds(){
     SwerveModuleState[] moduleStates = new SwerveModuleState[4];
     for (int i = 0; i<4; i++){
-      moduleStates[i] = mConfig.SWERVE_MODULES[i].getState();
+      moduleStates[i] = mModules[i].getState();
     }
     return mKinematics.toChassisSpeeds(moduleStates);
   }
@@ -283,7 +282,7 @@ public class SwerveSubsystem extends SubsystemBase {
    * @param pose provide the new desired pose of the robot
    * @see Pose2d
    */
-  public void resetRobotPose(Pose2d pose) {
+  public static void resetRobotPose(Pose2d pose) {
     resetGyro(pose.getRotation().getDegrees());
     mOdometry.resetPosition(pose.getRotation(), getModulePositions(), pose);
   }
@@ -292,7 +291,7 @@ public class SwerveSubsystem extends SubsystemBase {
    * Resets pose to origin, keeps heading from gyro, keeps current module positions
    */
 
-  public void resetRobotPose() {
+  public static void resetRobotPose() {
     mOdometry.resetPosition(getRotation2d(), getModulePositions(), new Pose2d());
   }
 
@@ -300,7 +299,7 @@ public class SwerveSubsystem extends SubsystemBase {
   /**
    * @return provide the pose of the robot in meters
    */
-  public Pose2d getRobotPose() {
+  public static Pose2d getRobotPose() {
     return mOdometry.getPoseMeters();
   }
 

@@ -5,20 +5,14 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-import com.pathplanner.lib.util.PIDConstants;
-import com.pathplanner.lib.util.ReplanningConfig;
 import com.revrobotics.CANSparkLowLevel;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
-import frc.robot.commands.FollowPath;
 import frc.robot.commands.InitializePathPlanner;
 import frc.robot.commands.kS_Characterization;
 import frc.robot.commands.kV_Characterization;
@@ -46,31 +40,17 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     SmartDashboard.putData("Pick your Auton...",pathSelector);
     m_robotContainer = new RobotContainer();
-    // AutoBuilder.configureHolonomic(
-    // m_robotContainer.getSwerveSubsystem()::getRobotPose, 
-    // (Pose2d pose)->m_robotContainer.getSwerveSubsystem().resetRobotPose(pose),
-    // m_robotContainer.getSwerveSubsystem()::getChassisSpeeds, 
-    // (ChassisSpeeds speeds)->m_robotContainer.getSwerveSubsystem().setChassisSpeed(speeds),
-    // new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in
-    //                                   // your Constants class
-    //       new PIDConstants(3.0, 0.0, 0.0), // Translation PID constants
-    //       new PIDConstants(3.0, 0.0, 0.0), // Rotation PID constants
-    //       4.5, // Max module speed, in m/s
-    //       0.4669, // Drive base radius in meters. Distance from robot center to furthest module.
-    //       new ReplanningConfig() // Default path replanning config. See the API for the options
-    //                           // here
-                              
-    // ), ()->false, m_robotContainer.getSwerveSubsystem());
-    new InitializePathPlanner(m_robotContainer.getSwerveSubsystem(), m_robotContainer.getPoseEstimator()).initialize();
+    
+    new InitializePathPlanner(m_robotContainer.getSwerveSubsystem()).initialize();
 
-    pathSelector.addOption("5_meter_return", new FollowPath(m_robotContainer.getSwerveSubsystem(), m_robotContainer.getPoseEstimator(), "5_Meter_Return"));
-    pathSelector.addOption("Simpy", new FollowPath(m_robotContainer.getSwerveSubsystem(), m_robotContainer.getPoseEstimator(), "Simpy"));
-    pathSelector.addOption("2_meter", new FollowPath(m_robotContainer.getSwerveSubsystem(), m_robotContainer.getPoseEstimator(), "2_Meter"));
+    pathSelector.addOption("5_meter_return", AutoBuilder.buildAuto("5_meter_return"));
+    pathSelector.addOption("Simpy", AutoBuilder.buildAuto("Simpy"));
+    pathSelector.addOption("2_meter", AutoBuilder.buildAuto("2_meter"));
     pathSelector.addOption("None", new PrintCommand("Damn that sucks"));
     pathSelector.addOption("kSCharacterization", new kS_Characterization(m_robotContainer.getSwerveSubsystem()));
     pathSelector.addOption("kVCharacterization", new kV_Characterization(m_robotContainer.getSwerveSubsystem()));
-    pathSelector.addOption("Goofy Loop", new FollowPath(m_robotContainer.getSwerveSubsystem(), m_robotContainer.getPoseEstimator(), "Goofy Loop"));
-    pathSelector.addOption("3_Piece_Dynamic", new FollowPath(m_robotContainer.getSwerveSubsystem(), m_robotContainer.getPoseEstimator(), "3_Piece_Dynamic"));
+    pathSelector.addOption("Goofy Loop", AutoBuilder.buildAuto("Goofy Loop"));
+    pathSelector.addOption("3_Piece_Dynamic", AutoBuilder.buildAuto("3_Piece_Dynamic"));
   }
 
   /**

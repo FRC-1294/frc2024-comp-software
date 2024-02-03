@@ -15,30 +15,26 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.CompConstants;
 import frc.robot.constants.VisionConstants;
-import frc.robot.robots.PracticeBotSwerveConfig;
 
 
 
 public class PoseEstimation extends SubsystemBase {
-  private final PhotonCameras mCameras;
-  private final SwerveSubsystem mSwerve;
-  private final SwerveDrivePoseEstimator mPoseEstimator;
+  
+  private final PhotonCameras mCameras = new PhotonCameras();
+
+  private final SwerveDrivePoseEstimator mPoseEstimator = new SwerveDrivePoseEstimator(SwerveSubsystem.getKinematics(),
+        SwerveSubsystem.getRotation2d(), SwerveSubsystem.getModulePositions(), SwerveSubsystem.getRobotPose(),
+        VisionConstants.STATE_STD_DEVS, VisionConstants.VISION_MEASUREMENTS_STD_DEVS);
+
   private final Field2d mField = new Field2d();
 
-
-  public PoseEstimation(PhotonCameras cams, SwerveSubsystem swerve) {
-    mCameras = cams;
-    mSwerve = swerve;
-
-    mPoseEstimator = new SwerveDrivePoseEstimator(swerve.getKinematics(),
-        mSwerve.getRotation2d(), mSwerve.getModulePositions(), mSwerve.getRobotPose(),
-        VisionConstants.STATE_STD_DEVS, VisionConstants.VISION_MEASUREMENTS_STD_DEVS);
+  public PoseEstimation() {
     SmartDashboard.putData("Field", mField);
   }
 
   @Override
   public void periodic() {
-    mPoseEstimator.update(mSwerve.getRotation2d(), mSwerve.getModulePositions());
+    mPoseEstimator.update(SwerveSubsystem.getRotation2d(), SwerveSubsystem.getModulePositions());
     updateVision();
 
     Pose2d pose = mPoseEstimator.getEstimatedPosition();
@@ -112,12 +108,12 @@ public class PoseEstimation extends SubsystemBase {
   }
 
   public void resetPose() {
-    mPoseEstimator.resetPosition(mSwerve.getRotation2d(), mSwerve.getModulePositions(),
+    mPoseEstimator.resetPosition(SwerveSubsystem.getRotation2d(), SwerveSubsystem.getModulePositions(),
         new Pose2d());
   }
 
   public void resetPose(Pose2d pose) {
-    mPoseEstimator.resetPosition(mSwerve.getRotation2d(), mSwerve.getModulePositions(), pose);
+    mPoseEstimator.resetPosition(SwerveSubsystem.getRotation2d(), SwerveSubsystem.getModulePositions(), pose);
   }
 
 }
