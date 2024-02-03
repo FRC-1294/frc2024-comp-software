@@ -17,7 +17,8 @@ public class CompetitionBotSwerveConfig {
         public CompetitionBotSwerveConfig() {
 
         }
-
+        public static final double TRACK_WIDTH_METERS = .495;
+        public static final double TRACK_LENGTH_METERS = .495;
         // ID's
         // Encoder IDs have been set
         private final int FRONT_LEFT_TRANS_ID = 1;
@@ -55,17 +56,17 @@ public class CompetitionBotSwerveConfig {
 
         // Swerve Module Locations
         public final Translation2d FRONT_LEFT_COORDS_METERS =
-                        new Translation2d(SwerveConstants.TRACK_LENGTH_METERS / 2,
-                                        SwerveConstants.TRACK_WIDTH_METERS / 2);
+                        new Translation2d(TRACK_LENGTH_METERS / 2,
+                                        TRACK_WIDTH_METERS / 2);
         public final Translation2d FRONT_RIGHT_COORDS_METERS =
-                        new Translation2d(SwerveConstants.TRACK_LENGTH_METERS / 2,
-                                        -SwerveConstants.TRACK_WIDTH_METERS / 2);
+                        new Translation2d(TRACK_LENGTH_METERS / 2,
+                                        -TRACK_WIDTH_METERS / 2);
         public final Translation2d BACK_LEFT_COORDS_METERS =
-                        new Translation2d(-SwerveConstants.TRACK_LENGTH_METERS / 2,
-                                        SwerveConstants.TRACK_WIDTH_METERS / 2);
+                        new Translation2d(-TRACK_LENGTH_METERS / 2,
+                                        TRACK_WIDTH_METERS / 2);
         public final Translation2d BACK_RIGHT_COORDS_METERS =
-                        new Translation2d(-SwerveConstants.TRACK_LENGTH_METERS / 2,
-                                        -SwerveConstants.TRACK_WIDTH_METERS / 2);
+                        new Translation2d(-TRACK_LENGTH_METERS / 2,
+                                        -TRACK_WIDTH_METERS / 2);
 
         // PID Controllers
         public final PIDConstants FRONT_LEFT_ROT_PID = new PIDConstants(0.35, 0, 0);

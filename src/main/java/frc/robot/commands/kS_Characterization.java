@@ -6,13 +6,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.SwerveModule;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.swerve.RevSwerveModule;
 
 public class kS_Characterization extends Command {
   /** Creates a new kS_Characterization. */
   private final SwerveSubsystem mSwerve;
-  private final SwerveModule[] mModules;
+  private final RevSwerveModule[] mModules;
   private double [] expkS = new double[4];
   private boolean [] modLock = {false,false,false,false};
   private double curRequestedDutyCycle = 0;

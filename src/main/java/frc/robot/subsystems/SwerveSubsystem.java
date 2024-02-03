@@ -18,10 +18,10 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.SwerveConfig;
-import frc.robot.RevSwerveModule;
 import frc.robot.constants.CompConstants;
 import frc.robot.constants.SwerveConstants;
+import frc.robot.robots.PracticeBotSwerveConfig;
+import frc.robot.swerve.RevSwerveModule;
 
 public class SwerveSubsystem extends SubsystemBase {
   /** Creates a new SwerveSubsystem. */
@@ -37,11 +37,11 @@ public class SwerveSubsystem extends SubsystemBase {
   private PIDController chassisRotPID =  new PIDController(0.1, 0, 0);
   private PIDController chassisXPID = new PIDController(0.1, 0, 0);
   private PIDController chassisYPID = new PIDController(0.3, 0, 0);
-  private final SwerveConfig config;
+  private final PracticeBotSwerveConfig config;
   private ChassisSpeeds desiredChassisSpeeds = new ChassisSpeeds();
 
 
-  public SwerveSubsystem(SwerveConfig configuration) {
+  public SwerveSubsystem(PracticeBotSwerveConfig configuration) {
     // Populating Instance Variables
 
     chassisRotPID.setTolerance(0.2);
