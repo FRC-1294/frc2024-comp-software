@@ -16,11 +16,9 @@ public class Input {
 
   private static final Joystick mRotJoystick = new Joystick(JoystickConstants.ROT_JOYSTICK_PORT);
   private static final Joystick mTransJoystick = new Joystick(JoystickConstants.TRANS_JOY_PORT);
-  private static final XboxController mXboxController = new XboxController(JoystickConstants.XBOX_CONTROLLER_PORT);
-
+  
   private static final XboxController mControllerXbox =
     new XboxController(JoystickConstants.XBOX_PORT);
-
 
   public static final int DPADUP = 0;
   public static final int DPADRIGHT = 90;
@@ -88,6 +86,11 @@ public class Input {
     return mRotJoystick.getX();
   }
 
+
+  public static double getDPad() {
+    return mControllerXbox.getPOV();
+  }
+
   public static boolean getResetGyro() {
     return mRotJoystick.getRawButton(3);
   }
@@ -109,11 +112,11 @@ public class Input {
   }
 
   public static boolean getIntake() {
-    return mXboxController.getLeftBumper();
+    return mControllerXbox.getLeftBumper();
   }
 
   public static boolean getOnePiece() {
-    return mXboxController.getRightStickButton();
+    return mControllerXbox.getRightStickButton();
   }
 }
 

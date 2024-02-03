@@ -13,6 +13,7 @@ public class JoystickConstants {
     public static final int ROT_JOYSTICK_PORT = 0;
     public static final int XBOX_CONTROLLER_PORT = 1;
     public static final int TRANS_JOY_PORT = 2;
+
     public static final int XBOX_PORT = 1; //TBD https://github.com/FRC-1294/frc2024/issues/241
 
     public static final double DRIVE_PRECISION_X_DESATURATION = 3;
@@ -27,5 +28,8 @@ public class JoystickConstants {
     public static final double DRIVE_REG_Y_DEADZONE = 0.10;
     public static final double DRIVE_REG_ROT_DEADZONE = 0.15;
 
+    //Maximum value the joysticks can output, need to be calculated. TODO
+    public static final double MAX_XBOX_JOYSTICK_L_MAGNITUDE = 0;
+    public static final double MAX_XBOX_JOYSTICK_R_MAGNITUDE = 0;
 
 }
