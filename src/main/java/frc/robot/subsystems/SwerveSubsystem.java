@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.CompConstants;
 import frc.robot.robots.PracticeBotSwerveConfig;
+import frc.robot.robots.SwerveConfig;
 import frc.robot.swerve.SwerveModuleAbstract;
 
 public class SwerveSubsystem extends SubsystemBase {
@@ -36,11 +37,11 @@ public class SwerveSubsystem extends SubsystemBase {
   private PIDController chassisRotPID =  new PIDController(0.1, 0, 0);
   private PIDController chassisXPID = new PIDController(0.1, 0, 0);
   private PIDController chassisYPID = new PIDController(0.3, 0, 0);
-  public final PracticeBotSwerveConfig mConfig;
+  public final SwerveConfig mConfig;
   private ChassisSpeeds desiredChassisSpeeds = new ChassisSpeeds();
 
 
-  public SwerveSubsystem(PracticeBotSwerveConfig configuration) {
+  public SwerveSubsystem(SwerveConfig configuration) {
     // Populating Instance Variables
 
     chassisRotPID.setTolerance(0.2);
@@ -49,7 +50,7 @@ public class SwerveSubsystem extends SubsystemBase {
     
     mConfig = configuration;
     mKinematics = mConfig.SWERVE_KINEMATICS;
-    mPigeon2 = new Pigeon2(mConfig.PIGEON_ID,"SWERVE_ENC");
+    mPigeon2 = mConfig.PIGEON;
     mModules = mConfig.SWERVE_MODULES;
     mOdometry = new SwerveDriveOdometry(mKinematics, getRotation2d(), getModulePositions());
     resetGyro();

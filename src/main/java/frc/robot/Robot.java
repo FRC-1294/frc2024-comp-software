@@ -43,14 +43,14 @@ public class Robot extends TimedRobot {
     
     new InitializePathPlanner(m_robotContainer.getSwerveSubsystem()).initialize();
 
-    pathSelector.addOption("5_meter_return", AutoBuilder.buildAuto("5_meter_return"));
-    pathSelector.addOption("Simpy", AutoBuilder.buildAuto("Simpy"));
-    pathSelector.addOption("2_meter", AutoBuilder.buildAuto("2_meter"));
-    pathSelector.addOption("None", new PrintCommand("Damn that sucks"));
-    pathSelector.addOption("kSCharacterization", new kS_Characterization(m_robotContainer.getSwerveSubsystem()));
-    pathSelector.addOption("kVCharacterization", new kV_Characterization(m_robotContainer.getSwerveSubsystem()));
-    pathSelector.addOption("Goofy Loop", AutoBuilder.buildAuto("Goofy Loop"));
-    pathSelector.addOption("3_Piece_Dynamic", AutoBuilder.buildAuto("3_Piece_Dynamic"));
+    // pathSelector.addOption("5_meter_return", AutoBuilder.buildAuto("5_Meter_Return"));
+    // pathSelector.addOption("Simpy", AutoBuilder.buildAuto("Simpy"));
+    // pathSelector.addOption("2_meter", AutoBuilder.buildAuto("2_meter"));
+    // pathSelector.addOption("None", new PrintCommand("Damn that sucks"));
+    // pathSelector.addOption("kSCharacterization", new kS_Characterization(m_robotContainer.getSwerveSubsystem()));
+    // pathSelector.addOption("kVCharacterization", new kV_Characterization(m_robotContainer.getSwerveSubsystem()));
+    // pathSelector.addOption("Goofy Loop", AutoBuilder.buildAuto("Goofy Loop"));
+    // pathSelector.addOption("3_Piece_Dynamic", AutoBuilder.buildAuto("3_Piece_Dynamic"));
   }
 
   /**
