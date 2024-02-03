@@ -9,13 +9,13 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.subsystems.Input;
-import frc.robot.subsystems.Launcher;
+import frc.robot.subsystems.LauncherSubsystem;
 
 public class DefaultLauncherCommand extends Command {
 
-  private final Launcher mLauncher;
+  private final LauncherSubsystem mLauncher;
 
-  public DefaultLauncherCommand(Launcher launcher) {
+  public DefaultLauncherCommand(LauncherSubsystem launcher) {
     mLauncher = launcher;
     addRequirements(mLauncher);
   }
@@ -28,46 +28,21 @@ public class DefaultLauncherCommand extends Command {
   @Override
   public void execute() {
     if (Input.getY()) { //TBD https://github.com/FRC-1294/frc2024/issues/241
-      SequentialCommandGroup command = new SequentialCommandGroup(
-
-      new InstantCommand(
-          mLauncher::stopLauncher, mLauncher
-      ));
-      command.schedule();
+      mLauncher.stopLauncher();
     }
     //speaker
     else if (Input.getA()) { //TBD https://github.com/FRC-1294/frc2024/issues/241
-      SequentialCommandGroup command = new SequentialCommandGroup(
-
-      new InstantCommand(
-          () -> mLauncher.setLauncherMode(LauncherMode.SPEAKER), mLauncher)
-      );
-      command.schedule();
+      mLauncher.setLauncherMode(LauncherMode.SPEAKER);
     } 
     //amp
     else if (Input.getB()) { //TBD https://github.com/FRC-1294/frc2024/issues/241
-      SequentialCommandGroup command = new SequentialCommandGroup(
-
-      new InstantCommand(
-          () -> mLauncher.setLauncherMode(LauncherMode.AMP), mLauncher)
-      );
-      command.schedule();
+      mLauncher.setLauncherMode(LauncherMode.AMP);
     }
     else if (Input.getX()) { //TBD https://github.com/FRC-1294/frc2024/issues/241
-      SequentialCommandGroup command = new SequentialCommandGroup(
-
-      new InstantCommand(
-          () -> mLauncher.setLauncherMode(LauncherMode.TRAP), mLauncher)
-      );
-      command.schedule();
+      mLauncher.setLauncherMode(LauncherMode.TRAP);
     }
     else if (Input.getLeftBumper()) { //TBD https://github.com/FRC-1294/frc2024/issues/241
-      SequentialCommandGroup command = new SequentialCommandGroup(
-
-      new InstantCommand(
-          () -> mLauncher.turnIndexerOn(!mLauncher.isIndexerOn()), mLauncher) //reverse current state
-      );
-      command.schedule();
+      mLauncher.turnIndexerOn(!mLauncher.isIndexerOn());
     }
   }
 
