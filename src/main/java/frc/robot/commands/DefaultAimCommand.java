@@ -44,15 +44,15 @@ public class DefaultAimCommand extends Command {
     mAimingSubsystem.setDesiredSetpoint(state);
 
     if (Math.abs(Input.getLeftStickY()) > 0) {
-      //convert between input to motor speed
-      double speed = Input.getLeftStickY() / JoystickConstants.MAX_XBOX_JOYSTICK_L_MAGNITUDE * AimingConstants.MAX_WRIST_ROTATION_VELOCITY;
-      mAimingSubsystem.changeDesiredWristRotation(speed);
+      //convert between input to increment
+      double increment = Input.getLeftStickY() * AimingConstants.MAX_ELEVATOR_TELEOP_INCREMENT;
+      mAimingSubsystem.changeDesiredWristRotation(increment);
     }
     
     if (Math.abs(Input.getRightStickY()) > 0) {
-      //convert between input to motor speed
-      double speed = Input.getRightStickY() / JoystickConstants.MAX_XBOX_JOYSTICK_R_MAGNITUDE * AimingConstants.MAX_ELEVATOR_EXTENSION_VELOCITY;
-      mAimingSubsystem.changeDesiredElevatorPosition((speed));
+      //convert between input to increment
+      double increment = Input.getRightStickY() * AimingConstants.MAX_WRIST_TELEOP_INCREMENT;
+      mAimingSubsystem.changeDesiredElevatorPosition(increment);
     }
   }
 
