@@ -60,13 +60,14 @@ public class AimingSubsystem extends SubsystemBase {
   private final SendableChooser<AimingMotorMode> mChooser = new SendableChooser<>();
 
   // PID Controllers and Motor Configs
-  //Slot0Configs mElevatorController = new Slot0Configs();
-  //ElevatorFeedforward mElevatorFeedforward = new ElevatorFeedforward(AimingConstants.mElevatorPIDConstants.mKS, AimingConstants.mElevatorkG, AimingConstants.mElevatorPIDConstants.mKS);
+  Slot0Configs mElevatorControllerSlot0Configs = new Slot0Configs();
+  // ElevatorFeedforward mElevatorFeedforward = new ElevatorFeedforward(AimingConstants.mElevatorPIDConstants.mKS, AimingConstants.mElevatorkG, AimingConstants.mElevatorPIDConstants.mKS);
   
   PIDController mElevatorController = AimingConstants.mElevatorPIDConstants.toWPIController();  
-  
-  PIDController mWristController = AimingConstants.mWristPIDConstants.toWPIController();  
+  PIDController mWristController = AimingConstants.mWristPIDConstants.toWPIController();
+
   ArmFeedforward mWristFeedforwardController = new ArmFeedforward(AimingConstants.mWristPIDConstants.mKS, AimingConstants.mWristkG, AimingConstants.mWristPIDConstants.mKS);
+  ElevatorFeedforward mElevatorFeedforward = new ElevatorFeedforward(AimingConstants.mElevatorPIDConstants.mKS, AimingConstants.mElevatorkG, AimingConstants.mElevatorPIDConstants.mKV);
 
   MotorOutputConfigs mLeftWristMotorOutputConfigs = new MotorOutputConfigs();
   MotorOutputConfigs mRightWristMotorOutputConfigs = new MotorOutputConfigs();
@@ -88,15 +89,14 @@ public class AimingSubsystem extends SubsystemBase {
   public void configureDevices() {
 
     //initialize PID Controller Constants
-    mElevatorController.kP = AimingConstants.mElevatorPIDConstants.mKP;
-    mElevatorController.kI = AimingConstants.mElevatorPIDConstants.mKI;
-    mElevatorController.kD = AimingConstants.mElevatorPIDConstants.mKD;
-    mElevatorController.kS = AimingConstants.mElevatorPIDConstants.mKS;
-    mElevatorController.kV = AimingConstants.mElevatorPIDConstants.mKV;
+    mElevatorController.setPID(AimingConstants.mElevatorPIDConstants.mKP, AimingConstants.mElevatorPIDConstants.mKI, AimingConstants.mElevatorPIDConstants.mKD);
 
+    mElevatorControllerSlot0Configs.kP = AimingConstants.mElevatorPIDConstants.mKP;
+    mElevatorControllerSlot0Configs.kI = AimingConstants.mElevatorPIDConstants.mKI;
+    mElevatorControllerSlot0Configs.kD = AimingConstants.mElevatorPIDConstants.mKD;
 
-    mLeftElevatorMotor.getConfigurator().apply(mElevatorController);
-    mRightElevatorMotor.getConfigurator().apply(mElevatorController);
+    mLeftElevatorMotor.getConfigurator().apply(mElevatorControllerSlot0Configs);
+    mRightElevatorMotor.getConfigurator().apply(mElevatorControllerSlot0Configs);
     
     mWristController = AimingConstants.mWristPIDConstants.toWPIController();
     //note: configuration uses internal encoders inside the motors, subject to change

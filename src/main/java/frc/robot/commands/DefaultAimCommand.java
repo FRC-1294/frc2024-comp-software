@@ -41,6 +41,7 @@ public class DefaultAimCommand extends Command {
     else if (Input.getX()) {
       state = AimState.CLIMB;
     }
+    
     mAimingSubsystem.setDesiredSetpoint(state);
 
     if (Math.abs(Input.getLeftStickY()) > 0) {
