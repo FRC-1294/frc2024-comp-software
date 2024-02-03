@@ -1,24 +1,15 @@
 package frc.robot.swerve;
 
-import com.ctre.phoenix6.hardware.CANcoder;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkPIDController;
-import com.revrobotics.CANSparkBase.ControlType;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.SparkPIDController.ArbFFUnits;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.Timer;
-import frc.robot.Util;
 import frc.robot.Util.PIDConstants;
-import frc.robot.constants.SwerveConstants;
 
+/*
+    This is a wrapper class that serves both as an abstract class and a parent class to the Rev and Kraken Swerve Module classes
+ */
  public class SwerveModuleAbstract{
     // Parameters
     protected final int mRotID;
@@ -42,9 +33,7 @@ import frc.robot.constants.SwerveConstants;
             mRotPID = rotPID.toWPIController();
             mTransPID = transPID.toWPIController();
             mTransFF = transPID.toWPIMotorFeedForward();
-
-
-    }
+        }
 
 
     /**
@@ -70,6 +59,7 @@ import frc.robot.constants.SwerveConstants;
     public void setRotMotorRaw(double speed){};
 
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop){};
+
     /**
      * Sets the motor speeds passed into constructor
      * 
@@ -126,7 +116,14 @@ import frc.robot.constants.SwerveConstants;
      * @return Returns the applied voltage to the translation motor after nominal voltage
      *         compensation
      */
-    public double getTransAppliedVolts(){return -999999.9999;}
+    public double getTransAppliedVolts (){return -999999.9999;}
+
+    /**
+     * 
+     * @return Returns the applied voltage to the translation motor after nominal voltage
+     *         compensation
+     */
+    public double getTransNominalVoltage(){return -999999.9999;}
 
     /**
      * Reset ONLY the translation encoder

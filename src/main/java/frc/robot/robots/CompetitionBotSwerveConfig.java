@@ -6,10 +6,7 @@ package frc.robot.robots;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import frc.robot.constants.SwerveConstants;
 import frc.robot.swerve.KrakenSwerveModule;
-import frc.robot.swerve.RevSwerveModule;
-import frc.robot.Util;
 import frc.robot.Util.PIDConstants;
 
 /** Add your docs here. */
@@ -17,8 +14,29 @@ public class CompetitionBotSwerveConfig {
         public CompetitionBotSwerveConfig() {
 
         }
+
+        public static final double TRANS_GEAR_RATIO_ROT = 1 / 6.75;
+        public static final double REL_ENC_GEAR_RATIO_ROT = 1 / 12.8;
+        public static final double ABS_ENC_GEAR_RATIO_ROT = 1;
+      
+        // Conversion Factors
+        public static final double WHEEL_DIAMETER_METERS = .1016;
+        public static final double WHEEL_CIRCUMFERENCE_METERS = Math.PI * WHEEL_DIAMETER_METERS;
+        public static final double TRANS_RPM_TO_MPS =
+            (TRANS_GEAR_RATIO_ROT * WHEEL_CIRCUMFERENCE_METERS) / 60;
+      
+        // Physical Max
+        public static final double PHYSICAL_MAX_SPEED_MPS = 4.625;
+      
+        public static final double TELE_MAX_SPEED_MPS = 4.625;
+        public static final double TELE_MAX_ROT_SPEED_RAD_SEC = 2 * Math.PI;
+      
+        public static final double TELE_MAX_ACC_MPS2 = 5.0;
+        public static final double TELE_MAX_ROT_ACC_RAD_SEC2 = 4 * Math.PI;
+
         public static final double TRACK_WIDTH_METERS = .495;
         public static final double TRACK_LENGTH_METERS = .495;
+
         // ID's
         // Encoder IDs have been set
         private final int FRONT_LEFT_TRANS_ID = 1;
@@ -93,19 +111,23 @@ public class CompetitionBotSwerveConfig {
         // Swerve Modules and Other Hardware
         public final KrakenSwerveModule FRONT_LEFT_MODULE = new KrakenSwerveModule(FRONT_LEFT_ROT_ID,
                         FRONT_LEFT_TRANS_ID, FRONT_LEFT_ROT_ENC_ID, FRONT_LEFT_ROT_INVERSE,
-                        FRONT_LEFT_TRANS_INVERSE, FRONT_LEFT_ROT_PID,FRONT_LEFT_TRANS_CARPET_PID);
+                        FRONT_LEFT_TRANS_INVERSE, FRONT_LEFT_ROT_PID,FRONT_LEFT_TRANS_CARPET_PID,TRANS_GEAR_RATIO_ROT,
+                        WHEEL_CIRCUMFERENCE_METERS,PHYSICAL_MAX_SPEED_MPS,ABS_ENC_GEAR_RATIO_ROT,REL_ENC_GEAR_RATIO_ROT);
 
         public final KrakenSwerveModule FRONT_RIGHT_MODULE = new KrakenSwerveModule(FRONT_RIGHT_ROT_ID,
                         FRONT_RIGHT_TRANS_ID, FRONT_RIGHT_ROT_ENC_ID, FRONT_RIGHT_ROT_INVERSE,
-                        FRONT_RIGHT_TRANS_INVERSE, FRONT_RIGHT_ROT_PID,FRONT_RIGHT_TRANS_CARPET_PID);
+                        FRONT_RIGHT_TRANS_INVERSE, FRONT_RIGHT_ROT_PID,FRONT_RIGHT_TRANS_CARPET_PID,TRANS_GEAR_RATIO_ROT,
+                        WHEEL_CIRCUMFERENCE_METERS,PHYSICAL_MAX_SPEED_MPS,ABS_ENC_GEAR_RATIO_ROT,REL_ENC_GEAR_RATIO_ROT);
 
         public final KrakenSwerveModule BACK_LEFT_MODULE = new KrakenSwerveModule(BACK_LEFT_ROT_ID,
-                BACK_LEFT_TRANS_ID, BACK_LEFT_ROT_ENC_ID, BACK_LEFT_ROT_INVERSE,
-                BACK_LEFT_TRANS_INVERSE, BACK_LEFT_ROT_PID,BACK_LEFT_TRANS_CARPET_PID);
+                        BACK_LEFT_TRANS_ID, BACK_LEFT_ROT_ENC_ID, BACK_LEFT_ROT_INVERSE,
+                        BACK_LEFT_TRANS_INVERSE, BACK_LEFT_ROT_PID,BACK_LEFT_TRANS_CARPET_PID,TRANS_GEAR_RATIO_ROT,
+                        WHEEL_CIRCUMFERENCE_METERS,PHYSICAL_MAX_SPEED_MPS,ABS_ENC_GEAR_RATIO_ROT,REL_ENC_GEAR_RATIO_ROT);
 
         public final KrakenSwerveModule BACK_RIGHT_MODULE = new KrakenSwerveModule(BACK_RIGHT_ROT_ID,
                         BACK_RIGHT_TRANS_ID, BACK_RIGHT_ROT_ENC_ID, BACK_RIGHT_ROT_INVERSE,
-                        BACK_RIGHT_TRANS_INVERSE, BACK_RIGHT_ROT_PID,BACK_RIGHT_TRANS_CARPET_PID);
+                        BACK_RIGHT_TRANS_INVERSE, BACK_RIGHT_ROT_PID,BACK_RIGHT_TRANS_CARPET_PID,TRANS_GEAR_RATIO_ROT,
+                        WHEEL_CIRCUMFERENCE_METERS,PHYSICAL_MAX_SPEED_MPS,ABS_ENC_GEAR_RATIO_ROT,REL_ENC_GEAR_RATIO_ROT);
 
 
         public final KrakenSwerveModule[] SWERVE_MODULES = {FRONT_LEFT_MODULE, FRONT_RIGHT_MODULE,

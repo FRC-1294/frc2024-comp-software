@@ -7,7 +7,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.JoystickConstants;
-import frc.robot.constants.SwerveConstants;
 import frc.robot.subsystems.Input;
 import frc.robot.subsystems.SwerveSubsystem;
 
@@ -56,14 +55,14 @@ public class DefaultDriveCommand extends Command {
       rot = Math.abs(rot) > JoystickConstants.DRIVE_REG_ROT_DEADZONE ? rot : 0.0;
 
       if (Math.abs(x) > JoystickConstants.DRIVE_REG_X_DEADZONE) {
-        xMove += 0.0005 * Math.signum(x)*SwerveConstants.TELE_MAX_SPEED_MPS;
+        xMove += 0.0005 * Math.signum(x)*mSwerve.mConfig.TELE_MAX_SPEED_MPS;
         SmartDashboard.putNumber("xMove", xMove);
       }
     }
 
-    x *= SwerveConstants.TELE_MAX_SPEED_MPS;
-    y *= SwerveConstants.TELE_MAX_SPEED_MPS;
-    rot *= SwerveConstants.TELE_MAX_ROT_SPEED_RAD_SEC;
+    x *= mSwerve.mConfig.TELE_MAX_SPEED_MPS;
+    y *= mSwerve.mConfig.TELE_MAX_SPEED_MPS;
+    rot *= mSwerve.mConfig.TELE_MAX_ROT_SPEED_RAD_SEC;
 
     mSwerve.setChassisSpeed(x, y, rot,true, true);
   }

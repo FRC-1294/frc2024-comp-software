@@ -9,11 +9,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.swerve.RevSwerveModule;
+import frc.robot.swerve.SwerveModuleAbstract;
 
 public class kV_Characterization extends Command {
   /** Creates a new kV_Characterization. */
   private final SwerveSubsystem mSwerve;
-  private final RevSwerveModule[] mModules;
+  private final SwerveModuleAbstract[] mModules;
   private final Timer mTimer = new Timer();
   private final double targVelMPS = 1;
   private double increment = 0;
@@ -46,7 +47,7 @@ public class kV_Characterization extends Command {
 
         sampleNo += 1;
         for(int i = 0; i<4; i++){
-            double curkV = (mModules[i].getTransAppliedVolts()/mModules[i].getTranslationNominalVoltage())/mModules[i].getTransVelocity();
+            double curkV = (mModules[i].getTransAppliedVolts()/mModules[i].getTransNominalVoltage())/mModules[i].getTransVelocity();
             expkV[i] = (expkV[i]*(sampleNo-1)+curkV)/sampleNo;
             SmartDashboard.putNumber("avgkV"+i, expkV[i]);
         }

@@ -3,21 +3,14 @@ package frc.robot.swerve;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkPIDController;
-import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.SparkPIDController.ArbFFUnits;
-
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
-import frc.robot.Util;
 import frc.robot.Util.PIDConstants;
-import frc.robot.constants.SwerveConstants;
 
 public class RevSwerveModule extends SwerveModuleAbstract{
 
@@ -29,6 +22,9 @@ public class RevSwerveModule extends SwerveModuleAbstract{
     private final CANcoder mRotEncoder;
     private final RelativeEncoder mTransEncoder;
     private final RelativeEncoder mRotRelativeEncoder;
+    private final double mPhysicalMaxSpeedMPS;
+    private final double mAbsEncoderGearRatio;
+    private final double mRelEncoderGearRatio;
     
 
     // Public Debugging Values
@@ -42,12 +38,14 @@ public class RevSwerveModule extends SwerveModuleAbstract{
     public double feedforward=0;
 
     public RevSwerveModule(int rotID, int transID, int rotEncoderID, boolean rotInverse,
-            boolean transInverse, PIDConstants rotPID, PIDConstants transPID) {
+    boolean transInverse, PIDConstants rotPID, PIDConstants transPID, double transGearRatio,
+    double wheelCircumference, double physicalMaxSpeed, double absEncGearRatio, double relEncoderGearRatio) {
         // Setting Parameters
     
         super(rotID, transID, rotEncoderID, rotInverse, transInverse, rotPID, transPID);
-
-        // mFeedforward.calculate(transID, rotEncoderID);
+        mPhysicalMaxSpeedMPS = physicalMaxSpeed;
+        mAbsEncoderGearRatio = absEncGearRatio;
+        mRelEncoderGearRatio = relEncoderGearRatio;
 
         // ----Setting Hardware
         // Motor Controllers
@@ -75,8 +73,8 @@ public class RevSwerveModule extends SwerveModuleAbstract{
         mTransEncoder.setPosition(0);
 
         mTransMotor.enableVoltageCompensation(12);
-        mTransEncoder.setPositionConversionFactor(SwerveConstants.TRANS_RPM_TO_MPS * 60);
-        mTransEncoder.setVelocityConversionFactor(SwerveConstants.TRANS_RPM_TO_MPS);
+        mTransEncoder.setPositionConversionFactor(transGearRatio*wheelCircumference);
+        mTransEncoder.setVelocityConversionFactor(transGearRatio*wheelCircumference/60);
         mTransEncoder.setPosition(0);
 
         burnSparks();
@@ -135,7 +133,7 @@ public class RevSwerveModule extends SwerveModuleAbstract{
             desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
 
             mDesiredVel = desiredState.speedMetersPerSecond;
-            mTransMotor.set(mDesiredVel/SwerveConstants.PHYSICAL_MAX_SPEED_MPS);
+            mTransMotor.set(mDesiredVel/mPhysicalMaxSpeedMPS);
 
             mDesiredRadians = desiredState.angle.getRadians();
             mPIDOutput = mRotPID.calculate(getRotPosition(), desiredState.angle.getRadians());
@@ -172,9 +170,9 @@ public class RevSwerveModule extends SwerveModuleAbstract{
         // PID Controller for both translation and rotation
         mDesiredVel = desiredState.speedMetersPerSecond;
         feedforward = mTransFF.calculate(mDesiredVel);
-        double pidOutput = mTransPID.calculate(getTransVelocity(), mDesiredVel) / SwerveConstants.PHYSICAL_MAX_SPEED_MPS;
+        double pidOutput = mTransPID.calculate(getTransVelocity(), mDesiredVel) / mPhysicalMaxSpeedMPS;
         mTransMotor.set(pidOutput + feedforward);
-        mTransMotor.set(mDesiredVel/SwerveConstants.PHYSICAL_MAX_SPEED_MPS);
+        mTransMotor.set(mDesiredVel/mPhysicalMaxSpeedMPS);
 
         mDesiredRadians = desiredState.angle.getRadians();
         mPIDOutput = mRotPID.calculate(getRotPosition(), desiredState.angle.getRadians());
@@ -241,11 +239,11 @@ public class RevSwerveModule extends SwerveModuleAbstract{
      * @return Returns rotation in RADIANS of rotation motor AFTER GEAR RATIO
      */
     public double getRotPosition() {
-        return getRotPositionRaw() * SwerveConstants.ABS_ENC_GEAR_RATIO_ROT;
+        return getRotPositionRaw() * mAbsEncoderGearRatio;
     }
 
     public double getRotRelativePosition() {
-        return mRotRelativeEncoder.getPosition() * SwerveConstants.REL_ENC_GEAR_RATIO_ROT;
+        return mRotRelativeEncoder.getPosition() * mRelEncoderGearRatio;
     }
 
     /**

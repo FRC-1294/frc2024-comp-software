@@ -8,11 +8,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.swerve.RevSwerveModule;
+import frc.robot.swerve.SwerveModuleAbstract;
 
 public class kS_Characterization extends Command {
   /** Creates a new kS_Characterization. */
   private final SwerveSubsystem mSwerve;
-  private final RevSwerveModule[] mModules;
+  private final SwerveModuleAbstract[] mModules;
   private double [] expkS = new double[4];
   private boolean [] modLock = {false,false,false,false};
   private double curRequestedDutyCycle = 0;
@@ -42,7 +43,7 @@ public class kS_Characterization extends Command {
     mSwerve.setChassisSpeed(curRequestedDutyCycle, 0, 0,false,true);
     for (int i = 0; i<4; i++){
       if (Math.abs(mModules[i].getTransVelocity())>0.00001 && !modLock[i]){
-        expkS[i] = Math.abs(mModules[i].getTransAppliedVolts()/mModules[i].getTranslationNominalVoltage());
+        expkS[i] = Math.abs(mModules[i].getTransAppliedVolts()/mModules[i].getTransNominalVoltage());
         modLock[i] = true;
       }
       SmartDashboard.putNumber("expkS"+i, expkS[i]);

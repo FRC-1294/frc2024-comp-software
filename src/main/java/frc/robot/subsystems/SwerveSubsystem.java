@@ -19,9 +19,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.CompConstants;
-import frc.robot.constants.SwerveConstants;
 import frc.robot.robots.PracticeBotSwerveConfig;
-import frc.robot.swerve.RevSwerveModule;
+import frc.robot.swerve.SwerveModuleAbstract;
 
 public class SwerveSubsystem extends SubsystemBase {
   /** Creates a new SwerveSubsystem. */
@@ -30,14 +29,14 @@ public class SwerveSubsystem extends SubsystemBase {
 
   private final Pigeon2 mPigeon2;
 
-  private final RevSwerveModule[] mModules;
+  private final SwerveModuleAbstract[] mModules;
   private double mTargetSpeed = 0;
   private double mAvgSpeed = 0;
   private double maxSpeed = 0;
   private PIDController chassisRotPID =  new PIDController(0.1, 0, 0);
   private PIDController chassisXPID = new PIDController(0.1, 0, 0);
   private PIDController chassisYPID = new PIDController(0.3, 0, 0);
-  private final PracticeBotSwerveConfig config;
+  public final PracticeBotSwerveConfig mConfig;
   private ChassisSpeeds desiredChassisSpeeds = new ChassisSpeeds();
 
 
@@ -48,10 +47,10 @@ public class SwerveSubsystem extends SubsystemBase {
     chassisXPID.setTolerance(0.2);
     chassisYPID.setTolerance(0.2);
     
-    config = configuration;
-    mKinematics = config.SWERVE_KINEMATICS;
-    mPigeon2 = new Pigeon2(config.PIGEON_ID,"SWERVE_ENC");
-    mModules = config.SWERVE_MODULES;
+    mConfig = configuration;
+    mKinematics = mConfig.SWERVE_KINEMATICS;
+    mPigeon2 = new Pigeon2(mConfig.PIGEON_ID,"SWERVE_ENC");
+    mModules = mConfig.SWERVE_MODULES;
     mOdometry = new SwerveDriveOdometry(mKinematics, getRotation2d(), getModulePositions());
     resetGyro();
     resetRobotPose(new Pose2d());
@@ -69,10 +68,6 @@ public class SwerveSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("Heading", getRotation2d().getDegrees());
     if (CompConstants.DEBUG_MODE) {
       SmartDashboard.putData("Swerve", this);
-      SmartDashboard.putNumber("FLPIDOutput", mModules[0].getPIDOutputRot());
-      SmartDashboard.putNumber("FRPIDOutput", mModules[1].getPIDOutputRot());
-      SmartDashboard.putNumber("BLPIDOutput", mModules[2].getPIDOutputRot());
-      SmartDashboard.putNumber("BRPIDOutput", mModules[3].getPIDOutputRot());
 
       SmartDashboard.putNumber("DesiredChassisRotDeg", Math.toDegrees(desiredChassisSpeeds.omegaRadiansPerSecond));
       SmartDashboard.putNumber("DesiredChassisXMPS", desiredChassisSpeeds.vxMetersPerSecond);
@@ -91,22 +86,15 @@ public class SwerveSubsystem extends SubsystemBase {
         if (mModules[i].getTransVelocity()>maxSpeed){
           maxSpeed = mModules[i].getTransVelocity();
         }
-        SmartDashboard.putNumber("MaxAccel"+i, mModules[i].getMaxAccel());
-        SmartDashboard.putNumber("CurrentAccel"+i, mModules[i].getCurAccel());
         SmartDashboard.putNumber("MaxSpeed", maxSpeed);
         SmartDashboard.putNumber("TransDistance"+i, mModules[i].getTransPosition());
         SmartDashboard.putNumber("TransAppliedOutput" + i, mModules[i].getTransAppliedVolts());
-        SmartDashboard.putNumber("TransNominalVoltage" + i, mModules[i].getTranslationNominalVoltage());
         mAvgSpeed += Math.abs(mModules[i].getTransVelocity());
-        SmartDashboard.putNumber("DesiredStateAngleDeg" + i,
-            mModules[i].getDesiredRadiansRot() / Math.PI * 180);
         SmartDashboard.putNumber("RotRelativePosDeg" + i,
             mModules[i].getRotRelativePosition() * 360);
         SmartDashboard.putNumber("AbsEncoderDeg" + i, mModules[i].getRotPosition() / Math.PI * 180);
         SmartDashboard.putNumber("TranslationSpeedMeters" + i, mModules[i].getTransVelocity());
         SmartDashboard.putNumber("TranslationDesiredVel" + i, mModules[i].getTransVelocitySetpoint());
-        SmartDashboard.putNumber("Nominal Voltage", mModules[i].getTranslationNominalVoltage());
-        SmartDashboard.putNumber("ExpkFValue" + i, (mModules[i].getTransAppliedVolts()/mModules[i].getTranslationNominalVoltage())/mModules[i].getTransVelocity());
         SmartDashboard.putNumber("MaxAccel", i);
       }
 
@@ -172,7 +160,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public void setModuleStates(SwerveModuleState[] desiredStates,boolean isOpenLoop) {
     double ts3 = ((double)System.nanoTime())/1000000;
-    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, SwerveConstants.TELE_MAX_SPEED_MPS);
+    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, mConfig.TELE_MAX_SPEED_MPS);
     for (int i = 0; i < desiredStates.length; i++) {
       mModules[i].setDesiredState(desiredStates[i],isOpenLoop);
     }
@@ -280,7 +268,7 @@ public class SwerveSubsystem extends SubsystemBase {
   public ChassisSpeeds getChassisSpeeds(){
     SwerveModuleState[] moduleStates = new SwerveModuleState[4];
     for (int i = 0; i<4; i++){
-      moduleStates[i] = config.SWERVE_MODULES[i].getState();
+      moduleStates[i] = mConfig.SWERVE_MODULES[i].getState();
     }
     return mKinematics.toChassisSpeeds(moduleStates);
   }
@@ -319,7 +307,7 @@ public class SwerveSubsystem extends SubsystemBase {
   /**
    * @return Raw Modules
    */
-  public RevSwerveModule[] getRawModules() {
+  public SwerveModuleAbstract[] getRawModules() {
     return mModules;
   }
 

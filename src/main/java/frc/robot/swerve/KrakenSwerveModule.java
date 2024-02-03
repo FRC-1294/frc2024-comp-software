@@ -2,7 +2,6 @@ package frc.robot.swerve;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.CoastOut;
-import com.ctre.phoenix6.controls.ControlRequest;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -19,7 +18,6 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Util.PIDConstants;
 import frc.robot.Util.TalonControlType;
-import frc.robot.constants.SwerveConstants;
 
 public class KrakenSwerveModule extends SwerveModuleAbstract{
 
@@ -33,7 +31,10 @@ public class KrakenSwerveModule extends SwerveModuleAbstract{
     private final TalonFXConfiguration mTransConfiguration;
     private final VelocityVoltage mVelocityVoltageSignal = new VelocityVoltage(0).withSlot(1);
     private final CoastOut mCoastOutSignal = new CoastOut();
-    
+    private final double mNominalVoltage = 12;
+    private final double mPhysicalMaxSpeedMPS;
+    private final double mAbsEncoderGearRatio;
+    private final double mRelEncoderGearRatio;
 
     // Public Debugging Values
     private double mPIDOutput = 0.0;
@@ -46,12 +47,15 @@ public class KrakenSwerveModule extends SwerveModuleAbstract{
     public double feedforward=0;
 
     public KrakenSwerveModule(int rotID, int transID, int rotEncoderID, boolean rotInverse,
-            boolean transInverse, PIDConstants rotPID, PIDConstants transPID) {
+            boolean transInverse, PIDConstants rotPID, PIDConstants transPID, double transGearRatio,
+            double wheelCircumference, double physicalMaxSpeed, double absEncGearRatio, double relEncoderGearRatio) {
         // Setting Parameters
-    
+
         super(rotID, transID, rotEncoderID, rotInverse, transInverse, rotPID, transPID);
 
-        // mFeedforward.calculate(transID, rotEncoderID);
+        mPhysicalMaxSpeedMPS = physicalMaxSpeed;
+        mAbsEncoderGearRatio = absEncGearRatio;
+        mRelEncoderGearRatio = relEncoderGearRatio;
 
         // ----Setting Hardware
         // Motor Controllers
@@ -59,7 +63,7 @@ public class KrakenSwerveModule extends SwerveModuleAbstract{
         mTransMotor = new TalonFX(rotEncoderID);
         mTransConfiguration = new TalonFXConfiguration();
 
-        mTransConfiguration.Feedback.SensorToMechanismRatio = SwerveConstants.TRANS_GEAR_RATIO_ROT * SwerveConstants.WHEEL_CIRCUMFERENCE_METERS;
+        mTransConfiguration.Feedback.SensorToMechanismRatio = transGearRatio *wheelCircumference;
         mTransConfiguration.withSlot0(transPID.toTalonConfiguration());
 
         mRotMotor.restoreFactoryDefaults();
@@ -127,7 +131,7 @@ public class KrakenSwerveModule extends SwerveModuleAbstract{
             desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
 
             mDesiredVel = desiredState.speedMetersPerSecond;
-            mTransMotor.set(mDesiredVel/SwerveConstants.PHYSICAL_MAX_SPEED_MPS);
+            mTransMotor.set(mDesiredVel/mPhysicalMaxSpeedMPS);
 
             mDesiredRadians = desiredState.angle.getRadians();
             mPIDOutput = mRotPID.calculate(getRotPosition(), desiredState.angle.getRadians());
@@ -165,8 +169,8 @@ public class KrakenSwerveModule extends SwerveModuleAbstract{
         mDesiredVel = desiredState.speedMetersPerSecond;
 
         feedforward = mTransFF.calculate(mDesiredVel);
-        double pidOutput = mTransPID.calculate(getTransVelocity(), mDesiredVel) / SwerveConstants.PHYSICAL_MAX_SPEED_MPS;
-        mTransMotor.setVoltage((pidOutput + feedforward)*12);
+        double pidOutput = mTransPID.calculate(getTransVelocity(), mDesiredVel) / mPhysicalMaxSpeedMPS;
+        mTransMotor.setVoltage((pidOutput + feedforward)*mNominalVoltage);
 
         //Onboard PID + FF solution
         // mTransMotor.setControl(mVelocityVoltageSignal.withVelocity(mDesiredVel));
@@ -235,11 +239,11 @@ public class KrakenSwerveModule extends SwerveModuleAbstract{
      * @return Returns rotation in RADIANS of rotation motor AFTER GEAR RATIO
      */
     public double getRotPosition() {
-        return getRotPositionRaw() * SwerveConstants.ABS_ENC_GEAR_RATIO_ROT;
+        return getRotPositionRaw() * mAbsEncoderGearRatio;
     }
 
     public double getRotRelativePosition() {
-        return mRotRelativeEncoder.getPosition() * SwerveConstants.REL_ENC_GEAR_RATIO_ROT;
+        return mRotRelativeEncoder.getPosition() * mRelEncoderGearRatio;
     }
 
     /**
@@ -360,7 +364,7 @@ public class KrakenSwerveModule extends SwerveModuleAbstract{
     // /**
     //  * @return the nominal voltage amount after voltage compensation for the translation motor
     //  */
-    // public double getTranslationNominalVoltage(){
-    //     return 12; 
-    // }
+    public double getTransNominalVoltage(){
+        return mNominalVoltage; 
+    }
 }
