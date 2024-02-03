@@ -8,12 +8,20 @@ import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.constants.IntakeConstants;
 import frc.robot.constants.LauncherConstants;
 import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.constants.LauncherConstants.LauncherState;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-public class Launcher extends SubsystemBase {
+public class LauncherSubsystem extends SubsystemBase {
   private final CANSparkMax mIndexer = new CANSparkMax(LauncherConstants.INDEXER_ID, MotorType.kBrushless);
 
   private final TalonFX mMainFlywheel = new TalonFX(LauncherConstants.MAIN_FLYWHEEL_ID);
@@ -31,7 +39,7 @@ public class Launcher extends SubsystemBase {
 
   private boolean mLauncherReady = false;
 
-  public Launcher() {
+  public LauncherSubsystem() {
     resetEncoders();
     configureDevices();
   }
@@ -129,6 +137,10 @@ public class Launcher extends SubsystemBase {
   private void resetEncoders() {
     mMainFlywheel.setPosition(0);
     mRollerFlywheel.setPosition(0);
+  }
+
+  public Command waitUntilFlywheelSetpointCommand() {
+    return new FunctionalCommand(() -> setLauncherMode(mLauncherMode), null, null, this::isLauncherReady, this);    
   }
 
   @Override
