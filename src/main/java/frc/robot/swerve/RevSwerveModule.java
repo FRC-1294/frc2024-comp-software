@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.swerve;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.CANSparkMax;
@@ -15,20 +15,12 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.Util;
 import frc.robot.Util.PIDConstants;
 import frc.robot.constants.SwerveConstants;
 
-public class SwerveModule {
-    // Parameters
-    private final int mRotID;
-    private final int mTransID;
-    private final int mRotEncoderID;
-    private final boolean mRotInverse;
-    private final boolean mTransInverse;
-    private final PIDController mRotPID;
-    private final PIDController mTransPIDWPI;
-    private final SparkPIDController mTransPID;
-    private final SimpleMotorFeedforward mTransFF;
+public class RevSwerveModule extends SwerveModuleAbstract{
+
     // Hardware
     // Motor Controllers
     private final CANSparkMax mRotMotor;
@@ -49,16 +41,11 @@ public class SwerveModule {
     private double prevTS;
     public double feedforward=0;
 
-    public SwerveModule(int rotID, int transID, int rotEncoderID, boolean rotInverse,
+    public RevSwerveModule(int rotID, int transID, int rotEncoderID, boolean rotInverse,
             boolean transInverse, PIDConstants rotPID, PIDConstants transPID) {
         // Setting Parameters
     
-        prevTS = Timer.getFPGATimestamp();
-        mRotID = rotID;
-        mTransID = transID;
-        mRotEncoderID = rotEncoderID;
-        mRotInverse = rotInverse;
-        mTransInverse = transInverse;
+        super(rotID, transID, rotEncoderID, rotInverse, transInverse, rotPID, transPID);
 
         // mFeedforward.calculate(transID, rotEncoderID);
 
@@ -74,20 +61,9 @@ public class SwerveModule {
         mTransEncoder = mTransMotor.getEncoder();
         mRotRelativeEncoder = mRotMotor.getEncoder();
         mRotRelativeEncoder.setPosition(0);
-        // Sets measurement to radians
-
-        // ----Setting PID
-        mRotPID = rotPID.toWPIController();
-        mTransPID = mTransMotor.getPIDController();
-        mTransFF = transPID.toWPIMotorFeedForward();
-        mTransPIDWPI = transPID.toWPIController();
 
         // ----Setting PID Parameters
         mRotPID.enableContinuousInput(-Math.PI, Math.PI);
-        mTransPID.setP(transPID.mKP, 0);
-        mTransPID.setI(transPID.mKI, 0);
-        mTransPID.setD(transPID.mKD, 0);
-        mTransPID.setFF(transPID.mKV, 0);
 
         // ----Setting Inversion
         mRotMotor.setInverted(mRotInverse);
@@ -196,7 +172,7 @@ public class SwerveModule {
         // PID Controller for both translation and rotation
         mDesiredVel = desiredState.speedMetersPerSecond;
         feedforward = mTransFF.calculate(mDesiredVel);
-        double pidOutput = mTransPIDWPI.calculate(getTransVelocity(), mDesiredVel) / SwerveConstants.PHYSICAL_MAX_SPEED_MPS;
+        double pidOutput = mTransPID.calculate(getTransVelocity(), mDesiredVel) / SwerveConstants.PHYSICAL_MAX_SPEED_MPS;
         mTransMotor.set(pidOutput + feedforward);
         mTransMotor.set(mDesiredVel/SwerveConstants.PHYSICAL_MAX_SPEED_MPS);
 
@@ -329,7 +305,7 @@ public class SwerveModule {
      * 
      * @return steering PID controller.
      */
-    public PIDController getPIDController() {
+    public PIDController getRotPIDController() {
         return mRotPID;
     }
 

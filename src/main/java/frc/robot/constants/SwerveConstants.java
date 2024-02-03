@@ -16,13 +16,9 @@ public class SwerveConstants {
   public static final double TRANS_RPM_TO_MPS =
       (TRANS_GEAR_RATIO_ROT * WHEEL_CIRCUMFERENCE_METERS) / 60;
 
-  // Track dimensions in meters
-  public static final double TRACK_WIDTH_METERS = .559;
-  public static final double TRACK_LENGTH_METERS = .559;
-
-
   // Physical Max
-  public static final double PHYSICAL_MAX_SPEED_MPS = 4.625;
+  public static final double 
+  PHYSICAL_MAX_SPEED_MPS = 4.625;
 
   public static final double TELE_MAX_SPEED_MPS = 4.625;
   public static final double TELE_MAX_ROT_SPEED_RAD_SEC = 2 * Math.PI;

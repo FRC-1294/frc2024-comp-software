@@ -4,6 +4,7 @@
 //
 package frc.robot;
 
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 
 import edu.wpi.first.math.MathUtil;
@@ -18,6 +19,12 @@ public class Util {
     public static Translation3d getNormalTranslation(Translation3d vec){
         return(new Translation3d(vec.getX()/vec.getNorm(), vec.getY()/vec.getNorm(), vec.getZ()/vec.getNorm()));
     }
+
+    public enum TalonControlType {
+        VELOCITY_VOLTAGE,
+        COAST_OUT,
+        VOLTAGE_OUT,
+        DUTY_CYCLE_VEL;}
 
     public static class PIDConstants{
         public double mKP;
@@ -57,14 +64,13 @@ public class Util {
             return pid;
         }
 
-        public TalonFXConfiguration toTalonConfiguration(){
-            TalonFXConfiguration config = new TalonFXConfiguration();
-            config.Slot0.kP = mKP;
-            config.Slot0.kI = mKI;
-            config.Slot0.kD = mKD;
-            config.Slot0.kV = mKV;
-            config.Slot0.kS = mKS;
-            config.ClosedLoopGeneral.ContinuousWrap = mIsContinuousInput;
+        public Slot0Configs toTalonConfiguration(){
+            Slot0Configs config = new Slot0Configs();
+            config.kP = mKP;
+            config.kI = mKI;
+            config.kD = mKD;
+            config.kV = mKV;
+            config.kS = mKS;
             return config;
         }
         public SimpleMotorFeedforward toWPIMotorFeedForward(){

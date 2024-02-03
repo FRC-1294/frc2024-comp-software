@@ -7,13 +7,13 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.SwerveModule;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.swerve.RevSwerveModule;
 
 public class kV_Characterization extends Command {
   /** Creates a new kV_Characterization. */
   private final SwerveSubsystem mSwerve;
-  private final SwerveModule[] mModules;
+  private final RevSwerveModule[] mModules;
   private final Timer mTimer = new Timer();
   private final double targVelMPS = 1;
   private double increment = 0;

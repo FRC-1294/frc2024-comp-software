@@ -11,7 +11,7 @@ public class CompConstants {
     public static final boolean DEBUG_MODE = false;
 
     // Not Set Up
-    public static final boolean REALITYCONSTANT = false;
+    public static final boolean REALTITY_CONSTANT = false;
 
 
 }

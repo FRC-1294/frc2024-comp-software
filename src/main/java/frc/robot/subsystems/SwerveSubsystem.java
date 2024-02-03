@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.SwerveConfig;
-import frc.robot.SwerveModule;
+import frc.robot.RevSwerveModule;
 import frc.robot.constants.CompConstants;
 import frc.robot.constants.SwerveConstants;
 
@@ -30,7 +30,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   private final Pigeon2 mPigeon2;
 
-  private final SwerveModule[] mModules;
+  private final RevSwerveModule[] mModules;
   private double mTargetSpeed = 0;
   private double mAvgSpeed = 0;
   private double maxSpeed = 0;
@@ -319,7 +319,7 @@ public class SwerveSubsystem extends SubsystemBase {
   /**
    * @return Raw Modules
    */
-  public SwerveModule[] getRawModules() {
+  public RevSwerveModule[] getRawModules() {
     return mModules;
   }
 
