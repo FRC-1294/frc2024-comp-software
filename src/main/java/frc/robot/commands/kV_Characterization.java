@@ -7,8 +7,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.PoseEstimation;
 import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.swerve.RevSwerveModule;
 import frc.robot.swerve.SwerveModuleAbstract;
 
 public class kV_Characterization extends Command {
@@ -33,14 +33,13 @@ public class kV_Characterization extends Command {
   @Override
   public void initialize() {
     mTimer.reset();
-    mSwerve.resetGyro();
-    // mSwerve.setChassisSpeed(2, 0, 0, false);
+    PoseEstimation.resetGyro();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(Math.abs(mSwerve.getChassisSpeeds().vxMetersPerSecond - targVelMPS)<0.1){
+    if(Math.abs(SwerveSubsystem.getChassisSpeeds().vxMetersPerSecond - targVelMPS)<0.1){
         if (!timerHasStarted){
             mTimer.start();
         }

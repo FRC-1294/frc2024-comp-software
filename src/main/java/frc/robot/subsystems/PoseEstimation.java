@@ -10,6 +10,7 @@ import org.photonvision.EstimatedRobotPose;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,13 +21,13 @@ import frc.robot.constants.VisionConstants;
 
 public class PoseEstimation extends SubsystemBase {
   
-  private final PhotonCameras mCameras = new PhotonCameras();
+  private static PhotonCameras mCameras = new PhotonCameras();
 
-  private final SwerveDrivePoseEstimator mPoseEstimator = new SwerveDrivePoseEstimator(SwerveSubsystem.getKinematics(),
+  private static SwerveDrivePoseEstimator mPoseEstimator = new SwerveDrivePoseEstimator(SwerveSubsystem.getKinematics(),
         SwerveSubsystem.getRotation2d(), SwerveSubsystem.getModulePositions(), SwerveSubsystem.getRobotPose(),
         VisionConstants.STATE_STD_DEVS, VisionConstants.VISION_MEASUREMENTS_STD_DEVS);
 
-  private final Field2d mField = new Field2d();
+  private static Field2d mField = new Field2d();
 
   public PoseEstimation() {
     SmartDashboard.putData("Field", mField);
@@ -51,8 +52,8 @@ public class PoseEstimation extends SubsystemBase {
       SmartDashboard.putNumber("PoseEst Rot", pose.getRotation().getDegrees());
     }
   }
-
-  public void updateVision() {
+  
+  private void updateVision() {
     boolean updatedFront = updateVisionBack();
     boolean updatedBack = updateVisionFront();
 
@@ -63,7 +64,7 @@ public class PoseEstimation extends SubsystemBase {
   }
 
   // Get Pose From Back Camera
-  public boolean updateVisionBack() {
+  private boolean updateVisionBack() {
     Optional<EstimatedRobotPose> pose =
         mCameras.getEstimatedGlobalPoseBack(mPoseEstimator.getEstimatedPosition());
     if (pose.isPresent()) {
@@ -78,7 +79,7 @@ public class PoseEstimation extends SubsystemBase {
   }
 
   // Get Pose From Front Camera
-  public boolean updateVisionFront() {
+  private boolean updateVisionFront() {
     Optional<EstimatedRobotPose> pose =
         mCameras.getEstimatedGlobalPoseFront(mPoseEstimator.getEstimatedPosition());
     if (pose.isPresent()) {
@@ -93,7 +94,7 @@ public class PoseEstimation extends SubsystemBase {
     return false;
   }
 
-  public boolean isValidPose(EstimatedRobotPose pose) {
+  private boolean isValidPose(EstimatedRobotPose pose) {
     List<PhotonTrackedTarget> targets = pose.targetsUsed;
     if (targets.size() == 1) {
       return targets.get(0).getPoseAmbiguity() < VisionConstants.SINGLE_TAG_AMBIGUITY_THRESH;
@@ -102,18 +103,22 @@ public class PoseEstimation extends SubsystemBase {
     return true;
   }
   
-  public Pose2d getRobotPose() {
+  public static Pose2d getRobotPose() {
     return mPoseEstimator.getEstimatedPosition();
 
   }
 
-  public void resetPose() {
+  public static void resetPose() {
     mPoseEstimator.resetPosition(SwerveSubsystem.getRotation2d(), SwerveSubsystem.getModulePositions(),
         new Pose2d());
   }
 
-  public void resetPose(Pose2d pose) {
+  public static void resetPose(Pose2d pose) {
     mPoseEstimator.resetPosition(SwerveSubsystem.getRotation2d(), SwerveSubsystem.getModulePositions(), pose);
   }
 
+  public static void resetGyro(){
+        mPoseEstimator.resetPosition(SwerveSubsystem.getRotation2d(), SwerveSubsystem.getModulePositions(),
+        new Pose2d(PoseEstimation.getRobotPose().getX(),PoseEstimation.getRobotPose().getY(), new Rotation2d()));
+  }
 }

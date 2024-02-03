@@ -53,7 +53,7 @@ public class SwerveSubsystem extends SubsystemBase {
     mModules = mConfig.SWERVE_MODULES;
     mOdometry = new SwerveDriveOdometry(mKinematics, getRotation2d(), getModulePositions());
     resetGyro();
-    resetRobotPose(new Pose2d());
+    resetRobotPose();
   }
 
   @Override
@@ -111,12 +111,8 @@ public class SwerveSubsystem extends SubsystemBase {
   /**
    * Sets the current YAW heading as the 0'd heading
    */
-  public static void resetGyro() {
+  private void resetGyro() {
     mPigeon2.reset();
-  }
-
-  public static void resetGyro(double yaw) {
-    mPigeon2.setYaw(yaw);
   }
 
   /**
@@ -230,9 +226,9 @@ public class SwerveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("ChassisSpeedRotError", chassisRotPID.getPositionError());
         chassisSpeeds =  ChassisSpeeds.fromFieldRelativeSpeeds(vxMPS+xPID,
                                                         vyMPS+yPID, 
-                                                        angleSpeedRADPS+rotPID, getRotation2d());
+                                                        angleSpeedRADPS+rotPID, PoseEstimation.getRobotPose().getRotation());
       }else{
-        chassisSpeeds =  ChassisSpeeds.fromFieldRelativeSpeeds(vxMPS, vyMPS, angleSpeedRADPS, getRotation2d());
+        chassisSpeeds =  ChassisSpeeds.fromFieldRelativeSpeeds(vxMPS, vyMPS, angleSpeedRADPS, PoseEstimation.getRobotPose().getRotation());
       }
       
 
@@ -240,11 +236,11 @@ public class SwerveSubsystem extends SubsystemBase {
       chassisSpeeds = new ChassisSpeeds(vxMPS, vyMPS, angleSpeedRADPS);
     }
     desiredChassisSpeeds = chassisSpeeds;
-    //////System.out.println("Create Chassis' Speed Time Nano: "+ ((double)System.nanoTime()/1000000-ts1));
     setChassisSpeed(chassisSpeeds,isOpenLoop);
 
   }
 
+  
   public void setChassisSpeed(ChassisSpeeds chassisSpeeds,boolean isOpenLoop){
     double ts2 = (double) System.nanoTime()/1000000;
     chassisSpeeds = ChassisSpeeds.discretize(chassisSpeeds, CompConstants.loopTime);
@@ -256,6 +252,7 @@ public class SwerveSubsystem extends SubsystemBase {
     setModuleStates(moduleStates,isOpenLoop);
   }
 
+
   public void setChassisSpeed(ChassisSpeeds chassisSpeeds){
     SwerveModuleState[] moduleStates = mKinematics.toSwerveModuleStates(chassisSpeeds);
     if (CompConstants.DEBUG_MODE){
@@ -263,6 +260,7 @@ public class SwerveSubsystem extends SubsystemBase {
     }
     setModuleStates(moduleStates,true);
   }
+
 
   public static ChassisSpeeds getChassisSpeeds(){
     SwerveModuleState[] moduleStates = new SwerveModuleState[4];
@@ -272,26 +270,13 @@ public class SwerveSubsystem extends SubsystemBase {
     return mKinematics.toChassisSpeeds(moduleStates);
   }
 
+
   public void setChassisSpeed(double x, double y, double rot,boolean isOpenLoop) {
     setChassisSpeed(x, y, rot,false, isOpenLoop);
   }
 
-  /**
-   * This method resets the pose of the robot to the desired robot pose
-   * 
-   * @param pose provide the new desired pose of the robot
-   * @see Pose2d
-   */
-  public static void resetRobotPose(Pose2d pose) {
-    resetGyro(pose.getRotation().getDegrees());
-    mOdometry.resetPosition(pose.getRotation(), getModulePositions(), pose);
-  }
 
-    /**
-   * Resets pose to origin, keeps heading from gyro, keeps current module positions
-   */
-
-  public static void resetRobotPose() {
+  private void resetRobotPose() {
     mOdometry.resetPosition(getRotation2d(), getModulePositions(), new Pose2d());
   }
 
