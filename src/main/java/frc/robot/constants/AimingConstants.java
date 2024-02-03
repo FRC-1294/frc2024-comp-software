@@ -31,13 +31,17 @@ public class AimingConstants {
         }
     }
     
+    // Teleop Constant
+    public static double MAX_ELEVATOR_TELEOP_INCREMENT = 0;
+    public static double MAX_WRIST_TELEOP_INCREMENT = 0;
     
     
-    // PID Constantss
+    // PID Constants
     public static PIDParameters mElevatorPIDConstants = new PIDParameters(0.1, 0, 0);
     public static PIDParameters mWristPIDConstants = new PIDParameters(0.1, 0, 0, 0, 0);
     public static double mWristkG = 0.0;
     public static double mElevatorkG;
+    public static double SPARK_THROUGHBORE_GEAR_RATIO = 1;
 
 
     public static final AimingMotorMode INITIAL_MOTOR_MODE = AimingMotorMode.BRAKE;
