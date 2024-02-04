@@ -61,14 +61,14 @@ public class CompetitionBotSwerveConfig extends SwerveConfig{
                 PIGEON = new Pigeon2(PIGEON_ID, "DriveMotors");
 
                 // Inverse Booleans
-                FRONT_LEFT_ROT_INVERSE = true;
+                FRONT_LEFT_ROT_INVERSE = false;
                 FRONT_LEFT_TRANS_INVERSE = true;
 
-                FRONT_RIGHT_ROT_INVERSE = true;
+                FRONT_RIGHT_ROT_INVERSE = false;
                 FRONT_RIGHT_TRANS_INVERSE = true;
 
-                BACK_LEFT_ROT_INVERSE = true;
-                BACK_LEFT_TRANS_INVERSE = false;
+                BACK_LEFT_ROT_INVERSE = false;
+                BACK_LEFT_TRANS_INVERSE = true;
 
                 BACK_RIGHT_ROT_INVERSE = false;
                 BACK_RIGHT_TRANS_INVERSE = true;
@@ -93,10 +93,10 @@ public class CompetitionBotSwerveConfig extends SwerveConfig{
                 BACK_LEFT_ROT_PID = new PIDConstants(0.35, 0, 0);
                 BACK_RIGHT_ROT_PID = new PIDConstants(0.35, 0, 0);
 
-                FRONT_LEFT_TRANS_PID = new PIDConstants(0.1, 0, 0,0.0099795525893569,0.21090956596760593);
-                FRONT_RIGHT_TRANS_PID = new PIDConstants(0.1, 0, 0,0.008545182645320892,0.2099873992689063);
-                BACK_LEFT_TRANS_PID = new PIDConstants(0.1, 0, 0,0.0099795525893569,0.2099731767248498);
-                BACK_RIGHT_TRANS_PID = new PIDConstants(0.1, 0, 0,0.01037629321217537,0.21397894176465337);
+                FRONT_LEFT_TRANS_PID = new PIDConstants(0.1, 0, 0,0.011666666666666667,0.21090956596760593);
+                FRONT_RIGHT_TRANS_PID = new PIDConstants(0.1, 0, 0,0.011666666666666667,0.2099873992689063);
+                BACK_LEFT_TRANS_PID = new PIDConstants(0.1, 0, 0,0.011666666666666667,0.2099731767248498);
+                BACK_RIGHT_TRANS_PID = new PIDConstants(0.1, 0, 0,0.011666666666666667,0.21397894176465337);
 
                 FRONT_LEFT_TRANS_CARPET_PID = new PIDConstants(0.1, 0, 0,0.010559404268860817,0.2143581312619372);
                 FRONT_RIGHT_TRANS_CARPET_PID = new PIDConstants(0.1, 0, 0,0.010345774702727795,0.2147905172579474);

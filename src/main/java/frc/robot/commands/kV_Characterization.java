@@ -16,7 +16,7 @@ public class kV_Characterization extends Command {
   private final SwerveSubsystem mSwerve;
   private final SwerveModuleAbstract[] mModules;
   private final Timer mTimer = new Timer();
-  private final double targVelMPS = 1;
+  private final double targVelMPS = 3;
   private double increment = 0;
 
   private double [] expkV = new double[4];

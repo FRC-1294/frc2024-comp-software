@@ -60,7 +60,7 @@ public class KrakenSwerveModule extends SwerveModuleAbstract{
         // ----Setting Hardware
         // Motor Controllers
         mRotMotor = new CANSparkMax(mRotID, MotorType.kBrushless);
-        mTransMotor = new TalonFX(transID, "DriveMotors");
+        mTransMotor = new TalonFX(transID,"DriveMotors");
         mTransConfiguration = new TalonFXConfiguration();
 
         mTransConfiguration.Feedback.SensorToMechanismRatio = transGearRatio *wheelCircumference;
@@ -130,8 +130,8 @@ public class KrakenSwerveModule extends SwerveModuleAbstract{
             // No turning motors over 90 degrees
             desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
 
-            // mDesiredVel = desiredState.speedMetersPerSecond;
-            // mTransMotor.set(mDesiredVel/mPhysicalMaxSpeedMPS);
+            mDesiredVel = desiredState.speedMetersPerSecond;
+            mTransMotor.set(mDesiredVel/mPhysicalMaxSpeedMPS);
 
             mDesiredRadians = desiredState.angle.getRadians();
             mPIDOutput = mRotPID.calculate(getRotPosition(), desiredState.angle.getRadians());
@@ -175,9 +175,9 @@ public class KrakenSwerveModule extends SwerveModuleAbstract{
         //Onboard PID + FF solution
         // mTransMotor.setControl(mVelocityVoltageSignal.withVelocity(mDesiredVel));
 
-        // mDesiredRadians = desiredState.angle.getRadians();
-        // mPIDOutput = mRotPID.calculate(getRotPosition(), desiredState.angle.getRadians());
-        // mRotMotor.set(mPIDOutput);
+        mDesiredRadians = desiredState.angle.getRadians();
+        mPIDOutput = mRotPID.calculate(getRotPosition(), desiredState.angle.getRadians());
+        mRotMotor.set(mPIDOutput);
     }
 
     public void setPID(double degrees) {
