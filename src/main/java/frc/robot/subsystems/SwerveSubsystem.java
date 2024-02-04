@@ -113,7 +113,8 @@ public class SwerveSubsystem extends SubsystemBase {
    * Sets the current YAW heading as the 0'd heading
    */
   private void resetGyro() {
-    mPigeon2.reset();
+    mPigeon2.reset(); 
+    PoseEstimation.resetGyro();
   }
 
   /**
