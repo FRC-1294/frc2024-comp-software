@@ -12,7 +12,7 @@ import frc.robot.subsystems.AimingSubsystem.AimingMotorMode;
 /** Add your docs here. */
 public class AimingConstants {
 
-
+    // TODO: Find the angle measures of these setpoints
     // Setpoints
     public enum AimState {
         STOW(MIN_ELEVATOR_DIST_IN, MIN_WRIST_ROTATION_DEG),
