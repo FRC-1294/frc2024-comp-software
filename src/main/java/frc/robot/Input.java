@@ -64,5 +64,13 @@ public class Input {
   public static boolean togglePIDTuning() {
     return mRotJoystick.getTriggerReleased();
   }
+
+  public static boolean getIntake() {
+    return mXBox.getLeftBumper();
+  }
+
+  public static boolean getOnePiece() {
+    return mXBox.getRightStickButton();
+  }
 }
 

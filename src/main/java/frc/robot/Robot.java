@@ -4,9 +4,13 @@
 
 package frc.robot;
 
+<<<<<<< HEAD
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.revrobotics.CANSparkLowLevel;
 
+=======
+import com.revrobotics.CANSparkLowLevel;
+>>>>>>> main
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -87,7 +91,11 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+<<<<<<< HEAD
     //CANSparkLowLevel.enableExternalUSBControl(true);
+=======
+    CANSparkLowLevel.enableExternalUSBControl(true);
+>>>>>>> main
 
   }
 
