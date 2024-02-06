@@ -63,8 +63,9 @@ public class KrakenSwerveModule extends SwerveModuleAbstract{
         mTransMotor = new TalonFX(transID,"DriveMotors");
         mTransConfiguration = new TalonFXConfiguration();
 
-        mTransConfiguration.Feedback.SensorToMechanismRatio = transGearRatio *wheelCircumference;
+        mTransConfiguration.Feedback.SensorToMechanismRatio = 1/(transGearRatio *wheelCircumference);
         mTransConfiguration.withSlot0(transPID.toTalonConfiguration());
+        mTransMotor.getConfigurator().apply(mTransConfiguration);
 
         mRotMotor.restoreFactoryDefaults();
 

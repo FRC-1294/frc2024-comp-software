@@ -21,7 +21,7 @@ public class CompetitionBotSwerveConfig extends SwerveConfig{
                 ABS_ENC_GEAR_RATIO_ROT = 1;
       
                 // Conversion Factors
-                WHEEL_DIAMETER_METERS = .1016;
+                WHEEL_DIAMETER_METERS = .102;
                 WHEEL_CIRCUMFERENCE_METERS = Math.PI * WHEEL_DIAMETER_METERS;
                 TRANS_RPM_TO_MPS =
                 (TRANS_GEAR_RATIO_ROT * WHEEL_CIRCUMFERENCE_METERS) / 60;
@@ -98,10 +98,10 @@ public class CompetitionBotSwerveConfig extends SwerveConfig{
                 BACK_LEFT_TRANS_PID = new PIDConstants(0.1, 0, 0,0.011666666666666667,0.2099731767248498);
                 BACK_RIGHT_TRANS_PID = new PIDConstants(0.1, 0, 0,0.011666666666666667,0.21397894176465337);
 
-                FRONT_LEFT_TRANS_CARPET_PID = new PIDConstants(0.1, 0, 0,0.010559404268860817,0.2143581312619372);
-                FRONT_RIGHT_TRANS_CARPET_PID = new PIDConstants(0.1, 0, 0,0.010345774702727795,0.2147905172579474);
-                BACK_LEFT_TRANS_CARPET_PID = new PIDConstants(0.1, 0, 0,0.011993774212896824,0.21911519031435608);
-                BACK_RIGHT_TRANS_CARPET_PID = new PIDConstants(0.1, 0, 0,0.010132145136594772,0.21575530586570696);
+                FRONT_LEFT_TRANS_CARPET_PID = new PIDConstants(0.1, 0, 0,0.01,0.20881603812002797);
+                FRONT_RIGHT_TRANS_CARPET_PID = new PIDConstants(0.1, 0, 0,0.01,0.21095308664591073);
+                BACK_LEFT_TRANS_CARPET_PID = new PIDConstants(0.1, 0, 0,0.011666666666666667,0.20998656795835002);
+                BACK_RIGHT_TRANS_CARPET_PID = new PIDConstants(0.1, 0, 0,0.011666666666666667,0.20972130028356997);
 
 
                 SWERVE_KINEMATICS = new SwerveDriveKinematics(
