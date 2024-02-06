@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
@@ -19,13 +20,12 @@ import frc.robot.constants.LauncherConstants.LauncherState;
 public class LauncherSubsystem extends SubsystemBase {
   private final CANSparkMax mIndexer = new CANSparkMax(LauncherConstants.INDEXER_ID, MotorType.kBrushless);
 
-  private final TalonFX mMainFlywheel = new TalonFX(LauncherConstants.MAIN_FLYWHEEL_ID);
-  private final TalonFX mRollerFlywheel = new TalonFX(LauncherConstants.ROLLER_FLYWHEEL_ID);
+  private final TalonFX mLeaderFlywheel = new TalonFX(LauncherConstants.LEADER_FLYWHEEL_ID);
+  private final TalonFX mFollowerFlywheel = new TalonFX(LauncherConstants.FOLLOWER_FLYWHEEL_ID);
 
   private final DigitalInput mBeamBreak = new DigitalInput(LauncherConstants.BEAMBREAK_ID);
 
-  private double mDesiredVelocityMain = 0;
-  private double mDesiredVelocityRoller = 0;
+  private double mDesiredVelocity = 0;
 
   private LauncherMode mLauncherMode = LauncherMode.OFF;
 
@@ -37,6 +37,8 @@ public class LauncherSubsystem extends SubsystemBase {
   }
   
   public void configureDevices() {
+    mFollowerFlywheel.setControl(new Follower(mLeaderFlywheel.getDeviceID(), true));
+
     Slot0Configs slotConfigs = new Slot0Configs();
 
     slotConfigs.kP = LauncherConstants.LAUNCHER_PID_CONTROLLER.getP();
@@ -45,20 +47,15 @@ public class LauncherSubsystem extends SubsystemBase {
     slotConfigs.kS = LauncherConstants.LAUNCHER_FF_CONTROLLER.ks;
     slotConfigs.kV = LauncherConstants.LAUNCHER_FF_CONTROLLER.kv;
 
-    mMainFlywheel.getConfigurator().apply(slotConfigs);
-    mRollerFlywheel.getConfigurator().apply(slotConfigs);
+    mLeaderFlywheel.getConfigurator().apply(slotConfigs);
   }
 
   @Override
   public void periodic() {
-    double actualMainVelocity = mMainFlywheel.getVelocity().getValueAsDouble();
-    double actualRollerVelocity = mRollerFlywheel.getVelocity().getValueAsDouble();
+    double actualVelocity = mLeaderFlywheel.getVelocity().getValueAsDouble();
 
-    mLauncherReady = Math.abs(Math.abs(mDesiredVelocityMain) - Math.abs(actualMainVelocity)) <= LauncherConstants.FLYWHEEL_TOLERANCE &&
-                     Math.abs(Math.abs(mDesiredVelocityRoller) - Math.abs(actualRollerVelocity)) <= LauncherConstants.FLYWHEEL_TOLERANCE && 
-                     mDesiredVelocityMain != 0 && 
-                     mDesiredVelocityRoller != 0;
-            
+    mLauncherReady = Math.abs(Math.abs(mDesiredVelocity) - Math.abs(actualVelocity)) <= LauncherConstants.FLYWHEEL_TOLERANCE && 
+                     mDesiredVelocity != 0;
     runLauncher();
   }
 
@@ -69,24 +66,19 @@ public class LauncherSubsystem extends SubsystemBase {
   public void runLauncher() {
     //predicted velocity values
     if (mLauncherMode == LauncherMode.SPEAKER) {
-      mDesiredVelocityMain = LauncherState.SPEAKER_DEFAULT.mainVelocity;
-      mDesiredVelocityRoller = LauncherState.SPEAKER_DEFAULT.rollerVelocity;
+      mDesiredVelocity = LauncherState.SPEAKER_DEFAULT.velocity;
     }
     else if (mLauncherMode == LauncherMode.AMP) {
-      mDesiredVelocityMain = LauncherState.AMP_DEFAULT.mainVelocity;
-      mDesiredVelocityRoller = LauncherState.AMP_DEFAULT.rollerVelocity;
+      mDesiredVelocity = LauncherState.AMP_DEFAULT.velocity;
     }
     else if (mLauncherMode == LauncherMode.TRAP) {
-      mDesiredVelocityMain = LauncherState.TRAP_DEFAULT.mainVelocity;
-      mDesiredVelocityRoller = LauncherState.TRAP_DEFAULT.rollerVelocity;
+      mDesiredVelocity = LauncherState.TRAP_DEFAULT.velocity;
     }
     else if (mLauncherMode == LauncherMode.OFF) {
-      mDesiredVelocityMain = 0;
-      mDesiredVelocityRoller = 0;
+      mDesiredVelocity = 0;
     }
 
-    mMainFlywheel.setControl(new VelocityVoltage(mDesiredVelocityMain).withSlot(0));
-    mRollerFlywheel.setControl(new VelocityVoltage(mDesiredVelocityMain).withSlot(0));
+    mLeaderFlywheel.setControl(new VelocityVoltage(mDesiredVelocity).withSlot(0));
   }
 
   public boolean isIndexerOn() {
@@ -114,8 +106,8 @@ public class LauncherSubsystem extends SubsystemBase {
   }
 
   private void resetEncoders() {
-    mMainFlywheel.setPosition(0);
-    mRollerFlywheel.setPosition(0);
+    mLeaderFlywheel.setPosition(0);
+    mFollowerFlywheel.setPosition(0);
   }
 
   public Command waitUntilFlywheelSetpointCommand() {
