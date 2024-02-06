@@ -10,8 +10,9 @@ public class CompConstants {
     public static final double loopTime = 0.02;
     public static final boolean DEBUG_MODE = true;
 
-    // Not Set Up
-    public static final boolean REALTITY_CONSTANT = false;
+    public static final boolean PID_TUNE_MODE = false;
+    // Intake
+    public static boolean ONE_PIECE = true;
 
 
 }

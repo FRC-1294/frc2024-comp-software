@@ -143,19 +143,18 @@ public class SwerveSubsystem extends SubsystemBase {
    * @return the Rotation2d of the gyro CCW POSITIVE(Unit Circle Rise UP)
    * @see Rotation2d
    */
-<<<<<<< HEAD
   public static Rotation2d getRotation2d() {
-=======
-  public Rotation2d getRotation2d() {
-
     return Rotation2d.fromDegrees(getHeading());
+  }
+
+  /**
+   * This function sets the current speeds of the swerve modules to the following array pattern
    * [frontleft, frontright, backleft, backright]
    * 
    * @see SwerveModuleState
    * @param desiredStates requires a SwerveModuleState array
    */
 
-<<<<<<< HEAD
   public void setModuleStates(SwerveModuleState[] desiredStates,boolean isOpenLoop) {
     double ts3 = ((double)System.nanoTime())/1000000;
     SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, mConfig.TELE_MAX_SPEED_MPS);
@@ -164,14 +163,6 @@ public class SwerveSubsystem extends SubsystemBase {
     }
     ////System.out.println("Set Module States Nano: " + ((double)System.nanoTime()/1000000-ts3));
 
-=======
-  public void setModuleStates(SwerveModuleState[] desiredStates) {
-    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, SwerveConstants.TELE_MAX_SPEED_MPS);
-
-    for (int i = 0; i < desiredStates.length; i++) {
-      mModules[i].setDesiredState(desiredStates[i]);
-    }
->>>>>>> main
 
   }
 
@@ -181,11 +172,7 @@ public class SwerveSubsystem extends SubsystemBase {
    *         backright]
    * @see SwerveModulePosition
    */
-<<<<<<< HEAD
   public static SwerveModulePosition[] getModulePositions() {
-=======
-  public SwerveModulePosition[] getModulePositions() {
->>>>>>> main
     SwerveModulePosition[] positions = new SwerveModulePosition[mModules.length];
 
     for (int i = 0; i < mModules.length; i++) {
@@ -202,16 +189,12 @@ public class SwerveSubsystem extends SubsystemBase {
    * @param vyMPS this is the sideways velocity in meter/second (left is positive)
    * @param angleSpeedRADPS this is in radians/second counterclockwise
    * @param fieldOriented this is a boolean that determines if the robot is field oriented or not
-<<<<<<< HEAD
    * @param isOpenLoop this is a boolean that determines if the robot is to use PID+FF for translation and rotation. Highly recommended for auton
-=======
->>>>>>> main
    * 
    * @apiNote Keep in mind all of this is field relative so resetting the gyro midmatch will also
    *          reset these params
    */
   public void setChassisSpeed(double vxMPS, double vyMPS, double angleSpeedRADPS,
-<<<<<<< HEAD
     boolean fieldOriented, boolean isOpenLoop) {
     double ts1 = (double) System.nanoTime()/1000000;
     ChassisSpeeds chassisSpeeds;
@@ -297,42 +280,12 @@ public class SwerveSubsystem extends SubsystemBase {
 
   private void resetRobotPose() {
     mOdometry.resetPosition(getRotation2d(), getModulePositions(), new Pose2d());
-=======
-      boolean fieldOriented) {
-    ChassisSpeeds chassisSpeeds;
-    if (fieldOriented) {
-      chassisSpeeds =
-          ChassisSpeeds.fromFieldRelativeSpeeds(vxMPS, vyMPS, angleSpeedRADPS, getRotation2d());
-    } else {
-      chassisSpeeds = new ChassisSpeeds(vxMPS, vyMPS, angleSpeedRADPS);
-    }
-    SwerveModuleState[] moduleStates = mKinematics.toSwerveModuleStates(chassisSpeeds);
-
-
-    setModuleStates(moduleStates);
-
-  }
-
-  public void setChassisSpeed(double x, double y, double rot) {
-    setChassisSpeed(x, y, rot, false);
-  }
-
-  /**
-   * This method resets the pose of the robot to the desired robot pose
-   * 
-   * @param pose provide the new desired pose of the robot
-   * @see Pose2d
-   */
-  public void resetRobotPose(Pose2d pose) {
-    mOdometry.resetPosition(pose.getRotation(), getModulePositions(), pose);
->>>>>>> main
   }
 
 
   /**
    * @return provide the pose of the robot in meters
    */
-<<<<<<< HEAD
   public static Pose2d getRobotPose() {
     return mOdometry.getPoseMeters();
   }
@@ -344,11 +297,5 @@ public class SwerveSubsystem extends SubsystemBase {
     return mModules;
   }
 
-=======
-  public Pose2d getRobotPose() {
-    return mOdometry.getPoseMeters();
-  }
-
->>>>>>> main
 
 }
