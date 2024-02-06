@@ -8,7 +8,7 @@ public class CompConstants {
         throw new IllegalStateException("Constants Class");
     }
     public static final double loopTime = 0.02;
-    public static final boolean DEBUG_MODE = false;
+    public static final boolean DEBUG_MODE = true;
 
     // Not Set Up
     public static final boolean REALTITY_CONSTANT = false;
