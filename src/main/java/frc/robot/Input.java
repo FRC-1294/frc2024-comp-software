@@ -69,7 +69,7 @@ public class Input {
     return mXBox.getLeftBumper();
   }
 
-  public static boolean getOnePiece() {
+  public static boolean overrideIntakeBeamBreak() {
     return mXBox.getRightStickButton();
   }
 }
