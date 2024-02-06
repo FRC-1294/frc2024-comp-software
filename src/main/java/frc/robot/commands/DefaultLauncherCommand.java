@@ -5,8 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.constants.LauncherConstants;
 import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.subsystems.Input;
 import frc.robot.subsystems.LauncherSubsystem;
@@ -27,22 +26,26 @@ public class DefaultLauncherCommand extends Command {
 
   @Override
   public void execute() {
-    if (Input.getY()) { //TBD https://github.com/FRC-1294/frc2024/issues/241
+    if (Input.getX()) {
       mLauncher.stopLauncher();
     }
     //speaker
-    else if (Input.getA()) { //TBD https://github.com/FRC-1294/frc2024/issues/241
+    else if (Input.getY()) {
       mLauncher.setLauncherMode(LauncherMode.SPEAKER);
     } 
     //amp
-    else if (Input.getB()) { //TBD https://github.com/FRC-1294/frc2024/issues/241
+    else if (Input.getA()) {
       mLauncher.setLauncherMode(LauncherMode.AMP);
     }
-    else if (Input.getX()) { //TBD https://github.com/FRC-1294/frc2024/issues/241
+    else if (Input.getB()) {
       mLauncher.setLauncherMode(LauncherMode.TRAP);
     }
-    else if (Input.getLeftBumper()) { //TBD https://github.com/FRC-1294/frc2024/issues/241
-      mLauncher.turnIndexerOn(!mLauncher.isIndexerOn());
+    
+    if (Input.getLeftBumper() && !mLauncher.pieceInIndexer()) {
+      mLauncher.runIndexer(LauncherConstants.INDEXER_VELOCITY_DEFAULT);
+    }
+    if (Input.getRightBumper() && mLauncher.isLauncherReady()) {
+      mLauncher.runIndexer(LauncherConstants.INDEXER_VELOCITY_DEFAULT);
     }
   }
 

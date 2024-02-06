@@ -23,6 +23,8 @@ public final class LauncherConstants {
 
   public static final int INDEXER_ID = 3; //TBD https://github.com/FRC-1294/frc2024/issues/241
 
+  public static final int BEAMBREAK_ID = 4; //TBD https://github.com/FRC-1294/frc2024/issues/241
+
   //current flywheel mode
   public enum LauncherMode {
     SPEAKER, AMP, TRAP, OFF;

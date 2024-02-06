@@ -8,18 +8,13 @@ import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.constants.IntakeConstants;
 import frc.robot.constants.LauncherConstants;
 import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.constants.LauncherConstants.LauncherState;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class LauncherSubsystem extends SubsystemBase {
   private final CANSparkMax mIndexer = new CANSparkMax(LauncherConstants.INDEXER_ID, MotorType.kBrushless);
@@ -27,15 +22,12 @@ public class LauncherSubsystem extends SubsystemBase {
   private final TalonFX mMainFlywheel = new TalonFX(LauncherConstants.MAIN_FLYWHEEL_ID);
   private final TalonFX mRollerFlywheel = new TalonFX(LauncherConstants.ROLLER_FLYWHEEL_ID);
 
+  private final DigitalInput mBeamBreak = new DigitalInput(LauncherConstants.BEAMBREAK_ID);
+
   private double mDesiredVelocityMain = 0;
   private double mDesiredVelocityRoller = 0;
 
   private LauncherMode mLauncherMode = LauncherMode.OFF;
-
-  private boolean mNoteIndexed = false;
-
-  //toggle to transmit note
-  private boolean mIndexToLauncher = false;
 
   private boolean mLauncherReady = false;
 
@@ -66,21 +58,12 @@ public class LauncherSubsystem extends SubsystemBase {
                      Math.abs(Math.abs(mDesiredVelocityRoller) - Math.abs(actualRollerVelocity)) <= LauncherConstants.FLYWHEEL_TOLERANCE && 
                      mDesiredVelocityMain != 0 && 
                      mDesiredVelocityRoller != 0;
-                      
-    runIndexer();
+            
     runLauncher();
   }
 
-  public void runIndexer() {
-    double desiredVelocityIndexer = 0;
-    if (!mNoteIndexed || !mLauncherReady || !mIndexToLauncher) {
-      desiredVelocityIndexer = 0;
-    }
-    else {
-      desiredVelocityIndexer = LauncherConstants.INDEXER_VELOCITY_DEFAULT;
-    }
-
-    mIndexer.set(desiredVelocityIndexer);
+  public void runIndexer(double velocity) {
+    mIndexer.set(velocity);
   }
   
   public void runLauncher() {
@@ -106,20 +89,16 @@ public class LauncherSubsystem extends SubsystemBase {
     mRollerFlywheel.setControl(new VelocityVoltage(mDesiredVelocityMain).withSlot(0));
   }
 
-  public void turnIndexerOn(boolean indexerOn){
-    mIndexToLauncher = indexerOn;
+  public boolean isIndexerOn() {
+    return Math.abs(mIndexer.getAppliedOutput()) > 0;
   }
 
-  public boolean isIndexerOn() {
-    return mIndexToLauncher;
+  public boolean pieceInIndexer(){
+    return !mBeamBreak.get();
   }
 
   public boolean isLauncherReady() {
     return mLauncherReady;
-  }
-
-  public void setIsNoteIndexed(boolean containsNote) {
-    mNoteIndexed = containsNote;
   }
 
   public void setLauncherMode(LauncherMode mode) {
