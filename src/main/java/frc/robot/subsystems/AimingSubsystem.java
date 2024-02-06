@@ -59,10 +59,7 @@ public class AimingSubsystem extends SubsystemBase {
   // MotorMode Chooser
   private final SendableChooser<AimingMotorMode> mChooser = new SendableChooser<>();
 
-  // PID Controllers and Motor Configs
-  Slot0Configs mElevatorControllerSlot0Configs = new Slot0Configs();
-  // ElevatorFeedforward mElevatorFeedforward = new ElevatorFeedforward(AimingConstants.mElevatorPIDConstants.mKS, AimingConstants.mElevatorkG, AimingConstants.mElevatorPIDConstants.mKS);
-  
+  // PID Controllers and Motor Configs 
   PIDController mElevatorController = AimingConstants.mElevatorPIDConstants.toWPIController();  
   PIDController mWristController = AimingConstants.mWristPIDConstants.toWPIController();
 
@@ -72,7 +69,10 @@ public class AimingSubsystem extends SubsystemBase {
   MotorOutputConfigs mLeftWristMotorOutputConfigs = new MotorOutputConfigs();
   MotorOutputConfigs mRightWristMotorOutputConfigs = new MotorOutputConfigs();
 
-  //PositionVoltage elevatorVoltage = new PositionVoltage(getDesiredElevatorDistance()).withSlot(0);
+  Slot0Configs mElevatorControllerSlot0Configs = new Slot0Configs();
+
+  // Onboard PID
+  // PositionVoltage elevatorVoltage = new PositionVoltage(getDesiredElevatorDistance()).withSlot(0);
 
   public AimingSubsystem() {
     mChooser.addOption("Brake", AimingMotorMode.BRAKE);
@@ -110,7 +110,6 @@ public class AimingSubsystem extends SubsystemBase {
     //follower configuration
     mRightWristMotor.follow(mLeftWristMotor);
     mRightElevatorMotor.setControl(new Follower(mLeftElevatorMotor.getDeviceID(), false));
-
   }
 
   @Override
@@ -173,16 +172,14 @@ public class AimingSubsystem extends SubsystemBase {
 
     mRightWristMotor.setIdleMode(idleMode);
     mLeftWristMotor.setIdleMode(idleMode);
-
-
   }
 
   // Contains Smart Dashboard Statements ONLY ON DEBUG
   private void debugSmartDashboard() {
-    if (CompConstants.DEBUG_MODE) {}
-    // TODO: Add debug statements
-    SmartDashboard.putNumber("Current Wrist Rotation", mCurrentWristRotationDeg);
-    SmartDashboard.putNumber("Current Elevator Distance", mCurrentElevatorDistanceIn);
+    if (CompConstants.DEBUG_MODE) {
+      SmartDashboard.putNumber("Current Wrist Rotation", mCurrentWristRotationDeg);
+      SmartDashboard.putNumber("Current Elevator Distance", mCurrentElevatorDistanceIn);
+    }
   }
 
   // Getters and Setters of TOF Sensor
@@ -260,24 +257,17 @@ public class AimingSubsystem extends SubsystemBase {
   }
 
   public boolean atElevatorSetpoint() {
-
     // ENCODER VERSION
     // return mLeftElevatorMotor.getRotorPosition().getValueAsDouble() * AimingConstants.ELEVATOR_ROTATIONS_TO_INCHES) < AimingConstants.ELEVATOR_TOLERANCE_IN
-    
-
     return Math.abs(mDesiredElevatorDistanceIn - mCurrentElevatorDistanceIn) <= AimingConstants.ELEVATOR_TOLERANCE_IN;
-
   }
   public boolean atWristSetpoint() {
-    // if (Math.abs(mRightWristMotor.getPosition().getValueAsDouble() - mRightWristMotor.getRotorPosition().getValueAsDouble()) * 360 <= AimingConstants.WRIST_TOLERANCE_DEG) {
-    //   return true;
-    // }
-
-    // return false;
     return mWristController.atSetpoint();
   }
 
-  public boolean atSetpoints() {return atElevatorSetpoint() && atWristSetpoint();}
+  public boolean atSetpoints() {
+    return atElevatorSetpoint() && atWristSetpoint();
+  }
 
   public Command waitUntilSetpoint(AimState state) {
     return new FunctionalCommand(() -> setDesiredSetpoint(state), null, null, this::atSetpoints, this);  
@@ -290,7 +280,4 @@ public class AimingSubsystem extends SubsystemBase {
   public Command waitUntilWristSetpoint(double sp) {
     return new FunctionalCommand(() -> setDesiredWristRotation(sp), null, null, this::atWristSetpoint, this);  
   }
-
-
 }
-

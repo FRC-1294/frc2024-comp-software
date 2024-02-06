@@ -12,10 +12,8 @@ import frc.robot.subsystems.AimingSubsystem;
 import frc.robot.subsystems.Input;
 
 public class DefaultAimCommand extends Command {
-
   private final AimingSubsystem mAimingSubsystem;
 
-  //TODO: Implement Input Using an Xbox Controller(You can choose the button mapping)
   // Use the Arm from last year as inspiration
   public DefaultAimCommand(AimingSubsystem aimingSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -35,13 +33,13 @@ public class DefaultAimCommand extends Command {
     if (Input.getA()) {
       state = AimState.AMP;
     }
-    else if (Input.getB()) {
+    else if (Input.getY()) {
       state = AimState.SPEAKER;
     }
-    else if (Input.getX()) {
+    else if (Input.getDPad() == 0.0) {
       state = AimState.CLIMB;
     }
-    
+
     mAimingSubsystem.setDesiredSetpoint(state);
 
     if (Math.abs(Input.getLeftStickY()) > 0) {
@@ -59,7 +57,8 @@ public class DefaultAimCommand extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override

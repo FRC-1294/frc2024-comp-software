@@ -14,7 +14,6 @@ public class AimingConstants {
 
 
     // Setpoints
-    //TODO: Find these
     public enum AimState {
         STOW(MIN_ELEVATOR_DIST_IN, MIN_WRIST_ROTATION_DEG),
         SPEAKER(MIN_ELEVATOR_DIST_IN, MIN_WRIST_ROTATION_DEG),
@@ -46,7 +45,7 @@ public class AimingConstants {
 
     public static final AimingMotorMode INITIAL_MOTOR_MODE = AimingMotorMode.BRAKE;
 
-    public static double ELEVATOR_ROTATIONS_TO_INCHES = 1; // TODO: convert gear ratio of flywheel to inches
+    public static double ELEVATOR_ROTATIONS_TO_INCHES = 1;
 	  public final static double ELEVATOR_TOLERANCE_IN = 0;
     public static final double WRIST_TOLERANCE_DEG = 0;
 
@@ -71,6 +70,4 @@ public class AimingConstants {
     public static final int RIGHT_WRIST_ENCODER_ID = 0;
 
     public static final int ELEVATOR_THROUGHBORE_ENCODER_ID = 0;
-
-
 }
