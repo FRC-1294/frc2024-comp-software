@@ -11,12 +11,13 @@ import frc.robot.swerve.SwerveModuleAbstract;
 import frc.robot.Util.PIDConstants;
 
 /** Add your docs here. */
-public class SwerveConfig {
-        public SwerveConfig() {
-
+public abstract class SwerveConfig {
+        protected SwerveConfig() {
+        //Abstract class cannot be initialized
         }
+        //Since Java does not support abstract FIELDS, this is our only solution apart from requiring everything within the constructor
         public Pigeon2 PIGEON = null;
-        public double TRANS_GEAR_RATIO_ROT = -1;
+        public double TRANS_GEAR_RATIO_ROT;
         public double REL_ENC_GEAR_RATIO_ROT = -1;
         public double ABS_ENC_GEAR_RATIO_ROT = -1;
       
@@ -38,63 +39,63 @@ public class SwerveConfig {
         public double TRACK_LENGTH_METERS = -1;
         // ID's
         // Encoder IDs have been set
-        public  int FRONT_LEFT_TRANS_ID = 0;
-        public  int FRONT_LEFT_ROT_ID = 0;
-        public  int FRONT_LEFT_ROT_ENC_ID = 0;
+        public int FRONT_LEFT_TRANS_ID = 0;
+        public int FRONT_LEFT_ROT_ID = 0;
+        public int FRONT_LEFT_ROT_ENC_ID = 0;
 
-        public  int FRONT_RIGHT_TRANS_ID = 0;
-        public  int FRONT_RIGHT_ROT_ID = 0;
-        public  int FRONT_RIGHT_ROT_ENC_ID = 0;
+        public int FRONT_RIGHT_TRANS_ID = 0;
+        public int FRONT_RIGHT_ROT_ID = 0;
+        public int FRONT_RIGHT_ROT_ENC_ID = 0;
 
-        public  int BACK_LEFT_TRANS_ID = 0;
-        public  int BACK_LEFT_ROT_ID = 0;
-        public  int BACK_LEFT_ROT_ENC_ID = 0;
+        public int BACK_LEFT_TRANS_ID = 0;
+        public int BACK_LEFT_ROT_ID = 0;
+        public int BACK_LEFT_ROT_ENC_ID = 0;
 
-        public  int BACK_RIGHT_TRANS_ID = 0;
-        public  int BACK_RIGHT_ROT_ID = 0;
-        public  int BACK_RIGHT_ROT_ENC_ID = 0;
+        public int BACK_RIGHT_TRANS_ID = 0;
+        public int BACK_RIGHT_ROT_ID = 0;
+        public int BACK_RIGHT_ROT_ENC_ID = 0;
 
 
-        public  int PIGEON_ID = 0;
+        public int PIGEON_ID = 0;
 
 
         // Inverse Booleans
-        public  boolean FRONT_LEFT_ROT_INVERSE = false;
-        public  boolean FRONT_LEFT_TRANS_INVERSE = false;
+        public boolean FRONT_LEFT_ROT_INVERSE = false;
+        public boolean FRONT_LEFT_TRANS_INVERSE = false;
 
-        public  boolean FRONT_RIGHT_ROT_INVERSE = false;
-        public  boolean FRONT_RIGHT_TRANS_INVERSE = false;
+        public boolean FRONT_RIGHT_ROT_INVERSE = false;
+        public boolean FRONT_RIGHT_TRANS_INVERSE = false;
 
-        public  boolean BACK_LEFT_ROT_INVERSE = false;
-        public  boolean BACK_LEFT_TRANS_INVERSE = false;
+        public boolean BACK_LEFT_ROT_INVERSE = false;
+        public boolean BACK_LEFT_TRANS_INVERSE = false;
 
-        public  boolean BACK_RIGHT_ROT_INVERSE = false;
-        public  boolean BACK_RIGHT_TRANS_INVERSE = false;
+        public boolean BACK_RIGHT_ROT_INVERSE = false;
+        public boolean BACK_RIGHT_TRANS_INVERSE = false;
 
         // Swerve Module Locations
-        public  Translation2d FRONT_LEFT_COORDS_METERS = null;
-        public  Translation2d FRONT_RIGHT_COORDS_METERS = null;
-        public  Translation2d BACK_LEFT_COORDS_METERS = null;
-        public  Translation2d BACK_RIGHT_COORDS_METERS = null;
+        public Translation2d FRONT_LEFT_COORDS_METERS = null;
+        public Translation2d FRONT_RIGHT_COORDS_METERS = null;
+        public Translation2d BACK_LEFT_COORDS_METERS = null;
+        public Translation2d BACK_RIGHT_COORDS_METERS = null;
 
         // PID Controllers
-        public  PIDConstants FRONT_LEFT_ROT_PID = null;
-        public  PIDConstants FRONT_RIGHT_ROT_PID = null;
-        public  PIDConstants BACK_LEFT_ROT_PID = null;
-        public  PIDConstants BACK_RIGHT_ROT_PID = null;
+        public PIDConstants FRONT_LEFT_ROT_PID = null;
+        public PIDConstants FRONT_RIGHT_ROT_PID = null;
+        public PIDConstants BACK_LEFT_ROT_PID = null;
+        public PIDConstants BACK_RIGHT_ROT_PID = null;
 
-        public  PIDConstants FRONT_LEFT_TRANS_PID = null;
-        public  PIDConstants FRONT_RIGHT_TRANS_PID = null;
-        public  PIDConstants BACK_LEFT_TRANS_PID = null;
-        public  PIDConstants BACK_RIGHT_TRANS_PID = null;
+        public PIDConstants FRONT_LEFT_TRANS_PID = null;
+        public PIDConstants FRONT_RIGHT_TRANS_PID = null;
+        public PIDConstants BACK_LEFT_TRANS_PID = null;
+        public PIDConstants BACK_RIGHT_TRANS_PID = null;
 
-        public  PIDConstants FRONT_LEFT_TRANS_CARPET_PID = null;
-        public  PIDConstants FRONT_RIGHT_TRANS_CARPET_PID = null;
-        public  PIDConstants BACK_LEFT_TRANS_CARPET_PID = null;
-        public  PIDConstants BACK_RIGHT_TRANS_CARPET_PID = null;
+        public PIDConstants FRONT_LEFT_TRANS_CARPET_PID = null;
+        public PIDConstants FRONT_RIGHT_TRANS_CARPET_PID = null;
+        public PIDConstants BACK_LEFT_TRANS_CARPET_PID = null;
+        public PIDConstants BACK_RIGHT_TRANS_CARPET_PID = null;
 
 
-        public  SwerveDriveKinematics SWERVE_KINEMATICS = null;
+        public SwerveDriveKinematics SWERVE_KINEMATICS = null;
 
 
         // Swerve Modules and Other Hardware

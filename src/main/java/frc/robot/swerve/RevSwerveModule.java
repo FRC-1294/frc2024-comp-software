@@ -362,7 +362,7 @@ public class RevSwerveModule extends SwerveModuleAbstract{
     /**
      * @return the nominal voltage amount after voltage compensation for the translation motor
      */
-    public double getTranslationNominalVoltage(){
+    public double getTransNominalVoltage(){
         return mTransMotor.getVoltageCompensationNominalVoltage();
     }
 }

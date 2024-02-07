@@ -10,7 +10,7 @@ import frc.robot.Util.PIDConstants;
 /*
     This is a wrapper class that serves both as an abstract class and a parent class to the Rev and Kraken Swerve Module classes
  */
- public class SwerveModuleAbstract{
+ public abstract class SwerveModuleAbstract{
     // Parameters
     protected final int mRotID;
     protected final int mTransID;
@@ -21,7 +21,7 @@ import frc.robot.Util.PIDConstants;
     protected final PIDController mTransPID;
     protected final SimpleMotorFeedforward mTransFF;
 
-    public SwerveModuleAbstract(int rotID, int transID, int rotEncoderID, boolean rotInverse,
+    protected SwerveModuleAbstract(int rotID, int transID, int rotEncoderID, boolean rotInverse,
             boolean transInverse, PIDConstants rotPID, PIDConstants transPID) {
     
             mRotID = rotID;
@@ -46,27 +46,19 @@ import frc.robot.Util.PIDConstants;
         return new SwerveModuleState(getTransVelocity(), Rotation2d.fromRadians(getRotPosition()));
     }
 
-    public double getRotAppliedOutput(){return -9999999.9;}
+    public abstract double getRotAppliedOutput();
 
-    public void setTransMotorDutyCycleRaw(double speed){
-        //Abstract Method
-    }
+    public abstract void setTransMotorDutyCycleRaw(double speed);
 
     /**
      * 
      * Sets the translation motor's voltage (max 12 volts)
      */
-    protected void setTranslationVoltageRaw(double volts){
-        //Abstract Method
-    }
+    protected abstract void setTranslationVoltageRaw(double volts);
 
-    public void setRotMotorRaw(double speed){
-        //Abstract Method
-    }
+    public abstract void setRotMotorRaw(double speed);
 
-    public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop){
-        //Abstract Method
-    }
+    public abstract void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop);
 
     /**
      * Sets the motor speeds passed into constructor
@@ -74,13 +66,9 @@ import frc.robot.Util.PIDConstants;
      * @param desiredState takes in SwerveModule state
      * @see SwerveModuleState
      */
-    public void setDesiredState(SwerveModuleState desiredState){
-        //Abstract Method
-    }
+    public abstract void setDesiredState(SwerveModuleState desiredState);
 
-    public void setPID(double degrees){
-        //Abstract Method
-    }
+    public abstract void setPID(double degrees);
 
     /**
      * 
@@ -100,55 +88,50 @@ import frc.robot.Util.PIDConstants;
      * @return Returns translation motor AFTER GEAR RATIO and Meters
      */
     
-    public double getTransPosition(){return -999999.9999;}
+    public abstract double getTransPosition();
 
     /**
      * 
      * @return Returns rotation in RADIANS of rotation motor AFTER GEAR RATIO
      */
-    public double getRotPosition(){return -999999.9999;}
+    public abstract double getRotPosition();
 
-    public double getRotRelativePosition(){return -999999.9999;}
+    public abstract double getRotRelativePosition();
 
     /**
      * 
      * @return Returns velocity of translation motor with conversion from the CANcoder
      */
-    public double getTransVelocity(){return -999999.9999;}
-
+    public abstract double getTransVelocity();
     /**
      * 
      * @return the PID setpoint of the translation's velocity in meters/sec
      */
-    public double getTransVelocitySetpoint(){return -999999.9999;}
+    public abstract double getTransVelocitySetpoint();
 
     /**
      * 
      * @return Returns the applied voltage to the translation motor after nominal voltage
      *         compensation
      */
-    public double getTransAppliedVolts (){return -999999.9999;}
+    public abstract double getTransAppliedVolts();
 
     /**
      * 
      * @return Returns the applied voltage to the translation motor after nominal voltage
      *         compensation
      */
-    public double getTransNominalVoltage(){return -999999.9999;}
+    public abstract double getTransNominalVoltage();
 
     /**
      * Reset ONLY the translation encoder
      */
-    public void resetEncoders(){
-        //Abstract method
-    }
+    public abstract void resetEncoders();
 
     /**
      * Stops the both motors
      */
-    public void stop(){
-        //Abstract Method
-    }
+    public abstract void stop();
 
     /**
      * 
