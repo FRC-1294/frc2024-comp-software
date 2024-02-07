@@ -5,7 +5,6 @@
 package frc.robot;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -26,6 +25,7 @@ public class Util {
         DUTY_CYCLE_VEL;}
 
     public static class PIDConstants{
+        //These are public for the sake of editing during PID tuning (I'm not gonna make 8 getters and setters)
         public double mKP;
         public double mKI;
         public double mKD;

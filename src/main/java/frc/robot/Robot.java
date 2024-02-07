@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.revrobotics.CANSparkLowLevel;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -11,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.commands.InitializePathPlanner;
 import frc.robot.commands.KsCharacterization;
 import frc.robot.commands.KvCharacterization;
@@ -22,10 +24,7 @@ import frc.robot.commands.KvCharacterization;
  * project.
  */
 public class Robot extends TimedRobot {
-  private Command m_autonomousCommand;
-
-  private RobotContainer m_robotContainer;
-  public SendableChooser<Command> pathSelector = new SendableChooser<>();
+  private SendableChooser<Command> pathSelector = new SendableChooser<>();
 
 
   /**
@@ -37,18 +36,17 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     SmartDashboard.putData("Pick your Auton...",pathSelector);
-    m_robotContainer = new RobotContainer();
+    RobotContainer robotContainer = new RobotContainer();
     
-    new InitializePathPlanner(m_robotContainer.getSwerveSubsystem()).initialize();
+    new InitializePathPlanner(robotContainer.getSwerveSubsystem()).initialize();
 
     // pathSelector.addOption("5_meter_return", AutoBuilder.buildAuto("5_Meter_Return"));
     // pathSelector.addOption("Simpy", AutoBuilder.buildAuto("Simpy"));
     // pathSelector.addOption("2_meter", AutoBuilder.buildAuto("2_meter"));
-    // pathSelector.addOption("None", new PrintCommand("Damn that sucks"));
-    pathSelector.addOption("kSCharacterization", new KsCharacterization(m_robotContainer.getSwerveSubsystem()));
-    pathSelector.addOption("kVCharacterization", new KvCharacterization(m_robotContainer.getSwerveSubsystem()));
-    // pathSelector.addOption("Goofy Loop", AutoBuilder.buildAuto("Goofy Loop"));
-    // pathSelector.addOption("3_Piece_Dynamic", AutoBuilder.buildAuto("3_Piece_Dynamic"));
+    pathSelector.addOption("None", new PrintCommand("Damn that sucks"));
+    pathSelector.addOption("kSCharacterization", new KsCharacterization(robotContainer.getSwerveSubsystem()));
+    pathSelector.addOption("kVCharacterization", new KvCharacterization(robotContainer.getSwerveSubsystem()));
+    pathSelector.addOption("3_Piece_Dynamic", AutoBuilder.buildAuto("3_Piece_Dynamic"));
   }
 
   /**
@@ -71,42 +69,27 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    //Not used
+  }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    //Not used
+  }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = pathSelector.getSelected();
+    Command autonomousCommand = pathSelector.getSelected();
 
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
+    if (autonomousCommand != null) {
+      autonomousCommand.schedule();
     }
     CANSparkLowLevel.enableExternalUSBControl(true);
 
   }
-
-  /** This function is called periodically during autonomous. */
-  @Override
-  public void autonomousPeriodic() {}
-
-  @Override
-  public void teleopInit() {
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
-    }
-  }
-
-  /** This function is called periodically during operator control. */
-  @Override
-  public void teleopPeriodic() {}
 
   @Override
   public void testInit() {
@@ -114,16 +97,4 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().cancelAll();
     CANSparkLowLevel.enableExternalUSBControl(true);
   }
-
-  /** This function is called periodically during test mode. */
-  @Override
-  public void testPeriodic() {}
-
-  /** This function is called once when the robot is first started up. */
-  @Override
-  public void simulationInit() {}
-
-  /** This function is called periodically whilst in simulation. */
-  @Override
-  public void simulationPeriodic() {}
 }
