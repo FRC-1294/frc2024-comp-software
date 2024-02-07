@@ -46,19 +46,27 @@ import frc.robot.Util.PIDConstants;
         return new SwerveModuleState(getTransVelocity(), Rotation2d.fromRadians(getRotPosition()));
     }
 
-    public double getRotAppliedOutput(){return -9999999.9;};
+    public double getRotAppliedOutput(){return -9999999.9;}
 
-    public void setTransMotorDutyCycleRaw(double speed){};
+    public void setTransMotorDutyCycleRaw(double speed){
+        //Abstract Method
+    }
 
     /**
      * 
      * Sets the translation motor's voltage (max 12 volts)
      */
-    protected void setTranslationVoltageRaw(double volts){};
+    protected void setTranslationVoltageRaw(double volts){
+        //Abstract Method
+    }
 
-    public void setRotMotorRaw(double speed){};
+    public void setRotMotorRaw(double speed){
+        //Abstract Method
+    }
 
-    public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop){};
+    public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop){
+        //Abstract Method
+    }
 
     /**
      * Sets the motor speeds passed into constructor
@@ -66,10 +74,13 @@ import frc.robot.Util.PIDConstants;
      * @param desiredState takes in SwerveModule state
      * @see SwerveModuleState
      */
-    public void setDesiredState(SwerveModuleState desiredState){};
+    public void setDesiredState(SwerveModuleState desiredState){
+        //Abstract Method
+    }
 
-    public void setPID(double degrees){};
-
+    public void setPID(double degrees){
+        //Abstract Method
+    }
 
     /**
      * 
@@ -128,12 +139,16 @@ import frc.robot.Util.PIDConstants;
     /**
      * Reset ONLY the translation encoder
      */
-    public void resetEncoders(){}
+    public void resetEncoders(){
+        //Abstract method
+    }
 
     /**
      * Stops the both motors
      */
-    public void stop(){}
+    public void stop(){
+        //Abstract Method
+    }
 
     /**
      * 
