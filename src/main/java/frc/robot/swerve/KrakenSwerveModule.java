@@ -15,7 +15,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Util.PIDConstants;
 import frc.robot.Util.TalonControlType;
 
@@ -42,8 +41,7 @@ public class KrakenSwerveModule extends SwerveModuleAbstract{
     private double mDesiredVel = 0.0;
     private double mMaxAccel = 0.0;
     private double mCurAccel = 0.0;
-    private double prevVel = 0.0;
-    private double prevTS;
+
     public double feedforward=0;
 
     public KrakenSwerveModule(int rotID, int transID, int rotEncoderID, boolean rotInverse,
@@ -150,13 +148,6 @@ public class KrakenSwerveModule extends SwerveModuleAbstract{
      * @see SwerveModuleState
      */
     public void setDesiredState(SwerveModuleState desiredState) {
-        double curVel = getTransVelocity();
-        mCurAccel = (Math.abs(curVel)-Math.abs(prevVel))/(Timer.getFPGATimestamp()-prevTS);
-        if (mCurAccel>mMaxAccel){
-            mMaxAccel = mCurAccel;
-        }
-        prevTS = Timer.getFPGATimestamp();
-        prevVel = curVel;
         // Stops returning to original rotation
         if (Math.abs(desiredState.speedMetersPerSecond) < 0.0001) {
             stop();
@@ -165,16 +156,11 @@ public class KrakenSwerveModule extends SwerveModuleAbstract{
 
         // No turning motors over 90 degrees
         desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
-
-        // PID Controller for both translation and rotation
         mDesiredVel = desiredState.speedMetersPerSecond;
 
         feedforward = mTransFF.calculate(mDesiredVel);
         double pidOutput = mTransPID.calculate(getTransVelocity(), mDesiredVel) / mPhysicalMaxSpeedMPS;
         mTransMotor.setVoltage((pidOutput + feedforward)*mNominalVoltage);
-
-        //Onboard PID + FF solution
-        // mTransMotor.setControl(mVelocityVoltageSignal.withVelocity(mDesiredVel));
 
         mDesiredRadians = desiredState.angle.getRadians();
         mPIDOutput = mRotPID.calculate(getRotPosition(), desiredState.angle.getRadians());

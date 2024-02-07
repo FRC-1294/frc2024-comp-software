@@ -114,16 +114,7 @@ public class RevSwerveModule extends SwerveModuleAbstract{
     }
 
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop){
-        double ts5 = (double) System.nanoTime()/1000000;
         if (isOpenLoop){
-            // double curVel = getTransVelocity();
-            // mCurAccel = (Math.abs(curVel)-Math.abs(prevVel))/(Timer.getFPGATimestamp()-prevTS);
-            // if (mCurAccel>mMaxAccel){
-            //     mMaxAccel = mCurAccel;
-            // }
-            // prevTS = Timer.getFPGATimestamp();
-            // prevVel = curVel;
-            // Stops returning to original rotation
             if (Math.abs(desiredState.speedMetersPerSecond) < 0.0000000001) {
                 stop();
                 return;
@@ -141,7 +132,6 @@ public class RevSwerveModule extends SwerveModuleAbstract{
         }else{
             setDesiredState(desiredState);
         }
-        // System.out.println("Set Desired Module State Nano: " + ((double)System.nanoTime()/1000000-ts5));
 
     }
     /**
@@ -172,7 +162,6 @@ public class RevSwerveModule extends SwerveModuleAbstract{
         feedforward = mTransFF.calculate(mDesiredVel);
         double pidOutput = mTransPID.calculate(getTransVelocity(), mDesiredVel) / mPhysicalMaxSpeedMPS;
         mTransMotor.set(pidOutput + feedforward);
-        mTransMotor.set(mDesiredVel/mPhysicalMaxSpeedMPS);
 
         mDesiredRadians = desiredState.angle.getRadians();
         mPIDOutput = mRotPID.calculate(getRotPosition(), desiredState.angle.getRadians());

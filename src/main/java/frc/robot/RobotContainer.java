@@ -29,5 +29,8 @@ public class RobotContainer {
   public SwerveSubsystem getSwerveSubsystem() {
       return mSwerveSubsystem;
   }
+  public PoseEstimation getPoseEstimator() {
+      return mEstimation;
+  }
 
 }
