@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.CompConstants;
-import frc.robot.robots.PracticeBotSwerveConfig;
 import frc.robot.robots.SwerveConfig;
 import frc.robot.swerve.SwerveModuleAbstract;
 
@@ -59,11 +58,8 @@ public class SwerveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    double ts4 = ((double) System.nanoTime())/1000000;
-    
+    // This method will be called once per scheduler run    
     mOdometry.update(getRotation2d(), getModulePositions());
-    ////System.out.println("Update Odom Nano: " + ((double)System.nanoTime()/1000000-ts4));
       SmartDashboard.putNumber("XPos", mOdometry.getPoseMeters().getX());
       SmartDashboard.putNumber("YPos", mOdometry.getPoseMeters().getY());
       SmartDashboard.putNumber("Heading", getRotation2d().getDegrees());
@@ -156,14 +152,10 @@ public class SwerveSubsystem extends SubsystemBase {
    */
 
   public void setModuleStates(SwerveModuleState[] desiredStates,boolean isOpenLoop) {
-    double ts3 = ((double)System.nanoTime())/1000000;
     SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, mConfig.TELE_MAX_SPEED_MPS);
     for (int i = 0; i < desiredStates.length; i++) {
       mModules[i].setDesiredState(desiredStates[i],isOpenLoop);
     }
-    ////System.out.println("Set Module States Nano: " + ((double)System.nanoTime()/1000000-ts3));
-
-
   }
 
   /**
@@ -196,7 +188,6 @@ public class SwerveSubsystem extends SubsystemBase {
    */
   public void setChassisSpeed(double vxMPS, double vyMPS, double angleSpeedRADPS,
     boolean fieldOriented, boolean isOpenLoop) {
-    double ts1 = (double) System.nanoTime()/1000000;
     ChassisSpeeds chassisSpeeds;
     if (fieldOriented) {
       if (!isOpenLoop){
@@ -244,13 +235,11 @@ public class SwerveSubsystem extends SubsystemBase {
 
   
   public void setChassisSpeed(ChassisSpeeds chassisSpeeds,boolean isOpenLoop){
-    double ts2 = (double) System.nanoTime()/1000000;
     chassisSpeeds = ChassisSpeeds.discretize(chassisSpeeds, CompConstants.loopTime);
     SwerveModuleState[] moduleStates = mKinematics.toSwerveModuleStates(chassisSpeeds);
     if (CompConstants.DEBUG_MODE){
       mTargetSpeed = moduleStates[0].speedMetersPerSecond;
     }
-    //////System.out.println("Set Chassis Speed Time Nano: " + ((double) System.nanoTime()/1000000-ts2));
     setModuleStates(moduleStates,isOpenLoop);
   }
 

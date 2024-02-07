@@ -6,7 +6,6 @@ package frc.robot;
 
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.robots.CompetitionBotSwerveConfig;
-import frc.robot.robots.PracticeBotSwerveConfig;
 import frc.robot.subsystems.PoseEstimation;
 import frc.robot.subsystems.SwerveSubsystem;
 
