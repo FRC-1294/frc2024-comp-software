@@ -235,7 +235,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   
   public void setChassisSpeed(ChassisSpeeds chassisSpeeds,boolean isOpenLoop){
-    chassisSpeeds = ChassisSpeeds.discretize(chassisSpeeds, CompConstants.loopTime);
+    chassisSpeeds = ChassisSpeeds.discretize(chassisSpeeds, CompConstants.LOOP_TIME);
     SwerveModuleState[] moduleStates = mKinematics.toSwerveModuleStates(chassisSpeeds);
     if (CompConstants.DEBUG_MODE){
       mTargetSpeed = moduleStates[0].speedMetersPerSecond;

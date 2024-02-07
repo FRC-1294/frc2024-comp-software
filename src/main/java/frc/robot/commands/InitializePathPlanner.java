@@ -9,9 +9,6 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -35,9 +32,9 @@ public class InitializePathPlanner{
   public void initialize() {
     AutoBuilder.configureHolonomic(
     PoseEstimation::getRobotPose, 
-    (Pose2d pose)->PoseEstimation.resetPose(pose),
+    PoseEstimation::resetPose,
     SwerveSubsystem::getChassisSpeeds, 
-    (ChassisSpeeds speeds)->mSwerve.setChassisSpeed(speeds),
+    mSwerve::setChassisSpeed,
     new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in
                                       // your Constants class
           new PIDConstants(5, 0.0, 0), // Translation PID constants

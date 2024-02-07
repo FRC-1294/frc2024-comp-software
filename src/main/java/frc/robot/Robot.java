@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.InitializePathPlanner;
-import frc.robot.commands.kS_Characterization;
-import frc.robot.commands.kV_Characterization;
+import frc.robot.commands.KsCharacterization;
+import frc.robot.commands.KvCharacterization;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -45,8 +45,8 @@ public class Robot extends TimedRobot {
     // pathSelector.addOption("Simpy", AutoBuilder.buildAuto("Simpy"));
     // pathSelector.addOption("2_meter", AutoBuilder.buildAuto("2_meter"));
     // pathSelector.addOption("None", new PrintCommand("Damn that sucks"));
-    pathSelector.addOption("kSCharacterization", new kS_Characterization(m_robotContainer.getSwerveSubsystem()));
-    pathSelector.addOption("kVCharacterization", new kV_Characterization(m_robotContainer.getSwerveSubsystem()));
+    pathSelector.addOption("kSCharacterization", new KsCharacterization(m_robotContainer.getSwerveSubsystem()));
+    pathSelector.addOption("kVCharacterization", new KvCharacterization(m_robotContainer.getSwerveSubsystem()));
     // pathSelector.addOption("Goofy Loop", AutoBuilder.buildAuto("Goofy Loop"));
     // pathSelector.addOption("3_Piece_Dynamic", AutoBuilder.buildAuto("3_Piece_Dynamic"));
   }
