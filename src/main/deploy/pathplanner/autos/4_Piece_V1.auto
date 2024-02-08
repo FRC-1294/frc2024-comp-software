@@ -8,19 +8,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "2nd_Piece_Close"
+            "pathName": "2nd_Piece_V1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "3rd_Piece_Close"
+            "pathName": "3rd_Piece_V1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "4th_Piece_Close"
+            "pathName": "4th_Piece_V1"
           }
         }
       ]

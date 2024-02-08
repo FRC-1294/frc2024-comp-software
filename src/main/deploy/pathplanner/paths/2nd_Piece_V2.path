@@ -3,48 +3,59 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.2497580073557941,
-        "y": 5.586601693432708
+        "x": 1.5,
+        "y": 4.08
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9736615526030168,
-        "y": 5.579772414703961
+        "x": 2.4275454429594348,
+        "y": 4.08
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.7521993276802186,
-        "y": 5.586601693432708
+        "x": 2.89,
+        "y": 4.080302727627994
       },
       "prevControl": {
-        "x": 2.759028606408966,
-        "y": 5.565397580008792
+        "x": 2.81,
+        "y": 4.080302727627994
       },
       "nextControl": {
-        "x": 2.745370048951471,
-        "y": 5.607805806856623
+        "x": 2.97,
+        "y": 4.080302727627994
       },
-      "isLocked": false,
+      "isLocked": true,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.25,
-        "y": 5.586601693432708
+        "x": 2.89,
+        "y": 4.691966179968694
       },
       "prevControl": {
-        "x": 1.9807328239759698,
-        "y": 5.593430972161457
+        "x": 2.922746059277017,
+        "y": 4.472857181156969
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.35,
+      "rotationDegrees": 0.0,
+      "rotateFast": true
+    },
+    {
+      "waypointRelativePos": 1.95,
+      "rotationDegrees": -23.0,
+      "rotateFast": true
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [
     {
@@ -58,18 +69,8 @@
       }
     },
     {
-      "name": "ShootFromSubwoofer",
-      "waypointRelativePos": 0,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": []
-        }
-      }
-    },
-    {
       "name": "Handoff",
-      "waypointRelativePos": 1.3,
+      "waypointRelativePos": 1.5,
       "command": {
         "type": "parallel",
         "data": {
@@ -78,10 +79,10 @@
       }
     },
     {
-      "name": "ShootFromSubwoofer",
-      "waypointRelativePos": 0,
+      "name": "ShootDynamic",
+      "waypointRelativePos": 2.0,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": []
         }
@@ -92,18 +93,15 @@
     "maxVelocity": 4.5,
     "maxAcceleration": 2.0,
     "maxAngularVelocity": 400.0,
-    "maxAngularAcceleration": 200.0
+    "maxAngularAcceleration": 500.0
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 0,
+    "velocity": 0.0,
+    "rotation": -23.0,
     "rotateFast": false
   },
   "reversed": false,
   "folder": null,
-  "previewStartingState": {
-    "rotation": 0.0,
-    "velocity": 0.0
-  },
+  "previewStartingState": null,
   "useDefaultConstraints": false
 }

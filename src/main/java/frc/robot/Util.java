@@ -25,7 +25,7 @@ public class Util {
         DUTY_CYCLE_VEL;}
 
     public static class PIDConstants{
-        //These are public for the sake of editing during PID tuning (I'm not gonna make 8 getters and setters)
+        //These are public for the sake of editing during PID tuning (I'm not gonna make 16 getters/setters)
         public double mKP;
         public double mKI;
         public double mKD;

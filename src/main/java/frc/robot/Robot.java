@@ -40,13 +40,12 @@ public class Robot extends TimedRobot {
     
     new InitializePathPlanner(robotContainer.getSwerveSubsystem()).initialize();
 
-    // pathSelector.addOption("5_meter_return", AutoBuilder.buildAuto("5_Meter_Return"));
-    // pathSelector.addOption("Simpy", AutoBuilder.buildAuto("Simpy"));
-    // pathSelector.addOption("2_meter", AutoBuilder.buildAuto("2_meter"));
-    pathSelector.addOption("None", new PrintCommand("Damn that sucks"));
     pathSelector.addOption("kSCharacterization", new KsCharacterization(robotContainer.getSwerveSubsystem()));
     pathSelector.addOption("kVCharacterization", new KvCharacterization(robotContainer.getSwerveSubsystem()));
-    pathSelector.addOption("3_Piece_Dynamic", AutoBuilder.buildAuto("3_Piece_Dynamic"));
+    pathSelector.addOption("4 Piece V1", AutoBuilder.buildAuto("4_Piece_V1"));
+    pathSelector.addOption("4 Piece V2", AutoBuilder.buildAuto("4_Piece_V2"));
+    pathSelector.addOption("5 Meter Test", AutoBuilder.buildAuto("5_Meter_Test"));
+    pathSelector.addOption("None", new PrintCommand("Damn that sucks"));
   }
 
   /**
