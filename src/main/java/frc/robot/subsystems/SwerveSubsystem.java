@@ -92,7 +92,6 @@ public class SwerveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("AbsEncoderDeg" + i, mModules[i].getRotPosition() / Math.PI * 180);
         SmartDashboard.putNumber("TranslationSpeedMeters" + i, mModules[i].getTransVelocity());
         SmartDashboard.putNumber("TranslationDesiredVel" + i, mModules[i].getTransVelocitySetpoint());
-        SmartDashboard.putNumber("MaxAccel", i);
       }
 
       mAvgSpeed = mAvgSpeed / 4;

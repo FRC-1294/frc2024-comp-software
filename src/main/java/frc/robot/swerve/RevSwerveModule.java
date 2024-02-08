@@ -9,7 +9,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Util.PIDConstants;
 
 public class RevSwerveModule extends SwerveModuleAbstract{
@@ -31,10 +30,6 @@ public class RevSwerveModule extends SwerveModuleAbstract{
     private double mPIDOutput = 0.0;
     private double mDesiredRadians = 0.0;
     private double mDesiredVel = 0.0;
-    private double mMaxAccel = 0.0;
-    private double mCurAccel = 0.0;
-    private double prevVel = 0.0;
-    private double prevTS;
 
     public RevSwerveModule(int rotID, int transID, int rotEncoderID, boolean rotInverse,
     boolean transInverse, PIDConstants rotPID, PIDConstants transPID, double transGearRatio,
@@ -147,13 +142,6 @@ public class RevSwerveModule extends SwerveModuleAbstract{
      */
     @Override
     public void setDesiredState(SwerveModuleState desiredState) {
-        double curVel = getTransVelocity();
-        mCurAccel = (Math.abs(curVel)-Math.abs(prevVel))/(Timer.getFPGATimestamp()-prevTS);
-        if (mCurAccel>mMaxAccel){
-            mMaxAccel = mCurAccel;
-        }
-        prevTS = Timer.getFPGATimestamp();
-        prevVel = curVel;
         // Stops returning to original rotation
         if (Math.abs(desiredState.speedMetersPerSecond) < 0.0001) {
             stop();
@@ -262,20 +250,6 @@ public class RevSwerveModule extends SwerveModuleAbstract{
     @Override
     public double getTransVelocitySetpoint(){
         return mDesiredVel;
-    }
-
-    /**
-     * @return the max acceleration in m/s^2 from the translation motor's initialization
-     */
-    public double getMaxAccel(){
-        return mMaxAccel;
-    }
-
-    /**
-     * @return the current acceleration in m/s^2 from the translation motor
-     */
-    public double getCurAccel(){
-        return mCurAccel;
     }
     /**
      * 

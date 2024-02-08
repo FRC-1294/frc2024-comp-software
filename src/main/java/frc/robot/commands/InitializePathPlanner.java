@@ -9,6 +9,8 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -43,8 +45,16 @@ public class InitializePathPlanner{
           0.4669, // Drive base radius in meters. Distance from robot center to furthest module.
           new ReplanningConfig(false, true) // Default path replanning config. See the API for the options
                               // here
-                              
-    ), ()->false, mSwerve);
+              
+    ), this::determineFieldOrientation, mSwerve);
     initializeNamedCOmmands();
+  }
+
+  public boolean determineFieldOrientation(){
+    var alliance = DriverStation.getAlliance();
+    if (alliance.isPresent()){
+      return alliance.get() == DriverStation.Alliance.Red;
+    }
+    return false;
   }
 }
