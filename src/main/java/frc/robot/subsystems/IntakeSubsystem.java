@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Input;
 import frc.robot.constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
@@ -54,8 +55,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public Command getAutomousIntakeCommand() {
-    return new FunctionalCommand(() -> intakeAtSpeed(IntakeConstants.INTAKE_SPEED), null, 
-    interrupted -> stopMotor(), ()->!pieceInIntake(), this);    
+    return new FunctionalCommand(() -> intakeAtSpeed(IntakeConstants.INTAKE_SPEED), null, interrupted -> stopMotor(), this::functionalCommandIsFinished, this);
   }
 
   public boolean pieceInIntake(){
@@ -66,4 +66,7 @@ public class IntakeSubsystem extends SubsystemBase {
     return beamBreakOverride;
   }
 
+  private boolean functionalCommandIsFinished() {
+    return pieceInIntake() || Input.getLeftBumper();
+  }
 }
