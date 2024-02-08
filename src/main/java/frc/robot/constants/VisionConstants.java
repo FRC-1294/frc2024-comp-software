@@ -31,7 +31,6 @@ public class VisionConstants {
   public static final Matrix<N3, N1> VISION_MEASUREMENTS_STD_DEVS =
       VecBuilder.fill(0.15, 0.15, Units.degreesToRadians(7));
 
-  // TODO: Find Real Values for Rear once the Rear Camera are mounted
   public static final Transform3d ROBOT_TO_CAM_VEC_FRONT = new Transform3d(
       new Translation3d(.0496, .0626872, 1.28), new Rotation3d(0, -Math.toRadians(15), 0));
   public static final Transform3d ROBOT_TO_CAM_VEC_BACK =

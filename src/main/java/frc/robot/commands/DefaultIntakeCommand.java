@@ -27,8 +27,8 @@ public class DefaultIntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (Input.overrideIntakeBeamBreak()) {
-      mIntake.beamBreakOverride = !mIntake.beamBreakOverride;
+    if (Input.overrideIntakeBeamBreak()){
+      mIntake.toggleBeamBreakOverride();
     }
 
     if (Input.getIntake()) {
