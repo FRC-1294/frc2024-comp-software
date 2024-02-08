@@ -162,7 +162,9 @@ public class AimingSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("Current Wrist Rotation", mCurrentWristRotationDeg);
       SmartDashboard.putNumber("Current Elevator Distance", mCurrentElevatorDistanceIn);
       SmartDashboard.putNumber("Desired Wrist Rotation", mDesiredWristRotationDeg);
+      SmartDashboard.putNumber("Desired Elevator Distance", getDesiredElevatorDistance());
       SmartDashboard.putNumber("Raw Elevator Encoder Position", mLeftElevatorMotor.getPosition().getValueAsDouble());
+      SmartDashboard.putNumber("Raw Wrist Encoder Rotation", mWristThroughBoreEncoder.getAbsolutePosition());
       SmartDashboard.putBoolean("At Elevator setpoint", atElevatorSetpoint());
       SmartDashboard.putBoolean("At Wrist setpoint", atWristSetpoint());
     }
