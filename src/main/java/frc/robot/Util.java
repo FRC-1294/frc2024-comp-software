@@ -19,14 +19,14 @@ public class Util {
     }
 
     public static class PIDParameters{
-        public double mKP;
-        public double mKI;
-        public double mKD;
-        public double mKV;
-        public double mKS;
-        public double mContinuousInputMax;
-        public double mContinuousInputMin;
-        public boolean mIsContinuousInput;
+        private double mKP;
+        private double mKI;
+        private double mKD;
+        private double mKV;
+        private double mKS;
+        private double mContinuousInputMax;
+        private double mContinuousInputMin;
+        private boolean mIsContinuousInput;
 
         public PIDParameters(double kP, double kI, double kD, double kS, double kV, double continuousInputMax, double continuousInputMin){
             mKP = kP;
@@ -71,6 +71,41 @@ public class Util {
         
         public SimpleMotorFeedforward toWPIMotorFeedForward(){
             return new SimpleMotorFeedforward(mKS, mKV);
+        }
+
+
+        // instance variable accessor methods
+
+        public double getKP(){
+            return this.mKP;
+        }
+
+        public double getKI(){
+            return this.mKI;
+        }
+
+        public double getKD(){
+            return this.mKD;
+        }
+
+        public double getKV(){
+            return this.mKV;
+        }
+
+        public double getKS(){
+            return this.mKS;
+        }
+
+        public double getContinuousInputMax(){
+            return this.mContinuousInputMax;
+        }
+
+        public double getContinuousInputMin(){
+            return this.mContinuousInputMin;
+        }
+
+        public boolean getIsContinuousInput(){
+            return this.mIsContinuousInput;
         }
     }
 

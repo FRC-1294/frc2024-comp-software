@@ -6,27 +6,22 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.Follower;
+// This import will be used for Onboard PID later
 import com.ctre.phoenix6.controls.PositionVoltage;
-import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.playingwithfusion.TimeOfFlight;
-import com.playingwithfusion.TimeOfFlight.RangingMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
-import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.AimingConstants;
 import frc.robot.constants.CompConstants;
@@ -39,9 +34,6 @@ public class AimingSubsystem extends SubsystemBase {
   // Elevator Hardware
   private final TalonFX mLeftElevatorMotor = new TalonFX(AimingConstants.LEFT_ELEVATOR_TALON_ID,"rio");
   private final TalonFX mRightElevatorMotor = new TalonFX(AimingConstants.RIGHT_ELEVATOR_TALON_ID,"rio");
-  
-  // TOF
-  private final TimeOfFlight mElevatorTOF = new TimeOfFlight(AimingConstants.ELEVATOR_TOF_ID);
   
   // Wrist Hardware
   private final CANSparkMax mLeftWristMotor = new CANSparkMax(AimingConstants.LEFT_WRIST_SPARK_ID, MotorType.kBrushless);
@@ -63,8 +55,7 @@ public class AimingSubsystem extends SubsystemBase {
   PIDController mElevatorController = AimingConstants.mElevatorPIDConstants.toWPIController();  
   PIDController mWristController = AimingConstants.mWristPIDConstants.toWPIController();
 
-  ArmFeedforward mWristFeedforwardController = new ArmFeedforward(AimingConstants.mWristPIDConstants.mKS, AimingConstants.mWristkG, AimingConstants.mWristPIDConstants.mKS);
-  ElevatorFeedforward mElevatorFeedforward = new ElevatorFeedforward(AimingConstants.mElevatorPIDConstants.mKS, AimingConstants.mElevatorkG, AimingConstants.mElevatorPIDConstants.mKV);
+  ArmFeedforward mWristFeedforwardController = new ArmFeedforward(AimingConstants.mWristPIDConstants.getKS(), AimingConstants.mWristkG, AimingConstants.mWristPIDConstants.getKV());
 
   MotorOutputConfigs mLeftWristMotorOutputConfigs = new MotorOutputConfigs();
   MotorOutputConfigs mRightWristMotorOutputConfigs = new MotorOutputConfigs();
@@ -78,24 +69,14 @@ public class AimingSubsystem extends SubsystemBase {
     mChooser.addOption("Brake", AimingMotorMode.BRAKE);
     mChooser.addOption("Coast", AimingMotorMode.COAST);
     mChooser.setDefaultOption("Brake", AimingConstants.INITIAL_MOTOR_MODE);
-
-    //Initializes TOF Sensor
-    setTOFViewZone(8, 8, 12, 12);
-    setTOFRange("short", 20);
-    configureDevices();
   }
 
   // Setting Conversions and Inversions
   public void configureDevices() {
 
-    //initialize PID Controller Constants
-    mElevatorController.setPID(AimingConstants.mElevatorPIDConstants.mKP, AimingConstants.mElevatorPIDConstants.mKI, AimingConstants.mElevatorPIDConstants.mKD);
+    //initialize PID Controller Constants for SlotConfigs
 
-    mElevatorControllerSlot0Configs.kP = AimingConstants.mElevatorPIDConstants.mKP;
-    mElevatorControllerSlot0Configs.kI = AimingConstants.mElevatorPIDConstants.mKI;
-    mElevatorControllerSlot0Configs.kD = AimingConstants.mElevatorPIDConstants.mKD;
-    mElevatorControllerSlot0Configs.kS = AimingConstants.mElevatorPIDConstants.mKS;
-    mElevatorControllerSlot0Configs.kV = AimingConstants.mElevatorPIDConstants.mKV;
+    mElevatorControllerSlot0Configs = AimingConstants.mElevatorPIDConstants.toTalonConfiguration().Slot0;
 
     mLeftElevatorMotor.getConfigurator().apply(mElevatorControllerSlot0Configs);
     mRightElevatorMotor.getConfigurator().apply(mElevatorControllerSlot0Configs);
@@ -117,6 +98,7 @@ public class AimingSubsystem extends SubsystemBase {
     updateMotorModes();
     elevatorPeriodic();
     wristPeriodic();
+    debugSmartDashboard();
   }
 
   private void elevatorPeriodic() {
@@ -129,7 +111,7 @@ public class AimingSubsystem extends SubsystemBase {
 
     //Temp Regular PID
     double elevatorPIDCalculation = mElevatorController.calculate(mCurrentElevatorDistanceIn, mDesiredElevatorDistanceIn);
-    mLeftElevatorMotor.set(elevatorPIDCalculation);
+    mLeftElevatorMotor.set(elevatorPIDCalculation + AimingConstants.mElevatorFeedforwardConstant);
   }
 
   private void wristPeriodic() {
@@ -139,8 +121,8 @@ public class AimingSubsystem extends SubsystemBase {
 
     double offset = (Math.PI / 2);
     double wristPIDCalculation = mWristController.calculate(mCurrentWristRotationDeg, mDesiredWristRotationDeg);    
-    double wristFFCalculation = mWristFeedforwardController.calculate(Math.toRadians(mDesiredWristRotationDeg) - offset, mLeftWristMotor.getEncoder().getVelocity() * AimingConstants.SPARK_THROUGHBORE_GEAR_RATIO);
-    mLeftWristMotor.set(wristPIDCalculation + wristFFCalculation);
+    double wristFeedforwardCalculation = mWristFeedforwardController.calculate(Math.toRadians(mDesiredWristRotationDeg) - offset, mLeftWristMotor.getEncoder().getVelocity() * AimingConstants.SPARK_THROUGHBORE_GEAR_RATIO);
+    mLeftWristMotor.set(wristPIDCalculation + wristFeedforwardCalculation);
   }
 
   private void updateMotorModes() {
@@ -179,39 +161,10 @@ public class AimingSubsystem extends SubsystemBase {
     if (CompConstants.DEBUG_MODE) {
       SmartDashboard.putNumber("Current Wrist Rotation", mCurrentWristRotationDeg);
       SmartDashboard.putNumber("Current Elevator Distance", mCurrentElevatorDistanceIn);
-    }
-  }
-
-  // Getters and Setters of TOF Sensor
-  /**
-   * 
-   * @return range in millimeters
-   */
-  public double getTOFRangeRaw() {
-    return mElevatorTOF.getRange() - 30.0;
-  }
-
-  public double getTOFRangeCentimeters() {
-    return getTOFRangeRaw()/10;
-  }
-
-  public double getTOFRangeInches() {
-    return Math.round(((getTOFRangeRaw())/(25.4))*100.0)/100.0;
-  }
-
-  public void setTOFViewZone(int topLeftX, int topLeftY, int bottomRightX, int bottomRightY) {
-    mElevatorTOF.setRangeOfInterest(topLeftX, topLeftY, bottomRightX, bottomRightY);
-  }
-
-  public void setTOFRange(String sMode, double sampleTime) {
-    switch(sMode.toLowerCase()) {
-      case "short": //Use short only if less than 1.3 meters off the ground and bright light
-        mElevatorTOF.setRangingMode(RangingMode.Short, sampleTime);
-      case "long": //Use for dark lighting up to 4 meters
-        mElevatorTOF.setRangingMode(RangingMode.Long, sampleTime);
-      case "medium": //Use medium if there could potentially be dark lighting
-        mElevatorTOF.setRangingMode(RangingMode.Medium, sampleTime);
-
+      SmartDashboard.putNumber("Desired Wrist Rotation", mDesiredWristRotationDeg);
+      SmartDashboard.putNumber("Raw Elevator Encoder Position", mLeftElevatorMotor.getPosition().getValueAsDouble());
+      SmartDashboard.putBoolean("At Elevator setpoint", atElevatorSetpoint());
+      SmartDashboard.putBoolean("At Wrist setpoint", atWristSetpoint());
     }
   }
 

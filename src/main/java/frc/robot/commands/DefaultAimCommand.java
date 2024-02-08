@@ -7,7 +7,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.AimingConstants.AimState;
 import frc.robot.constants.AimingConstants;
-import frc.robot.constants.JoystickConstants;
 import frc.robot.subsystems.AimingSubsystem;
 import frc.robot.subsystems.Input;
 
@@ -21,26 +20,19 @@ public class DefaultAimCommand extends Command {
     addRequirements(aimingSubsystem);
   }
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    AimState state = AimState.STOW;
     if (Input.getA()) {
-      state = AimState.AMP;
+      mAimingSubsystem.setDesiredSetpoint(AimState.AMP);
     }
     else if (Input.getY()) {
-      state = AimState.SPEAKER;
+      mAimingSubsystem.setDesiredSetpoint(AimState.SPEAKER);
     }
     else if (Input.getDPad() == 0.0) {
-      state = AimState.CLIMB;
-    }
+      mAimingSubsystem.setDesiredSetpoint(AimState.CLIMB);    }
 
-    mAimingSubsystem.setDesiredSetpoint(state);
 
     if (Math.abs(Input.getLeftStickY()) > 0) {
       //convert between input to increment
@@ -53,11 +45,6 @@ public class DefaultAimCommand extends Command {
       double increment = Input.getRightStickY() * AimingConstants.MAX_WRIST_TELEOP_INCREMENT;
       mAimingSubsystem.changeDesiredElevatorPosition(increment);
     }
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
   }
 
   // Returns true when the command should end.
