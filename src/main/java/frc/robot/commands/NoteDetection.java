@@ -41,3 +41,5 @@ public class NoteDetection extends Command {
     return false;
   }
 }
+
+// if tv = 1 then do execution
