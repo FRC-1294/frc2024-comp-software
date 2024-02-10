@@ -12,12 +12,14 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+// This class is used to store helper classes & functions
 public class Util {
 
     public static Translation3d getNormalTranslation(Translation3d vec){
         return(new Translation3d(vec.getX()/vec.getNorm(), vec.getY()/vec.getNorm(), vec.getZ()/vec.getNorm()));
     }
 
+    // This class is used to store PID Constants
     public static class PIDParameters{
         private double mKP;
         private double mKI;
