@@ -1,5 +1,10 @@
 package frc.robot.swerve;
 
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -21,18 +26,57 @@ import frc.robot.Util.PIDConstants;
     protected final PIDController mTransPID;
     protected final SimpleMotorFeedforward mTransFF;
 
-    protected SwerveModuleAbstract(int rotID, int transID, int rotEncoderID, boolean rotInverse,
-            boolean transInverse, PIDConstants rotPID, PIDConstants transPID) {
+    // Hardware
+    // Motor Controllers
+    protected final CANSparkMax mRotMotor;
+    // Encoders
+    private final CANcoder mRotEncoder;
+    private final RelativeEncoder mRotRelativeEncoder;
+    protected final double mPhysicalMaxSpeedMPS;
+    private final double mAbsEncoderGearRatio;
+    private final double mRelEncoderGearRatio;
     
+
+    // Public Debugging Values
+    private double mPIDOutput = 0.0;
+    private double mDesiredRadians = 0.0;
+    private double mDesiredVel = 0.0;
+
+    protected SwerveModuleAbstract(int rotID, int transID, int rotEncoderID, boolean rotInverse,
+        boolean transInverse, PIDConstants rotPID, PIDConstants transPID, double transGearRatio,
+        double wheelCircumference, double physicalMaxSpeed, double absEncGearRatio, double relEncoderGearRatio) {
             mRotID = rotID;
             mTransID = transID;
             mRotEncoderID = rotEncoderID;
             mRotInverse = rotInverse;
             mTransInverse = transInverse;
 
+            mPhysicalMaxSpeedMPS = physicalMaxSpeed;
+            mAbsEncoderGearRatio = absEncGearRatio;
+            mRelEncoderGearRatio = relEncoderGearRatio;
+
             mRotPID = rotPID.toWPIController();
             mTransPID = transPID.toWPIController();
             mTransFF = transPID.toWPIMotorFeedForward();
+
+
+            // ----Setting Hardware
+            // Motor Controllers
+            mRotMotor = new CANSparkMax(mRotID, CANSparkMax.MotorType.kBrushless);
+            // Encoders
+            mRotRelativeEncoder = mRotMotor.getEncoder();
+            mRotEncoder = new CANcoder(mRotEncoderID,"SWERVE_ENC");
+            mRotRelativeEncoder.setPosition(0);
+
+            // ----Setting PID Parameters
+            mRotPID.enableContinuousInput(-Math.PI, Math.PI);
+
+            // ----Setting Inversion
+            mRotMotor.setInverted(mRotInverse);
+
+            mRotMotor.setIdleMode(IdleMode.kBrake);
+
+            mRotMotor.burnFlash();
         }
 
 
@@ -46,7 +90,9 @@ import frc.robot.Util.PIDConstants;
         return new SwerveModuleState(getTransVelocity(), Rotation2d.fromRadians(getRotPosition()));
     }
 
-    public abstract double getRotAppliedOutput();
+    public double getRotAppliedOutput() {
+        return mRotMotor.getAppliedOutput();
+    };
 
     public abstract void setTransMotorDutyCycleRaw(double speed);
 
@@ -56,9 +102,14 @@ import frc.robot.Util.PIDConstants;
      */
     protected abstract void setTranslationVoltageRaw(double volts);
 
-    public abstract void setRotMotorRaw(double speed);
+    public void setRotMotorRaw(double speed) {
+        mRotMotor.set(speed);
 
-    public abstract void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop);
+    }
+
+    public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop){
+        setDesiredState(desiredState);
+    }
 
     /**
      * Sets the motor speeds passed into constructor
@@ -66,9 +117,12 @@ import frc.robot.Util.PIDConstants;
      * @param desiredState takes in SwerveModule state
      * @see SwerveModuleState
      */
-    public abstract void setDesiredState(SwerveModuleState desiredState);
-
-    public abstract void setPID(double degrees);
+    public void setDesiredState(SwerveModuleState desiredState) {
+        mDesiredRadians = desiredState.angle.getRadians();
+        mPIDOutput = mRotPID.calculate(getRotPosition(), desiredState.angle.getRadians());
+        mRotMotor.set(mPIDOutput);
+    }
+    
 
     /**
      * 
@@ -92,11 +146,23 @@ import frc.robot.Util.PIDConstants;
 
     /**
      * 
+     * @return Returns rotation position in radians
+     */
+    private double getRotPositionRaw() {
+        return mRotEncoder.getAbsolutePosition().getValueAsDouble()*2*Math.PI;
+    }
+
+    /**
+     * 
      * @return Returns rotation in RADIANS of rotation motor AFTER GEAR RATIO
      */
-    public abstract double getRotPosition();
-
-    public abstract double getRotRelativePosition();
+    public double getRotPosition() {
+        return getRotPositionRaw() * mAbsEncoderGearRatio;
+    }
+    
+    public double getRotRelativePosition() {
+        return mRotRelativeEncoder.getPosition() * mRelEncoderGearRatio;
+    }
 
     /**
      * 
@@ -139,6 +205,31 @@ import frc.robot.Util.PIDConstants;
      */
     public PIDController getRotPIDController() {
         return mRotPID;
+    }
+
+    /**
+     * Sets the mode of the rotation motor
+     * 
+     * @param mode use a spark max idle mode (brake or coast)
+     * @see IdleMode
+     */
+    public void setModeRot(IdleMode mode) {
+        mRotMotor.setIdleMode(mode);
+    }
+
+    /**
+     * Retrives the rotation PID output provided to the motors after desaturation and optimization
+     */
+    public double getPIDOutputRot() {
+        return mPIDOutput;
+    }
+
+    /**
+     * Retrives the desired radian setpoint of rotation of the motors after desaturation and
+     * optimization.
+     */
+    public double getDesiredRadiansRot() {
+        return mDesiredRadians;
     }
 
 }

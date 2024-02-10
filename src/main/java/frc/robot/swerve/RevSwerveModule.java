@@ -15,15 +15,10 @@ public class RevSwerveModule extends SwerveModuleAbstract{
 
     // Hardware
     // Motor Controllers
-    private final CANSparkMax mRotMotor;
     private final CANSparkMax mTransMotor;
     // Encoders
-    private final CANcoder mRotEncoder;
     private final RelativeEncoder mTransEncoder;
-    private final RelativeEncoder mRotRelativeEncoder;
-    private final double mPhysicalMaxSpeedMPS;
-    private final double mAbsEncoderGearRatio;
-    private final double mRelEncoderGearRatio;
+
     
 
     // Public Debugging Values
@@ -36,33 +31,24 @@ public class RevSwerveModule extends SwerveModuleAbstract{
     double wheelCircumference, double physicalMaxSpeed, double absEncGearRatio, double relEncoderGearRatio) {
         // Setting Parameters
     
-        super(rotID, transID, rotEncoderID, rotInverse, transInverse, rotPID, transPID);
-        mPhysicalMaxSpeedMPS = physicalMaxSpeed;
-        mAbsEncoderGearRatio = absEncGearRatio;
-        mRelEncoderGearRatio = relEncoderGearRatio;
+        super(rotID, transID, rotEncoderID, rotInverse, transInverse, rotPID, transPID, transGearRatio, wheelCircumference, physicalMaxSpeed, absEncGearRatio, relEncoderGearRatio);
+
 
         // ----Setting Hardware
         // Motor Controllers
-        mRotMotor = new CANSparkMax(mRotID, MotorType.kBrushless);
         mTransMotor = new CANSparkMax(mTransID, MotorType.kBrushless);
-        mRotMotor.restoreFactoryDefaults();
         mTransMotor.restoreFactoryDefaults();
 
         // Encoders
-        mRotEncoder = new CANcoder(mRotEncoderID,"SWERVE_ENC");
         mTransEncoder = mTransMotor.getEncoder();
-        mRotRelativeEncoder = mRotMotor.getEncoder();
-        mRotRelativeEncoder.setPosition(0);
 
         // ----Setting PID Parameters
         mRotPID.enableContinuousInput(-Math.PI, Math.PI);
 
         // ----Setting Inversion
-        mRotMotor.setInverted(mRotInverse);
         mTransMotor.setInverted(mTransInverse);
 
         mTransMotor.setIdleMode(IdleMode.kBrake);
-        mRotMotor.setIdleMode(IdleMode.kBrake);
 
         mTransEncoder.setPosition(0);
 
@@ -87,10 +73,6 @@ public class RevSwerveModule extends SwerveModuleAbstract{
         return new SwerveModuleState(getTransVelocity(), Rotation2d.fromRadians(getRotPosition()));
     }
 
-    @Override
-    public double getRotAppliedOutput() {
-        return mRotMotor.getAppliedOutput();
-    }
 
     @Override
     public void setTransMotorDutyCycleRaw(double speed) {
@@ -106,14 +88,11 @@ public class RevSwerveModule extends SwerveModuleAbstract{
         mTransMotor.set(volts / mTransMotor.getVoltageCompensationNominalVoltage());
     }
 
-    @Override
-    public void setRotMotorRaw(double speed) {
-        mRotMotor.set(speed);
 
-    }
 
     @Override
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop){
+        super.setDesiredState(desiredState);
         if (isOpenLoop){
             if (Math.abs(desiredState.speedMetersPerSecond) < 0.0000000001) {
                 stop();
@@ -124,11 +103,7 @@ public class RevSwerveModule extends SwerveModuleAbstract{
             desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
 
             mDesiredVel = desiredState.speedMetersPerSecond;
-            mTransMotor.set(mDesiredVel/mPhysicalMaxSpeedMPS);
-
-            mDesiredRadians = desiredState.angle.getRadians();
-            mPIDOutput = mRotPID.calculate(getRotPosition(), desiredState.angle.getRadians());
-            mRotMotor.set(mPIDOutput); 
+            mTransMotor.set(mDesiredVel/this.mPhysicalMaxSpeedMPS);
         }else{
             setDesiredState(desiredState);
         }
@@ -142,6 +117,7 @@ public class RevSwerveModule extends SwerveModuleAbstract{
      */
     @Override
     public void setDesiredState(SwerveModuleState desiredState) {
+        super.setDesiredState(desiredState);
         // Stops returning to original rotation
         if (Math.abs(desiredState.speedMetersPerSecond) < 0.0001) {
             stop();
@@ -156,18 +132,8 @@ public class RevSwerveModule extends SwerveModuleAbstract{
         double feedforward = mTransFF.calculate(mDesiredVel);
         double pidOutput = mTransPID.calculate(getTransVelocity(), mDesiredVel) / mPhysicalMaxSpeedMPS;
         mTransMotor.set(pidOutput + feedforward);
-
-        mDesiredRadians = desiredState.angle.getRadians();
-        mPIDOutput = mRotPID.calculate(getRotPosition(), desiredState.angle.getRadians());
-        mRotMotor.set(mPIDOutput);
     }
 
-    @Override
-    public void setPID(double degrees) {
-        mPIDOutput = mRotPID.calculate(getRotPosition(), Math.toRadians(degrees));
-        mRotMotor.set(mPIDOutput);
-
-    }
 
 
     /**
@@ -193,13 +159,6 @@ public class RevSwerveModule extends SwerveModuleAbstract{
     }
 
 
-    /**
-     * 
-     * @return Returns rotation position in radians
-     */
-    private double getRotPositionRaw() {
-        return mRotEncoder.getAbsolutePosition().getValueAsDouble()*2*Math.PI;
-    }
 
     /**
      * 
@@ -220,19 +179,6 @@ public class RevSwerveModule extends SwerveModuleAbstract{
         return getTransPositionRaw();
     }
 
-    /**
-     * 
-     * @return Returns rotation in RADIANS of rotation motor AFTER GEAR RATIO
-     */
-    @Override
-    public double getRotPosition() {
-        return getRotPositionRaw() * mAbsEncoderGearRatio;
-    }
-    
-    @Override   
-    public double getRotRelativePosition() {
-        return mRotRelativeEncoder.getPosition() * mRelEncoderGearRatio;
-    }
 
     /**
      * 
@@ -279,15 +225,6 @@ public class RevSwerveModule extends SwerveModuleAbstract{
     }
 
     /**
-     * 
-     * @return steering PID controller
-     */
-    @Override
-    public PIDController getRotPIDController() {
-        return mRotPID;
-    }
-
-    /**
      * Sets the mode of the translation motor
      * 
      * @param mode use a spark max idle mode (brake or coast)
@@ -308,30 +245,6 @@ public class RevSwerveModule extends SwerveModuleAbstract{
         mTransMotor.burnFlash();
     }
 
-    /**
-     * Sets the mode of the rotation motor
-     * 
-     * @param mode use a spark max idle mode (brake or coast)
-     * @see IdleMode
-     */
-    public void setModeRot(IdleMode mode) {
-        mRotMotor.setIdleMode(mode);
-    }
-
-    /**
-     * Retrives the rotation PID output provided to the motors after desaturation and optimization
-     */
-    public double getPIDOutputRot() {
-        return mPIDOutput;
-    }
-
-    /**
-     * Retrives the desired radian setpoint of rotation of the motors after desaturation and
-     * optimization.
-     */
-    public double getDesiredRadiansRot() {
-        return mDesiredRadians;
-    }
 
     /**
      * @return the nominal voltage amount after voltage compensation for the translation motor
