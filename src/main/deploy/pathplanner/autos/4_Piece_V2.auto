@@ -1,6 +1,12 @@
 {
   "version": 1.0,
-  "startingPose": null,
+  "startingPose": {
+    "position": {
+      "x": 1.5,
+      "y": 4.08
+    },
+    "rotation": 0
+  },
   "command": {
     "type": "sequential",
     "data": {
@@ -21,6 +27,12 @@
           "type": "path",
           "data": {
             "pathName": "4th_Piece_V2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Jank"
           }
         }
       ]

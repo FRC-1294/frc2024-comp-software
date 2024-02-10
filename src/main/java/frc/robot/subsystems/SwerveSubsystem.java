@@ -33,9 +33,9 @@ public class SwerveSubsystem extends SubsystemBase {
   private double mTargetSpeed = 0;
   private double mAvgSpeed = 0;
   private double maxSpeed = 0;
-  private PIDController chassisRotPID =  new PIDController(0.1, 0, 0);
-  private PIDController chassisXPID = new PIDController(0.1, 0, 0);
-  private PIDController chassisYPID = new PIDController(0.3, 0, 0);
+  private PIDController chassisRotPID =  new PIDController(0, 0, 0);
+  private PIDController chassisXPID = new PIDController(0, 0, 0);
+  private PIDController chassisYPID = new PIDController(0, 0, 0);
   public final SwerveConfig mConfig;
   private ChassisSpeeds desiredChassisSpeeds = new ChassisSpeeds();
 
@@ -244,11 +244,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
 
   public void setChassisSpeed(ChassisSpeeds chassisSpeeds){
-    SwerveModuleState[] moduleStates = mKinematics.toSwerveModuleStates(chassisSpeeds);
-    if (CompConstants.DEBUG_MODE){
-      mTargetSpeed = moduleStates[0].speedMetersPerSecond;
-    }
-    setModuleStates(moduleStates,true);
+    setChassisSpeed(chassisSpeeds, false);
   }
 
 
