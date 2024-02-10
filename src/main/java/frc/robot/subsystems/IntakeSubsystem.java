@@ -51,11 +51,15 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public Command getAutomousIntakeCommand() {
-    return new FunctionalCommand(() -> intakeAtSpeed(IntakeConstants.INTAKE_SPEED), null, interrupted -> stopMotor(), this::pieceInIntake, this);    
+    return new FunctionalCommand(() -> intakeAtSpeed(IntakeConstants.INTAKE_SPEED), null, interrupted -> stopMotor(), this::functionalCommandIsFinished, this);    
   }
 
   public boolean pieceInIntake(){
     return !mBeamBreak.get();
+  }
+
+  private boolean functionalCommandIsFinished() {
+    return pieceInIntake() || Input.getLeftBumper();
   }
 
 }

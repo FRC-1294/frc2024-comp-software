@@ -8,8 +8,16 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import frc.robot.subsystems.LimeLightLime;
 import frc.robot.constants.IntakeConstants;
+import frc.robot.subsystems.Input;
 import frc.robot.subsystems.IntakeSubsystem; 
 import frc.robot.subsystems.SwerveSubsystem; 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.constants.IntakeConstants;
+
 public class NoteDetection extends Command {
   /** Creates a new NoteDetection. */
   LimeLightLime m_limelight; 
@@ -42,10 +50,13 @@ public class NoteDetection extends Command {
   public boolean isFinished() {
     return false;
   }
-
-  @Override 
+ 
   public Command getAutomousIntakeCommand() {
-    return new FunctionalCommand(() -> intakeAtSpeed(IntakeConstants.INTAKE_SPEED), null, interrupted -> m_intake.stopMotor(), this::functionalCommandIsFinished, this);    
+    return new FunctionalCommand(() -> m_intake.intakeAtSpeed(IntakeConstants.INTAKE_SPEED), null, interrupted -> m_intake.stopMotor(), this::functionalCommandIsFinished(), this);    
+  }
+
+  private boolean functionalCommandIsFinished() {
+    return m_intake.pieceInIntake() || Input.getLeftBumper();
   }
 }
 
