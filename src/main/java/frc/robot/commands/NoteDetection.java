@@ -6,7 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
-import frc.robot.subsystems.LimeLightLime;
+import frc.robot.subsystems.LimelightOB;
 import frc.robot.constants.IntakeConstants;
 import frc.robot.subsystems.Input;
 import frc.robot.subsystems.IntakeSubsystem; 
@@ -16,14 +16,13 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.constants.IntakeConstants;
 
 public class NoteDetection extends Command {
   /** Creates a new NoteDetection. */
-  LimeLightLime m_limelight; 
+  LimelightOB m_limelight; 
   IntakeSubsystem m_intake; 
   SwerveSubsystem m_swerve; 
-  public NoteDetection(LimeLightLime limelight, IntakeSubsystem intake, SwerveSubsystem swerve) {
+  public NoteDetection(LimelightOB limelight, IntakeSubsystem intake, SwerveSubsystem swerve) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_limelight = limelight; 
     m_intake = intake; 
@@ -39,7 +38,9 @@ public class NoteDetection extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    
+  }
 
   // Called once the command ends or is interrupted.
   @Override
@@ -50,14 +51,6 @@ public class NoteDetection extends Command {
   public boolean isFinished() {
     return false;
   }
- 
-  public Command getAutomousIntakeCommand() {
-    return new FunctionalCommand(() -> m_intake.intakeAtSpeed(IntakeConstants.INTAKE_SPEED), null, interrupted -> m_intake.stopMotor(), this::functionalCommandIsFinished(), this);    
-  }
-
-  private boolean functionalCommandIsFinished() {
-    return m_intake.pieceInIntake() || Input.getLeftBumper();
-  }
 }
 
-// if tv = 1 then do execution
+// if tx < Math.abs(1) then do execution
