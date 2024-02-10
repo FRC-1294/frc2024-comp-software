@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.IntakeConstants;
 import frc.robot.subsystems.Input;
@@ -15,6 +17,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
@@ -57,15 +60,29 @@ public class LimelightOB extends SubsystemBase {
     return tv;
   }
 
-  public Command getAutomousIntakeCommand() {
-    return new FunctionalCommand(() -> m_intake.intakeAtSpeed(IntakeConstants.INTAKE_SPEED), null, interrupted -> m_intake.stopMotor(), this::functionalCommandIsFinished, this);    
+  
+
+  public Command getNoteAlignmentCommand(SwerveSubsystem swerve) {
+    return new FunctionalCommand(() -> startNoteAlignment(swerve), null, interrupted -> swerve.setChassisSpeed(0.0, 0.0, 0.0), this::isRotationFinished, this, swerve);  
+
   }
 
   public Command getNotePickup(SwerveSubsystem swerve, IntakeSubsystem intake){
-    return new SequentialCommandGroup(getAutomousIntakeCommand(swerve), intake.); 
+    return new SequentialCommandGroup(getNoteAlignmentCommand(swerve), intake.getAutomousIntakeCommand(swerve));
+  } 
+  
+  public void startNoteAlignment(SwerveSubsystem swerve) {
+    if (isDetectionValid()) {
+      if (getTX() > 2) {
+        swerve.setChassisSpeed(0.0, 0.0, 0.5);
+      }
+      else if (getTX() < 2) {
+        swerve.setChassisSpeed(0.0, 0.0, -0.5);
+      }
+    }
   }
 
-  private boolean functionalCommandIsFinished() {
-    return m_intake.pieceInIntake() || Input.getLeftBumper();
+  private boolean isRotationFinished() {
+    return Math.abs(getTX())<=2.0 && isDetectionValid();
   }
 }

@@ -50,8 +50,8 @@ public class IntakeSubsystem extends SubsystemBase {
     return new SequentialCommandGroup(new InstantCommand(()-> intakeAtSpeed(intake_speed)), new WaitCommand(wait_time));
   }
 
-  public Command getAutomousIntakeCommand() {
-    return new FunctionalCommand(() -> intakeAtSpeed(IntakeConstants.INTAKE_SPEED), null, interrupted -> stopMotor(), this::functionalCommandIsFinished, this);    
+  public Command getAutomousIntakeCommand(SwerveSubsystem swerve) {
+    return new FunctionalCommand(() -> startCommand(swerve), null, interrupted -> stopCommand(swerve), this::functionalCommandIsFinished, this);    
   }
 
   public boolean pieceInIntake(){
@@ -60,6 +60,16 @@ public class IntakeSubsystem extends SubsystemBase {
 
   private boolean functionalCommandIsFinished() {
     return pieceInIntake() || Input.getLeftBumper();
+  }
+
+  private void startCommand(SwerveSubsystem swerve) {
+    intakeAtSpeed(IntakeConstants.INTAKE_SPEED);
+    swerve.setChassisSpeed(1, 0, 0);
+  }
+
+  private void stopCommand(SwerveSubsystem swerve) {
+    stopMotor();
+    swerve.setChassisSpeed(0, 0, 0);
   }
 
 }
