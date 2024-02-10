@@ -74,10 +74,10 @@ public class LimelightOB extends SubsystemBase {
   public void startNoteAlignment(SwerveSubsystem swerve) {
     if (isDetectionValid()) {
       if (getTX() > 2) {
-        swerve.setChassisSpeed(0.0, 0.0, 0.5);
+        swerve.setChassisSpeed(0.0, 0.0, 0.25);
       }
       else if (getTX() < 2) {
-        swerve.setChassisSpeed(0.0, 0.0, -0.5);
+        swerve.setChassisSpeed(0.0, 0.0, -0.25);
       }
     }
   }

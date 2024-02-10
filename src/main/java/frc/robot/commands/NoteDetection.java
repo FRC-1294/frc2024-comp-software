@@ -22,6 +22,11 @@ public class NoteDetection extends Command {
   LimelightOB m_limelight; 
   IntakeSubsystem m_intake; 
   SwerveSubsystem m_swerve; 
+  boolean intakeDone;
+  boolean rotDone;
+  double xMovement;
+  double yMovement;
+  double rot = 0.25; 
   public NoteDetection(LimelightOB limelight, IntakeSubsystem intake, SwerveSubsystem swerve) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_limelight = limelight; 
@@ -30,17 +35,27 @@ public class NoteDetection extends Command {
     addRequirements(limelight);
     addRequirements(intake);
     addRequirements(swerve);
+    xMovement = Math.sin(m_limelight.getTX()); 
+    yMovement = Math.cos(m_limelight.getTX()); 
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    if (m_limelight.isDetectionValid()) {
+      if (m_limelight.getTX() > 2) {
+        m_swerve.setChassisSpeed(xMovement, yMovement, rot); 
+      }
+      else if (m_limelight.getTX() < 2) {
+        m_swerve.setChassisSpeed(xMovement, yMovement, rot);
+      }
+    }
+    m_intake.intakeAtSpeed(IntakeConstants.INTAKE_SPEED);
+  } 
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
@@ -49,7 +64,16 @@ public class NoteDetection extends Command {
   // Returns true whten the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if (m_intake.pieceInIntake()) {
+      m_intake.stopMotor();
+      m_swerve.setChassisSpeed(0, 0, 0);
+      intakeDone = true;
+    }
+    if (m_limelight.isDetectionValid() && Math.abs(m_limelight.getTX()) >= 2) {
+      rotDone = true;
+      m_swerve.setChassisSpeed(xMovement, yMovement, rot);
+    }
+    return intakeDone && rotDone;
   }
 
 }
