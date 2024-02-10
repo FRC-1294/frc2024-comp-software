@@ -5,12 +5,9 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTable;
-<<<<<<< HEAD
 import edu.wpi.first.networktables.NetworkTableInstance;
-=======
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
->>>>>>> 48fef6b2d26c6d07b16a4b0ec6bc2c01cb50b456
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.IntakeConstants;
 import frc.robot.subsystems.Input;
@@ -23,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class LimelightOB extends SubsystemBase {
   NetworkTable mTable;
-<<<<<<< HEAD
   String mLimeLightName;
   double tv;
   double tx;
@@ -36,10 +32,6 @@ public class LimelightOB extends SubsystemBase {
     mLimeLightName = LimeLightName;
     mTable = NetworkTableInstance.getDefault().getTable(mLimeLightName);
   }
-=======
-  IntakeSubsystem m_intake; 
-  public LimelightOB() {}
->>>>>>> 48fef6b2d26c6d07b16a4b0ec6bc2c01cb50b456
 
   @Override
   public void periodic() {
@@ -64,13 +56,26 @@ public class LimelightOB extends SubsystemBase {
     return tv;
   }
 
-  public Command getAutomousIntakeCommand() {
-    return new FunctionalCommand(() -> m_intake.intakeAtSpeed(IntakeConstants.INTAKE_SPEED), null, interrupted -> m_intake.stopMotor(), this::functionalCommandIsFinished, this);    
+  
+
+  public Command getNoteAlignmentCommand(SwerveSubsystem swerve) {
+    return new FunctionalCommand(() -> startNoteAlignment(swerve), null, interrupted -> swerve.setChassisSpeed(0.0, 0.0, 0.0), this::isRotationFinished, this, swerve);  
+
   }
 
-  public 
+  public void startNoteAlignment(SwerveSubsystem swerve) {
+    if (isDetectionValid()) {
+      if (getTX() > 2) {
+        swerve.setChassisSpeed(0.0, 0.0, 0.5);
+      }
+      else if (getTX() < 2) {
+        swerve.setChassisSpeed(0.0, 0.0, -0.5);
+      }
+    }
+  }
 
-  private boolean functionalCommandIsFinished() {
-    return m_intake.pieceInIntake() || Input.getLeftBumper();
+  private boolean isRotationFinished() {
+    
+    return Math.abs(getTX())<=2.0 && isDetectionValid();
   }
 }
