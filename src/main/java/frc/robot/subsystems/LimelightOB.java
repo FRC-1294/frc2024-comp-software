@@ -13,6 +13,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveSubsystem; 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -20,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 public class LimelightOB extends SubsystemBase {
   NetworkTable mTable;
   String mLimeLightName;
+
   double tv;
   double tx;
   double ta;
@@ -59,7 +61,9 @@ public class LimelightOB extends SubsystemBase {
     return new FunctionalCommand(() -> m_intake.intakeAtSpeed(IntakeConstants.INTAKE_SPEED), null, interrupted -> m_intake.stopMotor(), this::functionalCommandIsFinished, this);    
   }
 
-  public 
+  public Command getNotePickup(SwerveSubsystem swerve, IntakeSubsystem intake){
+    return new SequentialCommandGroup(getAutomousIntakeCommand(swerve), intake.); 
+  }
 
   private boolean functionalCommandIsFinished() {
     return m_intake.pieceInIntake() || Input.getLeftBumper();
