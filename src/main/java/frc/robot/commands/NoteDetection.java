@@ -27,15 +27,15 @@ public class NoteDetection extends Command {
     m_swerve = swerve; 
     addRequirements(limelight);
     addRequirements(intake);
-    addRequirements(swerve);
-    xMovement = Math.sin(m_limelight.getTX()); 
-    yMovement = Math.cos(m_limelight.getTX()); 
+    addRequirements(swerve); 
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     if (m_limelight.isDetectionValid()) {
+      xMovement = Math.sin(Math.toRadians(m_limelight.getTX())); 
+      yMovement = Math.cos(Math.toRadians(m_limelight.getTX()));
       if (m_limelight.getTX() > 2) {
         m_swerve.setChassisSpeed(xMovement, yMovement, rot); 
       }
