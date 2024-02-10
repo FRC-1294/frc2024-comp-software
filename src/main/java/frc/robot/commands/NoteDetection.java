@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.constants.IntakeConstants;
+
 public class NoteDetection extends Command {
   /** Creates a new NoteDetection. */
   LimeLightLime m_limelight; 
