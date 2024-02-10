@@ -18,15 +18,33 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "ShootFromSubwoofer"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "3rd_Piece_V1"
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "ShootFromSubwoofer"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "4th_Piece_V1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootFromSubwoofer"
           }
         }
       ]
