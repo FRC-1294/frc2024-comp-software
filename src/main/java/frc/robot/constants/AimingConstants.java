@@ -31,15 +31,15 @@ public class AimingConstants {
     }
     
     // Teleop Constant
-    public static double MAX_ELEVATOR_TELEOP_INCREMENT = 0;
-    public static double MAX_WRIST_TELEOP_INCREMENT = 0;
+    public static final double MAX_ELEVATOR_TELEOP_INCREMENT = 0;
+    public static final double MAX_WRIST_TELEOP_INCREMENT = 0;
     
     
     // PID Constants
     public static final PIDParameters mElevatorPIDConstants = new PIDParameters(0.1, 0, 0);
     public static final PIDParameters mWristPIDConstants = new PIDParameters(0.1, 0, 0, 0, 0);
-    public static final double mWristkG = 0.0;
-    public static final double mElevatorFeedforwardConstant = 0;
+    public static final double WRIST_KG = 0.0;
+    public static final double ELEVATOR_FEEDFORWARD_CONSTANT = 0;
     public static final double SPARK_THROUGHBORE_GEAR_RATIO = 1;
 
 

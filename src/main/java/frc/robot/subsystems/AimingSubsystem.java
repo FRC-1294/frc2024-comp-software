@@ -135,10 +135,6 @@ public class AimingSubsystem extends SubsystemBase {
     IdleMode idleMode;
 
     switch (mode) {
-        case BRAKE:
-            neutralmode = NeutralModeValue.Brake;
-            idleMode = IdleMode.kBrake;
-            break;
         case COAST:
             neutralmode = NeutralModeValue.Coast;
             idleMode = IdleMode.kCoast;
