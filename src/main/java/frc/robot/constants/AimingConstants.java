@@ -70,4 +70,11 @@ public class AimingConstants {
     public static final int RIGHT_WRIST_ENCODER_ID = 0;
 
     public static final int ELEVATOR_THROUGHBORE_ENCODER_ID = 0;
+
+    //AutoLock Constants
+    public static final double ySpeaker = 0;
+    public static final double xSpeaker = 0;
+    public static final double hSpeaker = 0;
+    public static final double hRobot = 0;
+    public static final double hShooting = hSpeaker - hRobot;
 }

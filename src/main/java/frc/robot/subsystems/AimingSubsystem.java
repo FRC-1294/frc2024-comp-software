@@ -223,4 +223,22 @@ public class AimingSubsystem extends SubsystemBase {
   public Command waitUntilWristSetpoint(double sp) {
     return new FunctionalCommand(() -> setDesiredWristRotation(sp), null, null, this::atWristSetpoint, this);  
   }
+
+  //AutoLock System
+  public double getAngleOfSpeakerDEGS(){
+    double xRobot = 0;
+    double yRobot = 0;
+
+    double  distanceFromSpeaker = Math.sqrt(Math.pow(AimingConstants.xSpeaker + xRobot, 2) + Math.pow(AimingConstants.ySpeaker + yRobot, 2)); //distance formula
+    double angleRADS = Math.atan(AimingConstants.hShooting / distanceFromSpeaker); //triangle shenanigans (source: trust me bro)
+    double angleDEGS = Math.toDegrees(angleRADS);
+    return angleDEGS;
+  }
+
+  public double getAddedAngleOfSwerveDEGS(){
+    double currentAngleSwerveDEGS = 0;
+    double addedAngleSwerve = (180 - currentAngleSwerveDEGS) + Math.toDegrees(Math.atan(AimingConstants.xSpeaker / AimingConstants.ySpeaker)); //Shah knows dw
+    return addedAngleSwerve;
+  }
+
 }
