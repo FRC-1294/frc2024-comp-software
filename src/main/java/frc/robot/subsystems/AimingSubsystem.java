@@ -6,8 +6,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.Follower;
-// This import will be used for Onboard PID later
-import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkMax;
@@ -55,15 +53,12 @@ public class AimingSubsystem extends SubsystemBase {
   PIDController mElevatorController = AimingConstants.mElevatorPIDConstants.toWPIController();  
   PIDController mWristController = AimingConstants.mWristPIDConstants.toWPIController();
 
-  ArmFeedforward mWristFeedforwardController = new ArmFeedforward(AimingConstants.mWristPIDConstants.getKS(), AimingConstants.mWristkG, AimingConstants.mWristPIDConstants.getKV());
+  ArmFeedforward mWristFeedforwardController = new ArmFeedforward(AimingConstants.mWristPIDConstants.getKS(), AimingConstants.WRIST_KG, AimingConstants.mWristPIDConstants.getKV());
 
   MotorOutputConfigs mLeftWristMotorOutputConfigs = new MotorOutputConfigs();
   MotorOutputConfigs mRightWristMotorOutputConfigs = new MotorOutputConfigs();
 
   Slot0Configs mElevatorControllerSlot0Configs = new Slot0Configs();
-
-  // Onboard PID
-  // PositionVoltage elevatorVoltage = new PositionVoltage(getDesiredElevatorDistance()).withSlot(0);
 
   public AimingSubsystem() {
     mChooser.addOption("Brake", AimingMotorMode.BRAKE);
@@ -106,12 +101,9 @@ public class AimingSubsystem extends SubsystemBase {
     mDesiredElevatorDistanceIn = MathUtil.clamp(mDesiredElevatorDistanceIn, AimingConstants.MIN_ELEVATOR_DIST_IN, AimingConstants.MAX_ELEVATOR_DIST);
     mCurrentElevatorDistanceIn = getCurrentElevatorDistance();
 
-    //Onboard PID
-    //mLeftElevatorMotor.setControl(elevatorVoltage.withPosition(mDesiredElevatorDistanceIn));
-
     //Temp Regular PID
     double elevatorPIDCalculation = mElevatorController.calculate(mCurrentElevatorDistanceIn, mDesiredElevatorDistanceIn);
-    mLeftElevatorMotor.set(elevatorPIDCalculation + AimingConstants.mElevatorFeedforwardConstant);
+    mLeftElevatorMotor.set(elevatorPIDCalculation + AimingConstants.ELEVATOR_FEEDFORWARD_CONSTANT);
   }
 
   private void wristPeriodic() {
