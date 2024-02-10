@@ -5,7 +5,9 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.LimeLightLime; 
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import frc.robot.subsystems.LimeLightLime;
+import frc.robot.constants.IntakeConstants;
 import frc.robot.subsystems.IntakeSubsystem; 
 import frc.robot.subsystems.SwerveSubsystem; 
 public class NoteDetection extends Command {
@@ -39,6 +41,11 @@ public class NoteDetection extends Command {
   @Override
   public boolean isFinished() {
     return false;
+  }
+
+  @Override 
+  public Command getAutomousIntakeCommand() {
+    return new FunctionalCommand(() -> intakeAtSpeed(IntakeConstants.INTAKE_SPEED), null, interrupted -> m_intake.stopMotor(), this::functionalCommandIsFinished, this);    
   }
 }
 
