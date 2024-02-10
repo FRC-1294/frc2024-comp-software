@@ -32,7 +32,9 @@ public class DefaultIntakeCommand extends Command {
     }
 
     if (Input.getIntake()) {
-      mIntake.intakeAtSpeed(IntakeConstants.INTAKE_SPEED);
+      mIntake.intakeAtSpeed(IntakeConstants.ACTIVE_INTAKE_SPEED);
+    }else{
+      mIntake.intakeAtSpeed(IntakeConstants.PASSIVE_INTAKE_SPEED);
     }
   }
 

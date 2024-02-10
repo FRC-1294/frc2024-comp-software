@@ -13,5 +13,7 @@ public class IntakeConstants {
     public static final boolean INTAKE_INVERTED = true;
     public static final int SMART_CURRENT_LIMIT = 0;
     public static final int INTAKE_BEAMBREAK_ID = 0;
-    public static final double INTAKE_SPEED = 1.0;
+    public static final double ACTIVE_INTAKE_SPEED = 1.0;
+    public static final double PASSIVE_INTAKE_SPEED = 0;
+
 }

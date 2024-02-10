@@ -55,7 +55,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public Command getAutomousIntakeCommand() {
-    return new FunctionalCommand(() -> intakeAtSpeed(IntakeConstants.INTAKE_SPEED), null, interrupted -> stopMotor(), this::functionalCommandIsFinished, this);
+    return new FunctionalCommand(() -> intakeAtSpeed(IntakeConstants.ACTIVE_INTAKE_SPEED), null, interrupted -> stopMotor(), this::functionalCommandIsFinished, this);
   }
 
   public boolean pieceInIntake(){
