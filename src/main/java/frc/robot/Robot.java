@@ -41,14 +41,14 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Pick your Auton...",pathSelector);
     m_robotContainer = new RobotContainer();
     
-    new InitializePathPlanner(m_robotContainer.getSwerveSubsystem()).initialize();
+    // new InitializePathPlanner(m_robotContainer.getSwerveSubsystem()).initialize();
 
-    // pathSelector.addOption("5_meter_return", AutoBuilder.buildAuto("5_Meter_Return"));
-    // pathSelector.addOption("Simpy", AutoBuilder.buildAuto("Simpy"));
-    // pathSelector.addOption("2_meter", AutoBuilder.buildAuto("2_meter"));
-    // pathSelector.addOption("None", new PrintCommand("Damn that sucks"));
-    pathSelector.addOption("kSCharacterization", new kS_Characterization(m_robotContainer.getSwerveSubsystem()));
-    pathSelector.addOption("kVCharacterization", new kV_Characterization(m_robotContainer.getSwerveSubsystem()));
+    // // pathSelector.addOption("5_meter_return", AutoBuilder.buildAuto("5_Meter_Return"));
+    // // pathSelector.addOption("Simpy", AutoBuilder.buildAuto("Simpy"));
+    // // pathSelector.addOption("2_meter", AutoBuilder.buildAuto("2_meter"));
+    // // pathSelector.addOption("None", new PrintCommand("Damn that sucks"));
+    // pathSelector.addOption("kSCharacterization", new kS_Characterization(m_robotContainer.getSwerveSubsystem()));
+    // pathSelector.addOption("kVCharacterization", new kV_Characterization(m_robotContainer.getSwerveSubsystem()));
     // pathSelector.addOption("Goofy Loop", AutoBuilder.buildAuto("Goofy Loop"));
     // pathSelector.addOption("3_Piece_Dynamic", AutoBuilder.buildAuto("3_Piece_Dynamic"));
   }
@@ -67,8 +67,8 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    SmartDashboard.putData("Pick your Auton...",pathSelector);
-    SmartDashboard.updateValues();
+    // SmartDashboard.putData("Pick your Auton...",paElathSelector);
+    // SmartDashboard.updateValues();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

@@ -5,8 +5,12 @@
 package frc.robot;
 
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.DefaultElevatorCommand;
+import frc.robot.commands.DefaultIntakeCommand;
 import frc.robot.robots.CompetitionBotSwerveConfig;
 import frc.robot.robots.PracticeBotSwerveConfig;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.PoseEstimation;
 import frc.robot.subsystems.SwerveSubsystem;
 
@@ -18,17 +22,20 @@ import frc.robot.subsystems.SwerveSubsystem;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final SwerveSubsystem mSwerveSubsystem = new SwerveSubsystem(new CompetitionBotSwerveConfig());
-  private final PoseEstimation mEstimation = new PoseEstimation();
+  // private final SwerveSubsystem mSwerveSubsystem = new SwerveSubsystem(new CompetitionBotSwerveConfig());
+  // private final PoseEstimation mEstimation = new PoseEstimation();
+  private final Elevator mElevator = new Elevator();
   
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    mSwerveSubsystem.setDefaultCommand(new DefaultDriveCommand(mSwerveSubsystem));
+    // mIntake.setDefaultCommand(new DefaultIntakeCommand(mIntake));
+    // mSwerveSubsystem.setDefaultCommand(new DefaultDriveCommand(mSwerveSubsystem));
+    mElevator.setDefaultCommand(new DefaultElevatorCommand(mElevator));
   }
   
-  public SwerveSubsystem getSwerveSubsystem() {
-      return mSwerveSubsystem;
-  }
+  // public SwerveSubsystem getSwerveSubsystem() {
+  //     return mSwerveSubsystem;
+  // }
 
 }

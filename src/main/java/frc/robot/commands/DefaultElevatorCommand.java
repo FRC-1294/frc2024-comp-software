@@ -28,7 +28,9 @@ public class DefaultElevatorCommand extends Command {
   @Override
   public void execute() {
     if (Math.abs(Input.mXBox.getLeftY())>JoystickConstants.XBOX_Y_DEADZONE){
-      mElevator.setVelocity(Input.mXBox.getLeftY()*0.1);
+      mElevator.setVelocity(Input.mXBox.getLeftY()*0.5);
+    }else{
+      mElevator.setVelocity(0);
     }
   }
 
