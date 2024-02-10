@@ -13,8 +13,44 @@ import frc.robot.Util.PIDConstants;
 /** Add your docs here. */
 public abstract class SwerveConfig {
         protected SwerveConfig() {
-        //Abstract class cannot be initialized
+                config();
+        
+                //Abstract class cannot be initialized
+                // Swerve Module Locations
+                FRONT_LEFT_COORDS_METERS =
+                        new Translation2d(TRACK_LENGTH_METERS / 2,
+                                TRACK_WIDTH_METERS / 2);
+                FRONT_RIGHT_COORDS_METERS =
+                        new Translation2d(TRACK_LENGTH_METERS / 2,
+                                                -TRACK_WIDTH_METERS / 2);
+                BACK_LEFT_COORDS_METERS =
+                        new Translation2d(-TRACK_LENGTH_METERS / 2,
+                                                TRACK_WIDTH_METERS / 2);
+                BACK_RIGHT_COORDS_METERS =
+                        new Translation2d(-TRACK_LENGTH_METERS / 2,
+                                                -TRACK_WIDTH_METERS / 2);
+
+                SWERVE_KINEMATICS = new SwerveDriveKinematics(
+                        FRONT_LEFT_COORDS_METERS, FRONT_RIGHT_COORDS_METERS,
+                        BACK_LEFT_COORDS_METERS, BACK_RIGHT_COORDS_METERS);
+
+                PIGEON = new Pigeon2(PIGEON_ID, "DriveMotors");
+
+
+                SWERVE_MODULES[0] = FRONT_LEFT_MODULE;
+                SWERVE_MODULES[1] = FRONT_RIGHT_MODULE;
+                SWERVE_MODULES[2] = BACK_LEFT_MODULE;
+                SWERVE_MODULES[3] = BACK_RIGHT_MODULE;
+
+                SWERVE_MODULE_PIDs[0] = FRONT_LEFT_ROT_PID;
+                SWERVE_MODULE_PIDs[1] = FRONT_RIGHT_ROT_PID;
+                SWERVE_MODULE_PIDs[2] = BACK_LEFT_ROT_PID;
+                SWERVE_MODULE_PIDs[3] = BACK_RIGHT_ROT_PID;
         }
+
+        public abstract void config();
+
+        
         //Since Java does not support abstract FIELDS, this is our only solution apart from requiring everything within the constructor
         public Pigeon2 PIGEON = null;
         public double TRANS_GEAR_RATIO_ROT;
