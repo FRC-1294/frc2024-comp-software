@@ -27,7 +27,7 @@ public class PhotonCameras {
 
         
         AprilTagFieldLayout fieldLayout =
-                AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
+                AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
         // Create pose estimator
         mPhotonPoseEstimatorFront =
                 new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
