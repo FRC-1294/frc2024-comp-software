@@ -40,7 +40,6 @@ import frc.robot.Util.PIDConstants;
     // Public Debugging Values
     private double mPIDOutput = 0.0;
     private double mDesiredRadians = 0.0;
-    private double mDesiredVel = 0.0;
 
     protected SwerveModuleAbstract(int rotID, int transID, int rotEncoderID, boolean rotInverse,
         boolean transInverse, PIDConstants rotPID, PIDConstants transPID, double transGearRatio,

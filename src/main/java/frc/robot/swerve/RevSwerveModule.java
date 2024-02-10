@@ -1,11 +1,9 @@
 package frc.robot.swerve;
 
-import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -22,8 +20,6 @@ public class RevSwerveModule extends SwerveModuleAbstract{
     
 
     // Public Debugging Values
-    private double mPIDOutput = 0.0;
-    private double mDesiredRadians = 0.0;
     private double mDesiredVel = 0.0;
 
     public RevSwerveModule(int rotID, int transID, int rotEncoderID, boolean rotInverse,
