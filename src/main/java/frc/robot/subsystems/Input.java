@@ -44,22 +44,6 @@ public class Input {
     return mTransJoystick.getY();
   }
 
-  public static boolean getA() {
-    return mControllerXbox.getAButtonPressed();
-  }
-
-  public static boolean getB() {
-    return mControllerXbox.getBButtonPressed();
-  }
-
-  public static boolean getX() {
-    return mControllerXbox.getXButtonPressed();
-  }
-
-  public static boolean getY() {
-    return mControllerXbox.getYButtonPressed();
-  }
-
   public static boolean getLeftBumper() {
     return mControllerXbox.getLeftBumper();
   }
@@ -76,16 +60,35 @@ public class Input {
     return mControllerXbox.getRightTriggerAxis();
   }
 
+  public static double getRot() {
+    return mRotJoystick.getX();
+  }
+
+  public static boolean getA() {
+    return mXboxController.getAButtonPressed();
+  }
+
+  public static boolean getB() {
+    return mXboxController.getBButtonPressed();
+  }
+
+  public static boolean getX() {
+    return mXboxController.getXButtonPressed();
+  }
+
+  public static boolean getY() {
+    return mXboxController.getYButtonPressed();
+  }
+
+  public static double getDPad() {
+    return mXboxController.getPOV();
+  }
   public static double getLeftStickY() {
-    return -mControllerXbox.getLeftY();
+    return -mXboxController.getLeftY();
   }
 
   public static double getRightStickY() {
-    return -mControllerXbox.getRightY();
-  }
-
-  public static double getRot() {
-    return mRotJoystick.getX();
+    return -mXboxController.getRightY();
   }
 
   public static boolean getResetGyro() {
