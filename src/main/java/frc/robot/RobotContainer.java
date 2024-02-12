@@ -4,15 +4,11 @@
 
 package frc.robot;
 
-import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.DefaultElevatorCommand;
 import frc.robot.commands.DefaultIntakeCommand;
-import frc.robot.robots.CompetitionBotSwerveConfig;
-import frc.robot.robots.PracticeBotSwerveConfig;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.PoseEstimation;
-import frc.robot.subsystems.SwerveSubsystem;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a

@@ -45,6 +45,22 @@ public class Input {
     return mRotJoystick.getX();
   }
 
+  public static boolean getA() {
+    return mXBox.getAButtonPressed();
+  }
+
+  public static boolean getB() {
+    return mXBox.getBButtonPressed();
+  }
+
+  public static boolean getX() {
+    return mXBox.getXButtonPressed();
+  }
+
+  public static boolean getY() {
+    return mXBox.getYButtonPressed();
+  }
+
   public static boolean getResetGyro() {
     return mRotJoystick.getRawButton(3);
   }

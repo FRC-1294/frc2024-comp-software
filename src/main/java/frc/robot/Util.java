@@ -26,17 +26,18 @@ public class Util {
         VOLTAGE_OUT,
         DUTY_CYCLE_VEL;}
 
-    public static class PIDConstants{
-        public double mKP;
-        public double mKI;
-        public double mKD;
-        public double mKV;
-        public double mKS;
-        public double mContinuousInputMax;
-        public double mContinuousInputMin;
-        public boolean mIsContinuousInput;
+    // This class is used to store PID Constants
+    public static class PIDParameters{
+        private double mKP;
+        private double mKI;
+        private double mKD;
+        private double mKV;
+        private double mKS;
+        private double mContinuousInputMax;
+        private double mContinuousInputMin;
+        private boolean mIsContinuousInput;
 
-        public PIDConstants(double kP, double kI, double kD, double kS, double kV, double continuousInputMax, double continuousInputMin){
+        public PIDParameters(double kP, double kI, double kD, double kS, double kV, double continuousInputMax, double continuousInputMin){
             mKP = kP;
             mKI = kI;
             mKD = kD;
@@ -47,12 +48,12 @@ public class Util {
             mIsContinuousInput = true;
         }
 
-        public PIDConstants(double kP, double kI, double kD, double kS, double kV){
+        public PIDParameters(double kP, double kI, double kD, double kS, double kV){
             this(kP, kI, kD, kS, kV,0,0);
             mIsContinuousInput = false;
         }
 
-        public PIDConstants(double kP, double kI, double kD){
+        public PIDParameters(double kP, double kI, double kD){
             this(kP, kI, kD, 0, 0,0,0);
             mIsContinuousInput = false;
         }
@@ -60,23 +61,63 @@ public class Util {
 
         public PIDController toWPIController(){
             PIDController pid = new PIDController(mKP, mKI, mKD);
-            if(mIsContinuousInput){pid.enableContinuousInput(mContinuousInputMin, mContinuousInputMax);}
+            if(mIsContinuousInput){
+                pid.enableContinuousInput(mContinuousInputMin, mContinuousInputMax);
+            }
             return pid;
         }
 
-        public Slot0Configs toTalonConfiguration(){
-            Slot0Configs config = new Slot0Configs();
-            config.kP = mKP;
-            config.kI = mKI;
-            config.kD = mKD;
-            config.kV = mKV;
-            config.kS = mKS;
+        public TalonFXConfiguration toTalonConfiguration(){
+            TalonFXConfiguration config = new TalonFXConfiguration();
+            config.Slot0.kP = mKP;
+            config.Slot0.kI = mKI;
+            config.Slot0.kD = mKD;
+            config.Slot0.kV = mKV;
+            config.Slot0.kS = mKS;
+            config.ClosedLoopGeneral.ContinuousWrap = mIsContinuousInput;
             return config;
         }
+        
         public SimpleMotorFeedforward toWPIMotorFeedForward(){
             return new SimpleMotorFeedforward(mKS, mKV);
         }
+
+
+        // instance variable accessor methods
+
+        public double getKP(){
+            return this.mKP;
+        }
+
+        public double getKI(){
+            return this.mKI;
+        }
+
+        public double getKD(){
+            return this.mKD;
+        }
+
+        public double getKV(){
+            return this.mKV;
+        }
+
+        public double getKS(){
+            return this.mKS;
+        }
+
+        public double getContinuousInputMax(){
+            return this.mContinuousInputMax;
+        }
+
+        public double getContinuousInputMin(){
+            return this.mContinuousInputMin;
+        }
+
+        public boolean getIsContinuousInput(){
+            return this.mIsContinuousInput;
+        }
     }
+    
     public enum POV{
         DPADUP(0),
         DPADRIGHT(90),
