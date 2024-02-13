@@ -12,19 +12,18 @@ import frc.robot.subsystems.PoseEstimation;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.swerve.SwerveModuleAbstract;
 
-public class KvCharacterization extends Command {
+public class SwerveVoltageCharacterization extends Command {
   /** Creates a new kV_Characterization. */
   private final SwerveSubsystem mSwerve;
   private final SwerveModuleAbstract[] mModules;
   private final Timer mTimer = new Timer();
   private final double mTargVelMPS;
   private double increment = 0;
-
-  private double [] expkV = new double[4];
+  private double [] mVelocityConversion;
   private double sampleNo = 0;
   private boolean timerHasStarted = false;
 
-  public KvCharacterization(SwerveSubsystem swerve) {
+  public SwerveVoltageCharacterization(SwerveSubsystem swerve) {
     mSwerve = swerve;
     mModules = mSwerve.getRawModules();
     mTargVelMPS = 1;
@@ -34,6 +33,7 @@ public class KvCharacterization extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    mVelocityConversion = new double[mSwerve.mConfig.NUM_MODULES];
     mTimer.reset();
     PoseEstimation.resetGyro();
   }
@@ -41,7 +41,7 @@ public class KvCharacterization extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(Math.abs(SwerveSubsystem.getChassisSpeeds().vxMetersPerSecond - mTargVelMPS)<0.1){
+    if(Math.abs(SwerveSubsystem.getChassisSpeeds().vxMetersPerSecond - mTargVelMPS) < 0.1){
         if (!timerHasStarted){
             mTimer.start();
         }
@@ -49,8 +49,8 @@ public class KvCharacterization extends Command {
         sampleNo += 1;
         for(int i = 0; i<4; i++){
             double curkV = (mModules[i].getTransAppliedVolts()/mModules[i].getTransNominalVoltage())/mModules[i].getTransVelocity();
-            expkV[i] = (expkV[i]*(sampleNo-1)+curkV)/sampleNo;
-            SmartDashboard.putNumber("avgkV"+i, expkV[i]);
+            mVelocityConversion[i] = (mVelocityConversion[i]*(sampleNo-1)+curkV)/sampleNo;
+            SmartDashboard.putNumber("avgkV"+i, mVelocityConversion[i]);
         }
     }else{
       mSwerve.setChassisSpeed(increment, 0, 0,false,true);

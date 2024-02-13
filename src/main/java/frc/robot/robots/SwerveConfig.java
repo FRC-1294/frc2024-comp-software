@@ -36,7 +36,6 @@ public abstract class SwerveConfig {
 
                 PIGEON = new Pigeon2(PIGEON_ID, "DriveMotors");
 
-
                 SWERVE_MODULES[0] = FRONT_LEFT_MODULE;
                 SWERVE_MODULES[1] = FRONT_RIGHT_MODULE;
                 SWERVE_MODULES[2] = BACK_LEFT_MODULE;
@@ -50,7 +49,7 @@ public abstract class SwerveConfig {
 
         public abstract void config();
 
-        
+        public int NUM_MODULES = 4;
         //Since Java does not support abstract FIELDS, this is our only solution apart from requiring everything within the constructor
         public Pigeon2 PIGEON = null;
         public double TRANS_GEAR_RATIO_ROT;
