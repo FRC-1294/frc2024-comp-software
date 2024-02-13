@@ -10,14 +10,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.swerve.SwerveModuleAbstract;
 
-public class KsCharacterization extends Command {
+public class SwerveFrictionCharacterization extends Command {
   /** Creates a new kS_Characterization. */
   private final SwerveSubsystem mSwerve;
   private final SwerveModuleAbstract[] mModules;
-  private double [] expkS = new double[4];
+  private double [] mFrictionConstant;
   private boolean [] modLock = {false,false,false,false};
   private double curRequestedDutyCycle = 0;
-  public KsCharacterization(SwerveSubsystem swerve) {
+  public SwerveFrictionCharacterization(SwerveSubsystem swerve) {
     mSwerve = swerve;
     mModules = mSwerve.getRawModules();
 
@@ -28,7 +28,7 @@ public class KsCharacterization extends Command {
   @Override
   public void initialize() {
     curRequestedDutyCycle = 0;
-    expkS = new double[4];
+    mFrictionConstant = new double[mSwerve.mConfig.NUM_MODULES];
 
     for (int i = 0; i<4; i++){
       modLock[i] = false;
@@ -43,10 +43,10 @@ public class KsCharacterization extends Command {
     mSwerve.setChassisSpeed(curRequestedDutyCycle, 0, 0,false,true);
     for (int i = 0; i<4; i++){
       if (Math.abs(mModules[i].getTransVelocity())>0.00001 && !modLock[i]){
-        expkS[i] = Math.abs(mModules[i].getTransAppliedVolts()/mModules[i].getTransNominalVoltage());
+        mFrictionConstant[i] = Math.abs(mModules[i].getTransAppliedVolts()/mModules[i].getTransNominalVoltage());
         modLock[i] = true;
       }
-      SmartDashboard.putNumber("expkS"+i, expkS[i]);
+      SmartDashboard.putNumber("expkS"+i, mFrictionConstant[i]);
 
     }
   }
@@ -62,7 +62,7 @@ public class KsCharacterization extends Command {
   public boolean isFinished() {
     boolean flag = true;
     for(int i=0; i<4; i++){
-      SmartDashboard.putNumber("expkS"+i, expkS[i]);
+      SmartDashboard.putNumber("expkS"+i, mFrictionConstant[i]);
 
       if (!modLock[i]){
         flag = false;

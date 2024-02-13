@@ -23,6 +23,7 @@ public class InitializePathPlanner{
   public InitializePathPlanner(SwerveSubsystem swerve) {
     mSwerve = swerve;
   }
+  
   public void initializeNamedCOmmands(){
     NamedCommands.registerCommand("IntakeUntilNote", new SequentialCommandGroup(new PrintCommand("Intaking until note enters")));
     NamedCommands.registerCommand("Handoff", new SequentialCommandGroup(new PrintCommand("Handoff"), new WaitCommand(1)));
