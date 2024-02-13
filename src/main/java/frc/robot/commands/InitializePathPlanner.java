@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.subsystems.PoseEstimation;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class InitializePathPlanner{
@@ -34,8 +33,8 @@ public class InitializePathPlanner{
   // Called when the command is initially scheduled.
   public void initialize() {
     AutoBuilder.configureHolonomic(
-    PoseEstimation::getRobotPose, 
-    PoseEstimation::resetPose,
+    SwerveSubsystem::getRobotPose, 
+    SwerveSubsystem::resetRobotPose,
     SwerveSubsystem::getChassisSpeeds, 
     mSwerve::setChassisSpeed,
     new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in
