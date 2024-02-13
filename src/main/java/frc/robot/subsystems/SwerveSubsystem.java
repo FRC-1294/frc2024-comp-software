@@ -5,14 +5,15 @@
 package frc.robot.subsystems;
 
 
+import org.photonvision.EstimatedRobotPose;
 import com.ctre.phoenix6.hardware.Pigeon2;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
@@ -25,7 +26,7 @@ import frc.robot.swerve.SwerveModuleAbstract;
 public class SwerveSubsystem extends SubsystemBase {
   /** Creates a new SwerveSubsystem. */
   private static SwerveDriveKinematics mKinematics;
-  private static SwerveDriveOdometry mOdometry;
+  private static SwerveDrivePoseEstimator mOdometry;
 
   private static Pigeon2 mPigeon2;
 
@@ -51,7 +52,7 @@ public class SwerveSubsystem extends SubsystemBase {
     mKinematics = mConfig.SWERVE_KINEMATICS;
     mPigeon2 = mConfig.PIGEON;
     mModules = mConfig.SWERVE_MODULES;
-    mOdometry = new SwerveDriveOdometry(mKinematics, getRotation2d(), getModulePositions());
+    mOdometry = new SwerveDrivePoseEstimator(mKinematics, getRotation2d(), getModulePositions(), new Pose2d());
     resetGyro();
     resetRobotPose();
   }
@@ -60,8 +61,8 @@ public class SwerveSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run    
     mOdometry.update(getRotation2d(), getModulePositions());
-      SmartDashboard.putNumber("XPos", mOdometry.getPoseMeters().getX());
-      SmartDashboard.putNumber("YPos", mOdometry.getPoseMeters().getY());
+      SmartDashboard.putNumber("XPos", mOdometry.getEstimatedPosition().getX());
+      SmartDashboard.putNumber("YPos", mOdometry.getEstimatedPosition().getY());
       SmartDashboard.putNumber("Heading", getRotation2d().getDegrees());
     if (CompConstants.DEBUG_MODE) {
       SmartDashboard.putData("Swerve", this);
@@ -107,9 +108,9 @@ public class SwerveSubsystem extends SubsystemBase {
   /**
    * Sets the current YAW heading as the 0'd heading
    */
-  private void resetGyro() {
+  public void resetGyro() {
     mPigeon2.reset(); 
-    PoseEstimation.resetGyro();
+    mOdometry.resetPosition(getRotation2d(), getModulePositions(), new Pose2d(getRobotPose().getX(), getRobotPose().getY(), getRobotPose().getRotation()));
   }
 
   /**
@@ -218,9 +219,9 @@ public class SwerveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("ChassisSpeedRotError", chassisRotPID.getPositionError());
         chassisSpeeds =  ChassisSpeeds.fromFieldRelativeSpeeds(vxMPS+xPID,
                                                         vyMPS+yPID, 
-                                                        angleSpeedRADPS+rotPID, PoseEstimation.getRobotPose().getRotation());
+                                                        angleSpeedRADPS+rotPID, getRotation2d());
       }else{
-        chassisSpeeds =  ChassisSpeeds.fromFieldRelativeSpeeds(vxMPS, vyMPS, angleSpeedRADPS, PoseEstimation.getRobotPose().getRotation());
+        chassisSpeeds =  ChassisSpeeds.fromFieldRelativeSpeeds(vxMPS, vyMPS, angleSpeedRADPS, getRotation2d());
       }
       
 
@@ -262,16 +263,23 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
 
-  private void resetRobotPose() {
+  public static void resetRobotPose() {
     mOdometry.resetPosition(getRotation2d(), getModulePositions(), new Pose2d());
   }
 
+  public static void resetRobotPose(Pose2d pose) {
+    mOdometry.resetPosition(getRotation2d(), getModulePositions(), pose);
+  }
+
+  public static void updateVision(EstimatedRobotPose pose) {
+    mOdometry.addVisionMeasurement(pose.estimatedPose.toPose2d(), pose.timestampSeconds);
+  }
 
   /**
    * @return provide the pose of the robot in meters
    */
   public static Pose2d getRobotPose() {
-    return mOdometry.getPoseMeters();
+    return mOdometry.getEstimatedPosition();
   }
 
   /**
