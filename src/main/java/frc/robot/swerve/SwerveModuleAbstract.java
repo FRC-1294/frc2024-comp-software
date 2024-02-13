@@ -2,7 +2,6 @@ package frc.robot.swerve;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.controller.PIDController;
@@ -64,7 +63,7 @@ import frc.robot.Util.PIDConstants;
             mRotMotor = new CANSparkMax(mRotID, CANSparkMax.MotorType.kBrushless);
             // Encoders
             mRotRelativeEncoder = mRotMotor.getEncoder();
-            mRotEncoder = new CANcoder(mRotEncoderID,"SWERVE_ENC");
+            mRotEncoder = new CANcoder(mRotEncoderID,"DriveMotors");
             mRotRelativeEncoder.setPosition(0);
 
             // ----Setting PID Parameters

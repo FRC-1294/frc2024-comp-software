@@ -12,6 +12,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "ShootFromSubwoofer"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "2nd_Piece_V1"
