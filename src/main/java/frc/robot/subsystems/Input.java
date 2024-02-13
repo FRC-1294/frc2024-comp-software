@@ -84,6 +84,10 @@ public class Input {
     return -mControllerXbox.getRightY();
   }
 
+  public static double getDPad() {
+    return mControllerXbox.getPOV();
+  }
+
   public static double getRot() {
     return mRotJoystick.getX();
   }
