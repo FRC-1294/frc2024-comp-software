@@ -11,7 +11,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-/** Add your docs here. */
+// This class is used to store helper classes & functions
 public class Util {
 
     public static Translation3d getNormalTranslation(Translation3d vec){
@@ -141,9 +141,20 @@ public class Util {
             SmartDashboard.putBoolean("TBH Controller", atSetpoint());
         }
 
-        public double getCurOutput(){return mCurOutput;}
-        public double getPrevError(){return mPrevError;}
-        public double getSetpoint(){return mSetPoint;}
-        public double getTBHConstant(){return mTBHConstant;}
+        public double getCurOutput(){
+            return mCurOutput;
+        }
+
+        public double getPrevError(){
+            return mPrevError;
+        }
+
+        public double getSetpoint(){
+            return mSetPoint;
+        }
+
+        public double getTBHConstant(){
+            return mTBHConstant;
+        }
     }
 }
