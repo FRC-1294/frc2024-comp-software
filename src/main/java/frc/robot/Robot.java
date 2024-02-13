@@ -14,8 +14,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.commands.InitializePathPlanner;
-import frc.robot.commands.KsCharacterization;
-import frc.robot.commands.KvCharacterization;
+import frc.robot.commands.SwerveFrictionCharacterization;
+import frc.robot.commands.SwerveVoltageCharacterization;
+import frc.robot.commands.SwerveFrictionCharacterization;
+import frc.robot.commands.SwerveVoltageCharacterization;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -43,8 +45,8 @@ public class Robot extends TimedRobot {
     
     SmartDashboard.putData("Pick your Auton...",pathSelector);
 
-    pathSelector.addOption("kSCharacterization", new KsCharacterization(robotContainer.getSwerveSubsystem()));
-    pathSelector.addOption("kVCharacterization", new KvCharacterization(robotContainer.getSwerveSubsystem()));
+    pathSelector.addOption("kSCharacterization", new SwerveFrictionCharacterization(robotContainer.getSwerveSubsystem()));
+    pathSelector.addOption("kVCharacterization", new SwerveVoltageCharacterization(robotContainer.getSwerveSubsystem()));
     pathSelector.addOption("4 Piece V1", AutoBuilder.buildAuto("4_Piece_V1"));
     pathSelector.addOption("4 Piece V2", AutoBuilder.buildAuto("4_Piece_V2"));
     pathSelector.addOption("5 Meter Test", AutoBuilder.buildAuto("5_Meter_Test"));
