@@ -24,7 +24,7 @@ public class InitializePathPlanner{
     mSwerve = swerve;
   }
   
-  public void initializeNamedCOmmands(){
+  public void initializeNamedCommands(){
     NamedCommands.registerCommand("IntakeUntilNote", new SequentialCommandGroup(new PrintCommand("Intaking until note enters")));
     NamedCommands.registerCommand("Handoff", new SequentialCommandGroup(new PrintCommand("Handoff"), new WaitCommand(1)));
     NamedCommands.registerCommand("ShootDynamic", new SequentialCommandGroup(new PrintCommand("Shoot Note"), new WaitCommand(0.5)));
@@ -49,7 +49,7 @@ public class InitializePathPlanner{
               
     ), this::determineFieldOrientation, mSwerve);
 
-    initializeNamedCOmmands();
+    initializeNamedCommands();
 
   }
 
