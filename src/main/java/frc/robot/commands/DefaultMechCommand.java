@@ -8,6 +8,7 @@ import frc.robot.subsystems.Input;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
 import frc.states.MechState;
+import frc.states.MechStates.Intook;
 import frc.states.MechStates.ReadyForAim;
 import frc.states.MechStates.ReadyForHandoff;
 import frc.states.MechStates.ReadyForIntake;
@@ -20,6 +21,7 @@ public class DefaultMechCommand extends Command {
     //private AimingSubsystem mAimingSubsystem = new AimingSubsystem();
 
     private MechState readyForIntake;
+    private MechState intook;
     private MechState readyForHandoff;
     private MechState readyForAim;
     private MechState readyForLaunch;
@@ -34,6 +36,7 @@ public class DefaultMechCommand extends Command {
         addRequirements(mIntakeSubsystem, mLauncherSubsystem); //mAimingSubsystem
 
         readyForIntake = new ReadyForIntake(this, intakeSubsystem, launcherSubsystem);
+        intook = new Intook(this, intakeSubsystem, launcherSubsystem);
         readyForHandoff = new ReadyForHandoff(this, intakeSubsystem, launcherSubsystem);
         readyForAim = new ReadyForAim(this, intakeSubsystem, launcherSubsystem);
         readyForLaunch = new ReadyForLaunch(this, intakeSubsystem, launcherSubsystem);
@@ -44,6 +47,9 @@ public class DefaultMechCommand extends Command {
     public MechState determineState() {
         if (getIntakeBeamBreak() && getIndexerBeamBreak()) { //intake is empty, note had been launched
             return readyForIntake;
+        }
+        else if (!getIntakeBeamBreak() && getIndexerBeamBreak()) { //AND ARM STATE NOT IN STOW
+            return intook;
         }
         else if (!getIntakeBeamBreak() && getIndexerBeamBreak()) { //note in intake AND ARM STATE IS STOW
             return readyForHandoff;
