@@ -9,12 +9,11 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+
 
 public class LimelightOB extends SubsystemBase {
   NetworkTable mTable;
   String mLimeLightName;
-
   double tv;
   double tx;
   double ta;
@@ -35,7 +34,7 @@ public class LimelightOB extends SubsystemBase {
   }
 
   public boolean isDetectionValid() {
-    return (tv == 1.0 && ta >= 2.0);
+    return (tv == 1.0 && ta >= 0.5);
   }
 
   public double getTX() {
@@ -57,22 +56,19 @@ public class LimelightOB extends SubsystemBase {
 
   }
 
-  public Command getNotePickup(SwerveSubsystem swerve, IntakeSubsystem intake){
-    return new SequentialCommandGroup(getNoteAlignmentCommand(swerve), intake.getAutomousIntakeCommand(swerve));
-  } 
-  
   public void startNoteAlignment(SwerveSubsystem swerve) {
     if (isDetectionValid()) {
       if (getTX() > 2) {
-        swerve.setChassisSpeed(0.0, 0.0, 0.25);
+        swerve.setChassisSpeed(0.0, 0.0, 0.5);
       }
       else if (getTX() < 2) {
-        swerve.setChassisSpeed(0.0, 0.0, -0.25);
+        swerve.setChassisSpeed(0.0, 0.0, -0.5);
       }
     }
   }
 
   private boolean isRotationFinished() {
+    
     return Math.abs(getTX())<=2.0 && isDetectionValid();
   }
 }
