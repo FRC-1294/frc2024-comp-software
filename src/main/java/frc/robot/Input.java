@@ -118,5 +118,9 @@ public class Input {
   public static boolean overrideIntakeBeamBreak() {
     return mXboxController.getRightStickButton();
   }
+
+  public static boolean getNoteAlignment() {
+    return mXboxController.getLeftStickButton(); 
+  }
 }
 

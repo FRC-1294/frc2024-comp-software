@@ -5,7 +5,9 @@
 package frc.robot;
 
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.DefaultNoteDetectionCommand;
 import frc.robot.robots.PracticeBotSwerveConfig;
+import frc.robot.subsystems.LimelightOB;
 import frc.robot.subsystems.SwerveSubsystem;
 
 /**
@@ -17,11 +19,14 @@ import frc.robot.subsystems.SwerveSubsystem;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem mSwerveSubsystem = new SwerveSubsystem(new PracticeBotSwerveConfig());
+  private final LimelightOB mLimelightOB = new LimelightOB(); 
+
   
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     mSwerveSubsystem.setDefaultCommand(new DefaultDriveCommand(mSwerveSubsystem));
+    mLimelightOB.setDefaultCommand(new DefaultNoteDetectionCommand(mLimelightOB, mSwerveSubsystem));
   }
   
   public SwerveSubsystem getSwerveSubsystem() {
