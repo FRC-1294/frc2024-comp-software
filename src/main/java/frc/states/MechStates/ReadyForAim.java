@@ -1,6 +1,8 @@
 package frc.states.MechStates;
 import frc.robot.commands.DefaultMechCommand;
+import frc.robot.constants.AimingConstants.AimState;
 import frc.robot.constants.LauncherConstants.LauncherMode;
+import frc.robot.subsystems.AimingSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
 import frc.states.MechState;
@@ -11,13 +13,13 @@ public class ReadyForAim implements MechState {
     
     IntakeSubsystem mIntakeSubsystem;
     LauncherSubsystem mLauncherSubsystem;
-    //AimingSubsystem mAimingSubsystem;
+    AimingSubsystem mAimingSubsystem;
 
-    public ReadyForAim (DefaultMechCommand mechCommand, IntakeSubsystem intakeSubsystem, LauncherSubsystem launcherSubsystem) { //AimingSubsystem aimingSubsystem
+    public ReadyForAim (DefaultMechCommand mechCommand, IntakeSubsystem intakeSubsystem, LauncherSubsystem launcherSubsystem, AimingSubsystem aimingSubsystem) {
         mMechCommand = mechCommand;
         mIntakeSubsystem = intakeSubsystem;
         mLauncherSubsystem = launcherSubsystem;
-        //mAimingSubsystem = aimingSubsystem;
+        mAimingSubsystem = aimingSubsystem;
     }
 
     @Override
@@ -28,19 +30,19 @@ public class ReadyForAim implements MechState {
     @Override
     public void setSpeakerSP() {
         mLauncherSubsystem.setLauncherMode(LauncherMode.SPEAKER);
-        //mAimingSubsystem.setDesiredSetpoint(AimState.SPEAKER);
+        mAimingSubsystem.setDesiredSetpoint(AimState.SPEAKER);
     }
 
     @Override
     public void setAmpSP() {
         mLauncherSubsystem.setLauncherMode(LauncherMode.AMP);
-        //mAimingSubsystem.setDesiredSetpoint(AimState.AMP);
+        mAimingSubsystem.setDesiredSetpoint(AimState.AMP);
     }
 
     @Override
     public void setTrapSP() {
         mLauncherSubsystem.setLauncherMode(LauncherMode.TRAP);
-        //mAimingSubsystem.setDesiredSetpoint(AimState.TRAP);
+        mAimingSubsystem.setDesiredSetpoint(AimState.CLIMB);
     }
     
     @Override
@@ -55,12 +57,12 @@ public class ReadyForAim implements MechState {
 
     @Override
     public void controlWrist() {
-        //do something
+        //v2
     }
 
     @Override
     public void controlElevator() {
-
+        //v2
     }
 
     @Override

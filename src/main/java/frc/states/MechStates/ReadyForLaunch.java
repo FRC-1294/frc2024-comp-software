@@ -1,6 +1,8 @@
 package frc.states.MechStates;
 import frc.robot.commands.DefaultMechCommand;
 import frc.robot.constants.LauncherConstants;
+import frc.robot.subsystems.AimingSubsystem;
+
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
 import frc.states.MechState;
@@ -11,13 +13,13 @@ public class ReadyForLaunch implements MechState {
 
     IntakeSubsystem mIntakeSubsystem;
     LauncherSubsystem mLauncherSubsystem;
-    //AimingSubsystem mAimingSubsystem;
+    AimingSubsystem mAimingSubsystem;
 
-    public ReadyForLaunch (DefaultMechCommand mechCommand, IntakeSubsystem intakeSubsystem, LauncherSubsystem launcherSubsystem) { //AimingSubsystem aimingSubsystem
+    public ReadyForLaunch (DefaultMechCommand mechCommand, IntakeSubsystem intakeSubsystem, LauncherSubsystem launcherSubsystem, AimingSubsystem aimingSubsystem) {
         mMechCommand = mechCommand;
         mIntakeSubsystem = intakeSubsystem;
         mLauncherSubsystem = launcherSubsystem;
-        //mAimingSubsystem = aimingSubsystem;
+        mAimingSubsystem = aimingSubsystem;
     }
 
     @Override
