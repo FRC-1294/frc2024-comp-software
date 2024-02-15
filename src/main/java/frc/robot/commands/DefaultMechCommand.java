@@ -84,13 +84,16 @@ public class DefaultMechCommand extends Command {
             mechState.controlElevator();
 
         }
+        if (Input.getDPad() == Input.DPADUP) {
+            mechState.setElevatorSPtoStage();
+        }
+        else if (Input.getDPad() == Input.DPADDOWN) {
+            mechState.setElevatorSPtoBase();
+        }
+        if (Input.getDPad() == Input.DPADLEFT) {
+            mechState.resetEncoders();
+        }
 
-        /* 
-        missing some dpad input
-        mechState.resetEncoders();
-        mechState.setElevatorSPtoStage();
-        mechState.setElevatorSPtoBase();
-        */
         MechState newMechState = determineState();
 
         if (newMechState != mechState) {

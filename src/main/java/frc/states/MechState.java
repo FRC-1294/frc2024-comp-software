@@ -6,7 +6,7 @@ public interface MechState {
     void setAmpSP();
     void setTrapSP();
     void intake();
-    void index();
+    void launch();
     void controlWrist();
     void controlElevator();
     void setElevatorSPtoStage();
