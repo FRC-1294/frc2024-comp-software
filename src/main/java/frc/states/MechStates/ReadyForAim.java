@@ -1,8 +1,10 @@
 package frc.states.MechStates;
 import frc.robot.commands.DefaultMechCommand;
+import frc.robot.constants.AimingConstants;
 import frc.robot.constants.AimingConstants.AimState;
 import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.subsystems.AimingSubsystem;
+import frc.robot.subsystems.Input;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
 import frc.states.MechState;
@@ -57,12 +59,14 @@ public class ReadyForAim implements MechState {
 
     @Override
     public void controlWrist() {
-        //v2
+        double increment = Input.getLeftStickY() * AimingConstants.MAX_ELEVATOR_TELEOP_INCREMENT;
+        mAimingSubsystem.changeDesiredWristRotation(increment);
     }
 
     @Override
     public void controlElevator() {
-        //v2
+        double increment = Input.getRightStickY() * AimingConstants.MAX_WRIST_TELEOP_INCREMENT;
+        mAimingSubsystem.changeDesiredElevatorPosition(increment);
     }
 
     @Override
