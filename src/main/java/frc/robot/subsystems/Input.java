@@ -115,5 +115,9 @@ public class Input {
   public static boolean getOnePiece() {
     return mXboxController.getRightStickButton();
   }
+
+  public static boolean getNoteAlignment() {
+    return mXboxController.getLeftStickButton(); 
+  }
 }
 

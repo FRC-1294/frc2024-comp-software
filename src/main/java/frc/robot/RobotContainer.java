@@ -5,8 +5,10 @@
 package frc.robot;
 
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.DefaultNoteDetectionCommand;
 import frc.robot.subsystems.SwerveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.LimelightOB;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -17,6 +19,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem mSwerveSubsystem = new SwerveSubsystem();
+  private final LimelightOB mLimelightOB = new LimelightOB(); 
+  private final DefaultNoteDetectionCommand mDefaultNoteDetectionCommand = new DefaultNoteDetectionCommand(mLimelightOB, mSwerveSubsystem); 
 
   
 
