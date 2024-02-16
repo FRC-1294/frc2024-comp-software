@@ -34,7 +34,7 @@ public class AutoAimCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double desiredRotation = getAngleSpeakerDEGS() + AimingConstants.WRIST_PIVOT_ANGLE_OFFSET;
+    double desiredRotation = getAngleSpeakerDEGS() - AimingConstants.WRIST_PIVOT_ANGLE_OFFSET;
 
     mAimingSubsystem.setDesiredElevatorDistance(0);
     mAimingSubsystem.setDesiredWristRotation(desiredRotation);
