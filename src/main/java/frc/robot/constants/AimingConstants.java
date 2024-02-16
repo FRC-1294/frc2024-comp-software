@@ -34,7 +34,6 @@ public class AimingConstants {
     public static final double MAX_ELEVATOR_TELEOP_INCREMENT = 0;
     public static final double MAX_WRIST_TELEOP_INCREMENT = 0;
     
-    
     // PID Constants
     public static final PIDParameters mElevatorPIDConstants = new PIDParameters(0.1, 0, 0);
     public static final PIDParameters mWristPIDConstants = new PIDParameters(0.1, 0, 0, 0, 0);
@@ -77,4 +76,5 @@ public class AimingConstants {
     public static final double hSpeaker = 0;
     public static final double hRobot = 0;
     public static final double hShooting = hSpeaker - hRobot;
+    public static final double WRIST_PIVOT_ANGLE_OFFSET = 0;
 }
