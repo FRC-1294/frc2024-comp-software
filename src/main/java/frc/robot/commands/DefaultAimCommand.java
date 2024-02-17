@@ -31,18 +31,19 @@ public class DefaultAimCommand extends Command {
       mAimingSubsystem.setDesiredSetpoint(AimState.SPEAKER);
     }
     else if (Input.getDPad() == 0.0) {
-      mAimingSubsystem.setDesiredSetpoint(AimState.CLIMB);    }
+      mAimingSubsystem.setDesiredSetpoint(AimState.CLIMB);
+    }
 
 
     if (Math.abs(Input.getLeftStickY()) > 0) {
       //convert between input to increment
-      double increment = Input.getLeftStickY() * AimingConstants.MAX_ELEVATOR_TELEOP_INCREMENT;
+      double increment = Input.getLeftStickY() * AimingConstants.MAX_WRIST_TELEOP_INCREMENT;
       mAimingSubsystem.changeDesiredWristRotation(increment);
     }
     
     if (Math.abs(Input.getRightStickY()) > 0) {
       //convert between input to increment
-      double increment = Input.getRightStickY() * AimingConstants.MAX_WRIST_TELEOP_INCREMENT;
+      double increment = Input.mXboxController.getRightY() * AimingConstants.MAX_ELEVATOR_TELEOP_INCREMENT;
       mAimingSubsystem.changeDesiredElevatorPosition(increment);
     }
   }
