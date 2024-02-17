@@ -71,7 +71,6 @@ public class DefaultMechCommand extends Command {
 
     @Override
     public void execute() {
-        mLauncherMode = null;
         if (Input.getX()) {
             mechState.setFlywheelOff();
         }
@@ -83,7 +82,6 @@ public class DefaultMechCommand extends Command {
             if (mechState == readyForAim) {
                 mAimState = AimState.SPEAKER;
             }
-            
         } 
         else if (Input.getA()) {
             mechState.setAmpSP();
@@ -114,7 +112,6 @@ public class DefaultMechCommand extends Command {
         }
         if (Math.abs(Input.getRightStickY()) > 0) {
             mechState.controlElevator();
-
         }
         if (Input.getDPad() == Input.DPADUP) {
             mechState.setElevatorSPtoStage();
@@ -126,41 +123,33 @@ public class DefaultMechCommand extends Command {
             mechState.resetEncoders();
         }
 
-        MechState newMechState = determineState();
-
-        if (newMechState != mechState) {
-            mechState = newMechState;
-        }
+        runAction();
+        
+        mechState = determineState();
     }
 
-    public void run_action() {
+    //automatic actions
+    public void runAction() {
         if (mechState == readyForIntake) {
-            mIntakeSubsystem.getAutomousIntakeCommand();
             mAimState = AimState.STOW;
-            if (mLauncherMode != LauncherMode.OFF) {
-                mLauncherSubsystem.setLauncherMode(mLauncherMode);
-            }
+            mAimingSubsystem.setDesiredSetpoint(mAimState);
+            mLauncherSubsystem.setLauncherMode(mLauncherMode);
         }
         else if (mechState == intook) {
+            //prepare momentum for handoff
+            mLauncherSubsystem.runIndexer(LauncherConstants.INDEXER_VELOCITY_DEFAULT);
             mAimState = AimState.STOW;
-            if (mLauncherMode != LauncherMode.OFF) {
-                mLauncherSubsystem.setLauncherMode(mLauncherMode);
-            }
+            mAimingSubsystem.setDesiredSetpoint(mAimState);
+            mLauncherSubsystem.setLauncherMode(mLauncherMode);
         }
         else if (mechState == readyForHandoff) {
-            //run intake to handoff
+            //handoff
             mLauncherSubsystem.runIndexer(LauncherConstants.INDEXER_VELOCITY_DEFAULT);
-            if (mLauncherMode != LauncherMode.OFF) {
-                mLauncherSubsystem.setLauncherMode(mLauncherMode);
-            }
+            mLauncherSubsystem.setLauncherMode(mLauncherMode);
         }
         else if (mechState == readyForAim) {
-            if (mLauncherMode != LauncherMode.OFF) {
-                mLauncherSubsystem.setLauncherMode(mLauncherMode);
-            }
-            if (mAimState != AimState.STOW) {
-                mAimingSubsystem.setDesiredSetpoint(mAimState);
-            }
+            mLauncherSubsystem.setLauncherMode(mLauncherMode);
+            mAimingSubsystem.setDesiredSetpoint(mAimState);
         }
         else if (mechState == readyForLaunch) {
             mLauncherSubsystem.runIndexer(LauncherConstants.INDEXER_VELOCITY_DEFAULT);
