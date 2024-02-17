@@ -53,15 +53,15 @@ public class CompetitionBotSwerveConfig extends SwerveConfig{
 
                 // PID Controllers
 
-                FRONT_LEFT_TRANS_PID = new PIDParameters(0.1, 0, 0,0.011666666666666667,0.21090956596760593);
-                FRONT_RIGHT_TRANS_PID = new PIDParameters(0.1, 0, 0,0.011666666666666667,0.2099873992689063);
-                BACK_LEFT_TRANS_PID = new PIDParameters(0.1, 0, 0,0.011666666666666667,0.2099731767248498);
-                BACK_RIGHT_TRANS_PID = new PIDParameters(0.1, 0, 0,0.011666666666666667,0.21397894176465337);
+                FRONT_LEFT_TRANS_PID = new PIDParameters(0.1, 0, 0,0.0,0.0); //TODO: https://github.com/FRC-1294/frc2024/issues/280
+                FRONT_RIGHT_TRANS_PID = new PIDParameters(0.1, 0, 0,0.0,0.0); //TODO: https://github.com/FRC-1294/frc2024/issues/280
+                BACK_LEFT_TRANS_PID = new PIDParameters(0.1, 0, 0,0.0,0.0); //TODO: https://github.com/FRC-1294/frc2024/issues/280
+                BACK_RIGHT_TRANS_PID = new PIDParameters(0.1, 0, 0,0.0,0.0); //TODO: https://github.com/FRC-1294/frc2024/issues/280
 
-                FRONT_LEFT_TRANS_CARPET_PID = new PIDParameters(0.1, 0, 0,0.01,0.20881603812002797);
-                FRONT_RIGHT_TRANS_CARPET_PID = new PIDParameters(0.1, 0, 0,0.01,0.21095308664591073);
-                BACK_LEFT_TRANS_CARPET_PID = new PIDParameters(0.1, 0, 0,0.011666666666666667,0.20998656795835002);
-                BACK_RIGHT_TRANS_CARPET_PID = new PIDParameters(0.1, 0, 0,0.011666666666666667,0.20972130028356997);
+                FRONT_LEFT_TRANS_CARPET_PID = new PIDParameters(0.1, 0, 0,0.0,0.0); //TODO: https://github.com/FRC-1294/frc2024/issues/280
+                FRONT_RIGHT_TRANS_CARPET_PID = new PIDParameters(0.1, 0, 0,0.0,0.0);//TODO: https://github.com/FRC-1294/frc2024/issues/280
+                BACK_LEFT_TRANS_CARPET_PID = new PIDParameters(0.1, 0, 0,0.0,0.0);//TODO: https://github.com/FRC-1294/frc2024/issues/280
+                BACK_RIGHT_TRANS_CARPET_PID = new PIDParameters(0.1, 0, 0,0.0,0.0);//TODO: https://github.com/FRC-1294/frc2024/issues/280
 
 
                 // Swerve Modules and Other Hardware
