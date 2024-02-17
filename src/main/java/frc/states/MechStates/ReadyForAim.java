@@ -9,17 +9,11 @@ import frc.states.MechState;
 
 public class ReadyForAim extends MechState {
 
-    private final LauncherSubsystem mLauncherSubsystem;
     private final AimingSubsystem mAimingSubsystem;
 
     public ReadyForAim (LauncherSubsystem launcherSubsystem, AimingSubsystem aimingSubsystem) {
-        mLauncherSubsystem = launcherSubsystem;
+        super(launcherSubsystem);
         mAimingSubsystem = aimingSubsystem;
-    }
-
-    @Override
-    public void setFlywheelOff() {
-        mLauncherSubsystem.stopLauncher();
     }
 
     @Override

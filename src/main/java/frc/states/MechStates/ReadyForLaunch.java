@@ -4,11 +4,24 @@ import frc.robot.subsystems.LauncherSubsystem;
 import frc.states.MechState;
 
 public class ReadyForLaunch extends MechState {
-
-    private final LauncherSubsystem mLauncherSubsystem;
-
+    
     public ReadyForLaunch (LauncherSubsystem launcherSubsystem) {
-        mLauncherSubsystem = launcherSubsystem;
+        super(launcherSubsystem);
+    }
+
+    @Override
+    public void setSpeakerSP() {
+        
+    }
+
+    @Override
+    public void setAmpSP() {
+        
+    }
+
+    @Override
+    public void setTrapSP() {
+        
     }
 
     @Override

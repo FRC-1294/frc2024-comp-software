@@ -42,7 +42,7 @@ public class DefaultMechCommand extends Command {
         addRequirements(mIntakeSubsystem, mLauncherSubsystem, mAimingSubsystem);
 
         readyForIntake = new ReadyForIntake(intakeSubsystem, launcherSubsystem);
-        intook = new Intook(this, intakeSubsystem, launcherSubsystem, aimingSubsystem);
+        intook = new Intook(launcherSubsystem);
         readyForHandoff = new ReadyForHandoff(intakeSubsystem, launcherSubsystem);
         readyForAim = new ReadyForAim(launcherSubsystem, aimingSubsystem);
         readyForLaunch = new ReadyForLaunch(launcherSubsystem);
