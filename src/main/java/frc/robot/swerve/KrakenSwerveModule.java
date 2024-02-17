@@ -24,7 +24,6 @@ public class KrakenSwerveModule extends SwerveModuleAbstract{
     private final double mNominalVoltage;
 
     // Public Debugging Values
-    private double mDesiredVel = 0.0;
     private double mMaxAccel = 0.0;
     private double mCurAccel = 0.0;
 
@@ -87,48 +86,6 @@ public class KrakenSwerveModule extends SwerveModuleAbstract{
         mTransMotor.setVoltage(volts);
     }
 
-    @Override
-    public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop){
-        super.setDesiredState(desiredState);
-        if (isOpenLoop){
-            if (Math.abs(desiredState.speedMetersPerSecond) < 0.0000000001) {
-                stop();
-                return;
-            }
-
-            // No turning motors over 90 degrees
-            desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
-
-            mDesiredVel = desiredState.speedMetersPerSecond;
-            mTransMotor.set(mDesiredVel/mPhysicalMaxSpeedMPS);
-        }else{
-            setDesiredState(desiredState);
-        }
-    }
-    /**
-     * Sets the motor speeds passed into constructor
-     * 
-     * @param desiredState takes in SwerveModule state
-     * @see SwerveModuleState
-     */
-    @Override
-    public void setDesiredState(SwerveModuleState desiredState) {
-        super.setDesiredState(desiredState);
-        // Stops returning to original rotation
-        if (Math.abs(desiredState.speedMetersPerSecond) < 0.0001) {
-            stop();
-            return;
-        }
-
-        // No turning motors over 90 degrees
-        desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
-        mDesiredVel = desiredState.speedMetersPerSecond;
-
-        double feedforward = mTransFF.calculate(mDesiredVel);
-        double pidOutput = mTransPID.calculate(getTransVelocity(), mDesiredVel) / mPhysicalMaxSpeedMPS;
-        mTransMotor.setVoltage((pidOutput + feedforward)*mNominalVoltage);
-    }
-
 
     /**
      * 
@@ -180,14 +137,6 @@ public class KrakenSwerveModule extends SwerveModuleAbstract{
         return getTransVelocityRaw();
     }
 
-    /**
-     * 
-     * @return the PID setpoint of the translation's velocity in meters/sec
-     */
-    @Override
-    public double getTransVelocitySetpoint(){
-        return mDesiredVel;
-    }
 
     /**
      * @return the max acceleration in m/s^2 from the translation motor's initialization
@@ -210,6 +159,10 @@ public class KrakenSwerveModule extends SwerveModuleAbstract{
     @Override
     public double getTransAppliedVolts() {
         return mTransMotor.getMotorVoltage().getValueAsDouble();
+    }
+
+    public void setTransMotorDutyCycle(double speed){
+         mTransMotor.setVoltage(speed*mNominalVoltage);
     }
 
     /**
@@ -259,9 +212,9 @@ public class KrakenSwerveModule extends SwerveModuleAbstract{
         mRotMotor.burnFlash();
     }
 
-    // /**
-    //  * @return the nominal voltage amount after voltage compensation for the translation motor
-    //  */
+    /**
+     * @return the nominal voltage amount after voltage compensation for the translation motor
+     */
     @Override
     public double getTransNominalVoltage(){
         return mNominalVoltage; 

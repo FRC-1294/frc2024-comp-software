@@ -86,52 +86,6 @@ public class RevSwerveModule extends SwerveModuleAbstract{
 
 
 
-    @Override
-    public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop){
-        super.setDesiredState(desiredState);
-        if (isOpenLoop){
-            if (Math.abs(desiredState.speedMetersPerSecond) < 0.0000000001) {
-                stop();
-                return;
-            }
-
-            // No turning motors over 90 degrees
-            desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
-
-            mDesiredVel = desiredState.speedMetersPerSecond;
-            mTransMotor.set(mDesiredVel/this.mPhysicalMaxSpeedMPS);
-        }else{
-            setDesiredState(desiredState);
-        }
-
-    }
-    /**
-     * Sets the motor speeds passed into constructor
-     * 
-     * @param desiredState takes in SwerveModule state
-     * @see SwerveModuleState
-     */
-    @Override
-    public void setDesiredState(SwerveModuleState desiredState) {
-        super.setDesiredState(desiredState);
-        // Stops returning to original rotation
-        if (Math.abs(desiredState.speedMetersPerSecond) < 0.0001) {
-            stop();
-            return;
-        }
-
-        // No turning motors over 90 degrees
-        desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
-
-        // PID Controller for both translation and rotation
-        mDesiredVel = desiredState.speedMetersPerSecond;
-        double feedforward = mTransFF.calculate(mDesiredVel);
-        double pidOutput = mTransPID.calculate(getTransVelocity(), mDesiredVel) / mPhysicalMaxSpeedMPS;
-        mTransMotor.set(pidOutput + feedforward);
-    }
-
-
-
     /**
      * 
      * @return the total distance traveled by the module (Meters) and Rotation value (Rad) in the
@@ -187,20 +141,16 @@ public class RevSwerveModule extends SwerveModuleAbstract{
 
     /**
      * 
-     * @return the PID setpoint of the translation's velocity in meters/sec
-     */
-    @Override
-    public double getTransVelocitySetpoint(){
-        return mDesiredVel;
-    }
-    /**
-     * 
      * @return Returns the applied voltage to the translation motor after nominal voltage
      *         compensation
      */
     @Override
     public double getTransAppliedVolts() {
         return mTransMotor.getAppliedOutput() * mTransMotor.getVoltageCompensationNominalVoltage();
+    }
+
+    public void setTransMotorDutyCycle(double speed) {
+        mTransMotor.set(speed);
     }
 
     /**

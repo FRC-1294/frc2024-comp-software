@@ -39,6 +39,8 @@ import frc.robot.Util.PIDParameters;
     // Public Debugging Values
     private double mPIDOutput = 0.0;
     private double mDesiredRadians = 0.0;
+    private double mDesiredVel = 0.0;
+
 
     protected SwerveModuleAbstract(int rotID, int transID, int rotEncoderID, boolean rotInverse,
         boolean transInverse, PIDParameters rotPID, PIDParameters transPID, double transGearRatio,
@@ -106,7 +108,25 @@ import frc.robot.Util.PIDParameters;
     }
 
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop){
-        setDesiredState(desiredState);
+
+        if (isOpenLoop){
+            if (Math.abs(desiredState.speedMetersPerSecond) < 0.0000000001) {
+                stop();
+                return;
+            }
+
+            // No turning motors over 90 degrees
+            desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
+
+            mDesiredVel = desiredState.speedMetersPerSecond;
+            setTransMotorDutyCycle(mDesiredVel/mPhysicalMaxSpeedMPS);
+
+            mDesiredRadians = desiredState.angle.getRadians();
+            mPIDOutput = mRotPID.calculate(getRotPosition(), desiredState.angle.getRadians());
+            mRotMotor.set(mPIDOutput);
+        }else{
+            setDesiredState(desiredState);
+        }
     }
 
     /**
@@ -116,9 +136,22 @@ import frc.robot.Util.PIDParameters;
      * @see SwerveModuleState
      */
     public void setDesiredState(SwerveModuleState desiredState) {
+        if (Math.abs(desiredState.speedMetersPerSecond) < 0.0001) {
+            stop();
+            return;
+        }
+
         mDesiredRadians = desiredState.angle.getRadians();
         mPIDOutput = mRotPID.calculate(getRotPosition(), desiredState.angle.getRadians());
         mRotMotor.set(mPIDOutput);
+
+        // No turning motors over 90 degrees
+        desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
+        mDesiredVel = desiredState.speedMetersPerSecond;
+
+        double feedforward = mTransFF.calculate(mDesiredVel);
+        double pidOutput = mTransPID.calculate(getTransVelocity(), mDesiredVel) / mPhysicalMaxSpeedMPS;
+        setTransMotorDutyCycle(pidOutput + feedforward);
     }
     
 
@@ -167,11 +200,19 @@ import frc.robot.Util.PIDParameters;
      * @return Returns velocity of translation motor with conversion from the CANcoder
      */
     public abstract double getTransVelocity();
+
+    /**
+     * Set the Translation Motor in Duty Cycles(-1 to 1)
+     */
+    public abstract void setTransMotorDutyCycle(double speed);
+
     /**
      * 
      * @return the PID setpoint of the translation's velocity in meters/sec
      */
-    public abstract double getTransVelocitySetpoint();
+    public double getTransVelocitySetpoint() {
+        return mDesiredVel;
+    }
 
     /**
      * 
