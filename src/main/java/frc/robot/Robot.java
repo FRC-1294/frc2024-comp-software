@@ -25,7 +25,7 @@ import frc.robot.commands.SwerveVoltageCharacterization;
  */
 public class Robot extends TimedRobot {
   private SendableChooser<Command> pathSelector = new SendableChooser<>();
-
+  private RobotContainer robotContainer;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -37,7 +37,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
    
 
-    RobotContainer robotContainer = new RobotContainer();
+    robotContainer = new RobotContainer();
     
     new InitializePathPlanner(robotContainer.getSwerveSubsystem()).initialize();
     
@@ -82,12 +82,9 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    Command autonomousCommand = pathSelector.getSelected();
 
     // schedule the autonomous command (example)
-    if (autonomousCommand != null) {
-      autonomousCommand.schedule();
-    }
+    
     CANSparkLowLevel.enableExternalUSBControl(true);
 
   }

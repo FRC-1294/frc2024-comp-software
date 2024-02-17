@@ -219,7 +219,7 @@ public class SwerveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("ChassisSpeedRotError", chassisRotPID.getPositionError());
         chassisSpeeds =  ChassisSpeeds.fromFieldRelativeSpeeds(vxMPS+xPID,
                                                         vyMPS+yPID, 
-                                                        angleSpeedRADPS+rotPID, getRotation2d());
+                                                        +rotPID, getRotation2d());
       }else{
         chassisSpeeds =  ChassisSpeeds.fromFieldRelativeSpeeds(vxMPS, vyMPS, angleSpeedRADPS, getRotation2d());
       }

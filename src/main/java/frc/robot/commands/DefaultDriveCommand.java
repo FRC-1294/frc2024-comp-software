@@ -4,19 +4,30 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.JoystickConstants;
 import frc.robot.Input;
+import frc.robot.subsystems.LimelightOB;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class DefaultDriveCommand extends Command {
 
   private final SwerveSubsystem mSwerve;
+  private final LimelightOB mLimelight;
   private boolean mIsPrecisionToggle = false;
+  PIDController notePID = new PIDController(5, 0, 0.1);
+  
 
-  public DefaultDriveCommand(SwerveSubsystem swerve) {
+
+  public DefaultDriveCommand(SwerveSubsystem swerve, LimelightOB limelight) {
     mSwerve = swerve;
+    mLimelight = limelight;
     addRequirements(mSwerve);
+    addRequirements(mLimelight);
+    notePID.setTolerance(2);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -56,9 +67,19 @@ public class DefaultDriveCommand extends Command {
     x *= mSwerve.mConfig.TELE_MAX_SPEED_MPS;
     y *= mSwerve.mConfig.TELE_MAX_SPEED_MPS;
     rot *= mSwerve.mConfig.TELE_MAX_ROT_SPEED_RAD_SEC;
+    boolean isFieldOriented = true;
+    SmartDashboard.putNumber("tx", mLimelight.getTX());
+    if (Input.getNoteAlignment()) {
+      if (mLimelight.isDetectionValid()) {
+        rot = notePID.calculate(Units.degreesToRadians(mLimelight.getTX()));
+        isFieldOriented = false;
+      }
 
-    mSwerve.setChassisSpeed(x, y, rot,true, true);
+    }
+    mSwerve.setChassisSpeed(x, y, rot,isFieldOriented, true);
   }
+
+  
 
   // Returns true when the command should end.
   @Override

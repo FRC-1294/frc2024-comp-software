@@ -6,24 +6,20 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.constants.VisionConstants;
 
 
 public class LimelightOB extends SubsystemBase {
   NetworkTable mTable;
-  String mLimeLightName;
   double tv;
   double tx;
   double ta;
   public LimelightOB() {
-    mLimeLightName = "limelight";
-    mTable = NetworkTableInstance.getDefault().getTable(mLimeLightName);
+    mTable = NetworkTableInstance.getDefault().getTable(VisionConstants.LIMELIGHT_NAME);
   }
-  public LimelightOB(String LimeLightName) {
-    mLimeLightName = LimeLightName;
-    mTable = NetworkTableInstance.getDefault().getTable(mLimeLightName);
+  public LimelightOB(String limeLightName) {
+    mTable = NetworkTableInstance.getDefault().getTable(limeLightName);
   }
 
   @Override
@@ -34,7 +30,7 @@ public class LimelightOB extends SubsystemBase {
   }
 
   public boolean isDetectionValid() {
-    return (tv == 1.0 && ta >= 0.5);
+    return tv == 1.0;
   }
 
   public double getTX() {
@@ -47,28 +43,5 @@ public class LimelightOB extends SubsystemBase {
 
   public double getTV() {
     return tv;
-  }
-
-  
-
-  public Command getNoteAlignmentCommand(SwerveSubsystem swerve) {
-    return new FunctionalCommand(() -> startNoteAlignment(swerve), null, interrupted -> swerve.setChassisSpeed(0.0, 0.0, 0.0, true), this::isRotationFinished, this, swerve);  
-
-  }
-
-  public void startNoteAlignment(SwerveSubsystem swerve) {
-    if (isDetectionValid()) {
-      if (getTX() > 2) {
-        swerve.setChassisSpeed(0.0, 0.0, 0.5, true);
-      }
-      else if (getTX() < 2) {
-        swerve.setChassisSpeed(0.0, 0.0, -0.5, true);
-      }
-    }
-  }
-
-  private boolean isRotationFinished() {
-    
-    return Math.abs(getTX())<=2.0 && isDetectionValid();
   }
 }

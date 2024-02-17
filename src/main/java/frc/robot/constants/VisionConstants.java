@@ -38,4 +38,7 @@ public class VisionConstants {
           new Rotation3d(0, -Math.toRadians(15), Math.toRadians(180)));
 
   public static final double SINGLE_TAG_AMBIGUITY_THRESH = 0.15;
+
+  public static final double ROT_SPEED = 0.25;
+  public static final String LIMELIGHT_NAME = "limelight";
 }
