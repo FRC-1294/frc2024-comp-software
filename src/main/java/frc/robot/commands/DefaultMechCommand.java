@@ -19,20 +19,20 @@ import frc.states.MechStates.ReadyForIntake;
 import frc.states.MechStates.ReadyForLaunch;
 
 public class DefaultMechCommand extends Command {
-    private IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
-    private LauncherSubsystem mLauncherSubsystem = new LauncherSubsystem();
-    private AimingSubsystem mAimingSubsystem = new AimingSubsystem();
+    private final IntakeSubsystem mIntakeSubsystem;
+    private final LauncherSubsystem mLauncherSubsystem;
+    private final AimingSubsystem mAimingSubsystem;
 
     private LauncherMode mLauncherMode = LauncherMode.OFF;
     private AimState mAimState = AimState.STOW;
 
-    private MechState readyForIntake;
-    private MechState intook;
-    private MechState readyForHandoff;
-    private MechState readyForAim;
-    private MechState readyForLaunch;
+    private final MechState readyForIntake;
+    private final MechState intook;
+    private final MechState readyForHandoff;
+    private final MechState readyForAim;
+    private final MechState readyForLaunch;
 
-    MechState mechState;
+    private MechState mechState;
 
     public DefaultMechCommand(IntakeSubsystem intakeSubsystem, LauncherSubsystem launcherSubsystem, AimingSubsystem aimingSubsystem) {
         mIntakeSubsystem = intakeSubsystem;
@@ -41,11 +41,11 @@ public class DefaultMechCommand extends Command {
 
         addRequirements(mIntakeSubsystem, mLauncherSubsystem, mAimingSubsystem);
 
-        readyForIntake = new ReadyForIntake(this, intakeSubsystem, launcherSubsystem, aimingSubsystem);
+        readyForIntake = new ReadyForIntake(intakeSubsystem, launcherSubsystem);
         intook = new Intook(this, intakeSubsystem, launcherSubsystem, aimingSubsystem);
-        readyForHandoff = new ReadyForHandoff(this, intakeSubsystem, launcherSubsystem, aimingSubsystem);
-        readyForAim = new ReadyForAim(this, intakeSubsystem, launcherSubsystem, aimingSubsystem);
-        readyForLaunch = new ReadyForLaunch(this, intakeSubsystem, launcherSubsystem, aimingSubsystem);
+        readyForHandoff = new ReadyForHandoff(intakeSubsystem, launcherSubsystem);
+        readyForAim = new ReadyForAim(launcherSubsystem, aimingSubsystem);
+        readyForLaunch = new ReadyForLaunch(launcherSubsystem);
 
         mechState = determineState();
     }
@@ -124,7 +124,7 @@ public class DefaultMechCommand extends Command {
         }
 
         runAction();
-        
+
         mechState = determineState();
     }
 

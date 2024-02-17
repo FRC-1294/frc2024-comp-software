@@ -1,25 +1,18 @@
 package frc.states.MechStates;
-import frc.robot.commands.DefaultMechCommand;
 import frc.robot.constants.AimingConstants;
 import frc.robot.constants.AimingConstants.AimState;
 import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.subsystems.AimingSubsystem;
 import frc.robot.subsystems.Input;
-import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
 import frc.states.MechState;
 
-public class ReadyForAim implements MechState {
+public class ReadyForAim extends MechState {
 
-    DefaultMechCommand mMechCommand;
-    
-    IntakeSubsystem mIntakeSubsystem;
-    LauncherSubsystem mLauncherSubsystem;
-    AimingSubsystem mAimingSubsystem;
+    private final LauncherSubsystem mLauncherSubsystem;
+    private final AimingSubsystem mAimingSubsystem;
 
-    public ReadyForAim (DefaultMechCommand mechCommand, IntakeSubsystem intakeSubsystem, LauncherSubsystem launcherSubsystem, AimingSubsystem aimingSubsystem) {
-        mMechCommand = mechCommand;
-        mIntakeSubsystem = intakeSubsystem;
+    public ReadyForAim (LauncherSubsystem launcherSubsystem, AimingSubsystem aimingSubsystem) {
         mLauncherSubsystem = launcherSubsystem;
         mAimingSubsystem = aimingSubsystem;
     }
@@ -46,16 +39,6 @@ public class ReadyForAim implements MechState {
         mLauncherSubsystem.setLauncherMode(LauncherMode.TRAP);
         mAimingSubsystem.setDesiredSetpoint(AimState.CLIMB);
     }
-    
-    @Override
-    public void intake() {
-
-    }
-
-    @Override
-    public void launch() {
-
-    }
 
     @Override
     public void controlWrist() {
@@ -67,20 +50,5 @@ public class ReadyForAim implements MechState {
     public void controlElevator() {
         double increment = Input.getRightStickY() * AimingConstants.MAX_WRIST_TELEOP_INCREMENT;
         mAimingSubsystem.changeDesiredElevatorPosition(increment);
-    }
-
-    @Override
-    public void setElevatorSPtoStage() {
-
-    }
-
-    @Override
-    public void setElevatorSPtoBase() {
-
-    }
-
-    @Override
-    public void resetEncoders() {
-
     }
 }
