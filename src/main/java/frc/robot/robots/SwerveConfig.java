@@ -94,21 +94,21 @@ public abstract class SwerveConfig {
         public double TRACK_LENGTH_METERS = -1;
         // ID's
         // Encoder IDs have been set
-        public int FRONT_LEFT_TRANS_ID = 0;
-        public int FRONT_LEFT_ROT_ID = 0;
-        public int FRONT_LEFT_ROT_ENC_ID = 0;
+        public int FRONT_LEFT_TRANS_ID = 1;
+        public int FRONT_LEFT_ROT_ID = 8;
+        public int  FRONT_LEFT_ROT_ENC_ID = 22;
 
-        public int FRONT_RIGHT_TRANS_ID = 0;
-        public int FRONT_RIGHT_ROT_ID = 0;
-        public int FRONT_RIGHT_ROT_ENC_ID = 0;
+        public int FRONT_RIGHT_TRANS_ID = 7;
+        public int FRONT_RIGHT_ROT_ID = 3;
+        public int FRONT_RIGHT_ROT_ENC_ID = 23;
 
-        public int BACK_LEFT_TRANS_ID = 0;
-        public int BACK_LEFT_ROT_ID = 0;
-        public int BACK_LEFT_ROT_ENC_ID = 0;
-
-        public int BACK_RIGHT_TRANS_ID = 0;
-        public int BACK_RIGHT_ROT_ID = 0;
-        public int BACK_RIGHT_ROT_ENC_ID = 0;
+        public int BACK_LEFT_TRANS_ID = 5;
+        public int BACK_LEFT_ROT_ID = 4;
+        public int BACK_LEFT_ROT_ENC_ID = 21;
+        
+        public int BACK_RIGHT_TRANS_ID = 9;
+        public int BACK_RIGHT_ROT_ID = 6;
+        public int BACK_RIGHT_ROT_ENC_ID = 20;
 
 
         public int PIGEON_ID = 0;
