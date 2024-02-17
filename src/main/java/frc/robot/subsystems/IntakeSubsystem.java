@@ -13,12 +13,14 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Input;
 import frc.robot.constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new Intake. */
   private final CANSparkMax mIntakeMotor;
   private final DigitalInput mBeamBreak;
+  private boolean beamBreakOverride = false;
 
   public IntakeSubsystem() {
     mIntakeMotor = new CANSparkMax(IntakeConstants.INTAKE_SPARK_ID, MotorType.kBrushless);
@@ -31,7 +33,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // unneeded, this is a subsystem
+    if (pieceInIntake() && !beamBreakOverride){
+      stopMotor();
+    }
   }
 
   /**
@@ -46,20 +50,23 @@ public class IntakeSubsystem extends SubsystemBase {
     mIntakeMotor.set(0.0);
   }
 
-  public Command getTimedIntakeCommand(double wait_time, double intake_speed){
-    return new SequentialCommandGroup(new InstantCommand(()-> intakeAtSpeed(intake_speed)), new WaitCommand(wait_time));
+  public Command getTimedIntakeCommand(double waitTime, double intakeSpeed){
+    return new SequentialCommandGroup(new InstantCommand(()-> intakeAtSpeed(intakeSpeed)), new WaitCommand(waitTime));
   }
 
   public Command getAutomousIntakeCommand() {
-    return new FunctionalCommand(() -> intakeAtSpeed(IntakeConstants.INTAKE_SPEED), null, interrupted -> stopMotor(), this::functionalCommandIsFinished, this);    
+    return new FunctionalCommand(() -> intakeAtSpeed(IntakeConstants.ACTIVE_INTAKE_SPEED), null, interrupted -> stopMotor(), this::functionalCommandIsFinished, this);
   }
 
   public boolean pieceInIntake(){
     return !mBeamBreak.get();
   }
+  public boolean toggleBeamBreakOverride(){
+    beamBreakOverride = !beamBreakOverride;
+    return beamBreakOverride;
+  }
 
   private boolean functionalCommandIsFinished() {
     return pieceInIntake() || Input.getLeftBumper();
   }
-
 }

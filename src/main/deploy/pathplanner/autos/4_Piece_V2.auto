@@ -1,0 +1,37 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.5,
+      "y": 4.08
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2nd_Piece_V2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3rd_Piece_V2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4th_Piece_V2"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

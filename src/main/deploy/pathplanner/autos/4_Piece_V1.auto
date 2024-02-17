@@ -1,0 +1,61 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.2497580073557941,
+      "y": 5.586601693432708
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootFromSubwoofer"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2nd_Piece_V1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootFromSubwoofer"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3rd_Piece_V1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootFromSubwoofer"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4th_Piece_V1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootFromSubwoofer"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

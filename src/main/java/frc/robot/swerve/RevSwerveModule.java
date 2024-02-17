@@ -1,74 +1,59 @@
-package frc.robot;
+package frc.robot.swerve;
 
-import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import frc.robot.constants.SwerveConstants;
+import frc.robot.Util.PIDParameters;
 
-public class SwerveModule {
-    // Parameters
-    private final int mRotID;
-    private final int mTransID;
-    private final int mRotEncoderID;
-    private final boolean mRotInverse;
-    private final boolean mTransInverse;
-    private final PIDController mRotPID;
+public class RevSwerveModule extends SwerveModuleAbstract{
 
     // Hardware
     // Motor Controllers
-    private final CANSparkMax mRotMotor;
     private final CANSparkMax mTransMotor;
     // Encoders
-    private final CANcoder mRotEncoder;
     private final RelativeEncoder mTransEncoder;
-    private final RelativeEncoder mRotRelativeEncoder;
+
+    
 
     // Public Debugging Values
-    private double mPIDOutput = 0.0;
-    private double mDesiredRadians = 0.0;
+    private double mDesiredVel = 0.0;
 
-    public SwerveModule(int rotID, int transID, int rotEncoderID, boolean rotInverse,
-            boolean transInverse, PIDController rotPID) {
+    public RevSwerveModule(int rotID, int transID, int rotEncoderID, boolean rotInverse,
+    boolean transInverse, PIDParameters rotPID, PIDParameters transPID, double transGearRatio,
+    double wheelCircumference, double physicalMaxSpeed, double absEncGearRatio, double relEncoderGearRatio) {
         // Setting Parameters
-        mRotID = rotID;
-        mTransID = transID;
-        mRotEncoderID = rotEncoderID;
-        mRotInverse = rotInverse;
-        mTransInverse = transInverse;
+    
+        super(rotID, transID, rotEncoderID, rotInverse, transInverse, rotPID, transPID, transGearRatio, wheelCircumference, physicalMaxSpeed, absEncGearRatio, relEncoderGearRatio);
+
 
         // ----Setting Hardware
         // Motor Controllers
-        mRotMotor = new CANSparkMax(mRotID, MotorType.kBrushless);
         mTransMotor = new CANSparkMax(mTransID, MotorType.kBrushless);
-
+        mTransMotor.restoreFactoryDefaults();
 
         // Encoders
-        mRotEncoder = new CANcoder(mRotEncoderID,"SWERVE_ENC");
         mTransEncoder = mTransMotor.getEncoder();
-        mRotRelativeEncoder = mRotMotor.getEncoder();
-        mRotRelativeEncoder.setPosition(0);
-        // Sets measurement to radians
-
-        // ----Setting PID
-        mRotPID = rotPID;
 
         // ----Setting PID Parameters
         mRotPID.enableContinuousInput(-Math.PI, Math.PI);
 
         // ----Setting Inversion
-        mRotMotor.setInverted(mRotInverse);
         mTransMotor.setInverted(mTransInverse);
 
         mTransMotor.setIdleMode(IdleMode.kBrake);
-        mRotMotor.setIdleMode(IdleMode.kBrake);
 
         mTransEncoder.setPosition(0);
+
+        mTransMotor.enableVoltageCompensation(12);
+        mTransEncoder.setPositionConversionFactor(transGearRatio*wheelCircumference);
+        mTransEncoder.setVelocityConversionFactor(transGearRatio*wheelCircumference/60);
+        mTransEncoder.setPosition(0);
+
+        burnSparks();
     }
 
     // ------------------- State Settings
@@ -79,33 +64,58 @@ public class SwerveModule {
      *         rotation motors
      * @see SwerveModuleState
      */
+    @Override
     public SwerveModuleState getState() {
         return new SwerveModuleState(getTransVelocity(), Rotation2d.fromRadians(getRotPosition()));
     }
 
-    public double getAppliedOutput() {
-        return mRotMotor.getAppliedOutput();
-    }
 
-    public void setTransMotorRaw(double speed) {
+    @Override
+    public void setTransMotorDutyCycleRaw(double speed) {
         mTransMotor.set(speed);
     }
 
-    public void setRotMotorRaw(double speed) {
-        mRotMotor.set(speed);
-
+    /**
+     * 
+     * Sets the translation motor's voltage (max 12 volts)
+     */
+    @Override
+    public void setTranslationVoltageRaw(double volts) {
+        mTransMotor.set(volts / mTransMotor.getVoltageCompensationNominalVoltage());
     }
 
+
+
+    @Override
+    public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop){
+        super.setDesiredState(desiredState);
+        if (isOpenLoop){
+            if (Math.abs(desiredState.speedMetersPerSecond) < 0.0000000001) {
+                stop();
+                return;
+            }
+
+            // No turning motors over 90 degrees
+            desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
+
+            mDesiredVel = desiredState.speedMetersPerSecond;
+            mTransMotor.set(mDesiredVel/this.mPhysicalMaxSpeedMPS);
+        }else{
+            setDesiredState(desiredState);
+        }
+
+    }
     /**
      * Sets the motor speeds passed into constructor
      * 
      * @param desiredState takes in SwerveModule state
      * @see SwerveModuleState
      */
+    @Override
     public void setDesiredState(SwerveModuleState desiredState) {
-
+        super.setDesiredState(desiredState);
         // Stops returning to original rotation
-        if (Math.abs(desiredState.speedMetersPerSecond) < 0.001) {
+        if (Math.abs(desiredState.speedMetersPerSecond) < 0.0001) {
             stop();
             return;
         }
@@ -114,19 +124,12 @@ public class SwerveModule {
         desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
 
         // PID Controller for both translation and rotation
-        mTransMotor.set(desiredState.speedMetersPerSecond / SwerveConstants.PHYSICAL_MAX_SPEED_MPS);
-        mDesiredRadians = desiredState.angle.getRadians();
-        mPIDOutput = mRotPID.calculate(getRotPosition(), desiredState.angle.getRadians());
-
-        mRotMotor.set(mPIDOutput);
-
+        mDesiredVel = desiredState.speedMetersPerSecond;
+        double feedforward = mTransFF.calculate(mDesiredVel);
+        double pidOutput = mTransPID.calculate(getTransVelocity(), mDesiredVel) / mPhysicalMaxSpeedMPS;
+        mTransMotor.set(pidOutput + feedforward);
     }
 
-    public void setPID(double degrees) {
-        mPIDOutput = mRotPID.calculate(getRotPosition(), Math.toRadians(degrees));
-        mRotMotor.set(mPIDOutput);
-
-    }
 
 
     /**
@@ -135,6 +138,7 @@ public class SwerveModule {
      *         form of a SwerveModulePostion object
      * @see SwerveModulePosition
      */
+    @Override
     public SwerveModulePosition getModulePos() {
         return new SwerveModulePosition(getTransPosition(),
                 Rotation2d.fromRadians(getRotPosition()));
@@ -150,13 +154,7 @@ public class SwerveModule {
         return mTransEncoder.getPosition();
     }
 
-    /**
-     * 
-     * @return Returns rotation position in radians
-     */
-    private double getRotPositionRaw() {
-        return mRotEncoder.getAbsolutePosition().getValueAsDouble()*2*Math.PI;
-    }
+
 
     /**
      * 
@@ -172,35 +170,43 @@ public class SwerveModule {
      * 
      * @return Returns translation motor AFTER GEAR RATIO and Meters
      */
+    @Override
     public double getTransPosition() {
-        return getTransPositionRaw() * SwerveConstants.TRANS_GEAR_RATIO_ROT
-                * SwerveConstants.WHEEL_CIRCUMFERENCE_METERS;
+        return getTransPositionRaw();
     }
+
 
     /**
      * 
-     * @return Returns rotation in RADIANS of rotation motor AFTER GEAR RATIO
+     * @return Returns velocity of translation motor with conversion from the CANcoder
      */
-    public double getRotPosition() {
-        return getRotPositionRaw() * SwerveConstants.ABS_ENC_GEAR_RATIO_ROT;
-    }
-
-    public double getRotRelativePosition() {
-        return mRotRelativeEncoder.getPosition() * SwerveConstants.REL_ENC_GEAR_RATIO_ROT;
-    }
-
-    /**
-     * 
-     * @return Returns velocity of translation motor with conversion
-     */
+    @Override
     public double getTransVelocity() {
-        return getTransVelocityRaw() * SwerveConstants.TRANS_RPM_TO_MPS;
+        return getTransVelocityRaw();
     }
 
+    /**
+     * 
+     * @return the PID setpoint of the translation's velocity in meters/sec
+     */
+    @Override
+    public double getTransVelocitySetpoint(){
+        return mDesiredVel;
+    }
+    /**
+     * 
+     * @return Returns the applied voltage to the translation motor after nominal voltage
+     *         compensation
+     */
+    @Override
+    public double getTransAppliedVolts() {
+        return mTransMotor.getAppliedOutput() * mTransMotor.getVoltageCompensationNominalVoltage();
+    }
 
     /**
      * Reset ONLY the translation encoder
      */
+    @Override
     public void resetEncoders() {
         mTransEncoder.setPosition(0);
     }
@@ -208,17 +214,10 @@ public class SwerveModule {
     /**
      * Stops the both motors
      */
+    @Override
     public void stop() {
         mTransMotor.set(0);
         mRotMotor.set(0);
-    }
-
-    /**
-     * 
-     * @return steering PID controller.
-     */
-    public PIDController getPIDController() {
-        return mRotPID;
     }
 
     /**
@@ -242,28 +241,11 @@ public class SwerveModule {
         mTransMotor.burnFlash();
     }
 
-    /**
-     * Sets the mode of the rotation motor
-     * 
-     * @param mode use a spark max idle mode (brake or coast)
-     * @see IdleMode
-     */
-    public void setModeRot(IdleMode mode) {
-        mRotMotor.setIdleMode(mode);
-    }
 
     /**
-     * Retrives the rotation PID output provided to the motors after desaturation and optimization
+     * @return the nominal voltage amount after voltage compensation for the translation motor
      */
-    public double getPIDOutputRot() {
-        return mPIDOutput;
-    }
-
-    /**
-     * Retrives the desired radian setpoint of rotation of the motors after desaturation and
-     * optimization.
-     */
-    public double getDesiredRadiansRot() {
-        return mDesiredRadians;
+    public double getTransNominalVoltage(){
+        return mTransMotor.getVoltageCompensationNominalVoltage();
     }
 }
