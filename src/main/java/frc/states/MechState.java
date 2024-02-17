@@ -6,7 +6,7 @@ import frc.robot.subsystems.LauncherSubsystem;
 public abstract class MechState {
     protected final LauncherSubsystem mLauncherSubsystem;
 
-    public MechState (LauncherSubsystem launcherSubsystem) {
+    protected MechState (LauncherSubsystem launcherSubsystem) {
         mLauncherSubsystem = launcherSubsystem;
     }
 

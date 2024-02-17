@@ -1,4 +1,5 @@
-package frc.states.MechStates;
+package frc.states.mechstates;
+
 import frc.robot.constants.AimingConstants;
 import frc.robot.constants.AimingConstants.AimState;
 import frc.robot.constants.LauncherConstants.LauncherMode;

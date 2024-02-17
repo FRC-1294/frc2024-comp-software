@@ -1,4 +1,5 @@
-package frc.states.MechStates;
+package frc.states.mechstates;
+
 import frc.robot.constants.LauncherConstants;
 import frc.robot.subsystems.LauncherSubsystem;
 import frc.states.MechState;
@@ -11,17 +12,17 @@ public class ReadyForLaunch extends MechState {
 
     @Override
     public void setSpeakerSP() {
-        
+        //nothing
     }
 
     @Override
     public void setAmpSP() {
-        
+        //nothing
     }
 
     @Override
     public void setTrapSP() {
-        
+        //nothing
     }
 
     @Override

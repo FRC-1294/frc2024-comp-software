@@ -1,4 +1,4 @@
-package frc.states.MechStates;
+package frc.states.mechstates;
 
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
@@ -7,6 +7,7 @@ import frc.states.MechState;
 public class ReadyForIntake extends MechState {
 
     private final IntakeSubsystem mIntakeSubsystem;
+
 
     public ReadyForIntake (IntakeSubsystem intakeSubsystem, LauncherSubsystem launcherSubsystem) {
         super(launcherSubsystem);

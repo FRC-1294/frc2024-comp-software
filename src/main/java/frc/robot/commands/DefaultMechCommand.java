@@ -12,11 +12,11 @@ import frc.robot.subsystems.Input;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
 import frc.states.MechState;
-import frc.states.MechStates.Intook;
-import frc.states.MechStates.ReadyForAim;
-import frc.states.MechStates.ReadyForHandoff;
-import frc.states.MechStates.ReadyForIntake;
-import frc.states.MechStates.ReadyForLaunch;
+import frc.states.mechstates.Intaken;
+import frc.states.mechstates.ReadyForAim;
+import frc.states.mechstates.ReadyForHandoff;
+import frc.states.mechstates.ReadyForIntake;
+import frc.states.mechstates.ReadyForLaunch;
 
 public class DefaultMechCommand extends Command {
     private final IntakeSubsystem mIntakeSubsystem;
@@ -27,7 +27,7 @@ public class DefaultMechCommand extends Command {
     private AimState mAimState = AimState.STOW;
 
     private final MechState mReadyForIntake;
-    private final MechState mIntook;
+    private final MechState mIntaken;
     private final MechState mReadyForHandoff;
     private final MechState mReadyForAim;
     private final MechState mReadyForLaunch;
@@ -42,7 +42,7 @@ public class DefaultMechCommand extends Command {
         addRequirements(mIntakeSubsystem, mLauncherSubsystem, mAimingSubsystem);
 
         mReadyForIntake = new ReadyForIntake(intakeSubsystem, launcherSubsystem);
-        mIntook = new Intook(launcherSubsystem);
+        mIntaken = new Intaken(launcherSubsystem);
         mReadyForHandoff = new ReadyForHandoff(intakeSubsystem, launcherSubsystem);
         mReadyForAim = new ReadyForAim(launcherSubsystem, aimingSubsystem);
         mReadyForLaunch = new ReadyForLaunch(launcherSubsystem);
@@ -55,7 +55,7 @@ public class DefaultMechCommand extends Command {
             return mReadyForIntake;
         }
         else if (!getIntakeBeamBreak() && getIndexerBeamBreak()) {
-            return mIntook;
+            return mIntaken;
         }
         else if (!getIntakeBeamBreak() && getIndexerBeamBreak() && mAimState == AimState.STOW) {
             return mReadyForHandoff;
@@ -135,7 +135,7 @@ public class DefaultMechCommand extends Command {
             mAimingSubsystem.setDesiredSetpoint(mAimState);
             mLauncherSubsystem.setLauncherMode(mLauncherMode);
         }
-        else if (mMechState == mIntook) {
+        else if (mMechState == mIntaken) {
             //prepare momentum for handoff
             mLauncherSubsystem.runIndexer(LauncherConstants.INDEXER_VELOCITY_DEFAULT);
             mAimState = AimState.STOW;
@@ -184,8 +184,8 @@ public class DefaultMechCommand extends Command {
         return mReadyForIntake;
     }
 
-    public MechState getIntook() {
-        return mIntook;
+    public MechState getIntaken() {
+        return mIntaken;
     }
 
     public MechState getReadyForHandoff() {
