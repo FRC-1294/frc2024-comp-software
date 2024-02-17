@@ -26,13 +26,13 @@ public class DefaultMechCommand extends Command {
     private LauncherMode mLauncherMode = LauncherMode.OFF;
     private AimState mAimState = AimState.STOW;
 
-    private final MechState readyForIntake;
-    private final MechState intook;
-    private final MechState readyForHandoff;
-    private final MechState readyForAim;
-    private final MechState readyForLaunch;
+    private final MechState mReadyForIntake;
+    private final MechState mIntook;
+    private final MechState mReadyForHandoff;
+    private final MechState mReadyForAim;
+    private final MechState mReadyForLaunch;
 
-    private MechState mechState;
+    private MechState mMechState;
 
     public DefaultMechCommand(IntakeSubsystem intakeSubsystem, LauncherSubsystem launcherSubsystem, AimingSubsystem aimingSubsystem) {
         mIntakeSubsystem = intakeSubsystem;
@@ -41,30 +41,30 @@ public class DefaultMechCommand extends Command {
 
         addRequirements(mIntakeSubsystem, mLauncherSubsystem, mAimingSubsystem);
 
-        readyForIntake = new ReadyForIntake(intakeSubsystem, launcherSubsystem);
-        intook = new Intook(launcherSubsystem);
-        readyForHandoff = new ReadyForHandoff(intakeSubsystem, launcherSubsystem);
-        readyForAim = new ReadyForAim(launcherSubsystem, aimingSubsystem);
-        readyForLaunch = new ReadyForLaunch(launcherSubsystem);
+        mReadyForIntake = new ReadyForIntake(intakeSubsystem, launcherSubsystem);
+        mIntook = new Intook(launcherSubsystem);
+        mReadyForHandoff = new ReadyForHandoff(intakeSubsystem, launcherSubsystem);
+        mReadyForAim = new ReadyForAim(launcherSubsystem, aimingSubsystem);
+        mReadyForLaunch = new ReadyForLaunch(launcherSubsystem);
 
-        mechState = determineState();
+        mMechState = determineState();
     }
 
     public MechState determineState() {
         if (getIntakeBeamBreak() && getIndexerBeamBreak()) {
-            return readyForIntake;
+            return mReadyForIntake;
         }
         else if (!getIntakeBeamBreak() && getIndexerBeamBreak()) {
-            return intook;
+            return mIntook;
         }
         else if (!getIntakeBeamBreak() && getIndexerBeamBreak() && mAimState == AimState.STOW) {
-            return readyForHandoff;
+            return mReadyForHandoff;
         }
         else if (!getIndexerBeamBreak()) {
-            return readyForAim;
+            return mReadyForAim;
         }
         else if (getIndexerBeamBreak() && isFlywheelAtSP() && isAimAtSP() && isVisionAligned() && Input.getRightBumper()) {
-            return readyForLaunch;
+            return mReadyForLaunch;
         }
         return null;
     }
@@ -72,86 +72,86 @@ public class DefaultMechCommand extends Command {
     @Override
     public void execute() {
         if (Input.getX()) {
-            mechState.setFlywheelOff();
+            mMechState.setFlywheelOff();
         }
         else if (Input.getY()) {
-            mechState.setSpeakerSP();
-            if (mechState != readyForLaunch) {
+            mMechState.setSpeakerSP();
+            if (mMechState != mReadyForLaunch) {
                 mLauncherMode = LauncherMode.SPEAKER;
             }
-            if (mechState == readyForAim) {
+            if (mMechState == mReadyForAim) {
                 mAimState = AimState.SPEAKER;
             }
         } 
         else if (Input.getA()) {
-            mechState.setAmpSP();
-            if (mechState != readyForLaunch) {
+            mMechState.setAmpSP();
+            if (mMechState != mReadyForLaunch) {
                 mLauncherMode = LauncherMode.AMP;
             }
-            if (mechState == readyForAim) {
+            if (mMechState == mReadyForAim) {
                 mAimState = AimState.AMP;
             }
         }
         else if (Input.getB()) {
-            mechState.setTrapSP();
-            if (mechState != readyForLaunch) {
+            mMechState.setTrapSP();
+            if (mMechState != mReadyForLaunch) {
                 mLauncherMode = LauncherMode.TRAP;
             }
-            if (mechState == readyForAim) {
+            if (mMechState == mReadyForAim) {
                 mAimState = AimState.CLIMB;
             }
         }
         if (Input.getLeftBumper()) {
-            mechState.intake();
+            mMechState.intake();
         }
         if (Input.getRightBumper()) {
-            mechState.launch();
+            mMechState.launch();
         }
         if (Math.abs(Input.getLeftStickY()) > 0) {
-            mechState.controlWrist();
+            mMechState.controlWrist();
         }
         if (Math.abs(Input.getRightStickY()) > 0) {
-            mechState.controlElevator();
+            mMechState.controlElevator();
         }
         if (Input.getDPad() == Input.DPADUP) {
-            mechState.setElevatorSPtoStage();
+            mMechState.setElevatorSPtoStage();
         }
         else if (Input.getDPad() == Input.DPADDOWN) {
-            mechState.setElevatorSPtoBase();
+            mMechState.setElevatorSPtoBase();
         }
         if (Input.getDPad() == Input.DPADLEFT) {
-            mechState.resetEncoders();
+            mMechState.resetEncoders();
         }
 
         runAction();
 
-        mechState = determineState();
+        mMechState = determineState();
     }
 
     //automatic actions
     public void runAction() {
-        if (mechState == readyForIntake) {
+        if (mMechState == mReadyForIntake) {
             mAimState = AimState.STOW;
             mAimingSubsystem.setDesiredSetpoint(mAimState);
             mLauncherSubsystem.setLauncherMode(mLauncherMode);
         }
-        else if (mechState == intook) {
+        else if (mMechState == mIntook) {
             //prepare momentum for handoff
             mLauncherSubsystem.runIndexer(LauncherConstants.INDEXER_VELOCITY_DEFAULT);
             mAimState = AimState.STOW;
             mAimingSubsystem.setDesiredSetpoint(mAimState);
             mLauncherSubsystem.setLauncherMode(mLauncherMode);
         }
-        else if (mechState == readyForHandoff) {
+        else if (mMechState == mReadyForHandoff) {
             //handoff
             mLauncherSubsystem.runIndexer(LauncherConstants.INDEXER_VELOCITY_DEFAULT);
             mLauncherSubsystem.setLauncherMode(mLauncherMode);
         }
-        else if (mechState == readyForAim) {
+        else if (mMechState == mReadyForAim) {
             mLauncherSubsystem.setLauncherMode(mLauncherMode);
             mAimingSubsystem.setDesiredSetpoint(mAimState);
         }
-        else if (mechState == readyForLaunch) {
+        else if (mMechState == mReadyForLaunch) {
             mLauncherSubsystem.runIndexer(LauncherConstants.INDEXER_VELOCITY_DEFAULT);
         }
     }
@@ -177,26 +177,26 @@ public class DefaultMechCommand extends Command {
     }
 
     public void setMechState(MechState mechState) {
-        this.mechState = mechState;
+        this.mMechState = mechState;
     }
 
     public MechState getReadyForIntake() {
-        return readyForIntake;
+        return mReadyForIntake;
     }
 
     public MechState getIntook() {
-        return intook;
+        return mIntook;
     }
 
     public MechState getReadyForHandoff() {
-        return readyForHandoff;
+        return mReadyForHandoff;
     }
 
     public MechState getReadyForAim() {
-        return readyForAim;
+        return mReadyForAim;
     }
 
     public MechState getReadyForLaunch() {
-        return readyForLaunch;
+        return mReadyForLaunch;
     }
 }
