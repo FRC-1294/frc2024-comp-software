@@ -36,6 +36,27 @@ public abstract class SwerveConfig {
 
                 PIGEON = new Pigeon2(PIGEON_ID, "DriveMotors");
 
+
+                WHEEL_CIRCUMFERENCE_METERS = Math.PI * WHEEL_DIAMETER_METERS;
+                TRANS_RPM_TO_MPS =
+                (TRANS_GEAR_RATIO_ROT * WHEEL_CIRCUMFERENCE_METERS) / 60;
+
+                FRONT_LEFT_TRANS_ID = 1;
+                FRONT_LEFT_ROT_ID = 8;
+                FRONT_LEFT_ROT_ENC_ID = 22;
+
+                FRONT_RIGHT_TRANS_ID = 7;
+                FRONT_RIGHT_ROT_ID = 3;
+                FRONT_RIGHT_ROT_ENC_ID = 23;
+
+                BACK_LEFT_TRANS_ID = 5;
+                BACK_LEFT_ROT_ID = 4;
+                BACK_LEFT_ROT_ENC_ID = 21;
+
+                BACK_RIGHT_TRANS_ID = 9;
+                BACK_RIGHT_ROT_ID = 6;
+                BACK_RIGHT_ROT_ENC_ID = 20;
+
                 SWERVE_MODULES[0] = FRONT_LEFT_MODULE;
                 SWERVE_MODULES[1] = FRONT_RIGHT_MODULE;
                 SWERVE_MODULES[2] = BACK_LEFT_MODULE;
@@ -53,7 +74,7 @@ public abstract class SwerveConfig {
         //Since Java does not support abstract FIELDS, this is our only solution apart from requiring everything within the constructor
         public Pigeon2 PIGEON = null;
         public double TRANS_GEAR_RATIO_ROT;
-        public double REL_ENC_GEAR_RATIO_ROT = -1;
+        public double REL_ENC_GEAR_RATIO_ROT = 1 / 12.8;
         public double ABS_ENC_GEAR_RATIO_ROT = -1;
       
         // Conversion Factors

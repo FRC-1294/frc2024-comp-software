@@ -15,45 +15,24 @@ public class PracticeBotSwerveConfig extends SwerveConfig{
 
         public void config() {
             TRANS_GEAR_RATIO_ROT = 1 / 6.75;
-            REL_ENC_GEAR_RATIO_ROT = 1 / 12.8;
             ABS_ENC_GEAR_RATIO_ROT = 1;
 
             // Conversion Factors
             WHEEL_DIAMETER_METERS = .1016;
-            WHEEL_CIRCUMFERENCE_METERS = Math.PI * WHEEL_DIAMETER_METERS;
 
+            
             // Physical Max
             PHYSICAL_MAX_SPEED_MPS = 4.625;
 
             TELE_MAX_SPEED_MPS = 4.625;
             TELE_MAX_ROT_SPEED_RAD_SEC = 2 * Math.PI;
 
-            TRACK_WIDTH_METERS = .495;
-            TRACK_LENGTH_METERS = .495;
-            // ID's
-            // Encoder IDs have been set
-            FRONT_LEFT_TRANS_ID = 1;
-            FRONT_LEFT_ROT_ID = 8;
-            FRONT_LEFT_ROT_ENC_ID = 22;
-
-            FRONT_RIGHT_TRANS_ID = 7;
-            FRONT_RIGHT_ROT_ID = 3;
-            FRONT_RIGHT_ROT_ENC_ID = 23;
-
-            BACK_LEFT_TRANS_ID = 5;
-            BACK_LEFT_ROT_ID = 4;
-            BACK_LEFT_ROT_ENC_ID = 21;
-
-            BACK_RIGHT_TRANS_ID = 9;
-            BACK_RIGHT_ROT_ID = 6;
-            BACK_RIGHT_ROT_ENC_ID = 20;
-
+            TRACK_WIDTH_METERS = .521;
+            TRACK_LENGTH_METERS = .521;
 
             PIGEON_ID = 25;
 
-
-
-         // Inverse s
+        // Inverse Booleans
             FRONT_LEFT_ROT_INVERSE = false;
             FRONT_LEFT_TRANS_INVERSE = true;
 

@@ -15,15 +15,12 @@ public class CompetitionBotSwerveConfig extends SwerveConfig{
         }
 
         public void config() {
-                TRANS_GEAR_RATIO_ROT = 1 / 6.75;
-                REL_ENC_GEAR_RATIO_ROT = 1 / 12.8;
+                TRANS_GEAR_RATIO_ROT = 1 / 6.12;
                 ABS_ENC_GEAR_RATIO_ROT = 1;
       
                 // Conversion Factors
                 WHEEL_DIAMETER_METERS = .102;
-                WHEEL_CIRCUMFERENCE_METERS = Math.PI * WHEEL_DIAMETER_METERS;
-                TRANS_RPM_TO_MPS =
-                (TRANS_GEAR_RATIO_ROT * WHEEL_CIRCUMFERENCE_METERS) / 60;
+
       
                 // Physical Max
                 PHYSICAL_MAX_SPEED_MPS = 4.625;
@@ -36,25 +33,6 @@ public class CompetitionBotSwerveConfig extends SwerveConfig{
 
                 TRACK_WIDTH_METERS = .495;
                 TRACK_LENGTH_METERS = .495;
-
-                // ID's
-                // Encoder IDs have been set
-                FRONT_LEFT_TRANS_ID = 1;
-                FRONT_LEFT_ROT_ID = 8;
-                FRONT_LEFT_ROT_ENC_ID = 22;
-
-                FRONT_RIGHT_TRANS_ID = 7;
-                FRONT_RIGHT_ROT_ID = 3;
-                FRONT_RIGHT_ROT_ENC_ID = 23;
-
-                BACK_LEFT_TRANS_ID = 5;
-                BACK_LEFT_ROT_ID = 4;
-                BACK_LEFT_ROT_ENC_ID = 21;
-
-                BACK_RIGHT_TRANS_ID = 9;
-                BACK_RIGHT_ROT_ID = 6;
-                BACK_RIGHT_ROT_ENC_ID = 20;
-
 
                 PIGEON_ID = 25;
 
