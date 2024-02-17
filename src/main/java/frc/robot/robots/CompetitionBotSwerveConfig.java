@@ -52,10 +52,6 @@ public class CompetitionBotSwerveConfig extends SwerveConfig{
 
 
                 // PID Controllers
-                FRONT_LEFT_ROT_PID = new PIDParameters(0.35, 0, 0);
-                FRONT_RIGHT_ROT_PID = new PIDParameters(0.35, 0, 0);
-                BACK_LEFT_ROT_PID = new PIDParameters(0.35, 0, 0);
-                BACK_RIGHT_ROT_PID = new PIDParameters(0.35, 0, 0);
 
                 FRONT_LEFT_TRANS_PID = new PIDParameters(0.1, 0, 0,0.011666666666666667,0.21090956596760593);
                 FRONT_RIGHT_TRANS_PID = new PIDParameters(0.1, 0, 0,0.011666666666666667,0.2099873992689063);
