@@ -94,7 +94,6 @@ import frc.robot.Util.PIDParameters;
         return mRotMotor.getAppliedOutput();
     };
 
-    public abstract void setTransMotorDutyCycleRaw(double speed);
 
     /**
      * 

@@ -72,10 +72,6 @@ public class KrakenSwerveModule extends SwerveModuleAbstract{
         return new SwerveModuleState(getTransVelocity(), Rotation2d.fromRadians(getRotPosition()));
     }
 
-    @Override
-    public void setTransMotorDutyCycleRaw(double speed) {
-        mTransMotor.set(speed);
-    }
 
     /**
      * 

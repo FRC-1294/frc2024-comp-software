@@ -70,11 +70,6 @@ public class RevSwerveModule extends SwerveModuleAbstract{
     }
 
 
-    @Override
-    public void setTransMotorDutyCycleRaw(double speed) {
-        mTransMotor.set(speed);
-    }
-
     /**
      * 
      * Sets the translation motor's voltage (max 12 volts)
