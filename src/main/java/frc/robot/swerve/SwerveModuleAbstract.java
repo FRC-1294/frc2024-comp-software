@@ -140,12 +140,13 @@ import frc.robot.Util.PIDParameters;
             return;
         }
 
+        desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
+
         mDesiredRadians = desiredState.angle.getRadians();
         mPIDOutput = mRotPID.calculate(getRotPosition(), desiredState.angle.getRadians());
         mRotMotor.set(mPIDOutput);
 
         // No turning motors over 90 degrees
-        desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
         mDesiredVel = desiredState.speedMetersPerSecond;
 
         double feedforward = mTransFF.calculate(mDesiredVel);

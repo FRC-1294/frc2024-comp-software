@@ -35,11 +35,6 @@ public abstract class SwerveConfig {
                         BACK_LEFT_COORDS_METERS, BACK_RIGHT_COORDS_METERS);
 
                 PIGEON = new Pigeon2(PIGEON_ID, "DriveMotors");
-                
-                FRONT_LEFT_ROT_PID = new PIDParameters(0.35, 0, 0);
-                FRONT_RIGHT_ROT_PID = new PIDParameters(0.35, 0, 0);
-                BACK_LEFT_ROT_PID = new PIDParameters(0.35, 0, 0);
-                BACK_RIGHT_ROT_PID = new PIDParameters(0.35, 0, 0);
 
                 WHEEL_CIRCUMFERENCE_METERS = Math.PI * WHEEL_DIAMETER_METERS;
                 TRANS_RPM_TO_MPS =
@@ -139,10 +134,10 @@ public abstract class SwerveConfig {
         public Translation2d BACK_RIGHT_COORDS_METERS = null;
 
         // PID Controllers
-        public PIDParameters FRONT_LEFT_ROT_PID = null;
-        public PIDParameters FRONT_RIGHT_ROT_PID = null;
-        public PIDParameters BACK_LEFT_ROT_PID = null;
-        public PIDParameters BACK_RIGHT_ROT_PID = null;
+        public final PIDParameters FRONT_LEFT_ROT_PID =  new PIDParameters(0.35, 0, 0);;
+        public final PIDParameters FRONT_RIGHT_ROT_PID =  new PIDParameters(0.35, 0, 0);;
+        public final PIDParameters BACK_LEFT_ROT_PID =  new PIDParameters(0.35, 0, 0);;
+        public final PIDParameters BACK_RIGHT_ROT_PID =  new PIDParameters(0.35, 0, 0);;
 
         public PIDParameters FRONT_LEFT_TRANS_PID = null;
         public PIDParameters FRONT_RIGHT_TRANS_PID = null;
