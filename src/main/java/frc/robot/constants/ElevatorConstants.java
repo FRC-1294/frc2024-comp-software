@@ -4,6 +4,7 @@
 
 package frc.robot.constants;
 
+import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import frc.robot.Util.PIDParameters;
 import frc.robot.subsystems.Elevator.AimingMotorMode;
 
@@ -31,7 +32,7 @@ public class ElevatorConstants {
     }
     
     // Teleop Constant
-    public static final double MAX_ELEVATOR_TELEOP_INCREMENT = 0;
+    public static final double MAX_ELEVATOR_TELEOP_INCREMENT = 0.1;
     public static final double MAX_WRIST_TELEOP_INCREMENT = 0;
 
     
@@ -46,7 +47,7 @@ public class ElevatorConstants {
     public static final AimingMotorMode INITIAL_MOTOR_MODE = AimingMotorMode.BRAKE;
 
     //todo encoder to meters
-    public static final double ELEVATOR_ROTATIONS_TO_METERS = 1;
+    public static final double ELEVATOR_ROTATIONS_TO_METERS = 1/0.571;
 	public static final double ELEVATOR_TOLERANCE_METERS = 0.01;
     public static final double WRIST_TOLERANCE_DEG = 0;
 
@@ -60,8 +61,8 @@ public class ElevatorConstants {
     public static final double MAX_WRIST_ROTATION_VELOCITY = 0;
 
     // ID's
-    public static final int LEFT_ELEVATOR_TALON_ID = 2;
-    public static final int RIGHT_ELEVATOR_TALON_ID = 2;
+    public static final int LEFT_ELEVATOR_SPARK_ID = 1;
+    public static final int RIGHT_ELEVATOR_SPARK_ID = 2;
     public static final int ELEVATOR_TOF_ID = 1;
 
     public static final int LEFT_WRIST_SPARK_ID = 2; 
@@ -71,4 +72,5 @@ public class ElevatorConstants {
     public static final int RIGHT_WRIST_ENCODER_ID = 0;
 
     public static final int ELEVATOR_THROUGHBORE_ENCODER_ID = 0;
+    public static final boolean ELEVATOR_LEFT_IS_INVERTED = true;
 }

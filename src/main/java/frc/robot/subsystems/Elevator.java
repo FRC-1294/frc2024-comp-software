@@ -9,6 +9,7 @@ import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -22,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.ElevatorConstants;
+import frc.robot.Input;
 import frc.robot.constants.CompConstants;
 import frc.robot.constants.ElevatorConstants.AimState;
 
@@ -30,8 +32,10 @@ public class Elevator extends SubsystemBase {
   public enum AimingMotorMode {COAST, BRAKE}
 
   // Elevator Hardware
-  private final TalonFX mLeftElevatorMotor = new TalonFX(ElevatorConstants.LEFT_ELEVATOR_TALON_ID,"rio");
-  private final TalonFX mRightElevatorMotor = new TalonFX(ElevatorConstants.RIGHT_ELEVATOR_TALON_ID,"rio");
+  private final CANSparkMax mLeftElevatorMotor = new CANSparkMax(ElevatorConstants.LEFT_ELEVATOR_SPARK_ID, MotorType.kBrushless);
+  private final CANSparkMax mRightElevatorMotor = new CANSparkMax(ElevatorConstants.RIGHT_ELEVATOR_SPARK_ID, MotorType.kBrushless);
+  private RelativeEncoder mRightElevatorEncoder;
+  private RelativeEncoder mLeftElevatorEncoder;
   
   // Wrist Hardware
   // private final CANSparkMax mLeftWristMotor = new CANSparkMax(ElevatorConstants.LEFT_WRIST_SPARK_ID, MotorType.kBrushless);
@@ -64,6 +68,12 @@ public class Elevator extends SubsystemBase {
     mChooser.addOption("Brake", AimingMotorMode.BRAKE);
     mChooser.addOption("Coast", AimingMotorMode.COAST);
     mChooser.setDefaultOption("Brake", ElevatorConstants.INITIAL_MOTOR_MODE);
+
+    mLeftElevatorEncoder = mLeftElevatorMotor.getEncoder();
+    mRightElevatorEncoder = mRightElevatorMotor.getEncoder();
+
+    configureDevices();
+
   }
 
   // Setting Conversions and Inversions
@@ -73,26 +83,45 @@ public class Elevator extends SubsystemBase {
 
     mElevatorControllerSlot0Configs = ElevatorConstants.mElevatorPIDConstants.toTalonConfiguration().Slot0;
 
-    mLeftElevatorMotor.getConfigurator().apply(mElevatorControllerSlot0Configs);
-    mRightElevatorMotor.getConfigurator().apply(mElevatorControllerSlot0Configs);
     
     // mWristController = ElevatorConstants.mWristPIDConstants.toWPIController();
     //note: configuration uses internal encoders inside the motors, subject to change
   
-    mLeftElevatorMotor.setInverted(true);
+    mLeftElevatorMotor.setInverted(ElevatorConstants.ELEVATOR_LEFT_IS_INVERTED);
     // mLeftWristMotor.setInverted(true);
     // mWristController.setTolerance(ElevatorConstants.WRIST_TOLERANCE_DEG);
 
     //follower configuration
     // mRightWristMotor.follow(mLeftWristMotor);
-    mRightElevatorMotor.setControl(new Follower(mLeftElevatorMotor.getDeviceID(), false));
+    mRightElevatorMotor.follow(mLeftElevatorMotor, true);
+
+    mRightElevatorEncoder.setPositionConversionFactor(ElevatorConstants.ELEVATOR_ROTATIONS_TO_METERS);
+    mLeftElevatorEncoder.setPositionConversionFactor(ElevatorConstants.ELEVATOR_ROTATIONS_TO_METERS);
+    mRightElevatorEncoder.setPosition(0);
+    mLeftElevatorEncoder.setPosition(0);
+
+
+    mRightElevatorMotor.burnFlash();
+    mLeftElevatorMotor.burnFlash();
   }
 
   @Override
   public void periodic() {
-    updateMotorModes();
-    elevatorPeriodic();
-    // wristPeriodic();
+    if (Math.abs(Input.mXBox.getRightY()) >= 0.1){
+      mLeftElevatorMotor.set(0.1*Math.signum(Input.mXBox.getRightY()));
+    }
+    else {
+      mLeftElevatorMotor.set(0);
+    }
+    if (Input.mXBox.getLeftBumper()){
+      mLeftElevatorEncoder.setPosition(0);
+      mRightElevatorEncoder.setPosition(0);
+    }
+
+
+    // updateMotorModes();
+    // elevatorPeriodic();
+    // // wristPeriodic();
     debugSmartDashboard();
   }
 
@@ -100,6 +129,7 @@ public class Elevator extends SubsystemBase {
     //Clamping Rotation between domain
     mDesiredElevatorDistanceIn = MathUtil.clamp(mDesiredElevatorDistanceIn, ElevatorConstants.MIN_ELEVATOR_DIST_METERS, ElevatorConstants.MAX_ELEVATOR_DIST_METERS);
     mCurrentElevatorDistanceIn = getCurrentElevatorDistance();
+    mLeftElevatorMotor.set(0.15);
 
     //Temp Regular PID
     double elevatorPIDCalculation = mElevatorController.calculate(mCurrentElevatorDistanceIn, mDesiredElevatorDistanceIn);
@@ -137,8 +167,8 @@ public class Elevator extends SubsystemBase {
             break;
     }
 
-    mLeftElevatorMotor.setNeutralMode(neutralmode);
-    mRightElevatorMotor.setNeutralMode(neutralmode);
+    mLeftElevatorMotor.setIdleMode(idleMode);
+    mRightElevatorMotor.setIdleMode(idleMode);
 
     // mRightWristMotor.setIdleMode(idleMode);
     // mLeftWristMotor.setIdleMode(idleMode);
@@ -151,7 +181,7 @@ public class Elevator extends SubsystemBase {
       SmartDashboard.putNumber("Current Elevator Distance", mCurrentElevatorDistanceIn);
       // SmartDashboard.putNumber("Desired Wrist Rotation", mDesiredWristRotationDeg);
       SmartDashboard.putNumber("Desired Elevator Distance", getDesiredElevatorDistance());
-      SmartDashboard.putNumber("Raw Elevator Encoder Position", mLeftElevatorMotor.getPosition().getValueAsDouble());
+      SmartDashboard.putNumber("Raw Elevator Encoder Position", mLeftElevatorEncoder.getPosition());
       // SmartDashboard.putNumber("Raw Wrist Encoder Rotation", mWristThroughBoreEncoder.getAbsolutePosition());
       SmartDashboard.putBoolean("At Elevator setpoint", atElevatorSetpoint());
       // SmartDashboard.putBoolean("At Wrist setpoint", atWristSetpoint());
@@ -160,7 +190,7 @@ public class Elevator extends SubsystemBase {
 
   // Getters and Setters of States
   public double getCurrentElevatorDistance() {
-    return mLeftElevatorMotor.getRotorPosition().getValueAsDouble() * ElevatorConstants.ELEVATOR_ROTATIONS_TO_METERS;
+    return mLeftElevatorEncoder.getPosition();
   }
 
   /**

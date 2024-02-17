@@ -24,23 +24,23 @@ public class DefaultElevatorCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (Input.getA()) {
-      mElevator.setDesiredElevatorDistance(0.5);
-    }
-    else if (Input.getX()) {
-      mElevator.setDesiredElevatorDistance(0.1);;
-    }
+    // if (Input.getA()) {
+    //   mElevator.setDesiredElevatorDistance(0.5);
+    // }
+    // else if (Input.getX()) {
+    //   mElevator.setDesiredElevatorDistance(0.1);;
+    // }
 
 
     // if (Math.abs(Input.getJoystickX()) > 0) {
     //   //convert between input to increment
     //   double increment = Input.getJoystickX() * ElevatorConstants.MAX_ELEVATOR_TELEOP_INCREMENT;
-    //   // mElevator.changeDesiredWristRotation(increment);
+    //   mElevator.changeDesiredWristRotation(increment);
     // }
     
     // if (Math.abs(Input.getJoystickY()) > 0) {
     //   //convert between input to increment
-    //   double increment = Input.getJoystickY() * ElevatorConstants.MAX_WRIST_TELEOP_INCREMENT;
+    //   double increment = Input.getJoystickY() * ElevatorConstants.MAX_ELEVATOR_TELEOP_INCREMENT;
     //   mElevator.changeDesiredElevatorPosition(increment);
     // }
   }
