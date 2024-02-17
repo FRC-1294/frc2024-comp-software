@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.SwerveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -17,12 +18,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem mSwerveSubsystem = new SwerveSubsystem();
+  private final Limelight mLimelight = new Limelight();
+
 
   
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    mSwerveSubsystem.setDefaultCommand(new DefaultDriveCommand(mSwerveSubsystem));
+    mSwerveSubsystem.setDefaultCommand(new DefaultDriveCommand(mSwerveSubsystem, mLimelight));
 
   }
 
