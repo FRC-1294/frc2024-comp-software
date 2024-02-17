@@ -45,8 +45,10 @@ public class AimingConstants {
 
     public static final AimingMotorMode INITIAL_MOTOR_MODE = AimingMotorMode.BRAKE;
 
+    // TODO: Calculate the ratio for the competition robot
+    // Issue #281 has been created for the same. Link to the issue: https://github.com/FRC-1294/frc2024/issues/281
     public static final double ELEVATOR_ROTATIONS_TO_METERS = 0.013328525766295266;
-	  public static final double ELEVATOR_TOLERANCE_IN = 0.01;
+	public static final double ELEVATOR_TOLERANCE_IN = 0.01;
     public static final double WRIST_TOLERANCE_DEG = 0;
 
     // Soft Limits
@@ -71,4 +73,5 @@ public class AimingConstants {
 
     public static final int ELEVATOR_THROUGHBORE_ENCODER_ID = 0;
     public static final boolean ELEVATOR_LEFT_IS_INVERTED = true;
+    public static final boolean WRIST_LEFT_IS_INVERTED = true;
 }

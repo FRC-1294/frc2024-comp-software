@@ -5,9 +5,6 @@
 package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
-import com.ctre.phoenix6.controls.Follower;
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkBase.IdleMode;
@@ -16,7 +13,6 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -86,11 +82,12 @@ public class AimingSubsystem extends SubsystemBase {
     //note: configuration uses internal encoders inside the motors, subject to change
   
     mLeftElevatorMotor.setInverted(AimingConstants.ELEVATOR_LEFT_IS_INVERTED);
-    mLeftWristMotor.setInverted(true);
+    mLeftWristMotor.setInverted(AimingConstants.WRIST_LEFT_IS_INVERTED);
     mWristController.setTolerance(AimingConstants.WRIST_TOLERANCE_DEG);
+    mElevatorController.setTolerance(AimingConstants.ELEVATOR_TOLERANCE_IN);
 
     //follower configuration
-    mRightWristMotor.follow(mLeftWristMotor);
+    mRightWristMotor.follow(mLeftWristMotor, true);
     mRightElevatorMotor.follow(mLeftElevatorMotor, true);
 
     // check-in with Aaditya if these should be inches or meters
@@ -140,16 +137,13 @@ public class AimingSubsystem extends SubsystemBase {
     AimingMotorMode mode = mChooser.getSelected();
     
     // Motors go towards setpoints
-    NeutralModeValue neutralmode;
     IdleMode idleMode;
 
     switch (mode) {
         case COAST:
-            neutralmode = NeutralModeValue.Coast;
             idleMode = IdleMode.kCoast;
             break;
         default:
-            neutralmode = NeutralModeValue.Brake;
             idleMode = IdleMode.kBrake;
             break;
     }
