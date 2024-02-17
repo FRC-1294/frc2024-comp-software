@@ -38,11 +38,11 @@ public class DefaultElevatorCommand extends Command {
     //   mElevator.changeDesiredWristRotation(increment);
     // }
     
-    // if (Math.abs(Input.getJoystickY()) > 0) {
-    //   //convert between input to increment
-    //   double increment = Input.getJoystickY() * ElevatorConstants.MAX_ELEVATOR_TELEOP_INCREMENT;
-    //   mElevator.changeDesiredElevatorPosition(increment);
-    // }
+    if (Math.abs(Input.mXBox.getRightY()) > 0.01) {
+      //convert between input to increment
+      double increment = Input.mXBox.getRightY() * ElevatorConstants.MAX_ELEVATOR_TELEOP_INCREMENT;
+      mElevator.changeDesiredElevatorPosition(increment);
+    }
   }
 
   // Returns true when the command should end.

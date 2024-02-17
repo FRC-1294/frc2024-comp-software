@@ -16,6 +16,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -58,7 +59,8 @@ public class Elevator extends SubsystemBase {
   // PIDController mWristController = ElevatorConstants.mWristPIDConstants.toWPIController();
 
   // ArmFeedforward mWristFeedforwardController = new ArmFeedforward(ElevatorConstants.mWristPIDConstants.getKS(), ElevatorConstants.WRIST_KG, ElevatorConstants.mWristPIDConstants.getKV());
-
+  double mOutput = 0;
+  boolean hasFinished = false;
   // MotorOutputConfigs mLeftWristMotorOutputConfigs = new MotorOutputConfigs();
   MotorOutputConfigs mRightWristMotorOutputConfigs = new MotorOutputConfigs();
 
@@ -68,6 +70,7 @@ public class Elevator extends SubsystemBase {
     mChooser.addOption("Brake", AimingMotorMode.BRAKE);
     mChooser.addOption("Coast", AimingMotorMode.COAST);
     mChooser.setDefaultOption("Brake", ElevatorConstants.INITIAL_MOTOR_MODE);
+    SmartDashboard.putData("Elevator Motor Mode", mChooser);
 
     mLeftElevatorEncoder = mLeftElevatorMotor.getEncoder();
     mRightElevatorEncoder = mRightElevatorMotor.getEncoder();
@@ -97,6 +100,8 @@ public class Elevator extends SubsystemBase {
 
     mRightElevatorEncoder.setPositionConversionFactor(ElevatorConstants.ELEVATOR_ROTATIONS_TO_METERS);
     mLeftElevatorEncoder.setPositionConversionFactor(ElevatorConstants.ELEVATOR_ROTATIONS_TO_METERS);
+
+  
     mRightElevatorEncoder.setPosition(0);
     mLeftElevatorEncoder.setPosition(0);
 
@@ -107,20 +112,19 @@ public class Elevator extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (Math.abs(Input.mXBox.getRightY()) >= 0.1){
-      mLeftElevatorMotor.set(0.1*Math.signum(Input.mXBox.getRightY()));
-    }
-    else {
-      mLeftElevatorMotor.set(0);
-    }
-    if (Input.mXBox.getLeftBumper()){
-      mLeftElevatorEncoder.setPosition(0);
-      mRightElevatorEncoder.setPosition(0);
-    }
+    // if (Math.abs(Input.mXBox.getRightY()) >= 0.1){
+    //   mLeftElevatorMotor.set(0.1*Math.signum(Input.mXBox.getRightY()));
+    // }
+    // else {
+    //   mLeftElevatorMotor.set(0);
+    // }
+    // if (Input.mXBox.getLeftBumper()){
+    //   mLeftElevatorEncoder.setPosition(0);
+    //   mRightElevatorEncoder.setPosition(0);
+    // }
 
-
-    // updateMotorModes();
-    // elevatorPeriodic();
+    updateMotorModes();
+    elevatorPeriodic();
     // // wristPeriodic();
     debugSmartDashboard();
   }
@@ -129,10 +133,10 @@ public class Elevator extends SubsystemBase {
     //Clamping Rotation between domain
     mDesiredElevatorDistanceIn = MathUtil.clamp(mDesiredElevatorDistanceIn, ElevatorConstants.MIN_ELEVATOR_DIST_METERS, ElevatorConstants.MAX_ELEVATOR_DIST_METERS);
     mCurrentElevatorDistanceIn = getCurrentElevatorDistance();
-    mLeftElevatorMotor.set(0.15);
 
     //Temp Regular PID
     double elevatorPIDCalculation = mElevatorController.calculate(mCurrentElevatorDistanceIn, mDesiredElevatorDistanceIn);
+    SmartDashboard.putNumber("ElevatorPIDOutput", elevatorPIDCalculation);
     mLeftElevatorMotor.set(elevatorPIDCalculation + ElevatorConstants.ELEVATOR_FEEDFORWARD_CONSTANT);
   }
 

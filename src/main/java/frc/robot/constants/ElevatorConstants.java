@@ -32,28 +32,28 @@ public class ElevatorConstants {
     }
     
     // Teleop Constant
-    public static final double MAX_ELEVATOR_TELEOP_INCREMENT = 0.1;
+    public static final double MAX_ELEVATOR_TELEOP_INCREMENT = 0.05;
     public static final double MAX_WRIST_TELEOP_INCREMENT = 0;
 
     
     // PID Constants
-    public static final PIDParameters mElevatorPIDConstants = new PIDParameters(0.1, 0, 0);
+    public static final PIDParameters mElevatorPIDConstants = new PIDParameters(3, 0, 0);
     public static final PIDParameters mWristPIDConstants = new PIDParameters(0.1, 0, 0, 0, 0);
     public static final double WRIST_KG = 0.0;
-    public static final double ELEVATOR_FEEDFORWARD_CONSTANT = 0;
+    public static final double ELEVATOR_FEEDFORWARD_CONSTANT = 0.05;
     public static final double SPARK_THROUGHBORE_GEAR_RATIO = 1;
 
 
     public static final AimingMotorMode INITIAL_MOTOR_MODE = AimingMotorMode.BRAKE;
 
     //todo encoder to meters
-    public static final double ELEVATOR_ROTATIONS_TO_METERS = 1/0.571;
+    public static final double ELEVATOR_ROTATIONS_TO_METERS = 0.013328525766295266;
 	public static final double ELEVATOR_TOLERANCE_METERS = 0.01;
     public static final double WRIST_TOLERANCE_DEG = 0;
 
     // Soft Limits
-    public static final double MAX_ELEVATOR_DIST_METERS = 0.67;
-    public static final double MIN_ELEVATOR_DIST_METERS = 0.1;
+    public static final double MAX_ELEVATOR_DIST_METERS = 0.64;
+    public static final double MIN_ELEVATOR_DIST_METERS = 0.05;
     public static final double MAX_ELEVATOR_EXTENSION_VELOCITY = 0.1;
 
     public static final double MAX_WRIST_ROTATION = 0;
