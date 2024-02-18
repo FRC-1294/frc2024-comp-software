@@ -6,9 +6,9 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.AimingConstants.AimState;
+import frc.robot.Input;
 import frc.robot.constants.AimingConstants;
 import frc.robot.subsystems.AimingSubsystem;
-import frc.robot.subsystems.Input;
 
 public class DefaultAimCommand extends Command {
   private final AimingSubsystem mAimingSubsystem;

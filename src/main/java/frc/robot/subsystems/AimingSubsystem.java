@@ -53,7 +53,7 @@ public class AimingSubsystem extends SubsystemBase {
   PIDController mElevatorController = AimingConstants.mElevatorPIDConstants.toWPIController();  
   PIDController mWristController = AimingConstants.mWristPIDConstants.toWPIController();
 
-  ArmFeedforward mWristFeedforwardController = new ArmFeedforward(AimingConstants.mWristPIDConstants.getKS(), AimingConstants.WRIST_KG, AimingConstants.mWristPIDConstants.getKV());
+  ArmFeedforward mWristFeedforwardController = new ArmFeedforward(AimingConstants.mWristPIDConstants.mKS, AimingConstants.WRIST_KG, AimingConstants.mWristPIDConstants.mKV);
 
   MotorOutputConfigs mLeftWristMotorOutputConfigs = new MotorOutputConfigs();
   MotorOutputConfigs mRightWristMotorOutputConfigs = new MotorOutputConfigs();
@@ -71,7 +71,7 @@ public class AimingSubsystem extends SubsystemBase {
 
     //initialize PID Controller Constants for SlotConfigs
 
-    mElevatorControllerSlot0Configs = AimingConstants.mElevatorPIDConstants.toTalonConfiguration().Slot0;
+    mElevatorControllerSlot0Configs = AimingConstants.mElevatorPIDConstants.toTalonConfiguration();
 
     mLeftElevatorMotor.getConfigurator().apply(mElevatorControllerSlot0Configs);
     mRightElevatorMotor.getConfigurator().apply(mElevatorControllerSlot0Configs);
