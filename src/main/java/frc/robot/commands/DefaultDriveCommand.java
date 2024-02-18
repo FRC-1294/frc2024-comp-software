@@ -71,10 +71,8 @@ public class DefaultDriveCommand extends Command {
     boolean isFieldOriented = true;
     SmartDashboard.putNumber("tx", mLimelight.getTX());
     if (Input.getNoteAlignment() && mLimelight.isDetectionValid()) {
-      if (mLimelight.isDetectionValid()) {
         rot = notePID.calculate(Units.degreesToRadians(mLimelight.getTX()));
         isFieldOriented = false;
-      }
     }
     mSwerve.setChassisSpeed(x, y, rot, isFieldOriented);
   }
