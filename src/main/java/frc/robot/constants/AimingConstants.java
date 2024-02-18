@@ -15,11 +15,11 @@ public class AimingConstants {
 
     // Setpoints
     public enum AimState {
-        STOW(MIN_ELEVATOR_DIST_IN, MIN_WRIST_ROTATION_DEG),
-        SPEAKER(MIN_ELEVATOR_DIST_IN, MIN_WRIST_ROTATION_DEG),
-        AMP(MIN_ELEVATOR_DIST_IN, MIN_WRIST_ROTATION_DEG),
-        HANDOFF(MIN_ELEVATOR_DIST_IN, MIN_WRIST_ROTATION_DEG),
-        CLIMB(MIN_ELEVATOR_DIST_IN, MIN_WRIST_ROTATION_DEG);
+        STOW(0, MIN_WRIST_ROTATION_DEG),
+        SPEAKER(0, MIN_WRIST_ROTATION_DEG),
+        AMP(0, MIN_WRIST_ROTATION_DEG),
+        HANDOFF(0, MIN_WRIST_ROTATION_DEG),
+        CLIMB(0, MIN_WRIST_ROTATION_DEG);
 
         public final double elevatorDistIn;
         public final double wristAngleDeg;
