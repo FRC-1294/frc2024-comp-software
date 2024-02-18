@@ -11,13 +11,15 @@ import frc.robot.constants.VisionConstants;
 
 
 public class Limelight extends SubsystemBase {
-  NetworkTable mTable;
-  double tv;
-  double tx;
-  double ta;
+  private NetworkTable mTable;
+  private double tv;
+  private double tx;
+  private double ta;
+
   public Limelight() {
     mTable = NetworkTableInstance.getDefault().getTable(VisionConstants.LIMELIGHT_NAME);
   }
+
   public Limelight(String limeLightName) {
     mTable = NetworkTableInstance.getDefault().getTable(limeLightName);
   }
@@ -33,15 +35,11 @@ public class Limelight extends SubsystemBase {
     return tv == 1.0;
   }
 
-  public double getTX() {
+  public double getNoteAngle() {
     return tx;
   }
 
-  public double getTA() {
+  public double getNoteArea() {
     return ta;
-  }
-
-  public double getTV() {
-    return tv;
   }
 }

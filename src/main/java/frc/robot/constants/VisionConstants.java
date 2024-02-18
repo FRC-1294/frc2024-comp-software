@@ -5,7 +5,7 @@
 package frc.robot.constants;
 
 
-/** Add your docs here. */
+/** Constants for the limelight and automatic note alignment */
 public class VisionConstants {
   private VisionConstants() {
     throw new IllegalStateException("Constants Class");

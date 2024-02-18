@@ -19,7 +19,7 @@ public class DefaultDriveCommand extends Command {
   private final SwerveSubsystem mSwerve;
   private final Limelight mLimelight;
   private boolean mIsPrecisionToggle = false;
-  PIDController notePID = new PIDController(5, 0, 0.1);
+  private final PIDController mNotePID = new PIDController(5, 0, 0.1);
   
 
 
@@ -28,7 +28,7 @@ public class DefaultDriveCommand extends Command {
     mLimelight = limelight;
     addRequirements(mSwerve);
     addRequirements(mLimelight);
-    notePID.setTolerance(2);
+    mNotePID.setTolerance(2);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -69,9 +69,9 @@ public class DefaultDriveCommand extends Command {
     y *= SwerveConstants.TELE_MAX_SPEED_MPS;
     rot *= SwerveConstants.TELE_MAX_ROT_SPEED_RAD_SEC;
     boolean isFieldOriented = true;
-    SmartDashboard.putNumber("tx", mLimelight.getTX());
+    SmartDashboard.putNumber("tx", mLimelight.getNoteAngle());
     if (Input.getNoteAlignment() && mLimelight.isDetectionValid()) {
-        rot = notePID.calculate(Units.degreesToRadians(mLimelight.getTX()));
+        rot = mNotePID.calculate(Units.degreesToRadians(mLimelight.getNoteAngle()));
         isFieldOriented = false;
     }
     mSwerve.setChassisSpeed(x, y, rot, isFieldOriented);
