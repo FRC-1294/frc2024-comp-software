@@ -37,13 +37,13 @@ public class DefaultAimCommand extends Command {
 
     if (Math.abs(Input.getLeftStickY()) > 0) {
       //convert between input to increment
-      double increment = -1 * Input.getLeftStickY() * AimingConstants.MAX_WRIST_TELEOP_INCREMENT;
+      double increment = Input.getLeftStickY() * AimingConstants.MAX_WRIST_TELEOP_INCREMENT;
       mAimingSubsystem.changeDesiredWristRotation(increment);
     }
     
     if (Math.abs(Input.getRightStickY()) > 0) {
       //convert between input to increment
-      double increment = -1 * Input.getRightStickY() * AimingConstants.MAX_ELEVATOR_TELEOP_INCREMENT;
+      double increment = Input.getRightStickY() * AimingConstants.MAX_ELEVATOR_TELEOP_INCREMENT;
       mAimingSubsystem.changeDesiredElevatorPosition(increment);
     }
   }
