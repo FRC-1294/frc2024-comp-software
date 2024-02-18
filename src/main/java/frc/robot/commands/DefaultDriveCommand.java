@@ -70,12 +70,11 @@ public class DefaultDriveCommand extends Command {
     rot *= SwerveConstants.TELE_MAX_ROT_SPEED_RAD_SEC;
     boolean isFieldOriented = true;
     SmartDashboard.putNumber("tx", mLimelight.getTX());
-    if (Input.getNoteAlignment()) {
+    if (Input.getNoteAlignment() && mLimelight.isDetectionValid()) {
       if (mLimelight.isDetectionValid()) {
         rot = notePID.calculate(Units.degreesToRadians(mLimelight.getTX()));
         isFieldOriented = false;
       }
-
     }
     mSwerve.setChassisSpeed(x, y, rot, isFieldOriented);
   }
