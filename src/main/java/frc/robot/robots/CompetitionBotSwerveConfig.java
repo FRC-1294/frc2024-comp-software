@@ -64,7 +64,14 @@ public class CompetitionBotSwerveConfig extends SwerveConfig{
                 BACK_RIGHT_TRANS_CARPET_PID = new PIDParameters(0.1, 0, 0,0.0,0.0);//TODO: https://github.com/FRC-1294/frc2024/issues/280
 
 
-                // Swerve Modules and Other Hardware
+
+
+                
+        }
+
+        @Override
+        public void initializeSwerveModules() {
+                                // Swerve Modules and Other Hardware
                 FRONT_LEFT_MODULE = new KrakenSwerveModule(FRONT_LEFT_ROT_ID,
                                 FRONT_LEFT_TRANS_ID, FRONT_LEFT_ROT_ENC_ID, FRONT_LEFT_ROT_INVERSE,
                                 FRONT_LEFT_TRANS_INVERSE, FRONT_LEFT_ROT_PID,FRONT_LEFT_TRANS_CARPET_PID,TRANS_GEAR_RATIO_ROT,
@@ -84,8 +91,6 @@ public class CompetitionBotSwerveConfig extends SwerveConfig{
                                 BACK_RIGHT_TRANS_ID, BACK_RIGHT_ROT_ENC_ID, BACK_RIGHT_ROT_INVERSE,
                                 BACK_RIGHT_TRANS_INVERSE, BACK_RIGHT_ROT_PID,BACK_RIGHT_TRANS_CARPET_PID,TRANS_GEAR_RATIO_ROT,
                                 WHEEL_CIRCUMFERENCE_METERS,PHYSICAL_MAX_SPEED_MPS,ABS_ENC_GEAR_RATIO_ROT,REL_ENC_GEAR_RATIO_ROT);
-
-                
         }
 
 

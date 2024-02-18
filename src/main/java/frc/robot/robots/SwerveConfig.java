@@ -56,18 +56,26 @@ public abstract class SwerveConfig {
                 BACK_RIGHT_ROT_ID = 6;
                 BACK_RIGHT_ROT_ENC_ID = 20;
 
-                SWERVE_MODULES[0] = FRONT_LEFT_MODULE;
-                SWERVE_MODULES[1] = FRONT_RIGHT_MODULE;
-                SWERVE_MODULES[2] = BACK_LEFT_MODULE;
-                SWERVE_MODULES[3] = BACK_RIGHT_MODULE;
 
                 SWERVE_MODULE_PIDs[0] = FRONT_LEFT_ROT_PID;
                 SWERVE_MODULE_PIDs[1] = FRONT_RIGHT_ROT_PID;
                 SWERVE_MODULE_PIDs[2] = BACK_LEFT_ROT_PID;
                 SWERVE_MODULE_PIDs[3] = BACK_RIGHT_ROT_PID;
+
+                initializeSwerveModules();
+
+                SWERVE_MODULES[0] = FRONT_LEFT_MODULE;
+                SWERVE_MODULES[1] = FRONT_RIGHT_MODULE;
+                SWERVE_MODULES[2] = BACK_LEFT_MODULE;
+                SWERVE_MODULES[3] = BACK_RIGHT_MODULE;
+
+
+                
         }
 
         public abstract void config();
+
+        public abstract void initializeSwerveModules();
 
         public int NUM_MODULES = 4;
         //Since Java does not support abstract FIELDS, this is our only solution apart from requiring everything within the constructor

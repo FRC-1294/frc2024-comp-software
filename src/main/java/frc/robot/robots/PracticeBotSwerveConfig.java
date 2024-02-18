@@ -57,10 +57,9 @@ public class PracticeBotSwerveConfig extends SwerveConfig{
             FRONT_RIGHT_TRANS_CARPET_PID = new PIDParameters(0.1, 0, 0,0.010345774702727795,0.2147905172579474);
             BACK_LEFT_TRANS_CARPET_PID = new PIDParameters(0.1, 0, 0,0.011993774212896824,0.21911519031435608);
             BACK_RIGHT_TRANS_CARPET_PID = new PIDParameters(0.1, 0, 0,0.010132145136594772,0.21575530586570696);
+        }
 
-
-
-            // Swerve Modules and Other Hardware
+        public void initializeSwerveModules() {
             FRONT_LEFT_MODULE = new RevSwerveModule(FRONT_LEFT_ROT_ID,
                            FRONT_LEFT_TRANS_ID, FRONT_LEFT_ROT_ENC_ID, FRONT_LEFT_ROT_INVERSE,
                            FRONT_LEFT_TRANS_INVERSE, FRONT_LEFT_ROT_PID,FRONT_LEFT_TRANS_CARPET_PID,TRANS_GEAR_RATIO_ROT,
