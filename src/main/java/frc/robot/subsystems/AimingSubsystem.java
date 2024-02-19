@@ -53,7 +53,7 @@ public class AimingSubsystem extends SubsystemBase {
   private RelativeEncoder mLeftElevatorEncoder;
   private RelativeEncoder mRightElevatorEncoder;
 
-  ArmFeedforward mWristFeedforwardController = new ArmFeedforward(AimingConstants.mWristPIDConstants.getKS(), AimingConstants.WRIST_KG, AimingConstants.mWristPIDConstants.getKV());
+  ArmFeedforward mWristFeedforwardController = new ArmFeedforward(AimingConstants.mWristPIDConstants.mKS, AimingConstants.WRIST_KG, AimingConstants.mWristPIDConstants.mKV);
 
   MotorOutputConfigs mLeftWristMotorOutputConfigs = new MotorOutputConfigs();
   MotorOutputConfigs mRightWristMotorOutputConfigs = new MotorOutputConfigs();
@@ -76,7 +76,8 @@ public class AimingSubsystem extends SubsystemBase {
   public void configureDevices() {
 
     //initialize PID Controller Constants for SlotConfigs
-    mElevatorControllerSlot0Configs = AimingConstants.mElevatorPIDConstants.toTalonConfiguration().Slot0;
+
+    mElevatorControllerSlot0Configs = AimingConstants.mElevatorPIDConstants.toTalonConfiguration();
     
     mWristController = AimingConstants.mWristPIDConstants.toWPIController();
     //note: configuration uses internal encoders inside the motors, subject to change

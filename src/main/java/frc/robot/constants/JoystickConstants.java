@@ -11,7 +11,6 @@ public class JoystickConstants {
     }
 
     public static final int ROT_JOYSTICK_PORT = 0;
-    public static final int XBOX_CONTROLLER_PORT = 1;
     public static final int TRANS_JOY_PORT = 2;
     public static final int XBOX_PORT = 1;
 
@@ -26,6 +25,8 @@ public class JoystickConstants {
     public static final double DRIVE_REG_X_DEADZONE = 0.10;
     public static final double DRIVE_REG_Y_DEADZONE = 0.10;
     public static final double DRIVE_REG_ROT_DEADZONE = 0.15;
+
+    public static final double XBOX_Y_DEADZONE = 0.1;
 
 
 }

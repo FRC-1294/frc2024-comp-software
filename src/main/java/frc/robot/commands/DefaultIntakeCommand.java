@@ -6,9 +6,8 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.IntakeConstants;
-import frc.robot.subsystems.Input;
+import frc.robot.Input;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.constants.CompConstants;
 
 public class DefaultIntakeCommand extends Command {
 
@@ -28,14 +27,14 @@ public class DefaultIntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (Input.getOnePiece()) {
-      CompConstants.ONE_PIECE = !CompConstants.ONE_PIECE;
+    if (Input.overrideIntakeBeamBreak()){
+      mIntake.toggleBeamBreakOverride();
     }
-    if (mIntake.pieceInIntake()) {
-      mIntake.stopMotor();
-    }
-    if (Input.getIntake() && (!mIntake.pieceInIntake() || !CompConstants.ONE_PIECE)) {
-      mIntake.intakeAtSpeed(IntakeConstants.INTAKE_SPEED);
+
+    if (Input.getIntake()) {
+      mIntake.intakeAtSpeed(IntakeConstants.ACTIVE_INTAKE_SPEED);
+    }else{
+      mIntake.intakeAtSpeed(IntakeConstants.PASSIVE_INTAKE_SPEED);
     }
   }
 
