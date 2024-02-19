@@ -81,8 +81,8 @@ public class AimingSubsystem extends SubsystemBase {
     mWristController = AimingConstants.mWristPIDConstants.toWPIController();
     //note: configuration uses internal encoders inside the motors, subject to change
   
-    mLeftElevatorMotor.setInverted(AimingConstants.ELEVATOR_LEFT_IS_INVERTED);
-    mLeftWristMotor.setInverted(AimingConstants.WRIST_LEFT_IS_INVERTED);
+    mLeftElevatorMotor.setInverted(!AimingConstants.ELEVATOR_LEFT_IS_NORMAL);
+    mLeftWristMotor.setInverted(!AimingConstants.WRIST_LEFT_IS_NORMAL);
     mWristController.setTolerance(AimingConstants.WRIST_TOLERANCE_DEG);
     mElevatorController.setTolerance(AimingConstants.ELEVATOR_TOLERANCE_IN);
 
@@ -90,7 +90,6 @@ public class AimingSubsystem extends SubsystemBase {
     mRightWristMotor.follow(mLeftWristMotor, true);
     mRightElevatorMotor.follow(mLeftElevatorMotor, true);
 
-    // check-in with Aaditya if these should be inches or meters
     mLeftElevatorEncoder.setPositionConversionFactor(AimingConstants.ELEVATOR_ROTATIONS_TO_METERS);
     mRightElevatorEncoder.setPositionConversionFactor(AimingConstants.ELEVATOR_ROTATIONS_TO_METERS);
 
