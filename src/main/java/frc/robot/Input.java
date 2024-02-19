@@ -80,6 +80,7 @@ public class Input {
   public static double getDPad() {
     return mXboxController.getPOV();
   }
+
   public static double getLeftStickY() {
     return -mXboxController.getLeftY();
   }
