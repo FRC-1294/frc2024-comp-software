@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.robots.PracticeBotSwerveConfig;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.Limelight;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -17,6 +18,8 @@ import frc.robot.subsystems.SwerveSubsystem;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem mSwerveSubsystem = new SwerveSubsystem(new PracticeBotSwerveConfig());
+  private final LimeLight mLightLight = new Limelight();
+  
   
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
