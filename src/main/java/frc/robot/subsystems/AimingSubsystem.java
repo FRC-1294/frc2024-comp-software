@@ -53,8 +53,6 @@ public class AimingSubsystem extends SubsystemBase {
   private RelativeEncoder mLeftElevatorEncoder;
   private RelativeEncoder mRightElevatorEncoder;
 
-  ArmFeedforward mWristFeedforwardController = new ArmFeedforward(AimingConstants.mWristPIDConstants.mKS, AimingConstants.WRIST_KG, AimingConstants.mWristPIDConstants.mKV);
-
   MotorOutputConfigs mLeftWristMotorOutputConfigs = new MotorOutputConfigs();
   MotorOutputConfigs mRightWristMotorOutputConfigs = new MotorOutputConfigs();
 
@@ -126,9 +124,9 @@ public class AimingSubsystem extends SubsystemBase {
     mCurrentWristRotationDeg = getCurrentWristRotation();
 
     double offset = (Math.PI / 2);
-    double wristPIDCalculation = mWristController.calculate(mCurrentWristRotationDeg, mDesiredWristRotationDeg);    
-    double wristFeedforwardCalculation = mWristFeedforwardController.calculate(Math.toRadians(mDesiredWristRotationDeg) - offset, mLeftWristMotor.getEncoder().getVelocity() * AimingConstants.SPARK_THROUGHBORE_GEAR_RATIO);
-    mLeftWristMotor.set(wristPIDCalculation + wristFeedforwardCalculation);
+    double wristPIDCalculation = mWristController.calculate(mCurrentWristRotationDeg, mDesiredWristRotationDeg);
+    SmartDashboard.putNumber("WristPIDOutput", wristPIDCalculation);
+    mLeftWristMotor.set(wristPIDCalculation + AimingConstants.ELEVATOR_FEEDFORWARD_CONSTANT);
   }
 
   private void updateMotorModes() {

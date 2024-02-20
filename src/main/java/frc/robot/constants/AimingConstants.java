@@ -38,8 +38,8 @@ public class AimingConstants {
     // PID Constants
     public static final PIDParameters mElevatorPIDConstants = new PIDParameters(3, 0, 0);
     public static final PIDParameters mWristPIDConstants = new PIDParameters(0.1, 0, 0, 0, 0);
-    public static final double WRIST_KG = 0.0;
     public static final double ELEVATOR_FEEDFORWARD_CONSTANT = 0.05;
+    public static final double WRIST_FEEDFORWARD_CONSTANT = 0;
     public static final double SPARK_THROUGHBORE_GEAR_RATIO = 1;
 
 
