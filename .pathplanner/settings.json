@@ -1,11 +1,16 @@
 {
-  "robotWidth": 0.56,
-  "robotLength": 0.56,
+  "robotWidth": 0.66,
+  "robotLength": 0.75,
   "holonomicMode": true,
-  "pathFolders": [],
+  "pathFolders": [
+    "Center_Left",
+    "In-Place_4_Piece",
+    "Misc_Tests",
+    "Wing_Focused"
+  ],
   "autoFolders": [
-    "New Folder",
-    "New New Folder"
+    "4_Wing_Piece",
+    "Left_Center_Piece"
   ],
   "defaultMaxVel": 4.0,
   "defaultMaxAccel": 1.5,

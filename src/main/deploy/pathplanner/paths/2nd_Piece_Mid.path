@@ -11,33 +11,33 @@
         "x": 2.4275454429594348,
         "y": 4.08
       },
-      "isLocked": false,
+      "isLocked": true,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.89,
-        "y": 4.080302727627994
+        "x": 2.5052464814300928,
+        "y": 4.08
       },
       "prevControl": {
-        "x": 2.81,
-        "y": 4.080302727627994
+        "x": 2.3775603934297784,
+        "y": 4.0895166736396
       },
       "nextControl": {
-        "x": 2.97,
-        "y": 4.080302727627994
+        "x": 2.6318429861059016,
+        "y": 4.070564534963975
       },
       "isLocked": true,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.89,
-        "y": 4.691966179968694
+        "x": 2.6318429861059016,
+        "y": 4.6548560950028195
       },
       "prevControl": {
-        "x": 2.922746059277017,
-        "y": 4.472857181156969
+        "x": 2.6026284081037927,
+        "y": 4.645117902335449
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,13 +46,8 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.35,
+      "waypointRelativePos": 1.15,
       "rotationDegrees": 0.0,
-      "rotateFast": true
-    },
-    {
-      "waypointRelativePos": 1.95,
-      "rotationDegrees": -23.0,
       "rotateFast": true
     }
   ],
@@ -60,29 +55,9 @@
   "eventMarkers": [
     {
       "name": "IntakeUntilNote",
-      "waypointRelativePos": 0.4,
+      "waypointRelativePos": 0.2,
       "command": {
         "type": "parallel",
-        "data": {
-          "commands": []
-        }
-      }
-    },
-    {
-      "name": "Handoff",
-      "waypointRelativePos": 1.5,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": []
-        }
-      }
-    },
-    {
-      "name": "ShootDynamic",
-      "waypointRelativePos": 2.0,
-      "command": {
-        "type": "sequential",
         "data": {
           "commands": []
         }
@@ -97,11 +72,14 @@
   },
   "goalEndState": {
     "velocity": 0.0,
-    "rotation": -23.0,
+    "rotation": -19.855214369320933,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
-  "previewStartingState": null,
+  "folder": "Wing_Focused",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 1.5
+  },
   "useDefaultConstraints": true
 }

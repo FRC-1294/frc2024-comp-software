@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.25,
+        "x": 1.4,
         "y": 5.59
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7341823830285936,
+        "x": 1.8841823830285935,
         "y": 5.02405347833194
       },
       "isLocked": true,
@@ -16,27 +16,27 @@
     },
     {
       "anchor": {
-        "x": 2.7389631054469707,
-        "y": 3.9829208009542953
+        "x": 2.5247228667648325,
+        "y": 4.2361138103059135
       },
       "prevControl": {
-        "x": 2.355991854675035,
-        "y": 4.3898277548994775
+        "x": 2.1155881807793526,
+        "y": 4.616704215873803
       },
       "nextControl": {
-        "x": 3.174239765473975,
-        "y": 3.5204393496756037
+        "x": 2.943465151461739,
+        "y": 3.846586103611116
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.25,
+        "x": 1.4,
         "y": 5.59
       },
       "prevControl": {
-        "x": 1.256829278728748,
+        "x": 1.406829278728748,
         "y": 5.559268245720636
       },
       "nextControl": null,
@@ -46,24 +46,12 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.35,
-      "rotationDegrees": 0.0,
+      "waypointRelativePos": 0.9,
+      "rotationDegrees": -26.639699582408575,
       "rotateFast": false
     }
   ],
-  "constraintZones": [
-    {
-      "name": "New Constraints Zone",
-      "minWaypointRelativePos": 1.05,
-      "maxWaypointRelativePos": 1.2,
-      "constraints": {
-        "maxVelocity": 0.5,
-        "maxAcceleration": 2.0,
-        "maxAngularVelocity": 400.0,
-        "maxAngularAcceleration": 200.0
-      }
-    }
-  ],
+  "constraintZones": [],
   "eventMarkers": [
     {
       "name": "IntakeUntilNote",
@@ -76,23 +64,6 @@
               "type": "named",
               "data": {
                 "name": "IntakeUntilNote"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Handoff",
-      "waypointRelativePos": 0.9,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Handoff"
               }
             }
           ]
@@ -112,7 +83,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Wing_Focused",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

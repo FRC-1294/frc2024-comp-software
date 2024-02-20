@@ -2,43 +2,31 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.78,
-      "y": 4.52
+      "x": 1.5,
+      "y": 7.0
     },
-    "rotation": -60.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "ShootFromSubwoofer"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "1st_Note_Transition"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "2nd_Piece_Mid"
+            "pathName": "Center_Piece_1"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ShootFromMidnote"
+            "name": "ShootFromLine"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "3rd_Piece_Mid"
+            "pathName": "Center_Piece_2_Bum"
           }
         },
         {
@@ -50,7 +38,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "4th_Piece_Mid"
+            "pathName": "Center_Piece_4"
           }
         },
         {
@@ -62,6 +50,6 @@
       ]
     }
   },
-  "folder": "4_Wing_Piece",
+  "folder": "Left_Center_Piece",
   "choreoAuto": false
 }

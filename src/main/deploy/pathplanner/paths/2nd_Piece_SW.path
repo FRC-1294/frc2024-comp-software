@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.2497580073557941,
+        "x": 1.3,
         "y": 5.586601693432708
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9736615526030168,
+        "x": 2.0239035452472227,
         "y": 5.579772414703961
       },
       "isLocked": false,
@@ -16,27 +16,27 @@
     },
     {
       "anchor": {
-        "x": 2.7521993276802186,
-        "y": 5.586601693432708
+        "x": 2.6,
+        "y": 5.59
       },
       "prevControl": {
-        "x": 2.759028606408966,
-        "y": 5.565397580008792
+        "x": 2.6068292787287475,
+        "y": 5.568795886576084
       },
       "nextControl": {
-        "x": 2.745370048951471,
-        "y": 5.607805806856623
+        "x": 2.5931707212712527,
+        "y": 5.6112041134239155
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.25,
+        "x": 1.4,
         "y": 5.586601693432708
       },
       "prevControl": {
-        "x": 1.9807328239759698,
+        "x": 2.1307328239759697,
         "y": 5.593430972161457
       },
       "nextControl": null,
@@ -63,23 +63,6 @@
           ]
         }
       }
-    },
-    {
-      "name": "Handoff",
-      "waypointRelativePos": 1.3,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Handoff"
-              }
-            }
-          ]
-        }
-      }
     }
   ],
   "globalConstraints": {
@@ -94,7 +77,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Wing_Focused",
   "previewStartingState": {
     "rotation": 0.0,
     "velocity": 0.0
