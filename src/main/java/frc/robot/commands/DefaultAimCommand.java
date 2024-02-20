@@ -6,9 +6,9 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.AimingConstants.AimState;
+import frc.robot.Input;
 import frc.robot.constants.AimingConstants;
 import frc.robot.subsystems.AimingSubsystem;
-import frc.robot.subsystems.Input;
 
 public class DefaultAimCommand extends Command {
   private final AimingSubsystem mAimingSubsystem;
@@ -31,18 +31,19 @@ public class DefaultAimCommand extends Command {
       mAimingSubsystem.setDesiredSetpoint(AimState.SPEAKER);
     }
     else if (Input.getDPad() == 0.0) {
-      mAimingSubsystem.setDesiredSetpoint(AimState.CLIMB);    }
+      mAimingSubsystem.setDesiredSetpoint(AimState.CLIMB);
+    }
 
 
     if (Math.abs(Input.getLeftStickY()) > 0) {
       //convert between input to increment
-      double increment = Input.getLeftStickY() * AimingConstants.MAX_ELEVATOR_TELEOP_INCREMENT;
+      double increment = Input.getLeftStickY() * AimingConstants.MAX_WRIST_TELEOP_INCREMENT;
       mAimingSubsystem.changeDesiredWristRotation(increment);
     }
     
     if (Math.abs(Input.getRightStickY()) > 0) {
       //convert between input to increment
-      double increment = Input.getRightStickY() * AimingConstants.MAX_WRIST_TELEOP_INCREMENT;
+      double increment = Input.getRightStickY() * AimingConstants.MAX_ELEVATOR_TELEOP_INCREMENT;
       mAimingSubsystem.changeDesiredElevatorPosition(increment);
     }
   }

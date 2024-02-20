@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -16,10 +16,7 @@ public class Input {
 
   private static final Joystick mRotJoystick = new Joystick(JoystickConstants.ROT_JOYSTICK_PORT);
   private static final Joystick mTransJoystick = new Joystick(JoystickConstants.TRANS_JOY_PORT);
-  private static final XboxController mXboxController = new XboxController(JoystickConstants.XBOX_CONTROLLER_PORT);
-
-  private static final XboxController mControllerXbox =
-    new XboxController(JoystickConstants.XBOX_PORT);
+  private static final XboxController mXboxController = new XboxController(JoystickConstants.XBOX_PORT);
 
 
   public static final int DPADUP = 0;
@@ -45,19 +42,19 @@ public class Input {
   }
 
   public static boolean getLeftBumper() {
-    return mControllerXbox.getLeftBumper();
+    return mXboxController.getLeftBumper();
   }
 
   public static boolean getRightBumper() {
-    return mControllerXbox.getRightBumperPressed();
+    return mXboxController.getRightBumperPressed();
   }
 
   public static double getLeftTrigger() {
-    return mControllerXbox.getLeftTriggerAxis();
+    return mXboxController.getLeftTriggerAxis();
   }
 
   public static double getRightTrigger() {
-    return mControllerXbox.getRightTriggerAxis();
+    return mXboxController.getRightTriggerAxis();
   }
 
   public static double getRot() {
@@ -83,6 +80,7 @@ public class Input {
   public static double getDPad() {
     return mXboxController.getPOV();
   }
+
   public static double getLeftStickY() {
     return -mXboxController.getLeftY();
   }
@@ -115,7 +113,7 @@ public class Input {
     return mXboxController.getLeftBumper();
   }
 
-  public static boolean getOnePiece() {
+  public static boolean overrideIntakeBeamBreak() {
     return mXboxController.getRightStickButton();
   }
 }
