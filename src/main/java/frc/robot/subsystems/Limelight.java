@@ -12,9 +12,9 @@ import frc.robot.constants.VisionConstants;
 
 public class Limelight extends SubsystemBase {
   private NetworkTable mTable;
-  private double tv;
-  private double tx;
-  private double ta;
+  private boolean mDetectionValid;
+  private double mNoteAngle;
+  private double mNoteArea;;
 
   public Limelight() {
     mTable = NetworkTableInstance.getDefault().getTable(VisionConstants.LIMELIGHT_NAME);
@@ -26,20 +26,20 @@ public class Limelight extends SubsystemBase {
 
   @Override
   public void periodic() {
-    tv = mTable.getEntry("tv").getDouble(0);
-    ta = mTable.getEntry("ta").getDouble(0);
-    tx = mTable.getEntry("tx").getDouble(0);
+    mDetectionValid = mTable.getEntry("tv").getDouble(0) == 1.0 ? true : false;
+    mNoteArea = mTable.getEntry("ta").getDouble(0);
+    mNoteAngle = mTable.getEntry("tx").getDouble(0);
   }
 
   public boolean isDetectionValid() {
-    return tv == 1.0;
+    return mDetectionValid;
   }
 
   public double getNoteAngle() {
-    return tx;
+    return mNoteAngle;
   }
 
   public double getNoteArea() {
-    return ta;
+    return mNoteArea;
   }
 }
