@@ -80,6 +80,7 @@ public class Input {
   public static double getDPad() {
     return mXboxController.getPOV();
   }
+
   public static double getLeftStickY() {
     return -mXboxController.getLeftY();
   }
@@ -114,6 +115,10 @@ public class Input {
 
   public static boolean overrideIntakeBeamBreak() {
     return mXboxController.getRightStickButton();
+  }
+
+  public static boolean getNoteAlignment() {
+    return mRotJoystick.getRawButton(2);
   }
 }
 
