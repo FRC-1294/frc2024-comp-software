@@ -53,6 +53,14 @@ public class IntakeSubsystem extends SubsystemBase {
     mIntakeMotorOuter.set(percentOutput);
   }
 
+  public void innerMotorAtSpeed(double percentOutput){
+    mIntakeMotorInner.set(percentOutput);
+  }
+
+  public void outerMotorAtSpeed(double percentOutput){
+    mIntakeMotorOuter.set(percentOutput);
+  }
+
   public void runIntakeMotors(){
     mIntakeMotorInner.set(IntakeConstants.ACTIVE_INTAKE_SPEED);
     mIntakeMotorOuter.set(IntakeConstants.ACTIVE_INTAKE_SPEED);
