@@ -19,6 +19,9 @@ public class VisionConstants {
     throw new IllegalStateException("Constants Class");
   }
 
+  public static final double ROT_SPEED = 0.25;
+  public static final String LIMELIGHT_NAME = "limelight";
+
   // These are the names as they appear in photonvision of the cameras. These can be changed in the
   // photonvision dashboard
   public static final String CAMERA_NAME_FRONT = "AgniVision1";
