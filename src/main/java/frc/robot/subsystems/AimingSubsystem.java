@@ -126,7 +126,7 @@ public class AimingSubsystem extends SubsystemBase {
     double offset = (Math.PI / 2);
     double wristPIDCalculation = mWristController.calculate(mCurrentWristRotationDeg, mDesiredWristRotationDeg);
     SmartDashboard.putNumber("WristPIDOutput", wristPIDCalculation);
-    mLeftWristMotor.set(wristPIDCalculation + AimingConstants.ELEVATOR_FEEDFORWARD_CONSTANT);
+    mLeftWristMotor.set(wristPIDCalculation + AimingConstants.WRIST_FEEDFORWARD_CONSTANT);
   }
 
   private void updateMotorModes() {
