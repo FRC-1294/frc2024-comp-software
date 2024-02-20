@@ -261,11 +261,11 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
 
-  public static void resetRobotPose() {
+  public void resetRobotPose() {
     mOdometry.resetPosition(getRotation2d(), getModulePositions(), new Pose2d());
   }
 
-  public static void resetRobotPose(Pose2d pose) {
+  public void resetRobotPose(Pose2d pose) {
     mOdometry.resetPosition(getRotation2d(), getModulePositions(), pose);
   }
 

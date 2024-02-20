@@ -32,7 +32,7 @@ public class DefaultDriveCommand extends Command {
     }
 
     if (Input.resetOdo()) {
-      SwerveSubsystem.resetRobotPose();
+      mSwerve.resetRobotPose();
     }
 
     if (Input.getPrecisionToggle()) {
