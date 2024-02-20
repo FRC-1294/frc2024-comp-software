@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.AimingConstants.AimState;
 import frc.robot.constants.AimingConstants;
+import frc.robot.constants.CompConstants;
 import frc.robot.subsystems.AimingSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.Input;
@@ -24,6 +25,8 @@ public class AutoAimCommand extends Command {
   //AutoLock System
   public double getAngleSpeakerDEGS(){
     Pose2d currentRobotPose = SwerveSubsystem.getRobotPose();
+
+    double desiredAngle = currentRobotPose.minus(CompConstants.BLUE_SPEAKER_POSE).getTranslation().getAngle().getDegrees();
 
     double xRobot = currentRobotPose.getX();
     double yRobot = currentRobotPose.getY();
