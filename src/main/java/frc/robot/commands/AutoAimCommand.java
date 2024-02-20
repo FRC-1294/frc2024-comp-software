@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.geometry.Pose2d;
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -7,7 +8,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.AimingConstants.AimState;
 import frc.robot.constants.AimingConstants;
 import frc.robot.subsystems.AimingSubsystem;
-import frc.robot.subsystems.Input;
+import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.Input;
 
 public class AutoAimCommand extends Command {
   private final AimingSubsystem mAimingSubsystem;
@@ -21,13 +23,21 @@ public class AutoAimCommand extends Command {
 
   //AutoLock System
   public double getAngleSpeakerDEGS(){
-    double xRobot = 0;
-    double yRobot = 0;
+    Pose2d currentRobotPose = SwerveSubsystem.getRobotPose();
 
-    double distanceFromSpeaker = Math.sqrt(Math.pow(AimingConstants.xSpeaker + xRobot, 2) + Math.pow(AimingConstants.ySpeaker + yRobot, 2)); //distance formula
-    double angleRADS = Math.atan(AimingConstants.hShooting / distanceFromSpeaker); //triangle shenanigans (source: trust me bro)
+    double xRobot = currentRobotPose.getX();
+    double yRobot = currentRobotPose.getY();
+    double robotDirection = currentRobotPose.getRotation().getDegrees();
+
+    double distanceFromSpeaker = Math.sqrt(Math.pow(AimingConstants.SPEAKER_X_COORDINATE + xRobot, 2) + Math.pow(AimingConstants.SPEAKER_Y_COORDINATE + yRobot, 2)); //distance formula
+    double angleRADS = Math.atan((AimingConstants.SPEAKER_HEIGHT - ) / distanceFromSpeaker); //triangle shenanigans (source: trust me bro - Pythagoras)
     double angleDEGS = Math.toDegrees(angleRADS);
     return angleDEGS;
+  }
+
+  // Get distance between robot & speaker
+  public double getDistanceToSpeaker(){
+    return 0;
   }
 
 
