@@ -11,7 +11,7 @@ import frc.robot.constants.VisionConstants;
 
 
 public class Limelight extends SubsystemBase {
-  private NetworkTable mTable;
+  private final NetworkTable mTable;
   private boolean mDetectionValid;
   private double mNoteAngle;
   private double mNoteArea;;
