@@ -8,8 +8,8 @@ import frc.robot.subsystems.LauncherSubsystem;
 
 public class ReadyForLaunch extends MechState {
     
-    public ReadyForLaunch (LauncherSubsystem launcherSubsystem,AimingSubsystem aimingSubsystem,IntakeSubsystem intakeSubsystem) {
-        super(launcherSubsystem,aimingSubsystem,intakeSubsystem);
+    public ReadyForLaunch (LauncherSubsystem launcherSubsystem, AimingSubsystem aimingSubsystem, IntakeSubsystem intakeSubsystem) {
+        super(launcherSubsystem, aimingSubsystem, intakeSubsystem);
     }
 
     public void launch() {

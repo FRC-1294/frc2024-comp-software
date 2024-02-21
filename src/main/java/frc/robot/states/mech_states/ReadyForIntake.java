@@ -10,8 +10,8 @@ import frc.robot.subsystems.LauncherSubsystem;
 
 public class ReadyForIntake extends MechState {
 
-    public ReadyForIntake(LauncherSubsystem launcherSubsystem,AimingSubsystem aimingSubsystem,IntakeSubsystem intakeSubsystem) {
-        super(launcherSubsystem,aimingSubsystem,intakeSubsystem);
+    public ReadyForIntake(LauncherSubsystem launcherSubsystem, AimingSubsystem aimingSubsystem, IntakeSubsystem intakeSubsystem) {
+        super(launcherSubsystem, aimingSubsystem, intakeSubsystem);
     }
 
     @Override

@@ -143,7 +143,8 @@ public class DefaultMechCommand extends Command {
     }
 
     public boolean isVisionAligned() {
-        return true; //V2: return LimelightOB.getNoteAlignmentCommand(swerve)
+        //We will change this once we get speaker lock finished
+        return true;
     }
 
     public boolean isFlywheelAtSP() {
