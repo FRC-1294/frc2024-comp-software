@@ -65,8 +65,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 4.0,
-    "maxAcceleration": 1.5,
+    "maxVelocity": 4.5,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 400.0,
     "maxAngularAcceleration": 200.0
   },
@@ -76,7 +76,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Wing_Focused",
+  "folder": null,
   "previewStartingState": {
     "rotation": 0,
     "velocity": 1.5

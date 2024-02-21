@@ -11,21 +11,21 @@
         "x": 2.5473209658227742,
         "y": 7.000262390285308
       },
-      "isLocked": false,
+      "isLocked": true,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.12,
-        "y": 7.437336228925141
+        "x": 8.03,
+        "y": 7.382701999095163
       },
       "prevControl": {
-        "x": 8.818461027804434,
-        "y": 7.483727959205143
+        "x": 7.348544684751635,
+        "y": 7.275103791424368
       },
       "nextControl": {
-        "x": 7.6210992658539745,
-        "y": 7.40419927872514
+        "x": 8.5490251833848,
+        "y": 7.464653343840132
       },
       "isLocked": false,
       "linkedName": null
@@ -36,11 +36,11 @@
         "y": 7.0
       },
       "prevControl": {
-        "x": 2.999780146829204,
-        "y": 7.00662739004
+        "x": 3.189273166325028,
+        "y": 6.979774554099067
       },
       "nextControl": null,
-      "isLocked": false,
+      "isLocked": true,
       "linkedName": "Center_Left_Redezvous"
     }
   ],
@@ -99,8 +99,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 4.0,
-    "maxAcceleration": 1.5,
+    "maxVelocity": 4.5,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 400.0,
     "maxAngularAcceleration": 200.0
   },
@@ -110,7 +110,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Center_Left",
+  "folder": null,
   "previewStartingState": {
     "rotation": 30.0,
     "velocity": 0
