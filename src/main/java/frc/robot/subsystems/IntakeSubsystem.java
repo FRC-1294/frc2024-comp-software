@@ -22,15 +22,21 @@ public class IntakeSubsystem extends SubsystemBase {
   private final CANSparkMax mIntakeMotorOuter;
   private final DigitalInput mBeamBreak;
   private boolean beamBreakOverride = false;
+  private boolean useCurrentLimits = false;
 
   public IntakeSubsystem() {
-    mIntakeMotorInner = new CANSparkMax(IntakeConstants.INTAKE_SPARK_ID_INNER, MotorType.kBrushless);
-    mIntakeMotorInner.setSmartCurrentLimit(IntakeConstants.SMART_CURRENT_LIMIT_INNER); //set current limit as to not burn out motor
+    mIntakeMotorInner = new CANSparkMax(IntakeConstants.INTAKE_SPARK_ID_INNER, MotorType.kBrushless);  
+    if (useCurrentLimits){
+      mIntakeMotorInner.setSmartCurrentLimit(IntakeConstants.SMART_CURRENT_LIMIT_INNER);
+    } //set current limit as to not burn out motor
+    
     mIntakeMotorInner.setInverted(IntakeConstants.INTAKE_INVERTED_INNER);
     mIntakeMotorInner.disableVoltageCompensation();//No voltage comp since we want intake to run at full power
 
     mIntakeMotorOuter = new CANSparkMax(IntakeConstants.INTAKE_SPARK_ID_OUTER, MotorType.kBrushless);
-    mIntakeMotorOuter.setSmartCurrentLimit(IntakeConstants.SMART_CURRENT_LIMIT_OUTER); //set current limit as to not burn out motor
+    if (useCurrentLimits){
+      mIntakeMotorOuter.setSmartCurrentLimit(IntakeConstants.SMART_CURRENT_LIMIT_OUTER);
+    } //set current limit as to not burn out motor
     mIntakeMotorOuter.setInverted(IntakeConstants.INTAKE_INVERTED_OUTER);
     mIntakeMotorOuter.disableVoltageCompensation();//No voltage comp since we want intake to run at full power
 
@@ -62,12 +68,8 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void runIntakeMotors(){
-    mIntakeMotorInner.set(IntakeConstants.ACTIVE_INTAKE_SPEED);
-    mIntakeMotorOuter.set(IntakeConstants.ACTIVE_INTAKE_SPEED);
-  }
-
-  public void noteToLauncher() {
-    mIntakeMotorInner.set(IntakeConstants.ACTIVE_INTAKE_SPEED);
+    mIntakeMotorInner.set(IntakeConstants.INNER_INTAKE_SPEED_ACTIVE);
+    mIntakeMotorOuter.set(IntakeConstants.OUTER_INTAKE_SPEED_ACTIVE);
   }
 
   public void stopMotors() {
@@ -80,7 +82,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public Command getAutomousIntakeCommand() {
-    return new FunctionalCommand(() -> intakeMotorsAtSpeed(IntakeConstants.ACTIVE_INTAKE_SPEED), null, interrupted -> stopMotors(), this::functionalCommandIsFinished, this);
+    return new FunctionalCommand(() -> intakeMotorsAtSpeed(IntakeConstants.INNER_INTAKE_SPEED_ACTIVE), null, interrupted -> stopMotors(), this::functionalCommandIsFinished, this);
   }
 
   public boolean pieceInIntake(){
