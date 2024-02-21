@@ -23,7 +23,7 @@ public class UltraInstinct extends MechState {
     }
 
     public void intake() {
-        mIntakeSubsystem.intakeAtSpeed(IntakeConstants.INTAKE_SPEED);
+        mIntakeSubsystem.intakeAtSpeed(IntakeConstants.ACTIVE_INTAKE_SPEED);
     }
 
     public void index(){

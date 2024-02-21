@@ -14,11 +14,11 @@ public class ReadyForHandoff extends MechState {
 
     @Override
     public void intake() {
-        mIntakeSubsystem.intakeAtSpeed(IntakeConstants.INTAKE_SPEED);
+        mIntakeSubsystem.intakeAtSpeed(IntakeConstants.ACTIVE_INTAKE_SPEED);
     }
     
     @Override
     public void index() {
-        mIntakeSubsystem.intakeAtSpeed(IntakeConstants.INTAKE_SPEED);
+        mIntakeSubsystem.intakeAtSpeed(IntakeConstants.ACTIVE_INTAKE_SPEED);
     }
 }

@@ -14,8 +14,8 @@ import frc.robot.states.mech_states.ReadyForIntake;
 import frc.robot.states.mech_states.ReadyForLaunch;
 import frc.robot.states.mech_states.UltraInstinct;
 import frc.robot.subsystems.AimingSubsystem;
-import frc.robot.subsystems.Input;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.Input;
 import frc.robot.subsystems.LauncherSubsystem;
 
 public class DefaultMechCommand extends Command {
