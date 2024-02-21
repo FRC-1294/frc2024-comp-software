@@ -34,36 +34,38 @@ public class AimingConstants {
     }
     
     // Teleop Constant
-    public static final double MAX_ELEVATOR_TELEOP_INCREMENT = 0;
+    public static final double MAX_ELEVATOR_TELEOP_INCREMENT = 0.05;
     public static final double MAX_WRIST_TELEOP_INCREMENT = 0;
     
     
     // PID Constants
-    public static final PIDParameters mElevatorPIDConstants = new PIDParameters(0.1, 0, 0);
+    public static final PIDParameters mElevatorPIDConstants = new PIDParameters(3, 0, 0);
     public static final PIDParameters mWristPIDConstants = new PIDParameters(0.1, 0, 0, 0, 0);
     public static final double WRIST_KG = 0.0;
-    public static final double ELEVATOR_FEEDFORWARD_CONSTANT = 0;
+    public static final double ELEVATOR_FEEDFORWARD_CONSTANT = 0.05;
     public static final double SPARK_THROUGHBORE_GEAR_RATIO = 1;
 
 
     public static final AimingMotorMode INITIAL_MOTOR_MODE = AimingMotorMode.BRAKE;
 
-    public static final double ELEVATOR_ROTATIONS_TO_INCHES = 1;
-	  public static final double ELEVATOR_TOLERANCE_IN = 0;
+    // TODO: Calculate the ratio for the competition robot
+    // Issue #281 has been created for the same. Link to the issue: https://github.com/FRC-1294/frc2024/issues/281
+    public static final double ELEVATOR_ROTATIONS_TO_METERS = 0.013328525766295266;
+	public static final double ELEVATOR_TOLERANCE_IN = 0.01;
     public static final double WRIST_TOLERANCE_DEG = 0;
 
     // Soft Limits
-    public static final double MAX_ELEVATOR_DIST = 0;
-    public static final double MIN_ELEVATOR_DIST_IN = 0;
-    public static final double MAX_ELEVATOR_EXTENSION_VELOCITY = 0;
+    public static final double MAX_ELEVATOR_DIST = 0.64;
+    public static final double MIN_ELEVATOR_DIST_IN = 0.05;
+    public static final double MAX_ELEVATOR_EXTENSION_VELOCITY = 0.1;
 
     public static final double MAX_WRIST_ROTATION = 0;
     public static final double MIN_WRIST_ROTATION_DEG = 0;
     public static final double MAX_WRIST_ROTATION_VELOCITY = 0;
 
     // ID's
-    public static final int LEFT_ELEVATOR_TALON_ID = 2;
-    public static final int RIGHT_ELEVATOR_TALON_ID = 2;
+    public static final int LEFT_ELEVATOR_SPARK_ID = 1;
+    public static final int RIGHT_ELEVATOR_SPARK_ID = 2;
     public static final int ELEVATOR_TOF_ID = 1;
 
     public static final int LEFT_WRIST_SPARK_ID = 2; 
@@ -73,4 +75,8 @@ public class AimingConstants {
     public static final int RIGHT_WRIST_ENCODER_ID = 0;
 
     public static final int ELEVATOR_THROUGHBORE_ENCODER_ID = 0;
+
+    // If false, then motors are physically inverted
+    public static final boolean ELEVATOR_LEFT_IS_NORMAL = false;
+    public static final boolean WRIST_LEFT_IS_NORMAL = false;
 }
