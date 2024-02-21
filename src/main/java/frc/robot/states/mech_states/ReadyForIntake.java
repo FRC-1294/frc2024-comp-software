@@ -16,12 +16,12 @@ public class ReadyForIntake extends MechState {
 
     @Override
     public void intakeInnerMotor() {
-        mIntakeSubsystem.innerMotorAtSpeed(IntakeConstants.ACTIVE_INTAKE_SPEED);
+        mIntakeSubsystem.innerMotorAtSpeed(IntakeConstants.INNER_INTAKE_SPEED_ACTIVE);
     }
     
     @Override
     public void intakeOuterMotor() {
-        mIntakeSubsystem.outerMotorAtSpeed(IntakeConstants.ACTIVE_INTAKE_SPEED);
+        mIntakeSubsystem.outerMotorAtSpeed(IntakeConstants.OUTER_INTAKE_SPEED_ACTIVE);
     }
 
     @Override

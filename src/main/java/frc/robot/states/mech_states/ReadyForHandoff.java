@@ -15,7 +15,7 @@ public class ReadyForHandoff extends MechState {
 
     @Override
     public void intakeInnerMotor() {
-        mIntakeSubsystem.innerMotorAtSpeed(IntakeConstants.ACTIVE_INTAKE_SPEED);
+        mIntakeSubsystem.innerMotorAtSpeed(IntakeConstants.INNER_INTAKE_SPEED_ACTIVE);
     }
     
     @Override
