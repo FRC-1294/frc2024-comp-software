@@ -4,33 +4,33 @@
 
 package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.constants.LauncherConstants;
+import frc.robot.constants.AimingConstants;
 import frc.robot.constants.AimingConstants.AimState;
-import frc.robot.constants.LauncherConstants.LauncherMode;
+import frc.robot.states.MechState;
+import frc.robot.states.mech_states.Intaken;
+import frc.robot.states.mech_states.ReadyForAim;
+import frc.robot.states.mech_states.ReadyForHandoff;
+import frc.robot.states.mech_states.ReadyForIntake;
+import frc.robot.states.mech_states.ReadyForLaunch;
+import frc.robot.states.mech_states.UltraInstinct;
 import frc.robot.subsystems.AimingSubsystem;
 import frc.robot.subsystems.Input;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
-import frc.states.MechState;
-import frc.states.mechstates.Intaken;
-import frc.states.mechstates.ReadyForAim;
-import frc.states.mechstates.ReadyForHandoff;
-import frc.states.mechstates.ReadyForIntake;
-import frc.states.mechstates.ReadyForLaunch;
 
 public class DefaultMechCommand extends Command {
     private final IntakeSubsystem mIntakeSubsystem;
     private final LauncherSubsystem mLauncherSubsystem;
     private final AimingSubsystem mAimingSubsystem;
 
-    private LauncherMode mLauncherMode = LauncherMode.OFF;
-    private AimState mAimState = AimState.STOW;
-
     private final MechState mReadyForIntake;
     private final MechState mIntaken;
     private final MechState mReadyForHandoff;
     private final MechState mReadyForAim;
     private final MechState mReadyForLaunch;
+    private final MechState mUltraInstinct;
+
+    private boolean mUseUltraInstinct = false;
 
     private MechState mMechState;
 
@@ -41,65 +41,50 @@ public class DefaultMechCommand extends Command {
 
         addRequirements(mIntakeSubsystem, mLauncherSubsystem, mAimingSubsystem);
 
-        mReadyForIntake = new ReadyForIntake(intakeSubsystem, launcherSubsystem);
-        mIntaken = new Intaken(launcherSubsystem);
-        mReadyForHandoff = new ReadyForHandoff(intakeSubsystem, launcherSubsystem);
-        mReadyForAim = new ReadyForAim(launcherSubsystem, aimingSubsystem);
-        mReadyForLaunch = new ReadyForLaunch(launcherSubsystem);
-
+        mReadyForIntake = new ReadyForIntake(launcherSubsystem,aimingSubsystem,intakeSubsystem);
+        mIntaken = new Intaken(launcherSubsystem,aimingSubsystem,intakeSubsystem);
+        mReadyForHandoff = new ReadyForHandoff(launcherSubsystem,aimingSubsystem,intakeSubsystem);
+        mReadyForAim = new ReadyForAim(launcherSubsystem,aimingSubsystem,intakeSubsystem);
+        mReadyForLaunch = new ReadyForLaunch(launcherSubsystem,aimingSubsystem,intakeSubsystem);
+        mUltraInstinct = new UltraInstinct(launcherSubsystem,aimingSubsystem,intakeSubsystem);
         mMechState = determineState();
     }
 
     public MechState determineState() {
+        if (mUseUltraInstinct) {
+            return mUltraInstinct;
+        }
         if (getIntakeBeamBreak() && getIndexerBeamBreak()) {
             return mReadyForIntake;
         }
         else if (!getIntakeBeamBreak() && getIndexerBeamBreak()) {
             return mIntaken;
         }
-        else if (!getIntakeBeamBreak() && getIndexerBeamBreak() && mAimState == AimState.STOW) {
+        else if (!getIntakeBeamBreak() && getIndexerBeamBreak() && mAimingSubsystem.getCurrentState() == AimState.HANDOFF) {
             return mReadyForHandoff;
         }
         else if (!getIndexerBeamBreak()) {
             return mReadyForAim;
         }
-        else if (getIndexerBeamBreak() && isFlywheelAtSP() && isAimAtSP() && isVisionAligned() && Input.getRightBumper()) {
+        else if (!getIndexerBeamBreak() && isFlywheelAtSP() && isAimAtSP() && isVisionAligned() && Input.getRightBumper()) {
             return mReadyForLaunch;
         }
-        return null;
+        return mUltraInstinct;
     }
 
     @Override
     public void execute() {
         if (Input.getX()) {
-            mMechState.setFlywheelOff();
+            mMechState.brakeLauncher();
         }
         else if (Input.getY()) {
-            mMechState.setSpeakerSP();
-            if (mMechState != mReadyForLaunch) {
-                mLauncherMode = LauncherMode.SPEAKER;
-            }
-            if (mMechState == mReadyForAim) {
-                mAimState = AimState.SPEAKER;
-            }
+            mMechState.speakerPosition();
         } 
         else if (Input.getA()) {
-            mMechState.setAmpSP();
-            if (mMechState != mReadyForLaunch) {
-                mLauncherMode = LauncherMode.AMP;
-            }
-            if (mMechState == mReadyForAim) {
-                mAimState = AimState.AMP;
-            }
+            mMechState.ampPosition();
         }
         else if (Input.getB()) {
-            mMechState.setTrapSP();
-            if (mMechState != mReadyForLaunch) {
-                mLauncherMode = LauncherMode.TRAP;
-            }
-            if (mMechState == mReadyForAim) {
-                mAimState = AimState.CLIMB;
-            }
+            mMechState.trapPosition();
         }
         if (Input.getLeftBumper()) {
             mMechState.intake();
@@ -108,51 +93,41 @@ public class DefaultMechCommand extends Command {
             mMechState.launch();
         }
         if (Math.abs(Input.getLeftStickY()) > 0) {
-            mMechState.controlWrist();
+            mMechState.controlWrist(Input.getLeftStickY()*AimingConstants.MAX_WRIST_TELEOP_INCREMENT);
         }
         if (Math.abs(Input.getRightStickY()) > 0) {
-            mMechState.controlElevator();
+            mMechState.controlElevator(Input.getLeftStickY()*AimingConstants.MAX_WRIST_TELEOP_INCREMENT);
         }
         if (Input.getDPad() == Input.DPADUP) {
-            mMechState.setElevatorSPtoStage();
+            mMechState.setElevatorSP(AimState.CLIMB);
+        } else if (Input.getDPad() == Input.DPADDOWN) {
+            mMechState.setElevatorSP(AimState.STOW);
         }
-        else if (Input.getDPad() == Input.DPADDOWN) {
-            mMechState.setElevatorSPtoBase();
-        }
-        if (Input.getDPad() == Input.DPADLEFT) {
-            mMechState.resetEncoders();
+        if (Input.getDPad() == Input.DPADRIGHT){
+            mUseUltraInstinct = !mUseUltraInstinct;
         }
 
         runAction();
-
         mMechState = determineState();
     }
 
     //automatic actions
     public void runAction() {
         if (mMechState == mReadyForIntake) {
-            mAimState = AimState.STOW;
-            mAimingSubsystem.setDesiredSetpoint(mAimState);
-            mLauncherSubsystem.setLauncherMode(mLauncherMode);
+            mMechState.handoffPosition();
         }
         else if (mMechState == mIntaken) {
-            //prepare momentum for handoff
-            mLauncherSubsystem.runIndexer(LauncherConstants.INDEXER_VELOCITY_DEFAULT);
-            mAimState = AimState.STOW;
-            mAimingSubsystem.setDesiredSetpoint(mAimState);
-            mLauncherSubsystem.setLauncherMode(mLauncherMode);
+            mMechState.handoffPosition();
         }
         else if (mMechState == mReadyForHandoff) {
-            //handoff
-            mLauncherSubsystem.runIndexer(LauncherConstants.INDEXER_VELOCITY_DEFAULT);
-            mLauncherSubsystem.setLauncherMode(mLauncherMode);
+            mMechState.intake();
+            mMechState.index();
         }
         else if (mMechState == mReadyForAim) {
-            mLauncherSubsystem.setLauncherMode(mLauncherMode);
-            mAimingSubsystem.setDesiredSetpoint(mAimState);
+            //No Automation Yet
         }
         else if (mMechState == mReadyForLaunch) {
-            mLauncherSubsystem.runIndexer(LauncherConstants.INDEXER_VELOCITY_DEFAULT);
+            //Need Operator Confirmation
         }
     }
 
@@ -174,10 +149,6 @@ public class DefaultMechCommand extends Command {
 
     public boolean isAimAtSP() {
         return mAimingSubsystem.atSetpoints();
-    }
-
-    public void setMechState(MechState mechState) {
-        this.mMechState = mechState;
     }
 
     public MechState getReadyForIntake() {
