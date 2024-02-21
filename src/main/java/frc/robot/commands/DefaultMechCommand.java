@@ -87,7 +87,8 @@ public class DefaultMechCommand extends Command {
             mMechState.trapPosition();
         }
         if (Input.getLeftBumper()) {
-            mMechState.intake();
+            mMechState.intakeInnerMotor();
+            mMechState.intakeOuterMotor();
         }
         if (Input.getRightBumper()) {
             mMechState.launch();
@@ -120,7 +121,7 @@ public class DefaultMechCommand extends Command {
             mMechState.handoffPosition();
         }
         else if (mMechState == mReadyForHandoff) {
-            mMechState.intake();
+            mMechState.intakeInnerMotor();
             mMechState.index();
         }
         else if (mMechState == mReadyForAim) {
