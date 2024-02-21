@@ -9,9 +9,12 @@ public class IntakeConstants {
     private IntakeConstants() {
         throw new IllegalStateException("Constants Class");
     }
-    public static final int INTAKE_SPARK_ID = 21;
-    public static final boolean INTAKE_INVERTED = true;
-    public static final int SMART_CURRENT_LIMIT = 0;
+    public static final int INTAKE_SPARK_ID_INNER = 21;
+    public static final boolean INTAKE_INVERTED_INNER = true;
+    public static final int INTAKE_SPARK_ID_OUTER = 34; // will change later https://github.com/FRC-1294/frc2024/issues/239
+    public static final boolean INTAKE_INVERTED_OUTER = true; // will change later https://github.com/FRC-1294/frc2024/issues/239
+    public static final int SMART_CURRENT_LIMIT_INNER = 0; // will change later https://github.com/FRC-1294/frc2024/issues/239
+    public static final int SMART_CURRENT_LIMIT_OUTER = 0; // will change later https://github.com/FRC-1294/frc2024/issues/239
     public static final int INTAKE_BEAMBREAK_ID = 0;
     public static final double ACTIVE_INTAKE_SPEED = 1.0;
     public static final double PASSIVE_INTAKE_SPEED = 0;
