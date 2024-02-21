@@ -14,6 +14,7 @@ public class UltraInstinct extends MechState {
     public UltraInstinct (LauncherSubsystem launcherSubsystem,AimingSubsystem aimingSubsystem,IntakeSubsystem intakeSubsystem){ 
         super(launcherSubsystem,aimingSubsystem,intakeSubsystem);
     }
+
     @Override
     public void setLauncherSpeed(LauncherMode mode) {
         mLauncherSubsystem.setLauncherMode(mode);

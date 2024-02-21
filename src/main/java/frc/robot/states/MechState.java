@@ -21,6 +21,9 @@ public abstract class MechState {
 
     public void brakeLauncher() {}
 
+    public void brakeIntake() {
+        mIntakeSubsystem.stopMotors();
+    }
     public void intakeOuterMotor() {}
 
     public void intakeInnerMotor() {}

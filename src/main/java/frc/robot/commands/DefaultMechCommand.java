@@ -89,6 +89,8 @@ public class DefaultMechCommand extends Command {
         if (Input.getLeftBumper()) {
             mMechState.intakeInnerMotor();
             mMechState.intakeOuterMotor();
+        } else{
+            mMechState.brakeIntake();
         }
         if (Input.getRightBumper()) {
             mMechState.launch();
