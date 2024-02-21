@@ -26,16 +26,17 @@ public class InitializePathPlanner{
   
   public void initializeNamedCommands(){
     NamedCommands.registerCommand("IntakeUntilNote", new SequentialCommandGroup(new PrintCommand("Intaking until note enters")));
-    NamedCommands.registerCommand("Handoff", new SequentialCommandGroup(new PrintCommand("Handoff"), new WaitCommand(1)));
-    NamedCommands.registerCommand("ShootDynamic", new SequentialCommandGroup(new PrintCommand("Shoot Note"), new WaitCommand(0.5)));
-    NamedCommands.registerCommand("ShootFromSubwoofer", new SequentialCommandGroup(new PrintCommand("Shoot Note From Subwoofer"), new WaitCommand(2)));
+    NamedCommands.registerCommand("ShootFromMidnote", new SequentialCommandGroup(new PrintCommand("Shoot Note from Middle Position"), new WaitCommand(0.5)));
+    NamedCommands.registerCommand("ShootFromSubwoofer", new SequentialCommandGroup(new PrintCommand("Shoot Note From Subwoofer"), new WaitCommand(0.5)));
+    NamedCommands.registerCommand("ShootFromWing", new SequentialCommandGroup(new PrintCommand("Shoot Note from Wing Edge"), new WaitCommand(0.5)));
+    NamedCommands.registerCommand("ShootFromLine", new SequentialCommandGroup(new PrintCommand("Shoot Note from Autonomous Line"), new WaitCommand(0.5)));
   }
 
   // Called when the command is initially scheduled.
   public void initialize() {
     AutoBuilder.configureHolonomic(
     SwerveSubsystem::getRobotPose, 
-    SwerveSubsystem::resetRobotPose,
+    mSwerve::resetRobotPose,
     SwerveSubsystem::getChassisSpeeds, 
     mSwerve::setChassisSpeed,
     new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in

@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.25,
+        "x": 1.4,
         "y": 5.59
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.994391381433465,
+        "x": 2.144391381433465,
         "y": 6.218293643044759
       },
       "isLocked": false,
@@ -16,28 +16,28 @@
     },
     {
       "anchor": {
-        "x": 2.7726871638707484,
-        "y": 6.850018258255807
+        "x": 2.680533949442751,
+        "y": 6.72909113315261
       },
       "prevControl": {
-        "x": 2.4466668774508764,
-        "y": 6.487936048069701
+        "x": 2.31895952160539,
+        "y": 6.402507778976929
       },
       "nextControl": {
-        "x": 3.0537220185414693,
-        "y": 7.162139084956313
+        "x": 2.9824179221312184,
+        "y": 7.001760527838968
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.25,
+        "x": 1.4,
         "y": 5.59
       },
       "prevControl": {
-        "x": 2.2334161369396233,
-        "y": 6.3548792176197075
+        "x": 2.339697206084804,
+        "y": 6.417468967796773
       },
       "nextControl": null,
       "isLocked": false,
@@ -86,28 +86,11 @@
           ]
         }
       }
-    },
-    {
-      "name": "Handoff",
-      "waypointRelativePos": 1.65,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Handoff"
-              }
-            }
-          ]
-        }
-      }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 4.0,
-    "maxAcceleration": 1.5,
+    "maxVelocity": 4.5,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 400.0,
     "maxAngularAcceleration": 200.0
   },

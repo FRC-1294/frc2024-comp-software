@@ -20,7 +20,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "2nd_Piece_V1"
+            "pathName": "2nd_Piece_SW"
           }
         },
         {
@@ -32,7 +32,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "3rd_Piece_V1"
+            "pathName": "3rd_Piece_SW"
           }
         },
         {
@@ -44,7 +44,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "4th_Piece_V1"
+            "pathName": "4th_Piece_SW"
           }
         },
         {
@@ -56,6 +56,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "4_Wing_Piece",
   "choreoAuto": false
 }

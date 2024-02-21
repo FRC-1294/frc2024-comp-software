@@ -45,8 +45,12 @@ public class Robot extends TimedRobot {
 
     pathSelector.addOption("kSCharacterization", new SwerveFrictionCharacterization(robotContainer.getSwerveSubsystem()));
     pathSelector.addOption("kVCharacterization", new SwerveVoltageCharacterization(robotContainer.getSwerveSubsystem()));
-    pathSelector.addOption("4 Piece V1", AutoBuilder.buildAuto("4_Piece_V1"));
-    pathSelector.addOption("4 Piece V2", AutoBuilder.buildAuto("4_Piece_V2"));
+    pathSelector.addOption("4 Piece LC SW", AutoBuilder.buildAuto("4_Piece_SW_Accurate"));
+    pathSelector.addOption("4 Piece LC Line", AutoBuilder.buildAuto("4_Piece_Accurate"));
+    pathSelector.addOption("4 Piece LC Hail Mary", AutoBuilder.buildAuto("4_Piece_Bum"));
+    pathSelector.addOption("4 Piece LC SW Hail Mary", AutoBuilder.buildAuto("4_Piece_SW_Bum"));
+    pathSelector.addOption("4 Piece Subwoofer", AutoBuilder.buildAuto("4_Piece_V1"));
+    pathSelector.addOption("4 Piece Midnote", AutoBuilder.buildAuto("4_Piece_V2"));
     pathSelector.addOption("5 Meter Test", AutoBuilder.buildAuto("5_Meter_Test"));
     pathSelector.addOption("None", new PrintCommand("Damn that sucks"));
   }

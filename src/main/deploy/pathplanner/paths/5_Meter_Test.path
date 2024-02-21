@@ -70,7 +70,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Misc_Tests",
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

@@ -60,9 +60,9 @@ public class SwerveSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run    
     mOdometry.update(getRotation2d(), getModulePositions());
-      SmartDashboard.putNumber("XPos", mOdometry.getEstimatedPosition().getX());
-      SmartDashboard.putNumber("YPos", mOdometry.getEstimatedPosition().getY());
-      SmartDashboard.putNumber("Heading", getRotation2d().getDegrees());
+      // SmartDashboard.putNumber("XPos", mOdometry.getEstimatedPosition().getX());
+      // SmartDashboard.putNumber("YPos", mOdometry.getEstimatedPosition().getY());
+      // SmartDashboard.putNumber("Heading", getRotation2d().getDegrees());
     if (CompConstants.DEBUG_MODE) {
       SmartDashboard.putData("Swerve", this);
 
@@ -261,11 +261,11 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
 
-  public static void resetRobotPose() {
+  public void resetRobotPose() {
     mOdometry.resetPosition(getRotation2d(), getModulePositions(), new Pose2d());
   }
 
-  public static void resetRobotPose(Pose2d pose) {
+  public void resetRobotPose(Pose2d pose) {
     mOdometry.resetPosition(getRotation2d(), getModulePositions(), pose);
   }
 
