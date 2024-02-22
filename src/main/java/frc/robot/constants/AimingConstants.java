@@ -4,6 +4,9 @@
 
 package frc.robot.constants;
 
+import java.sql.Driver;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Util.PIDParameters;
 import frc.robot.subsystems.AimingSubsystem.AimingMotorMode;
 
@@ -80,5 +83,8 @@ public class AimingConstants {
     // Auto-aim constants
     public static final double SPEAKER_X_COORDINATE = 0;
     public static final double SPEAKER_Y_COORDINATE = 0;
-    public static final double SPEAKER_HEIGHT = 0;
+    public static final double SPEAKER_HEIGHT_TO_ROBOT = 0; //Delta between Speaker and Robot
+    public static final double WRIST_PIVOT_ANGLE_OFFSET = 50.43; //DEGS
+
+
 }
