@@ -123,7 +123,7 @@ public class AimingSubsystem extends SubsystemBase {
   private void wristPeriodic() {
     //Clamping Rotation between domain
     mDesiredWristRotationDeg = MathUtil.clamp(mDesiredWristRotationDeg, AimingConstants.MIN_WRIST_ROTATION_DEG, AimingConstants.MAX_WRIST_ROTATION);
-    mCurrentWristRotationDeg = getCurrentWristRotation();
+    mCurrentWristRotationDeg = getCurrentWristDegreees();
 
     double offset = (Math.PI / 2);
     double wristPIDCalculation = mWristController.calculate(mCurrentWristRotationDeg, mDesiredWristRotationDeg);    
@@ -178,13 +178,13 @@ public class AimingSubsystem extends SubsystemBase {
    * 
    * @return Current Wrist Rotation in Degrees
    */
-  public double getCurrentWristRotation(){
-    return mWristThroughBoreEncoder.getAbsolutePosition();
+  public double getCurrentWristDegreees(){
+    return mWristThroughBoreEncoder.getAbsolutePosition()*360;
   }
 
   public AimState getCurrentState(){
     for (AimState state : AimingConstants.AimState.values()){
-      if (Math.abs(state.wristAngleDeg - getCurrentWristRotation())<AimingConstants.WRIST_TOLERANCE_DEG 
+      if (Math.abs(state.wristAngleDeg - getCurrentWristDegreees())<AimingConstants.WRIST_TOLERANCE_DEG 
         && Math.abs(state.elevatorDistIn - getCurrentElevatorDistance())<AimingConstants.ELEVATOR_TOLERANCE_IN){
         return state;
       }
