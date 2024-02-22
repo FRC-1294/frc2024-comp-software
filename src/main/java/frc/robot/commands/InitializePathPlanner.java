@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AutonomousCommands.Handoff;
-import frc.robot.constants.CompConstants;
 import frc.robot.constants.SpeakerState;
 import frc.robot.subsystems.AimingSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -25,14 +24,20 @@ import frc.robot.subsystems.SwerveSubsystem;
 public class InitializePathPlanner{
   /** Creates a new InitializePathPlanner. */
   private final SwerveSubsystem mSwerve;
-  private final IntakeSubsystem mIntake;
-  private final LauncherSubsystem mLauncher;
-  private final AimingSubsystem mAiming;
+  private IntakeSubsystem mIntake;
+  private LauncherSubsystem mLauncher;
+  private AimingSubsystem mAiming;
+  private boolean populateEventMaps;
   public InitializePathPlanner(SwerveSubsystem swerve, IntakeSubsystem intake, LauncherSubsystem launcher, AimingSubsystem aiming) {
     mSwerve = swerve;
     mIntake = intake;
     mLauncher = launcher;
     mAiming = aiming;
+    populateEventMaps = true;
+  }
+  public InitializePathPlanner(SwerveSubsystem swerve){
+    mSwerve = swerve;
+    populateEventMaps = false;
   }
   
   public void initializeNamedCommands(){
@@ -71,10 +76,10 @@ public class InitializePathPlanner{
                               // here
               
     ), this::determineFieldOrientation, mSwerve);
-    if(CompConstants.USE_EMPTY_EVENT_MAP){
-      initializeEmptyNamedCommands();
-    } else{
+    if (populateEventMaps){
       initializeNamedCommands();
+    } else{
+      initializeEmptyNamedCommands();
     }
 
   }

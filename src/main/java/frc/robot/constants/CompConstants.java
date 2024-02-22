@@ -11,5 +11,4 @@ public class CompConstants {
     public static final boolean DEBUG_MODE = false;
     public static final double AUTO_LAUNCH_TIMEOUT_SEC = 3; 
     public static final boolean PID_TUNE_MODE = false;
-    public static final boolean USE_EMPTY_EVENT_MAP = true;
 }
