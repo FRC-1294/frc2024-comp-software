@@ -14,23 +14,32 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.AutonomousCommands.Handoff;
+import frc.robot.subsystems.AimingSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LauncherSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class InitializePathPlanner{
   /** Creates a new InitializePathPlanner. */
   private final SwerveSubsystem mSwerve;
-
-  public InitializePathPlanner(SwerveSubsystem swerve) {
+  private final IntakeSubsystem mIntake;
+  private final LauncherSubsystem mLauncher;
+  private final AimingSubsystem mAiming;
+  public InitializePathPlanner(SwerveSubsystem swerve, IntakeSubsystem intake, LauncherSubsystem launcher, AimingSubsystem aiming) {
     mSwerve = swerve;
+    mIntake = intake;
+    mLauncher = launcher;
+    mAiming = aiming;
   }
   
   public void initializeNamedCommands(){
-    NamedCommands.registerCommand("IntakeUntilNote", new SequentialCommandGroup(new PrintCommand("Intaking until note enters")));
+    NamedCommands.registerCommand("IntakeUntilNote", mIntake.getAutomousIntakeCommand());
     NamedCommands.registerCommand("ShootFromMidnote", new SequentialCommandGroup(new PrintCommand("Shoot Note from Middle Position"), new WaitCommand(0.5)));
     NamedCommands.registerCommand("ShootFromSubwoofer", new SequentialCommandGroup(new PrintCommand("Shoot Note From Subwoofer"), new WaitCommand(0.5)));
     NamedCommands.registerCommand("ShootFromWing", new SequentialCommandGroup(new PrintCommand("Shoot Note from Wing Edge"), new WaitCommand(0.5)));
     NamedCommands.registerCommand("ShootFromLine", new SequentialCommandGroup(new PrintCommand("Shoot Note from Autonomous Line"), new WaitCommand(0.5)));
-    NamedCommands.registerCommand("Handoff", new SequentialCommandGroup(new PrintCommand("Shoot Note from Wing Edge"), new WaitCommand(0.5)));
+    NamedCommands.registerCommand("Handoff", new Handoff(mIntake, mLauncher));
   }
 
 
