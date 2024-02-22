@@ -55,7 +55,7 @@ public class LauncherSubsystem extends SubsystemBase {
     double actualVelocity = mLeaderFlywheel.getVelocity().getValueAsDouble();
 
     mLauncherReady = Math.abs(Math.abs(mDesiredVelocity) - Math.abs(actualVelocity)) <= LauncherConstants.FLYWHEEL_TOLERANCE && 
-                     mDesiredVelocity != 0;
+                     mDesiredVelocity != 0 && mLauncherMode != LauncherMode.PASSIVE;
     runLauncher();
   }
 
@@ -73,6 +73,9 @@ public class LauncherSubsystem extends SubsystemBase {
     }
     else if (mLauncherMode == LauncherMode.TRAP) {
       mDesiredVelocity = LauncherState.TRAP_DEFAULT.velocity;
+    }
+    else if (mLauncherMode == LauncherMode.PASSIVE) {
+      mDesiredVelocity = LauncherState.PASSIVE_DEFAULT.velocity;
     }
     else if (mLauncherMode == LauncherMode.OFF) {
       mDesiredVelocity = 0;

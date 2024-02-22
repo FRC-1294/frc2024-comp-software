@@ -40,6 +40,9 @@ public class DefaultLauncherCommand extends Command {
     else if (Input.getB()) {
       mLauncher.setLauncherMode(LauncherMode.TRAP);
     }
+    else {
+      mLauncher.setLauncherMode(LauncherMode.PASSIVE);
+    }
     
     if (Input.getLeftBumper() && !mLauncher.pieceInIndexer()) {
       mLauncher.runIndexer(LauncherConstants.INDEXER_VELOCITY_DEFAULT);
