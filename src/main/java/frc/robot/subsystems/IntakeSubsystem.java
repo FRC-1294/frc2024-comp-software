@@ -39,9 +39,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (pieceInIntake() && !beamBreakOverride){
-      stopMotors();
-    }
+    // no periodic for subsystem (also there would be a conflict with noteToLauncher)
   }
 
   /**
