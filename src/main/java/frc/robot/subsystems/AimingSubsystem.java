@@ -75,10 +75,7 @@ public class AimingSubsystem extends SubsystemBase {
   // Setting Conversions and Inversions
   public void configureDevices() {
 
-    //initialize PID Controller Constants for SlotConfigs
-
-    mElevatorControllerSlot0Configs = AimingConstants.mElevatorPIDConstants.toTalonConfiguration();
-    
+    //initialize PID Controller Constants for SlotConfigs    
     mWristController = AimingConstants.mWristPIDConstants.toWPIController();
     //note: configuration uses internal encoders inside the motors, subject to change
   

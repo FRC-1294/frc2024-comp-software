@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.89,
-        "y": 6.31
+        "x": 2.91,
+        "y": 6.04
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.901103024525186,
-        "y": 6.657508256260723
+        "x": 2.921103024525186,
+        "y": 6.387508256260723
       },
       "isLocked": false,
       "linkedName": null
@@ -47,9 +47,9 @@
       "maxWaypointRelativePos": 0.05,
       "constraints": {
         "maxVelocity": 4.5,
-        "maxAcceleration": 0.3,
+        "maxAcceleration": 1.0,
         "maxAngularVelocity": 400.0,
-        "maxAngularAcceleration": 200.0
+        "maxAngularAcceleration": 500.0
       }
     }
   ],
@@ -58,9 +58,22 @@
       "name": "IntakeUntilNote",
       "waypointRelativePos": 0.0,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
-          "commands": []
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeUntilNote"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Handoff"
+              }
+            }
+          ]
         }
       }
     }
