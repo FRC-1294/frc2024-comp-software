@@ -57,9 +57,22 @@
       "name": "IntakeUntilNote",
       "waypointRelativePos": 0.2,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
-          "commands": []
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeUntilNote"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Handoff"
+              }
+            }
+          ]
         }
       }
     }
@@ -76,7 +89,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Wing_Focused",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 1.5

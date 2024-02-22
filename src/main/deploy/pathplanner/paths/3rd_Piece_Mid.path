@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.874639608928341,
-        "y": 6.117802761921313
+        "x": 2.9125391584116502,
+        "y": 6.035052070104141
       },
       "prevControl": {
-        "x": 2.8592792178566815,
-        "y": 5.637184783141496
+        "x": 2.810938955211244,
+        "y": 5.554144441622216
       },
       "nextControl": null,
       "isLocked": false,
@@ -55,7 +55,7 @@
         "maxVelocity": 0.5,
         "maxAcceleration": 2.0,
         "maxAngularVelocity": 400.0,
-        "maxAngularAcceleration": 200.0
+        "maxAngularAcceleration": 400.0
       }
     }
   ],
@@ -64,9 +64,22 @@
       "name": "IntakeUntilNote",
       "waypointRelativePos": 0.3,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
-          "commands": []
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeUntilNote"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Handoff"
+              }
+            }
+          ]
         }
       }
     }
@@ -83,7 +96,7 @@
     "rotateFast": true
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Wing_Focused",
   "previewStartingState": {
     "rotation": -19.860000000000014,
     "velocity": 0.0

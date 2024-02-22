@@ -65,6 +65,12 @@
               "data": {
                 "name": "IntakeUntilNote"
               }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Handoff"
+              }
             }
           ]
         }
@@ -83,7 +89,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Wing_Focused",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

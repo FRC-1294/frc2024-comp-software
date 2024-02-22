@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7785377750772017,
-        "y": 4.52123421175001
+        "x": 0.7586148505630346,
+        "y": 4.422995512657692
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.985257458921525,
-        "y": 4.163185216407067
+        "x": 0.965334534407358,
+        "y": 4.064946517314748
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Lower_Subwoofer_Shot"
     },
     {
       "anchor": {
@@ -43,7 +43,7 @@
     "rotateFast": true
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Wing_Focused",
   "previewStartingState": {
     "rotation": -60.0,
     "velocity": 0
