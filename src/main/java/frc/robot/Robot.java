@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.commands.InitializePathPlanner;
 import frc.robot.commands.SwerveFrictionCharacterization;
 import frc.robot.commands.SwerveVoltageCharacterization;
+import frc.robot.constants.CompConstants;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -38,8 +39,10 @@ public class Robot extends TimedRobot {
    
 
     RobotContainer robotContainer = new RobotContainer();
-    
-    new InitializePathPlanner(robotContainer.getSwerveSubsystem()).initialize();
+
+    new InitializePathPlanner(robotContainer.getSwerveSubsystem(),
+    robotContainer.getIntakeSubsystem(),robotContainer.getLauncher(),
+    robotContainer.getAimingSubsystem()).initialize();
     
     SmartDashboard.putData("Pick your Auton...",pathSelector);
 

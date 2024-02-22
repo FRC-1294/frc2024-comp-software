@@ -11,7 +11,11 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AutonomousCommands.Handoff;
+import frc.robot.constants.CompConstants;
 import frc.robot.constants.SpeakerState;
 import frc.robot.subsystems.AimingSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -40,6 +44,15 @@ public class InitializePathPlanner{
     NamedCommands.registerCommand("Handoff", new Handoff(mIntake, mLauncher));
   }
 
+  public void initializeEmptyNamedCommands(){
+    NamedCommands.registerCommand("IntakeUntilNote", new SequentialCommandGroup(new PrintCommand("Intaking until note enters")));
+    NamedCommands.registerCommand("ShootFromMidnote", new SequentialCommandGroup(new PrintCommand("Shoot Note from Middle Position"), new WaitCommand(0.5)));
+    NamedCommands.registerCommand("ShootFromSubwoofer", new SequentialCommandGroup(new PrintCommand("Shoot Note From Subwoofer"), new WaitCommand(0.5)));
+    NamedCommands.registerCommand("ShootFromWing", new SequentialCommandGroup(new PrintCommand("Shoot Note from Wing Edge"), new WaitCommand(0.5)));
+    NamedCommands.registerCommand("ShootFromLine", new SequentialCommandGroup(new PrintCommand("Shoot Note from Autonomous Line"), new WaitCommand(0.5)));
+    NamedCommands.registerCommand("Handoff", new SequentialCommandGroup(new PrintCommand("Shoot Note from Wing Edge"), new WaitCommand(0.5)));
+  }
+
 
   // Called when the command is initially scheduled.
   public void initialize() {
@@ -58,8 +71,11 @@ public class InitializePathPlanner{
                               // here
               
     ), this::determineFieldOrientation, mSwerve);
-
-    initializeNamedCommands();
+    if(CompConstants.USE_EMPTY_EVENT_MAP){
+      initializeEmptyNamedCommands();
+    } else{
+      initializeNamedCommands();
+    }
 
   }
 
