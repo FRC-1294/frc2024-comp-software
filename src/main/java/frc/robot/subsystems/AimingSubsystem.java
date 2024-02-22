@@ -13,6 +13,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -123,11 +124,16 @@ public class AimingSubsystem extends SubsystemBase {
   private void wristPeriodic() {
     //Clamping Rotation between domain
     mDesiredWristRotationDeg = MathUtil.clamp(mDesiredWristRotationDeg, AimingConstants.MIN_WRIST_ROTATION_DEG, AimingConstants.MAX_WRIST_ROTATION);
-    mCurrentWristRotationDeg = getCurrentWristRotation();
+    mCurrentWristRotationDeg = getCurrentWristDegrees();
 
     double offset = (Math.PI / 2);
-    double wristPIDCalculation = mWristController.calculate(mCurrentWristRotationDeg, mDesiredWristRotationDeg);    
-    double wristFeedforwardCalculation = mWristFeedforwardController.calculate(Math.toRadians(mDesiredWristRotationDeg) - offset, mLeftWristMotor.getEncoder().getVelocity() * AimingConstants.SPARK_THROUGHBORE_GEAR_RATIO);
+    
+    double wristPIDCalculation = mWristController.calculate(mCurrentWristRotationDeg, mDesiredWristRotationDeg);
+    wristPIDCalculation = MathUtil.clamp(wristPIDCalculation,-AimingConstants.MAX_WRIST_PID_CONTRIBUTION,AimingConstants.MAX_WRIST_PID_CONTRIBUTION);
+    
+    double wristFeedforwardCalculation = AimingConstants.WRIST_KG*Math.cos(Units.degreesToRadians(getCurrentWristDegrees())+offset);
+    wristFeedforwardCalculation = MathUtil.clamp(wristFeedforwardCalculation,-AimingConstants.MAX_WRIST_FF_CONTRIBUTION,AimingConstants.MAX_WRIST_FF_CONTRIBUTION);
+
     mLeftWristMotor.set(wristPIDCalculation + wristFeedforwardCalculation);
   }
 
@@ -178,13 +184,13 @@ public class AimingSubsystem extends SubsystemBase {
    * 
    * @return Current Wrist Rotation in Degrees
    */
-  public double getCurrentWristRotation(){
-    return mWristThroughBoreEncoder.getAbsolutePosition();
+  public double getCurrentWristDegrees(){
+    return mWristThroughBoreEncoder.getAbsolutePosition() * 360;
   }
 
   public AimState getCurrentState(){
     for (AimState state : AimingConstants.AimState.values()){
-      if (Math.abs(state.wristAngleDeg - getCurrentWristRotation())<AimingConstants.WRIST_TOLERANCE_DEG 
+      if (Math.abs(state.wristAngleDeg - getCurrentWristDegrees())<AimingConstants.WRIST_TOLERANCE_DEG 
         && Math.abs(state.elevatorDistIn - getCurrentElevatorDistance())<AimingConstants.ELEVATOR_TOLERANCE_IN){
         return state;
       }
