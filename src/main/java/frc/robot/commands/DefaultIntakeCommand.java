@@ -21,7 +21,7 @@ public class DefaultIntakeCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    mIntake.stopMotor();
+    mIntake.stopMotors();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -32,9 +32,9 @@ public class DefaultIntakeCommand extends Command {
     }
 
     if (Input.getIntake()) {
-      mIntake.intakeAtSpeed(IntakeConstants.ACTIVE_INTAKE_SPEED);
+      mIntake.intakeMotorsAtSpeed(IntakeConstants.INNER_INTAKE_SPEED_ACTIVE);
     }else{
-      mIntake.intakeAtSpeed(IntakeConstants.PASSIVE_INTAKE_SPEED);
+      mIntake.stopMotors();
     }
   }
 

@@ -75,10 +75,7 @@ public class AimingSubsystem extends SubsystemBase {
   // Setting Conversions and Inversions
   public void configureDevices() {
 
-    //initialize PID Controller Constants for SlotConfigs
-
-    mElevatorControllerSlot0Configs = AimingConstants.mElevatorPIDConstants.toTalonConfiguration();
-    
+    //initialize PID Controller Constants for SlotConfigs    
     mWristController = AimingConstants.mWristPIDConstants.toWPIController();
     //note: configuration uses internal encoders inside the motors, subject to change
   
@@ -182,6 +179,16 @@ public class AimingSubsystem extends SubsystemBase {
     return mWristThroughBoreEncoder.getAbsolutePosition();
   }
 
+  public AimState getCurrentState(){
+    for (AimState state : AimingConstants.AimState.values()){
+      if (Math.abs(state.wristAngleDeg - getCurrentWristRotation())<AimingConstants.WRIST_TOLERANCE_DEG 
+        && Math.abs(state.elevatorDistIn - getCurrentElevatorDistance())<AimingConstants.ELEVATOR_TOLERANCE_IN){
+        return state;
+      }
+    }
+    return AimState.TRANSITION;
+  }
+
   public double getDesiredElevatorDistance() {
     return mDesiredElevatorDistanceIn;
   }
@@ -199,9 +206,12 @@ public class AimingSubsystem extends SubsystemBase {
   }
 
   public void setDesiredSetpoint(AimState state) {
-    mDesiredElevatorDistanceIn = state.elevatorDistIn;
-    mDesiredWristRotationDeg = state.wristAngleDeg;
+    if(state != AimState.TRANSITION){
+      mDesiredElevatorDistanceIn = state.elevatorDistIn;
+      mDesiredWristRotationDeg = state.wristAngleDeg;
+    }
   }
+
   public void changeDesiredElevatorPosition(double increment) {
     mDesiredElevatorDistanceIn += increment;
   }

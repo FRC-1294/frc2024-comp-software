@@ -47,7 +47,9 @@ public final class LauncherConstants {
   }
 
   //indexer setpoint
-  public static final double INDEXER_VELOCITY_DEFAULT = 1; //TODO:https://github.com/FRC-1294/frc2024/issues/241
+  public static final double INDEXER_VELOCITY_LAUNCH = 1; //TODO:https://github.com/FRC-1294/frc2024/issues/241
+
+  public static final double INDEXER_VELOCITY_HANDOFF = 0.5; //TODO:https://github.com/FRC-1294/frc2024/issues/241
   
   public static final PIDController LAUNCHER_PID_CONTROLLER = new PIDController(0, 0, 0, 0); //TODO:https://github.com/FRC-1294/frc2024/issues/241
 
@@ -55,6 +57,10 @@ public final class LauncherConstants {
 
   public static final double FLYWHEEL_TOLERANCE = 0.01; //TODO:https://github.com/FRC-1294/frc2024/issues/241
 
+  public static final double FLYWHEEL_CONVERSION_FACTOR_SENSOR_TO_MECHANISM = 1; //TODO:
+
   public static final double FLYWHEEL_MAX_VELOCITY = 511.998046875; //rps
+
+  public static final boolean INDEXER_IS_INVERTED = false; //TODO:
 
 }
