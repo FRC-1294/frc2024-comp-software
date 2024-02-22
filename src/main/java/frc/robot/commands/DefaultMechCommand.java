@@ -19,20 +19,20 @@ import frc.robot.Input;
 import frc.robot.subsystems.LauncherSubsystem;
 
 public class DefaultMechCommand extends Command {
-    private final IntakeSubsystem mIntakeSubsystem;
-    private final LauncherSubsystem mLauncherSubsystem;
-    private final AimingSubsystem mAimingSubsystem;
+    private static IntakeSubsystem mIntakeSubsystem;
+    private static LauncherSubsystem mLauncherSubsystem;
+    private static AimingSubsystem mAimingSubsystem;
 
-    private final MechState mReadyForIntake;
-    private final MechState mIntaken;
-    private final MechState mReadyForHandoff;
-    private final MechState mReadyForAim;
-    private final MechState mReadyForLaunch;
-    private final MechState mUltraInstinct;
+    private static MechState mReadyForIntake;
+    private static MechState mIntaken;
+    private static MechState mReadyForHandoff;
+    private static MechState mReadyForAim;
+    private static MechState mReadyForLaunch;
+    private static MechState mUltraInstinct;
 
-    private boolean mUseUltraInstinct = false;
+    private static boolean mUseUltraInstinct = false;
 
-    private MechState mMechState;
+    private static MechState mMechState;
 
     public DefaultMechCommand(IntakeSubsystem intakeSubsystem, LauncherSubsystem launcherSubsystem, AimingSubsystem aimingSubsystem) {
         mIntakeSubsystem = intakeSubsystem;
@@ -50,7 +50,7 @@ public class DefaultMechCommand extends Command {
         mMechState = determineState();
     }
 
-    public MechState determineState() {
+    public static MechState determineState() {
         if (mUseUltraInstinct) {
             return mUltraInstinct;
         }
@@ -134,43 +134,43 @@ public class DefaultMechCommand extends Command {
         }
     }
 
-    public boolean getIntakeBeamBreak() {
+    public static boolean getIntakeBeamBreak() {
         return mIntakeSubsystem.pieceInIntake();
     }
 
-    public boolean getIndexerBeamBreak() {
+    public static boolean getIndexerBeamBreak() {
         return mLauncherSubsystem.pieceInIndexer();
     }
 
-    public boolean isVisionAligned() {
+    public static boolean isVisionAligned() {
         return true; //V2: return LimelightOB.getNoteAlignmentCommand(swerve)
     }
 
-    public boolean isFlywheelAtSP() {
+    public static boolean isFlywheelAtSP() {
         return mLauncherSubsystem.isLauncherReady();
     }
 
-    public boolean isAimAtSP() {
+    public static boolean isAimAtSP() {
         return mAimingSubsystem.atSetpoints();
     }
 
-    public MechState getReadyForIntake() {
+    public static MechState getReadyForIntake() {
         return mReadyForIntake;
     }
 
-    public MechState getIntaken() {
+    public static MechState getIntaken() {
         return mIntaken;
     }
 
-    public MechState getReadyForHandoff() {
+    public static MechState getReadyForHandoff() {
         return mReadyForHandoff;
     }
 
-    public MechState getReadyForAim() {
+    public static MechState getReadyForAim() {
         return mReadyForAim;
     }
 
-    public MechState getReadyForLaunch() {
+    public static MechState getReadyForLaunch() {
         return mReadyForLaunch;
     }
 }

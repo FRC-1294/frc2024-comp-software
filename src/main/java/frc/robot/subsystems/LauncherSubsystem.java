@@ -111,7 +111,13 @@ public class LauncherSubsystem extends SubsystemBase {
   }
 
   public Command waitUntilFlywheelSetpointCommand() {
-    return new FunctionalCommand(() -> setLauncherMode(mLauncherMode), null, null, this::isLauncherReady, this);    
+    return new FunctionalCommand(() -> setLauncherMode(mLauncherMode), null,
+     null, this::isLauncherReady, this);    
+  }
+  
+  public Command waitUntilNoteExitIntakeCommand() {
+    return new FunctionalCommand(() -> runIndexer(LauncherConstants.INDEXER_VELOCITY_LAUNCH), null,
+     (interupted)->runIndexer(0), ()->!pieceInIndexer(), this);    
   }
 
   @Override
