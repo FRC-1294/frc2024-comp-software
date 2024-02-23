@@ -28,6 +28,8 @@ public abstract class MechState {
 
     public void intakeInnerMotor() {}
 
+    public void preformHandoff(){}
+
     public void index(){}
 
     public void launch() {}

@@ -38,7 +38,7 @@ public class ScoreSpeaker extends Command {
     mIntake = intake;
     mPrioSpeakerState = prioSpeakerState;
     mCommand = new SequentialCommandGroup(mWrist.waitUntilWristSetpoint(mPrioSpeakerState.mWristAngleDeg),
-    mLauncher.waitUntilFlywheelSetpointCommand(),mLauncher.waitUntilNoteExitIntakeCommand());
+    mLauncher.waitUntilFlywheelSetpointCommand(),mLauncher.waitUntilNoteLaunchedCommand());
     addRequirements(mSwerve,mLauncher,mWrist);
   }
 
@@ -49,7 +49,7 @@ public class ScoreSpeaker extends Command {
     mIntake = intake;
     mPrioSpeakerState = getBestSpeakerState();
     mCommand = new SequentialCommandGroup(mWrist.waitUntilWristSetpoint(mPrioSpeakerState.mWristAngleDeg),
-    mLauncher.waitUntilFlywheelSetpointCommand(),mLauncher.waitUntilNoteExitIntakeCommand());
+    mLauncher.waitUntilFlywheelSetpointCommand(),mLauncher.waitUntilNoteLaunchedCommand());
     addRequirements(mSwerve,mLauncher,mWrist);
   }
 

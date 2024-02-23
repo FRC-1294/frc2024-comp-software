@@ -1,6 +1,7 @@
 package frc.robot.states.mech_states;
 
 import frc.robot.constants.AimingConstants.AimState;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.constants.IntakeConstants;
 import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.states.MechState;
@@ -16,17 +17,18 @@ public class ReadyForIntake extends MechState {
 
     @Override
     public void intakeInnerMotor() {
-        mIntakeSubsystem.innerMotorAtSpeed(IntakeConstants.INNER_INTAKE_SPEED_ACTIVE);
+        new InstantCommand(() -> mIntakeSubsystem.innerMotorAtSpeed(IntakeConstants.INNER_INTAKE_SPEED_ACTIVE)).schedule();;
     }
     
     @Override
     public void intakeOuterMotor() {
-        mIntakeSubsystem.outerMotorAtSpeed(IntakeConstants.OUTER_INTAKE_SPEED_ACTIVE);
+        new InstantCommand(()-> mIntakeSubsystem.outerMotorAtSpeed(IntakeConstants.OUTER_INTAKE_SPEED_ACTIVE)).schedule();;
     }
 
     @Override
     public void handoffPosition(){
+        new InstantCommand(()->{
         mAimingSubsystem.setDesiredSetpoint(AimState.HANDOFF);
-        mLauncherSubsystem.setLauncherMode(LauncherMode.OFF);
+        mLauncherSubsystem.setLauncherMode(LauncherMode.OFF);}).schedule();
     }
 }

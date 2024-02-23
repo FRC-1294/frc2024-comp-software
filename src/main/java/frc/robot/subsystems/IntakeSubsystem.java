@@ -82,7 +82,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public Command getAutomousIntakeCommand() {
-    return new FunctionalCommand(() -> intakeMotorsAtSpeed(IntakeConstants.INNER_INTAKE_SPEED_ACTIVE), null, interrupted -> stopMotors(), this::functionalCommandIsFinished, this);
+    return new FunctionalCommand(() -> intakeMotorsAtSpeed(IntakeConstants.INNER_INTAKE_SPEED_ACTIVE), null, interrupted -> stopMotors(), this::pieceInIntake, this);
   }
 
   public boolean pieceInIntake(){
@@ -91,9 +91,5 @@ public class IntakeSubsystem extends SubsystemBase {
   public boolean toggleBeamBreakOverride(){
     beamBreakOverride = !beamBreakOverride;
     return beamBreakOverride;
-  }
-
-  private boolean functionalCommandIsFinished() {
-    return pieceInIntake() || Input.getLeftBumper();
   }
 }

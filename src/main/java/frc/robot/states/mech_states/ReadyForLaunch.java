@@ -1,5 +1,6 @@
 package frc.robot.states.mech_states;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.constants.LauncherConstants;
 import frc.robot.states.MechState;
 import frc.robot.subsystems.AimingSubsystem;
@@ -13,7 +14,7 @@ public class ReadyForLaunch extends MechState {
     }
 
     public void launch() {
-        mLauncherSubsystem.runIndexer(LauncherConstants.INDEXER_VELOCITY_LAUNCH);
+        new InstantCommand(()->mLauncherSubsystem.runIndexer(LauncherConstants.INDEXER_VELOCITY_LAUNCH),mLauncherSubsystem).schedule();
     }
 
 }

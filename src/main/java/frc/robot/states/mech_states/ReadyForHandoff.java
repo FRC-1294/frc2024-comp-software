@@ -1,7 +1,6 @@
 package frc.robot.states.mech_states;
 
-import frc.robot.constants.IntakeConstants;
-import frc.robot.constants.LauncherConstants;
+import frc.robot.commands.AutonomousCommands.Handoff;
 import frc.robot.states.MechState;
 import frc.robot.subsystems.AimingSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -14,12 +13,7 @@ public class ReadyForHandoff extends MechState {
     }
 
     @Override
-    public void intakeInnerMotor() {
-        mIntakeSubsystem.innerMotorAtSpeed(IntakeConstants.INNER_INTAKE_SPEED_ACTIVE);
-    }
-    
-    @Override
-    public void index() {
-        mLauncherSubsystem.runIndexer(LauncherConstants.INDEXER_VELOCITY_HANDOFF);
+    public void preformHandoff(){
+        new Handoff(mIntakeSubsystem, mLauncherSubsystem).schedule();
     }
 }

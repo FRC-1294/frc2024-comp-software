@@ -1,5 +1,6 @@
 package frc.robot.states.mech_states;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.constants.AimingConstants.AimState;
 import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.states.MechState;
@@ -15,8 +16,10 @@ public class Intaken extends MechState {
 
     @Override
     public void handoffPosition(){
-        mAimingSubsystem.setDesiredSetpoint(AimState.STOW);
-        mLauncherSubsystem.setLauncherMode(LauncherMode.OFF);
+        new InstantCommand(()->{
+            mAimingSubsystem.setDesiredSetpoint(AimState.HANDOFF);
+            mLauncherSubsystem.setLauncherMode(LauncherMode.OFF);}
+        ).schedule();
     }
 
 }

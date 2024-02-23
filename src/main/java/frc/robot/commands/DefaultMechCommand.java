@@ -120,16 +120,19 @@ public class DefaultMechCommand extends Command {
             mMechState.handoffPosition();
         }
         else if (mMechState == mIntaken) {
+            mMechState.brakeIntake();
             mMechState.handoffPosition();
         }
         else if (mMechState == mReadyForHandoff) {
-            mMechState.intakeInnerMotor();
-            mMechState.index();
+            mMechState.brakeIntake();
+            mMechState.preformHandoff();
         }
         else if (mMechState == mReadyForAim) {
+            mMechState.brakeIntake();
             //No Automation Yet
         }
         else if (mMechState == mReadyForLaunch) {
+            mMechState.brakeIntake();
             //Need Operator Confirmation
         }
     }

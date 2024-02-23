@@ -131,7 +131,7 @@ public class LauncherSubsystem extends SubsystemBase {
      null, this::isLauncherReady, this);    
   }
   
-  public Command waitUntilNoteExitIntakeCommand() {
+  public Command waitUntilNoteLaunchedCommand() {
     return new FunctionalCommand(() -> runIndexer(LauncherConstants.INDEXER_VELOCITY_LAUNCH), null,
      (interupted)->runIndexer(0), ()->!pieceInIndexer(), this);    
   }

@@ -1,6 +1,6 @@
 package frc.robot.states.mech_states;
 
-import frc.robot.constants.SpeakerState;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.constants.AimingConstants.AimState;
 import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.states.MechState;
@@ -16,19 +16,25 @@ public class ReadyForAim extends MechState {
 
     @Override
     public void speakerPosition(){
-        mAimingSubsystem.setDesiredSetpoint(AimState.SPEAKER);
-        mLauncherSubsystem.setLauncherMode(LauncherMode.SPEAKER);
+        new InstantCommand(()->{
+            mAimingSubsystem.setDesiredSetpoint(AimState.SPEAKER);
+            mLauncherSubsystem.setLauncherMode(LauncherMode.SPEAKER);}
+        ).schedule();
     }
 
     @Override
     public void ampPosition(){
-        mAimingSubsystem.setDesiredSetpoint(AimState.AMP);
-        mLauncherSubsystem.setLauncherMode(LauncherMode.AMP);
+        new InstantCommand(()->{
+            mAimingSubsystem.setDesiredSetpoint(AimState.AMP);
+            mLauncherSubsystem.setLauncherMode(LauncherMode.AMP);}
+        ).schedule();
     }
     
     @Override
     public void trapPosition(){
-        mAimingSubsystem.setDesiredSetpoint(AimState.TRAP);
-        mLauncherSubsystem.setLauncherMode(LauncherMode.TRAP);
+        new InstantCommand(()->{
+            mAimingSubsystem.setDesiredSetpoint(AimState.TRAP);
+            mLauncherSubsystem.setLauncherMode(LauncherMode.TRAP);}
+        ).schedule();
     }
 }

@@ -24,7 +24,7 @@ public class LaunchFromHandoff extends Command {
     mDesiredState = desiredState;
     addRequirements(mWrist,mLauncher);
     mCommand = new SequentialCommandGroup(mWrist.waitUntilWristSetpoint(mDesiredState.mWristAngleDeg),
-    mLauncher.waitUntilFlywheelSetpointCommand(),mLauncher.waitUntilNoteExitIntakeCommand());
+    mLauncher.waitUntilFlywheelSetpointCommand(),mLauncher.waitUntilNoteLaunchedCommand());
   }
 
   // Called when the command is initially scheduled.
