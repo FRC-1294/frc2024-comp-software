@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7586148505630346,
-        "y": 4.422995512657692
+        "x": 1.29,
+        "y": 7.89
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.965334534407358,
-        "y": 4.064946517314748
+        "x": 1.361442722885446,
+        "y": 7.687748708830751
       },
       "isLocked": false,
-      "linkedName": "Lower_Subwoofer_Shot"
+      "linkedName": null
     },
     {
       "anchor": {
         "x": 1.5,
-        "y": 4.08
+        "y": 7.0
       },
       "prevControl": {
-        "x": 1.0585371201127425,
-        "y": 4.056863910829213
+        "x": 1.4969096604859877,
+        "y": 7.098467530268394
       },
       "nextControl": null,
       "isLocked": false,
@@ -38,14 +38,14 @@
     "maxAngularAcceleration": 200.0
   },
   "goalEndState": {
-    "velocity": 1.5,
+    "velocity": 0,
     "rotation": 0,
-    "rotateFast": true
+    "rotateFast": false
   },
   "reversed": false,
-  "folder": "Wing_Focused",
+  "folder": "Misc_Tests",
   "previewStartingState": {
-    "rotation": -60.0,
+    "rotation": 0,
     "velocity": 0
   },
   "useDefaultConstraints": true

@@ -12,7 +12,7 @@
     "Left_Center_Piece"
   ],
   "defaultMaxVel": 4.5,
-  "defaultMaxAccel": 2.0,
+  "defaultMaxAccel": 2.1,
   "defaultMaxAngVel": 400.0,
   "defaultMaxAngAccel": 200.0,
   "maxModuleSpeed": 4.5

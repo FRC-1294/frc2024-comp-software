@@ -5,8 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.JoystickConstants;
 import frc.robot.Input;
@@ -68,11 +66,11 @@ public class DefaultDriveCommand extends Command {
     y *= mSwerve.mConfig.TELE_MAX_SPEED_MPS;
     rot *= mSwerve.mConfig.TELE_MAX_ROT_SPEED_RAD_SEC;
     boolean isFieldOriented = true;
-    if (Input.getNoteAlignment() && mLimelight.isDetectionValid()) {
-        SmartDashboard.putNumber("tx", mLimelight.getNoteAngle());
-        rot = mNotePID.calculate(Units.degreesToRadians(mLimelight.getNoteAngle()));
-        isFieldOriented = false;
-    }
+    // if (Input.getNoteAlignment() && mLimelight.isDetectionValid()) {
+    //     SmartDashboard.putNumber("tx", mLimelight.getNoteAngle());
+    //     rot = mNotePID.calculate(Units.degreesToRadians(mLimelight.getNoteAngle()));
+    //     isFieldOriented = false;
+    // }
     mSwerve.setChassisSpeed(x, y, rot, isFieldOriented, false);
   }
 

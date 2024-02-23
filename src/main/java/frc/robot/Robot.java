@@ -40,9 +40,7 @@ public class Robot extends TimedRobot {
 
     RobotContainer robotContainer = new RobotContainer();
 
-    new InitializePathPlanner(robotContainer.getSwerveSubsystem(),
-    robotContainer.getIntakeSubsystem(),robotContainer.getLauncher(),
-    robotContainer.getAimingSubsystem()).initialize();
+    new InitializePathPlanner(robotContainer.getSwerveSubsystem()).initialize();
     
     SmartDashboard.putData("Pick your Auton...",pathSelector);
 

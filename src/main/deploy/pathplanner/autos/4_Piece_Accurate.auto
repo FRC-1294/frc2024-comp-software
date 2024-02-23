@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.5,
-      "y": 7.0
+      "x": 1.29,
+      "y": 7.89
     },
     "rotation": 0
   },
@@ -11,6 +11,18 @@
     "type": "sequential",
     "data": {
       "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "WallToCL"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeUntilNote"
+          }
+        },
         {
           "type": "path",
           "data": {

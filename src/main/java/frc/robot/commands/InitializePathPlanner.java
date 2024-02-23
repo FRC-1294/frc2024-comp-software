@@ -72,7 +72,7 @@ public class InitializePathPlanner{
           new PIDConstants(5, 0.0, 0), // Rotation PID constants
           3, // Max module speed, in m/s
           0.4669, // Drive base radius in meters. Distance from robot center to furthest module.
-          new ReplanningConfig(false, true) // Default path replanning config. See the API for the options
+          new ReplanningConfig(true, true) // Default path replanning config. See the API for the options
                               // here
               
     ), this::determineFieldOrientation, mSwerve);

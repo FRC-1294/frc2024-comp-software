@@ -65,11 +65,11 @@ public class ScoreSpeaker extends Command {
       mCommand = new PrintCommand("No Note L");
     } else if (curState.getClass() == Intaken.class){
       mCommand = mWrist.waitUntilWristSetpoint(AimState.HANDOFF.wristAngleDeg)
-      .alongWith(new Handoff(mIntake, mLauncher))
-      .alongWith(new LaunchFromHandoff(mWrist, mLauncher, mPrioSpeakerState)).withTimeout(CompConstants.AUTO_LAUNCH_TIMEOUT_SEC);
+      .andThen(new Handoff(mIntake, mLauncher))
+      .andThen(new LaunchFromHandoff(mWrist, mLauncher, mPrioSpeakerState)).withTimeout(CompConstants.AUTO_LAUNCH_TIMEOUT_SEC);
     } else if (curState.getClass() == ReadyForHandoff.class){
       mCommand =new Handoff(mIntake, mLauncher)
-      .alongWith(new LaunchFromHandoff(mWrist, mLauncher, mPrioSpeakerState)).withTimeout(CompConstants.AUTO_LAUNCH_TIMEOUT_SEC);
+      .andThen(new LaunchFromHandoff(mWrist, mLauncher, mPrioSpeakerState)).withTimeout(CompConstants.AUTO_LAUNCH_TIMEOUT_SEC);
     } else if (curState.getClass() == ReadyForAim.class){
       mCommand = new LaunchFromHandoff(mWrist, mLauncher, mPrioSpeakerState).withTimeout(CompConstants.AUTO_LAUNCH_TIMEOUT_SEC);
     } else{
