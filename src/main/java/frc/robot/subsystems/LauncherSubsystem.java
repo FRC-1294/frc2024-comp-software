@@ -126,8 +126,8 @@ public class LauncherSubsystem extends SubsystemBase {
     mFollowerFlywheel.setPosition(0);
   }
 
-  public Command waitUntilFlywheelSetpointCommand() {
-    return new FunctionalCommand(() -> setLauncherMode(mLauncherMode), null,
+  public Command waitUntilFlywheelSetpointCommand(LauncherMode launcherMode) {
+    return new FunctionalCommand(() -> setLauncherMode(launcherMode), null,
      null, this::isLauncherReady, this);    
   }
   

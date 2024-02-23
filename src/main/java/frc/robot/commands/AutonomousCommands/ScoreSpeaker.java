@@ -11,6 +11,7 @@ import frc.robot.commands.DefaultMechCommand;
 import frc.robot.constants.CompConstants;
 import frc.robot.constants.SpeakerState;
 import frc.robot.constants.AimingConstants.AimState;
+import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.states.MechState;
 import frc.robot.states.mech_states.Intaken;
 import frc.robot.states.mech_states.ReadyForAim;
@@ -35,8 +36,10 @@ public class ScoreSpeaker extends Command {
     mWrist = wrist;
     mIntake = intake;
     mPrioSpeakerState = prioSpeakerState;
-    mCommand = new SequentialCommandGroup(mWrist.waitUntilWristSetpoint(mPrioSpeakerState.mWristAngleDeg),
-    mLauncher.waitUntilFlywheelSetpointCommand(),mLauncher.waitUntilNoteLaunchedCommand());
+    mCommand = new SequentialCommandGroup(
+      mWrist.waitUntilWristSetpoint(mPrioSpeakerState.mWristAngleDeg),
+      mLauncher.waitUntilFlywheelSetpointCommand(LauncherMode.SPEAKER),
+      mLauncher.waitUntilNoteLaunchedCommand());
     addRequirements(mLauncher,mWrist);
   }
 
@@ -46,7 +49,7 @@ public class ScoreSpeaker extends Command {
     mIntake = intake;
     mPrioSpeakerState = getBestSpeakerState();
     mCommand = new SequentialCommandGroup(mWrist.waitUntilWristSetpoint(mPrioSpeakerState.mWristAngleDeg),
-    mLauncher.waitUntilFlywheelSetpointCommand(),mLauncher.waitUntilNoteLaunchedCommand());
+    mLauncher.waitUntilFlywheelSetpointCommand(LauncherMode.SPEAKER),mLauncher.waitUntilNoteLaunchedCommand());
     addRequirements(mLauncher,mWrist);
   }
 

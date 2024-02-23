@@ -7,6 +7,7 @@ package frc.robot.commands.AutonomousCommands;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.constants.SpeakerState;
+import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.subsystems.AimingSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
 
@@ -23,7 +24,7 @@ public class LaunchFromHandoff extends Command {
     mDesiredState = desiredState;
     addRequirements(mWrist,mLauncher);
     mCommand = new SequentialCommandGroup(mWrist.waitUntilWristSetpoint(mDesiredState.mWristAngleDeg),
-    mLauncher.waitUntilFlywheelSetpointCommand(),mLauncher.waitUntilNoteLaunchedCommand());
+    mLauncher.waitUntilFlywheelSetpointCommand(LauncherMode.SPEAKER),mLauncher.waitUntilNoteLaunchedCommand());
   }
 
   // Called when the command is initially scheduled.

@@ -205,6 +205,11 @@ public class AimingSubsystem extends SubsystemBase {
     mDesiredWristRotationDeg = rotation;
   }
 
+  public void setDesiredWristRotation(double rotation, double tolerance) {
+    mWristController.setTolerance(tolerance);
+    mDesiredWristRotationDeg = rotation;
+  }
+
   public void setDesiredSetpoint(AimState state) {
     if(state != AimState.TRANSITION){
       mDesiredElevatorDistanceIn = state.elevatorDistIn;
@@ -239,6 +244,10 @@ public class AimingSubsystem extends SubsystemBase {
 
   public Command waitUntilSetpoint(AimState state) {
     return new FunctionalCommand(() -> setDesiredSetpoint(state), null, null, this::atSetpoints, this);  
+  }
+
+  public Command waitUntilWristSetpoint(double wristSP, double wristTolerance) {
+    return new FunctionalCommand(()->setDesiredWristRotation(wristSP, wristTolerance), null, null, this::atWristSetpoint, null);
   }
 
   public Command waitUntilElevatorSetpoint(double sp) {
