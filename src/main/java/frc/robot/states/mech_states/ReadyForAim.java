@@ -18,7 +18,7 @@ public class ReadyForAim extends MechState {
     public void speakerPosition(){
         new InstantCommand(()->{
             mAimingSubsystem.setDesiredSetpoint(AimState.SPEAKER);
-            mLauncherSubsystem.setLauncherMode(LauncherMode.SPEAKER);}
+            mLauncherSubsystem.setLauncherMode(LauncherMode.SPEAKER);},mAimingSubsystem,mLauncherSubsystem
         ).schedule();
     }
 
@@ -26,7 +26,7 @@ public class ReadyForAim extends MechState {
     public void ampPosition(){
         new InstantCommand(()->{
             mAimingSubsystem.setDesiredSetpoint(AimState.AMP);
-            mLauncherSubsystem.setLauncherMode(LauncherMode.AMP);}
+            mLauncherSubsystem.setLauncherMode(LauncherMode.AMP);},mAimingSubsystem,mLauncherSubsystem
         ).schedule();
     }
     
@@ -34,7 +34,7 @@ public class ReadyForAim extends MechState {
     public void trapPosition(){
         new InstantCommand(()->{
             mAimingSubsystem.setDesiredSetpoint(AimState.TRAP);
-            mLauncherSubsystem.setLauncherMode(LauncherMode.TRAP);}
+            mLauncherSubsystem.setLauncherMode(LauncherMode.TRAP);},mAimingSubsystem,mLauncherSubsystem
         ).schedule();
     }
 }

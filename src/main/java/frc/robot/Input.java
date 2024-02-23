@@ -19,7 +19,6 @@ public class Input {
   private static final Joystick mTransJoystick = new Joystick(JoystickConstants.TRANS_JOY_PORT);
   private static final XboxController mXboxController = new XboxController(JoystickConstants.XBOX_PORT);
 
-
   public static final int DPADUP = 0;
   public static final int DPADRIGHT = 90;
   public static final int DPADDOWN = 180;

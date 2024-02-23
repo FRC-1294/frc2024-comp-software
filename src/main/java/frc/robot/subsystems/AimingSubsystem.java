@@ -220,6 +220,10 @@ public class AimingSubsystem extends SubsystemBase {
     mDesiredWristRotationDeg += increment;
   }
 
+  public void calculateExitAngle(){
+    //Ankit do ur thing
+  }
+
   public boolean atElevatorSetpoint() {
     // ENCODER VERSION
     // return mLeftElevatorMotor.getRotorPosition().getValueAsDouble() * AimingConstants.ELEVATOR_ROTATIONS_TO_INCHES) < AimingConstants.ELEVATOR_TOLERANCE_IN

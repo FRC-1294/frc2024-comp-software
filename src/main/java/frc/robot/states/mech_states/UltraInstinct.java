@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.constants.IntakeConstants;
 import frc.robot.constants.LauncherConstants;
+import frc.robot.commands.AutonomousCommands.Handoff;
 import frc.robot.constants.AimingConstants.AimState;
 import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.states.MechState;
@@ -18,11 +19,11 @@ public class UltraInstinct extends MechState {
 
     @Override
     public void setLauncherSpeed(LauncherMode mode) {
-        mLauncherSubsystem.setLauncherMode(mode);
+        new InstantCommand(()->mLauncherSubsystem.setLauncherMode(mode),mLauncherSubsystem).schedule();
     }
     @Override
     public void brakeLauncher() {
-        mLauncherSubsystem.stopLauncher();
+        new InstantCommand(()->mLauncherSubsystem.stopLauncher(),mLauncherSubsystem).schedule();
     }
 
     @Override
@@ -34,55 +35,60 @@ public class UltraInstinct extends MechState {
 
     @Override
     public void index(){
-        mLauncherSubsystem.runIndexer(LauncherConstants.INDEXER_VELOCITY_HANDOFF);
+        new InstantCommand(() -> mLauncherSubsystem.runIndexer(LauncherConstants.INDEXER_VELOCITY_HANDOFF),mLauncherSubsystem).schedule();;
     }
 
     @Override
     public void launch() {
-        mLauncherSubsystem.runIndexer(LauncherConstants.INDEXER_VELOCITY_LAUNCH);
+        new InstantCommand(() -> mLauncherSubsystem.runIndexer(LauncherConstants.INDEXER_VELOCITY_LAUNCH),mLauncherSubsystem).schedule();;
     }
 
     @Override
     public void controlWrist(double increment) {
-        mAimingSubsystem.changeDesiredWristRotation(increment);
+        new InstantCommand(()->mAimingSubsystem.changeDesiredWristRotation(increment),mAimingSubsystem).schedule();;
     }
 
     @Override
     public void controlElevator(double increment) {
-        mAimingSubsystem.changeDesiredElevatorPosition(increment);
+        new InstantCommand(()->mAimingSubsystem.changeDesiredElevatorPosition(increment),mAimingSubsystem).schedule();;
     }
 
     @Override
     public void setElevatorSP(AimState state) {
-        mAimingSubsystem.setDesiredElevatorDistance(state.elevatorDistIn);
+        new InstantCommand(()->mAimingSubsystem.setDesiredElevatorDistance(state.elevatorDistIn),mAimingSubsystem).schedule();;
     }
 
     @Override
     public void setWristSP(AimState state) {
-        mAimingSubsystem.setDesiredWristRotation(state.wristAngleDeg);
+        new InstantCommand(()->mAimingSubsystem.setDesiredWristRotation(state.wristAngleDeg),mAimingSubsystem).schedule();;
     }
 
     @Override
     public void handoffPosition(){
-        mAimingSubsystem.setDesiredSetpoint(AimState.HANDOFF);
-        mLauncherSubsystem.setLauncherMode(LauncherMode.OFF);
+        new Handoff(mIntakeSubsystem, mLauncherSubsystem).schedule();
     }
 
     @Override
     public void speakerPosition(){
-        mAimingSubsystem.setDesiredSetpoint(AimState.SPEAKER);
-        mLauncherSubsystem.setLauncherMode(LauncherMode.SPEAKER);
+        new InstantCommand(()->{
+            mAimingSubsystem.setDesiredSetpoint(AimState.SPEAKER);
+            mLauncherSubsystem.setLauncherMode(LauncherMode.SPEAKER);},mAimingSubsystem,mLauncherSubsystem
+        ).schedule();
     }
 
     @Override
     public void ampPosition(){
-        mAimingSubsystem.setDesiredSetpoint(AimState.AMP);
-        mLauncherSubsystem.setLauncherMode(LauncherMode.AMP);
+        new InstantCommand(()->{
+            mAimingSubsystem.setDesiredSetpoint(AimState.AMP);
+            mLauncherSubsystem.setLauncherMode(LauncherMode.AMP);},mAimingSubsystem,mLauncherSubsystem
+        ).schedule();
     }
     
     @Override
     public void trapPosition(){
-        mAimingSubsystem.setDesiredSetpoint(AimState.TRAP);
-        mLauncherSubsystem.setLauncherMode(LauncherMode.TRAP);
+        new InstantCommand(()->{
+            mAimingSubsystem.setDesiredSetpoint(AimState.TRAP);
+            mLauncherSubsystem.setLauncherMode(LauncherMode.TRAP);},mAimingSubsystem,mLauncherSubsystem
+        ).schedule();
     }
 }

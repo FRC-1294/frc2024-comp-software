@@ -1,5 +1,6 @@
 package frc.robot.states;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.constants.AimingConstants.AimState;
 import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.subsystems.AimingSubsystem;
@@ -22,7 +23,7 @@ public abstract class MechState {
     public void brakeLauncher() {}
 
     public void brakeIntake() {
-        mIntakeSubsystem.stopMotors();
+       new InstantCommand(()->mIntakeSubsystem.stopMotors(),mIntakeSubsystem);
     }
     public void runIntakeMotors(){}
 

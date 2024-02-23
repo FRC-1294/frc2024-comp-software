@@ -18,7 +18,7 @@ public class Intaken extends MechState {
     public void handoffPosition(){
         new InstantCommand(()->{
             mAimingSubsystem.setDesiredSetpoint(AimState.HANDOFF);
-            mLauncherSubsystem.setLauncherMode(LauncherMode.OFF);}
+            mLauncherSubsystem.setLauncherMode(LauncherMode.OFF);},mLauncherSubsystem,mAimingSubsystem
         ).schedule();
     }
 

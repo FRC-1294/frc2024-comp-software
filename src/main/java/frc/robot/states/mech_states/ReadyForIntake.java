@@ -26,6 +26,6 @@ public class ReadyForIntake extends MechState {
     public void handoffPosition(){
         new InstantCommand(()->{
         mAimingSubsystem.setDesiredSetpoint(AimState.HANDOFF);
-        mLauncherSubsystem.setLauncherMode(LauncherMode.OFF);}).schedule();
+        mLauncherSubsystem.setLauncherMode(LauncherMode.OFF);},mAimingSubsystem,mLauncherSubsystem).schedule();
     }
 }
