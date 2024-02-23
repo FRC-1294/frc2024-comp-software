@@ -31,7 +31,7 @@ public class DefaultMechCommand extends Command {
     private static MechState mUltraInstinct;
 
     private static boolean mUseUltraInstinct = false;
-
+    private static boolean aimSelected = false;
     private static MechState mMechState;
 
     public DefaultMechCommand(IntakeSubsystem intakeSubsystem, LauncherSubsystem launcherSubsystem, AimingSubsystem aimingSubsystem) {
@@ -66,7 +66,7 @@ public class DefaultMechCommand extends Command {
         else if (!getIndexerBeamBreak()) {
             return mReadyForAim;
         }
-        else if (!getIndexerBeamBreak() && isFlywheelAtSP() && isAimAtSP() && isVisionAligned() && Input.getRightBumper()) {
+        else if (!getIndexerBeamBreak() && isFlywheelAtSP() && isAimAtSP() && isVisionAligned() && aimSelected) {
             return mReadyForLaunch;
         }
         return mUltraInstinct;
@@ -78,12 +78,15 @@ public class DefaultMechCommand extends Command {
             mMechState.brakeLauncher();
         }
         else if (Input.getY()) {
+            aimSelected = true;
             mMechState.speakerPosition();
         } 
         else if (Input.getA()) {
+            aimSelected = true;
             mMechState.ampPosition();
         }
         else if (Input.getB()) {
+            aimSelected = true;
             mMechState.trapPosition();
         }
         if (Input.getLeftBumper()) {
@@ -116,13 +119,16 @@ public class DefaultMechCommand extends Command {
     //automatic actions
     public void runAction() {
         if (mMechState == mReadyForIntake) {
+            aimSelected = false;
             mMechState.handoffPosition();
         }
         else if (mMechState == mIntaken) {
+            aimSelected = false;
             mMechState.brakeIntake();
             mMechState.handoffPosition();
         }
         else if (mMechState == mReadyForHandoff) {
+            aimSelected = false;
             mMechState.brakeIntake();
             mMechState.preformHandoff();
         }

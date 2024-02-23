@@ -23,7 +23,6 @@ import frc.robot.subsystems.SwerveSubsystem;
 
 public class ScoreSpeaker extends Command {
   /** Creates a new ScoreSpeaker. */
-  private final SwerveSubsystem mSwerve;
   private final LauncherSubsystem mLauncher;
   private final AimingSubsystem mWrist;
   private final IntakeSubsystem mIntake;
@@ -31,26 +30,24 @@ public class ScoreSpeaker extends Command {
   private MechState curState;
   private Command mCommand;
 
-  public ScoreSpeaker(SwerveSubsystem swerveSubsystem,LauncherSubsystem launcher, AimingSubsystem wrist, IntakeSubsystem intake, SpeakerState prioSpeakerState) {
-    mSwerve = swerveSubsystem;
+  public ScoreSpeaker(LauncherSubsystem launcher, AimingSubsystem wrist, IntakeSubsystem intake, SpeakerState prioSpeakerState) {
     mLauncher = launcher;
     mWrist = wrist;
     mIntake = intake;
     mPrioSpeakerState = prioSpeakerState;
     mCommand = new SequentialCommandGroup(mWrist.waitUntilWristSetpoint(mPrioSpeakerState.mWristAngleDeg),
     mLauncher.waitUntilFlywheelSetpointCommand(),mLauncher.waitUntilNoteLaunchedCommand());
-    addRequirements(mSwerve,mLauncher,mWrist);
+    addRequirements(mLauncher,mWrist);
   }
 
   public ScoreSpeaker(SwerveSubsystem swerveSubsystem,LauncherSubsystem launcher, AimingSubsystem wrist, IntakeSubsystem intake) {
-    mSwerve = swerveSubsystem;
     mLauncher = launcher;
     mWrist = wrist;
     mIntake = intake;
     mPrioSpeakerState = getBestSpeakerState();
     mCommand = new SequentialCommandGroup(mWrist.waitUntilWristSetpoint(mPrioSpeakerState.mWristAngleDeg),
     mLauncher.waitUntilFlywheelSetpointCommand(),mLauncher.waitUntilNoteLaunchedCommand());
-    addRequirements(mSwerve,mLauncher,mWrist);
+    addRequirements(mLauncher,mWrist);
   }
 
   public SpeakerState getBestSpeakerState(){
@@ -65,16 +62,17 @@ public class ScoreSpeaker extends Command {
       mCommand = new PrintCommand("No Note L");
     } else if (curState.getClass() == Intaken.class){
       mCommand = mWrist.waitUntilWristSetpoint(AimState.HANDOFF.wristAngleDeg)
-      .alongWith(new Handoff(mIntake, mLauncher))
-      .alongWith(new LaunchFromHandoff(mWrist, mLauncher, mPrioSpeakerState)).withTimeout(CompConstants.AUTO_LAUNCH_TIMEOUT_SEC);
+      .andThen(new Handoff(mIntake, mLauncher))
+      .andThen(new LaunchFromHandoff(mWrist, mLauncher, mPrioSpeakerState)).withTimeout(CompConstants.AUTO_LAUNCH_TIMEOUT_SEC);
     } else if (curState.getClass() == ReadyForHandoff.class){
       mCommand =new Handoff(mIntake, mLauncher)
-      .alongWith(new LaunchFromHandoff(mWrist, mLauncher, mPrioSpeakerState)).withTimeout(CompConstants.AUTO_LAUNCH_TIMEOUT_SEC);
+      .andThen(new LaunchFromHandoff(mWrist, mLauncher, mPrioSpeakerState)).withTimeout(CompConstants.AUTO_LAUNCH_TIMEOUT_SEC);
     } else if (curState.getClass() == ReadyForAim.class){
       mCommand = new LaunchFromHandoff(mWrist, mLauncher, mPrioSpeakerState).withTimeout(CompConstants.AUTO_LAUNCH_TIMEOUT_SEC);
     } else{
       mCommand = new PrintCommand("How tf u get here??");
     }
+    mCommand.schedule();
   }
 
   // Returns true when the command should end.
