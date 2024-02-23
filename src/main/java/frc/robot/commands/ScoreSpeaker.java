@@ -5,12 +5,10 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.AutonomousCommands.Handoff;
 import frc.robot.commands.AutonomousCommands.LaunchFromHandoff;
-import frc.robot.constants.AimingConstants;
 import frc.robot.constants.CompConstants;
 import frc.robot.constants.SpeakerState;
 import frc.robot.constants.AimingConstants.AimState;
@@ -75,6 +73,7 @@ public class ScoreSpeaker extends Command {
     } else{
       mCommand = new PrintCommand("How tf u get here??");
     }
+    mCommand.schedule();
   }
 
   // Returns true when the command should end.
