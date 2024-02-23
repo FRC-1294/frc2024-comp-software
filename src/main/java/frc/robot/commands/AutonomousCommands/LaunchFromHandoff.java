@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.constants.SpeakerState;
 import frc.robot.subsystems.AimingSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
-import frc.robot.subsystems.SwerveSubsystem;
 
 public class LaunchFromHandoff extends Command {
   /** Creates a new LaunchFromHandoff. */

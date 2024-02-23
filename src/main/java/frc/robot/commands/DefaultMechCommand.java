@@ -39,7 +39,7 @@ public class DefaultMechCommand extends Command {
         mLauncherSubsystem = launcherSubsystem;
         mAimingSubsystem = aimingSubsystem;
 
-        addRequirements(mIntakeSubsystem, mLauncherSubsystem, mAimingSubsystem);
+        //addRequirements(mIntakeSubsystem, mLauncherSubsystem, mAimingSubsystem);
 
         mReadyForIntake = new ReadyForIntake(launcherSubsystem,aimingSubsystem,intakeSubsystem);
         mIntaken = new Intaken(launcherSubsystem,aimingSubsystem,intakeSubsystem);
@@ -87,8 +87,7 @@ public class DefaultMechCommand extends Command {
             mMechState.trapPosition();
         }
         if (Input.getLeftBumper()) {
-            mMechState.intakeInnerMotor();
-            mMechState.intakeOuterMotor();
+            mMechState.runIntakeMotors();
         } else{
             mMechState.brakeIntake();
         }

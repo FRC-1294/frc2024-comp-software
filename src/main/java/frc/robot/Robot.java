@@ -13,10 +13,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import frc.robot.commands.DefaultMechCommand;
 import frc.robot.commands.InitializePathPlanner;
 import frc.robot.commands.SwerveFrictionCharacterization;
 import frc.robot.commands.SwerveVoltageCharacterization;
-import frc.robot.constants.CompConstants;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -26,7 +26,8 @@ import frc.robot.constants.CompConstants;
  */
 public class Robot extends TimedRobot {
   private SendableChooser<Command> pathSelector = new SendableChooser<>();
-
+  private RobotContainer robotContainer = new RobotContainer();
+  private DefaultMechCommand mDefaultMechCommand;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -37,9 +38,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
    
-
-    RobotContainer robotContainer = new RobotContainer();
-
+    mDefaultMechCommand = new DefaultMechCommand(robotContainer.getIntakeSubsystem(), robotContainer.getLauncher(), robotContainer.getAimingSubsystem());
     new InitializePathPlanner(robotContainer.getSwerveSubsystem()).initialize();
     
     SmartDashboard.putData("Pick your Auton...",pathSelector);
@@ -81,6 +80,18 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
+    //Not used
+  }
+
+  @Override
+  public void teleopInit() {
+    mDefaultMechCommand.initialize();
+    //Not used
+  }
+
+  @Override
+  public void teleopPeriodic() {
+    mDefaultMechCommand.execute();
     //Not used
   }
 

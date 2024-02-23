@@ -1,6 +1,7 @@
 package frc.robot.states.mech_states;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.constants.IntakeConstants;
 import frc.robot.constants.LauncherConstants;
 import frc.robot.constants.AimingConstants.AimState;
@@ -25,13 +26,10 @@ public class UltraInstinct extends MechState {
     }
 
     @Override
-    public void intakeOuterMotor() {
-        mIntakeSubsystem.outerMotorAtSpeed(IntakeConstants.OUTER_INTAKE_SPEED_ACTIVE);
-    }
-
-    @Override
-    public void intakeInnerMotor() {
+    public void runIntakeMotors() {
+        new InstantCommand(() -> {
         mIntakeSubsystem.innerMotorAtSpeed(IntakeConstants.INNER_INTAKE_SPEED_ACTIVE);
+        mIntakeSubsystem.outerMotorAtSpeed(IntakeConstants.OUTER_INTAKE_SPEED_ACTIVE);},mIntakeSubsystem).schedule();
     }
 
     @Override

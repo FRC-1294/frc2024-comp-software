@@ -16,13 +16,10 @@ public class ReadyForIntake extends MechState {
     }
 
     @Override
-    public void intakeInnerMotor() {
-        new InstantCommand(() -> mIntakeSubsystem.innerMotorAtSpeed(IntakeConstants.INNER_INTAKE_SPEED_ACTIVE)).schedule();;
-    }
-    
-    @Override
-    public void intakeOuterMotor() {
-        new InstantCommand(()-> mIntakeSubsystem.outerMotorAtSpeed(IntakeConstants.OUTER_INTAKE_SPEED_ACTIVE)).schedule();;
+    public void runIntakeMotors() {
+        new InstantCommand(() -> {
+        mIntakeSubsystem.innerMotorAtSpeed(IntakeConstants.INNER_INTAKE_SPEED_ACTIVE);
+        mIntakeSubsystem.outerMotorAtSpeed(IntakeConstants.OUTER_INTAKE_SPEED_ACTIVE);},mIntakeSubsystem).schedule();
     }
 
     @Override
