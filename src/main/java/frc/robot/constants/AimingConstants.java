@@ -52,11 +52,11 @@ public class AimingConstants {
     public static final double WRIST_TOLERANCE_DEG = 0;
 
     // Soft Limits
-    public static final double MAX_ELEVATOR_DIST = 0.64;
-    public static final double MIN_ELEVATOR_DIST_METERS = 0.05;
-    public static final double MAX_ELEVATOR_EXTENSION_VELOCITY = 0.1;
+    public static final double MAX_ELEVATOR_DIST_METERS = 0.31; //TBD
+    public static final double MIN_ELEVATOR_DIST_METERS = 0.05; //TBD
+    public static final double MAX_ELEVATOR_EXTENSION_VELOCITY = 0.1; //TBD
 
-    public static final double MAX_WRIST_ROTATION = 0;
+    public static final double MAX_WRIST_ROTATION = 110;
     public static final double MIN_WRIST_ROTATION_DEG = 0;
     public static final double MAX_WRIST_ROTATION_VELOCITY = 0;
 
