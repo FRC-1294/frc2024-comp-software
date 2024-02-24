@@ -34,7 +34,7 @@ public class AimingSubsystem extends SubsystemBase {
   // Wrist Hardware
   private final CANSparkMax mLeftWristMotor = new CANSparkMax(AimingConstants.LEFT_WRIST_SPARK_ID, MotorType.kBrushless);
   private final CANSparkMax mRightWristMotor = new CANSparkMax(AimingConstants.RIGHT_WRIST_SPARK_ID, MotorType.kBrushless);
-  private final DutyCycleEncoder mWristThroughBoreEncoder = new DutyCycleEncoder(AimingConstants.ELEVATOR_THROUGHBORE_ENCODER_ID);
+  private final DutyCycleEncoder mWristThroughBoreEncoder = new DutyCycleEncoder(AimingConstants.WRIST_THROUGHBORE_ENCODER_ID);
 
   // Current States
   private double mCurrentElevatorDistanceIn = AimingConstants.MIN_ELEVATOR_DIST_METERS;
