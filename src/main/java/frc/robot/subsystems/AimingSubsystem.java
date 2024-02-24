@@ -115,7 +115,7 @@ public class AimingSubsystem extends SubsystemBase {
 
   private void elevatorPeriodic() {
     //Clamping Rotation between domain
-    mDesiredElevatorDistanceIn = MathUtil.clamp(mDesiredElevatorDistanceIn, AimingConstants.MIN_ELEVATOR_DIST_METERS, AimingConstants.MAX_ELEVATOR_DIST);
+    mDesiredElevatorDistanceIn = MathUtil.clamp(mDesiredElevatorDistanceIn, AimingConstants.MIN_ELEVATOR_DIST_METERS, AimingConstants.MAX_ELEVATOR_DIST_METERS);
     mCurrentElevatorDistanceIn = getCurrentElevatorDistance();
 
     //Temp Regular PID
