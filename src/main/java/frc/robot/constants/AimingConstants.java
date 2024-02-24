@@ -15,11 +15,11 @@ public class AimingConstants {
 
     // Setpoints
     public enum AimState {
-        STOW(MIN_ELEVATOR_DIST_IN, MIN_WRIST_ROTATION_DEG),
-        SPEAKER(MIN_ELEVATOR_DIST_IN, MIN_WRIST_ROTATION_DEG),
-        AMP(MIN_ELEVATOR_DIST_IN, MIN_WRIST_ROTATION_DEG),
-        HANDOFF(MIN_ELEVATOR_DIST_IN, MIN_WRIST_ROTATION_DEG),
-        CLIMB(MIN_ELEVATOR_DIST_IN, MIN_WRIST_ROTATION_DEG);
+        STOW(MIN_ELEVATOR_DIST_METERS, MIN_WRIST_ROTATION_DEG),
+        SPEAKER(MIN_ELEVATOR_DIST_METERS, MIN_WRIST_ROTATION_DEG),
+        AMP(MIN_ELEVATOR_DIST_METERS, MIN_WRIST_ROTATION_DEG),
+        HANDOFF(MIN_ELEVATOR_DIST_METERS, MIN_WRIST_ROTATION_DEG),
+        CLIMB(MIN_ELEVATOR_DIST_METERS, MIN_WRIST_ROTATION_DEG);
 
         public final double elevatorDistIn;
         public final double wristAngleDeg;
@@ -53,7 +53,7 @@ public class AimingConstants {
 
     // Soft Limits
     public static final double MAX_ELEVATOR_DIST = 0.64;
-    public static final double MIN_ELEVATOR_DIST_IN = 0.05;
+    public static final double MIN_ELEVATOR_DIST_METERS = 0.05;
     public static final double MAX_ELEVATOR_EXTENSION_VELOCITY = 0.1;
 
     public static final double MAX_WRIST_ROTATION = 0;
