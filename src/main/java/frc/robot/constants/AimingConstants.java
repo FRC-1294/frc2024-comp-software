@@ -15,17 +15,17 @@ public class AimingConstants {
 
     // Setpoints
     public enum AimState {
-        STOW(MIN_ELEVATOR_DIST_IN, MIN_WRIST_ROTATION_DEG),
-        SPEAKER(MIN_ELEVATOR_DIST_IN, MIN_WRIST_ROTATION_DEG),
-        AMP(MIN_ELEVATOR_DIST_IN, MIN_WRIST_ROTATION_DEG),
-        HANDOFF(MIN_ELEVATOR_DIST_IN, MIN_WRIST_ROTATION_DEG),
-        CLIMB(MIN_ELEVATOR_DIST_IN, MIN_WRIST_ROTATION_DEG);
+        STOW(0, MIN_WRIST_ROTATION_DEG),
+        SPEAKER(0, MIN_WRIST_ROTATION_DEG),
+        AMP(0, MIN_WRIST_ROTATION_DEG),
+        HANDOFF(0, MIN_WRIST_ROTATION_DEG),
+        CLIMB(MIN_ELEVATOR_DIST_METERS, MIN_WRIST_ROTATION_DEG);
 
-        public final double elevatorDistIn;
+        public final double elevatorDistMeters;
         public final double wristAngleDeg;
     
         AimState(double dist, double rot) {
-          elevatorDistIn = dist;
+          elevatorDistMeters = dist;
           wristAngleDeg = rot;
         }
     }
@@ -39,7 +39,8 @@ public class AimingConstants {
     public static final PIDParameters mElevatorPIDConstants = new PIDParameters(3, 0, 0);
     public static final PIDParameters mWristPIDConstants = new PIDParameters(0.1, 0, 0, 0, 0);
     public static final double ELEVATOR_FEEDFORWARD_CONSTANT = 0.05;
-    public static final double WRIST_FEEDFORWARD_CONSTANT = 0;
+    public static final double WRIST_KG = 0;
+    public static final double COG_OFFSET = 0;
     public static final double SPARK_THROUGHBORE_GEAR_RATIO = 1;
 
 
@@ -48,15 +49,15 @@ public class AimingConstants {
     // TODO: Calculate the ratio for the competition robot
     // Issue #281 has been created for the same. Link to the issue: https://github.com/FRC-1294/frc2024/issues/281
     public static final double ELEVATOR_ROTATIONS_TO_METERS = 0.013328525766295266;
-	public static final double ELEVATOR_TOLERANCE_IN = 0.01;
+	public static final double ELEVATOR_TOLERANCE_METERS = 0.01;
     public static final double WRIST_TOLERANCE_DEG = 0;
 
     // Soft Limits
-    public static final double MAX_ELEVATOR_DIST = 0.64;
-    public static final double MIN_ELEVATOR_DIST_IN = 0.05;
+    public static final double MAX_ELEVATOR_DIST_METERS = 0.64;
+    public static final double MIN_ELEVATOR_DIST_METERS = 0.05;
     public static final double MAX_ELEVATOR_EXTENSION_VELOCITY = 0.1;
 
-    public static final double MAX_WRIST_ROTATION = 0;
+    public static final double MAX_WRIST_ROTATION_DEG = 0;
     public static final double MIN_WRIST_ROTATION_DEG = 0;
     public static final double MAX_WRIST_ROTATION_VELOCITY = 0;
 

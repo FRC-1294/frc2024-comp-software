@@ -37,11 +37,11 @@ public class AimingSubsystem extends SubsystemBase {
   private final DutyCycleEncoder mWristThroughBoreEncoder = new DutyCycleEncoder(AimingConstants.ELEVATOR_THROUGHBORE_ENCODER_ID);
 
   // Current States
-  private double mCurrentElevatorDistanceIn = AimingConstants.MIN_ELEVATOR_DIST_IN;
+  private double mCurrentElevatorDistanceMeters = AimingConstants.MIN_ELEVATOR_DIST_METERS;
   private double mCurrentWristRotationDeg = AimingConstants.MIN_WRIST_ROTATION_DEG;
 
   // Desired States
-  private double mDesiredElevatorDistanceIn = mCurrentElevatorDistanceIn;
+  private double mDesiredElevatorDistanceMeters = mCurrentElevatorDistanceMeters;
   private double mDesiredWristRotationDeg = mCurrentWristRotationDeg;
 
   // MotorMode Chooser
@@ -83,7 +83,7 @@ public class AimingSubsystem extends SubsystemBase {
     mLeftElevatorMotor.setInverted(!AimingConstants.ELEVATOR_LEFT_IS_NORMAL);
     mLeftWristMotor.setInverted(!AimingConstants.WRIST_LEFT_IS_NORMAL);
     mWristController.setTolerance(AimingConstants.WRIST_TOLERANCE_DEG);
-    mElevatorController.setTolerance(AimingConstants.ELEVATOR_TOLERANCE_IN);
+    mElevatorController.setTolerance(AimingConstants.ELEVATOR_TOLERANCE_METERS);
 
     //follower configuration
     mRightWristMotor.follow(mLeftWristMotor, true);
@@ -109,24 +109,24 @@ public class AimingSubsystem extends SubsystemBase {
 
   private void elevatorPeriodic() {
     //Clamping Rotation between domain
-    mDesiredElevatorDistanceIn = MathUtil.clamp(mDesiredElevatorDistanceIn, AimingConstants.MIN_ELEVATOR_DIST_IN, AimingConstants.MAX_ELEVATOR_DIST);
-    mCurrentElevatorDistanceIn = getCurrentElevatorDistance();
+    mDesiredElevatorDistanceMeters = MathUtil.clamp(mDesiredElevatorDistanceMeters, AimingConstants.MIN_ELEVATOR_DIST_METERS, AimingConstants.MAX_ELEVATOR_DIST_METERS);
+    mCurrentElevatorDistanceMeters = getCurrentElevatorDistance();
 
     //Temp Regular PID
-    double elevatorPIDCalculation = mElevatorController.calculate(mCurrentElevatorDistanceIn, mDesiredElevatorDistanceIn);
+    double elevatorPIDCalculation = mElevatorController.calculate(mCurrentElevatorDistanceMeters, mDesiredElevatorDistanceMeters);
     mLeftElevatorMotor.set(elevatorPIDCalculation + AimingConstants.ELEVATOR_FEEDFORWARD_CONSTANT);
     SmartDashboard.putNumber("ElevatorPIDOutput", elevatorPIDCalculation);
   }
 
   private void wristPeriodic() {
     //Clamping Rotation between domain
-    mDesiredWristRotationDeg = MathUtil.clamp(mDesiredWristRotationDeg, AimingConstants.MIN_WRIST_ROTATION_DEG, AimingConstants.MAX_WRIST_ROTATION);
+    mDesiredWristRotationDeg = MathUtil.clamp(mDesiredWristRotationDeg, AimingConstants.MIN_WRIST_ROTATION_DEG, AimingConstants.MAX_WRIST_ROTATION_DEG);
     mCurrentWristRotationDeg = getCurrentWristRotation();
 
-    double offset = (Math.PI / 2);
     double wristPIDCalculation = mWristController.calculate(mCurrentWristRotationDeg, mDesiredWristRotationDeg);
+    double wristFeedforwardCalculation = Math.cos((mCurrentWristRotationDeg-AimingConstants.COG_OFFSET)*AimingConstants.WRIST_KG);    SmartDashboard.putNumber("WristPIDOutput", wristPIDCalculation);
+    mLeftWristMotor.set(wristPIDCalculation + wristFeedforwardCalculation);
     SmartDashboard.putNumber("WristPIDOutput", wristPIDCalculation);
-    mLeftWristMotor.set(wristPIDCalculation + AimingConstants.WRIST_FEEDFORWARD_CONSTANT);
   }
 
   private void updateMotorModes() {
@@ -157,7 +157,7 @@ public class AimingSubsystem extends SubsystemBase {
   private void debugSmartDashboard() {
     if (CompConstants.DEBUG_MODE) {
       SmartDashboard.putNumber("Current Wrist Rotation", mCurrentWristRotationDeg);
-      SmartDashboard.putNumber("Current Elevator Distance", mCurrentElevatorDistanceIn);
+      SmartDashboard.putNumber("Current Elevator Distance", mCurrentElevatorDistanceMeters);
       SmartDashboard.putNumber("Desired Wrist Rotation", mDesiredWristRotationDeg);
       SmartDashboard.putNumber("Desired Elevator Distance", getDesiredElevatorDistance());
       SmartDashboard.putNumber("Raw Elevator Encoder Position", mLeftElevatorEncoder.getPosition());
@@ -177,11 +177,11 @@ public class AimingSubsystem extends SubsystemBase {
    * @return Current Wrist Rotation in Degrees
    */
   public double getCurrentWristRotation(){
-    return mWristThroughBoreEncoder.getAbsolutePosition()*(360);
+    return mWristThroughBoreEncoder.getAbsolutePosition(); 
   }
 
   public double getDesiredElevatorDistance() {
-    return mDesiredElevatorDistanceIn;
+    return mDesiredElevatorDistanceMeters;
   }
   
   public double getDesiredWristRotation() {
@@ -189,7 +189,7 @@ public class AimingSubsystem extends SubsystemBase {
   }
 
   public void setDesiredElevatorDistance(double distance) {
-    mDesiredElevatorDistanceIn = distance;
+    mDesiredElevatorDistanceMeters = distance;
   }
 
   public void setDesiredWristRotation(double rotation) {
@@ -197,11 +197,11 @@ public class AimingSubsystem extends SubsystemBase {
   }
 
   public void setDesiredSetpoint(AimState state) {
-    mDesiredElevatorDistanceIn = state.elevatorDistIn;
+    mDesiredElevatorDistanceMeters = state.elevatorDistMeters;
     mDesiredWristRotationDeg = state.wristAngleDeg;
   }
   public void changeDesiredElevatorPosition(double increment) {
-    mDesiredElevatorDistanceIn += increment;
+    mDesiredElevatorDistanceMeters += increment;
   }
 
   public void changeDesiredWristRotation(double increment) {
@@ -211,7 +211,7 @@ public class AimingSubsystem extends SubsystemBase {
   public boolean atElevatorSetpoint() {
     // ENCODER VERSION
     // return mLeftElevatorMotor.getRotorPosition().getValueAsDouble() * AimingConstants.ELEVATOR_ROTATIONS_TO_INCHES) < AimingConstants.ELEVATOR_TOLERANCE_IN
-    return Math.abs(mDesiredElevatorDistanceIn - mCurrentElevatorDistanceIn) <= AimingConstants.ELEVATOR_TOLERANCE_IN;
+    return Math.abs(mDesiredElevatorDistanceMeters - mCurrentElevatorDistanceMeters) <= AimingConstants.ELEVATOR_TOLERANCE_METERS;
   }
   public boolean atWristSetpoint() {
     return mWristController.atSetpoint();
