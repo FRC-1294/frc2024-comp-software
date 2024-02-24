@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package main.java.frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -15,13 +15,19 @@ import frc.robot.Input;
 
 public class AutoAimCommand extends Command {
   private final AimingSubsystem mAimingSubsystem;
+  private final SwerveSubsystem mSwerveSubsystem;
+  private final PIDController mRotPID = new PIDController(0.1, 0, 0);
 
   // Use the Arm from last year as inspiration
-  public AutoAimCommand(AimingSubsystem aimingSubsystem) {
+  public AutoAimCommand(AimingSubsystem aimingSubsystem, SwerveSubsystem swerveSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     
+    mSwerveSubsystem = swerveSubsystem;
     mAimingSubsystem = aimingSubsystem;
+
+    mRotPID.setTolerance(5);
     addRequirements(aimingSubsystem);
+    addRequirements(swerveSubsystem);
 
     //mSwerveSubsystem = swerveSubsystem;
     //addRequirements(swerveSubsystem);
@@ -32,34 +38,25 @@ public class AutoAimCommand extends Command {
 
   //AutoLock System
   public double getVerticalAngleSpeakerDEGS(){
-    Pose2d currentRobotPose = SwerveSubsystem.getRobotPose();
-    var alliance = DriverStation.getAlliance();
+    Pose2d currentRobotPose2D = SwerveSubsystem.getRobotPose();
+    Pose3d currentRobotPose3D = new Pose3D (currentRobotPose2D.getX(), currentRobotPose2D.getY(), 0, currentRobotPose2D.getRotation());
 
-    if(alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red){
-      //double desiredAngle = currentRobotPose.minus(CompConstants.BLUE_SPEAKER_POSE).getTranslation().getAngle().getDegrees(); ???
-      double xRobot = currentRobotPose.getX();
-      double yRobot = currentRobotPose.getY();
-
-      double distanceFromSpeaker = Math.sqrt(Math.pow(xRobot - AimingConstants.SPEAKER_X_COORDINATE, 2) + Math.pow(AimingConstants.SPEAKER_Y_COORDINATE - yRobot, 2)); //distance formula
-      double verticalAngle = Math.toDegrees(Math.atan((AimingConstants.SPEAKER_HEIGHT_TO_ROBOT) / distanceFromSpeaker)); //triangle shenanigans (source: trust me bro - Pythagoras)
+    double distanceFromSpeaker3D = currentRobotPose3D.minus(CompConstants.BLUE_SPEAKER_POSE_3D);
+    double distanceFromSpeaker2D = currentRobotPose2D.minus(CompConstants.BLUE_SPEAKER_POSE_2D);
+    double verticalAngle = Math.toDegrees(Math.acos(distanceFromSpeaker2D / distanceFromSpeaker3D));
       return verticalAngle;
     }
-    
-    return 0;
-  }
 
   // Get distance between robot & speaker
   public double getHorizontalAngleSpeakerDEGS(){
     Pose2d currentRobotPose = SwerveSubsystem.getRobotPose();
 
-    double xRobot = currentRobotPose.getX();
-    double yRobot = currentRobotPose.getY();
-
     //Equation: angle needed to add = 180 - current angle - angle relative to top of field
     //Assumptions: current angle < 180 ???
+
     double currentAngle = currentRobotPose.getRotation().getDegrees(); //THETA C
-    double cornerSpeakerAngle = Math.atan((AimingConstants.SPEAKER_Y_COORDINATE - yRobot) / (xRobot - AimingConstants.SPEAKER_X_COORDINATE)); //THETA F
-    double addedAngle = 180 - currentAngle - cornerSpeakerAngle;//THETA A
+    double cornerSpeakerAngle = Math.atan((AimingConstants.SPEAKER_Y_COORDINATE - currentRobotPose.getY()) / (currentRobotPose.getX() - AimingConstants.SPEAKER_X_COORDINATE)); //THETA F
+    double addedAngle = 180 - currentAngle - cornerSpeakerAngle; //THETA A
     return addedAngle;
   }
 
@@ -67,16 +64,22 @@ public class AutoAimCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double desiredRotation = getVerticalAngleSpeakerDEGS() - AimingConstants.WRIST_PIVOT_ANGLE_OFFSET;
+    double desiredVerticalRotation = getVerticalAngleSpeakerDEGS() - AimingConstants.WRIST_PIVOT_ANGLE_OFFSET;
+    double desiredHorizontalRotation = getHorizontalAngleSpeakerDEGS();
 
     mAimingSubsystem.setDesiredElevatorDistance(0);
-    mAimingSubsystem.setDesiredWristRotation(desiredRotation);
+    mAimingSubsystem.setDesiredWristRotation(desiredVerticalRotation);
+
+    double rotSpeed = mRotPID.calculate(desiredHorizontalRotation, SwerveSubsystem.getHeading());
+    mSwerveSubsystem.setChassisSpeed(0, 0, rotSpeed, true, false);
+
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return mAimingSubsystem.atSetpoints();
+    return mAimingSubsystem.atSetpoints() && mRotPID.atSetpoint();
     // return false;
   }
 }
