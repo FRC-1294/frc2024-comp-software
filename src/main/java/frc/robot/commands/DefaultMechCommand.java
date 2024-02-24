@@ -5,7 +5,7 @@
 package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.AimingConstants;
-import frc.robot.constants.AimingConstants.AimState;
+import frc.robot.constants.AimState;
 import frc.robot.states.MechState;
 import frc.robot.states.mech_states.Intaken;
 import frc.robot.states.mech_states.ReadyForAim;
@@ -104,9 +104,9 @@ public class DefaultMechCommand extends Command {
             mMechState.controlElevator(Input.getLeftStickY()*AimingConstants.MAX_WRIST_TELEOP_INCREMENT);
         }
         if (Input.getDPad() == Input.DPADUP) {
-            mMechState.setElevatorSP(AimState.CLIMB);
+            mMechState.ClimbExtendedState();
         } else if (Input.getDPad() == Input.DPADDOWN) {
-            mMechState.setElevatorSP(AimState.STOW);
+            mMechState.ClimbExtendedState();
         }
         if (Input.getDPad() == Input.DPADRIGHT){
             mUseUltraInstinct = !mUseUltraInstinct;
@@ -143,7 +143,7 @@ public class DefaultMechCommand extends Command {
     }
 
     public static boolean getIntakeBeamBreak() {
-        return mIntakeSubsystem.pieceInIntake();
+        return IntakeSubsystem.pieceInIntake();
     }
 
     public static boolean getIndexerBeamBreak() {

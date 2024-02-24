@@ -1,7 +1,7 @@
 package frc.robot.states;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.constants.AimingConstants.AimState;
+import frc.robot.constants.AimState;
 import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.subsystems.AimingSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -37,7 +37,11 @@ public abstract class MechState {
 
     public void controlElevator(double increment) {}
 
-    public void setElevatorSP(AimState state) {}
+    public void ClimbExtendedState(AimState state) {}
+
+    public void ClimbExtendedState() {}
+    
+    public void ClimbRetractedState() {}
 
     public void setWristSP(AimState state) {}
     

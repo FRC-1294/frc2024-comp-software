@@ -1,7 +1,7 @@
 package frc.robot.states.mech_states;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.constants.AimingConstants.AimState;
+import frc.robot.constants.AimState;
 import frc.robot.constants.LauncherConstants;
 import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.states.MechState;
@@ -23,7 +23,7 @@ public class ReadyForLaunch extends MechState {
     @Override
     public void speakerPosition(){
         new InstantCommand(()->{
-            mAimingSubsystem.setDesiredSetpoint(AimState.SPEAKER);
+            mAimingSubsystem.setDesiredSetpoint(AimState.SUBWOOFER);
             mLauncherSubsystem.setLauncherMode(LauncherMode.SPEAKER);},mAimingSubsystem,mLauncherSubsystem
         ).schedule();
     }

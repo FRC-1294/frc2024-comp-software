@@ -1,6 +1,6 @@
 package frc.robot.states.mech_states;
 
-import frc.robot.constants.AimingConstants.AimState;
+import frc.robot.constants.AimState;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.constants.IntakeConstants;
 import frc.robot.constants.LauncherConstants.LauncherMode;

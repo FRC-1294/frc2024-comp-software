@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.AimingConstants;
 import frc.robot.constants.CompConstants;
-import frc.robot.constants.AimingConstants.AimState;
+import frc.robot.constants.AimState;
 
 
 public class AimingSubsystem extends SubsystemBase {
@@ -184,9 +184,9 @@ public class AimingSubsystem extends SubsystemBase {
   }
 
   public AimState getCurrentState(){
-    for (AimState state : AimingConstants.AimState.values()){
-      if (Math.abs(state.wristAngleDeg - getCurrentWristDegreees())<AimingConstants.WRIST_TOLERANCE_DEG 
-        && Math.abs(state.elevatorDistIn - getCurrentElevatorDistance())<AimingConstants.ELEVATOR_TOLERANCE_IN){
+    for (AimState state : AimState.values()){
+      if (state.withinWristTolerance(getCurrentWristDegreees())
+        && state.withinElevatorTolerance(getCurrentElevatorDistance())){
         return state;
       }
     }
@@ -204,6 +204,10 @@ public class AimingSubsystem extends SubsystemBase {
   public void setDesiredElevatorDistance(double distance) {
     mDesiredElevatorDistanceIn = distance;
   }
+  public void setDesiredElevatorDistance(double distance, double tolerance) {
+    mDesiredElevatorDistanceIn = distance;
+    mElevatorController.setTolerance(tolerance);
+  }
 
   public void setDesiredWristRotation(double rotation) {
     mDesiredWristRotationDeg = rotation;
@@ -216,8 +220,10 @@ public class AimingSubsystem extends SubsystemBase {
 
   public void setDesiredSetpoint(AimState state) {
     if(state != AimState.TRANSITION){
-      mDesiredElevatorDistanceIn = state.elevatorDistIn;
-      mDesiredWristRotationDeg = state.wristAngleDeg;
+      mDesiredElevatorDistanceIn = state.mElevatorHeightMeters;
+      mDesiredWristRotationDeg = state.mWristAngleDegrees;
+      mWristController.setTolerance(state.mWristToleranceDegrees);
+      mElevatorController.setTolerance(state.mElevatorHeightMeters);
     }
   }
 
@@ -229,14 +235,20 @@ public class AimingSubsystem extends SubsystemBase {
     mDesiredWristRotationDeg += increment;
   }
 
+  public void setWristToleranceDeg(double tolerance){
+    mWristController.setTolerance(tolerance);
+  }
+  
+  public void setElevatorToleranceDeg(double tolerance){
+    mElevatorController.setTolerance(tolerance);
+  }
+
   public void calculateExitAngle(){
     //Ankit do ur thing
   }
 
   public boolean atElevatorSetpoint() {
-    // ENCODER VERSION
-    // return mLeftElevatorMotor.getRotorPosition().getValueAsDouble() * AimingConstants.ELEVATOR_ROTATIONS_TO_INCHES) < AimingConstants.ELEVATOR_TOLERANCE_IN
-    return Math.abs(mDesiredElevatorDistanceIn - mCurrentElevatorDistanceIn) <= AimingConstants.ELEVATOR_TOLERANCE_IN;
+    return mElevatorController.atSetpoint();
   }
   public boolean atWristSetpoint() {
     return mWristController.atSetpoint();
@@ -251,7 +263,7 @@ public class AimingSubsystem extends SubsystemBase {
   }
 
   public Command waitUntilWristSetpoint(double wristSP, double wristTolerance) {
-    return new FunctionalCommand(()->setDesiredWristRotation(wristSP, wristTolerance), null, null, this::atWristSetpoint, null);
+    return new FunctionalCommand(()->setDesiredWristRotation(wristSP, wristTolerance), null, null, this::atWristSetpoint, this);
   }
 
   public Command waitUntilElevatorSetpoint(double sp) {

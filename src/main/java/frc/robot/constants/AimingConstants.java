@@ -9,29 +9,6 @@ import frc.robot.subsystems.AimingSubsystem.AimingMotorMode;
 
 // AimingConstants class is used to store all IDs & constants of the Elevator & Wrist components
 public class AimingConstants {
-
-    // TODO: Find the angle measures of these setpoints
-    // Issue#262 has been created for the same
-
-    // Setpoints
-    public enum AimState {
-        STOW(MIN_ELEVATOR_DIST_METERS, MIN_WRIST_ROTATION_DEG),
-        SPEAKER(MIN_ELEVATOR_DIST_METERS, MIN_WRIST_ROTATION_DEG),
-        AMP(MIN_ELEVATOR_DIST_METERS, MIN_WRIST_ROTATION_DEG),//TBD
-        HANDOFF(MIN_ELEVATOR_DIST_METERS, MIN_WRIST_ROTATION_DEG),
-        CLIMB(MIN_ELEVATOR_DIST_METERS, MIN_WRIST_ROTATION_DEG),
-        TRAP(MIN_ELEVATOR_DIST_METERS, MIN_WRIST_ROTATION_DEG),//TBD
-        TRANSITION(99999, 99999);
-
-
-        public final double elevatorDistIn;
-        public final double wristAngleDeg;
-    
-        AimState(double dist, double rot) {
-          elevatorDistIn = dist;
-          wristAngleDeg = rot;
-        }
-    }
     
     // Teleop Constant
     public static final double MAX_ELEVATOR_TELEOP_INCREMENT = 0.05;

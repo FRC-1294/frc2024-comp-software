@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.constants.IntakeConstants;
 import frc.robot.constants.LauncherConstants;
 import frc.robot.commands.AutonomousCommands.Handoff;
-import frc.robot.constants.AimingConstants.AimState;
+import frc.robot.constants.AimState;
 import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.states.MechState;
 import frc.robot.subsystems.AimingSubsystem;
@@ -54,24 +54,29 @@ public class UltraInstinct extends MechState {
     }
 
     @Override
-    public void setElevatorSP(AimState state) {
-        new InstantCommand(()->mAimingSubsystem.setDesiredElevatorDistance(state.elevatorDistIn),mAimingSubsystem).schedule();;
+    public void ClimbExtendedState() {
+        new InstantCommand(()->mAimingSubsystem.setDesiredSetpoint(AimState.CLIMB_UP)).schedule();
+    }
+
+    @Override
+    public void ClimbRetractedState() {
+        new InstantCommand(()->mAimingSubsystem.setDesiredSetpoint(AimState.CLIMB_DOWN)).schedule();
     }
 
     @Override
     public void setWristSP(AimState state) {
-        new InstantCommand(()->mAimingSubsystem.setDesiredWristRotation(state.wristAngleDeg),mAimingSubsystem).schedule();;
+        new InstantCommand(()->mAimingSubsystem.setDesiredWristRotation(state.mWristAngleDegrees, state.mWristToleranceDegrees),mAimingSubsystem).schedule();;
     }
 
     @Override
-    public void handoffPosition(){
+    public void preformHandoff(){
         new Handoff(mIntakeSubsystem, mLauncherSubsystem).schedule();
     }
 
     @Override
     public void speakerPosition(){
         new InstantCommand(()->{
-            mAimingSubsystem.setDesiredSetpoint(AimState.SPEAKER);
+            mAimingSubsystem.setDesiredSetpoint(AimState.SUBWOOFER);
             mLauncherSubsystem.setLauncherMode(LauncherMode.SPEAKER);},mAimingSubsystem,mLauncherSubsystem
         ).schedule();
     }
@@ -89,6 +94,14 @@ public class UltraInstinct extends MechState {
         new InstantCommand(()->{
             mAimingSubsystem.setDesiredSetpoint(AimState.TRAP);
             mLauncherSubsystem.setLauncherMode(LauncherMode.TRAP);},mAimingSubsystem,mLauncherSubsystem
+        ).schedule();
+    }
+
+    @Override
+    public void handoffPosition(){
+        new InstantCommand(()->{
+            mAimingSubsystem.setDesiredSetpoint(AimState.HANDOFF);
+            mLauncherSubsystem.setLauncherMode(LauncherMode.OFF);},mLauncherSubsystem,mAimingSubsystem
         ).schedule();
     }
 }

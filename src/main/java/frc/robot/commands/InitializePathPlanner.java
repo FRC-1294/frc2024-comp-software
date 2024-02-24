@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AutonomousCommands.Handoff;
 import frc.robot.commands.AutonomousCommands.ScoreSpeaker;
-import frc.robot.constants.SpeakerState;
+import frc.robot.constants.AimState;
 import frc.robot.subsystems.AimingSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
@@ -43,10 +43,10 @@ public class InitializePathPlanner{
   
   public void initializeNamedCommands(){
     NamedCommands.registerCommand("IntakeUntilNote", mIntake.getAutomousIntakeCommand());
-    NamedCommands.registerCommand("ShootFromMidnote", new ScoreSpeaker(mLauncher, mAiming, mIntake,SpeakerState.MIDNOTE));
-    NamedCommands.registerCommand("ShootFromSubwoofer", new ScoreSpeaker(mLauncher, mAiming, mIntake,SpeakerState.SUBWOOFER));
-    NamedCommands.registerCommand("ShootFromWing", new ScoreSpeaker(mLauncher, mAiming, mIntake,SpeakerState.WING));
-    NamedCommands.registerCommand("ShootFromLine", new ScoreSpeaker(mLauncher, mAiming, mIntake,SpeakerState.LINE));
+    NamedCommands.registerCommand("ShootFromMidnote", new ScoreSpeaker(mLauncher, mAiming, mIntake,AimState.MIDNOTE));
+    NamedCommands.registerCommand("ShootFromSubwoofer", new ScoreSpeaker(mLauncher, mAiming, mIntake,AimState.SUBWOOFER));
+    NamedCommands.registerCommand("ShootFromWing", new ScoreSpeaker(mLauncher, mAiming, mIntake,AimState.WING));
+    NamedCommands.registerCommand("ShootFromLine", new ScoreSpeaker(mLauncher, mAiming, mIntake,AimState.LINE));
     NamedCommands.registerCommand("Handoff", new Handoff(mIntake, mLauncher));
   }
 

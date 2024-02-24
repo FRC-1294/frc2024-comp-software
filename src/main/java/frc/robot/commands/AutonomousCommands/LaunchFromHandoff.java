@@ -6,7 +6,7 @@ package frc.robot.commands.AutonomousCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.constants.SpeakerState;
+import frc.robot.constants.AimState;
 import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.subsystems.AimingSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
@@ -15,15 +15,15 @@ public class LaunchFromHandoff extends Command {
   /** Creates a new LaunchFromHandoff. */
   private final AimingSubsystem mWrist;
   private final LauncherSubsystem mLauncher;
-  private final SpeakerState mDesiredState; 
+  private final AimState mDesiredState; 
   private Command mCommand;
 
-  public LaunchFromHandoff(AimingSubsystem wrist, LauncherSubsystem launcher, SpeakerState desiredState) {
+  public LaunchFromHandoff(AimingSubsystem wrist, LauncherSubsystem launcher, AimState desiredState) {
     mWrist = wrist;
     mLauncher = launcher;
     mDesiredState = desiredState;
     addRequirements(mWrist,mLauncher);
-    mCommand = new SequentialCommandGroup(mWrist.waitUntilWristSetpoint(mDesiredState.mWristAngleDeg),
+    mCommand = new SequentialCommandGroup(mWrist.waitUntilSetpoint(desiredState),
     mLauncher.waitUntilFlywheelSetpointCommand(LauncherMode.SPEAKER),mLauncher.waitUntilNoteLaunchedCommand());
   }
 

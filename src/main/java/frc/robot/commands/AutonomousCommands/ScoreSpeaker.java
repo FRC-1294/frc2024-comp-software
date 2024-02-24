@@ -9,8 +9,7 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.DefaultMechCommand;
 import frc.robot.constants.CompConstants;
-import frc.robot.constants.SpeakerState;
-import frc.robot.constants.AimingConstants.AimState;
+import frc.robot.constants.AimState;
 import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.states.MechState;
 import frc.robot.states.mech_states.Intaken;
@@ -27,17 +26,17 @@ public class ScoreSpeaker extends Command {
   private final LauncherSubsystem mLauncher;
   private final AimingSubsystem mWrist;
   private final IntakeSubsystem mIntake;
-  private final SpeakerState mPrioSpeakerState;
+  private final AimState mPrioSpeakerState;
   private MechState curState;
   private Command mCommand;
 
-  public ScoreSpeaker(LauncherSubsystem launcher, AimingSubsystem wrist, IntakeSubsystem intake, SpeakerState prioSpeakerState) {
+  public ScoreSpeaker(LauncherSubsystem launcher, AimingSubsystem wrist, IntakeSubsystem intake, AimState prioSpeakerState) {
     mLauncher = launcher;
     mWrist = wrist;
     mIntake = intake;
     mPrioSpeakerState = prioSpeakerState;
     mCommand = new SequentialCommandGroup(
-      mWrist.waitUntilWristSetpoint(mPrioSpeakerState.mWristAngleDeg),
+      mWrist.waitUntilSetpoint(prioSpeakerState),
       mLauncher.waitUntilFlywheelSetpointCommand(LauncherMode.SPEAKER),
       mLauncher.waitUntilNoteLaunchedCommand());
     addRequirements(mLauncher,mWrist);
@@ -48,14 +47,14 @@ public class ScoreSpeaker extends Command {
     mWrist = wrist;
     mIntake = intake;
     mPrioSpeakerState = getBestSpeakerState();
-    mCommand = new SequentialCommandGroup(mWrist.waitUntilWristSetpoint(mPrioSpeakerState.mWristAngleDeg),
+    mCommand = new SequentialCommandGroup(mWrist.waitUntilSetpoint(mPrioSpeakerState),
     mLauncher.waitUntilFlywheelSetpointCommand(LauncherMode.SPEAKER),mLauncher.waitUntilNoteLaunchedCommand());
     addRequirements(mLauncher,mWrist);
   }
 
-  public SpeakerState getBestSpeakerState(){
+  public AimState getBestSpeakerState(){
     //TBD
-    return SpeakerState.SUBWOOFER;
+    return AimState.SUBWOOFER;
   }
 
   @Override
@@ -64,7 +63,7 @@ public class ScoreSpeaker extends Command {
     if (curState.getClass() == ReadyForIntake.class){
       mCommand = new PrintCommand("No Note L");
     } else if (curState.getClass() == Intaken.class){
-      mCommand = mWrist.waitUntilWristSetpoint(AimState.HANDOFF.wristAngleDeg)
+      mCommand = mWrist.waitUntilSetpoint(AimState.HANDOFF)
       .andThen(new Handoff(mIntake, mLauncher))
       .andThen(new LaunchFromHandoff(mWrist, mLauncher, mPrioSpeakerState)).withTimeout(CompConstants.AUTO_LAUNCH_TIMEOUT_SEC);
     } else if (curState.getClass() == ReadyForHandoff.class){
