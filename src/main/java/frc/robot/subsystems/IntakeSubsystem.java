@@ -20,7 +20,7 @@ public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new Intake. */
   private final CANSparkMax mIntakeMotorInner;
   private final CANSparkMax mIntakeMotorOuter;
-  private final DigitalInput mBeamBreak;
+  private static DigitalInput mBeamBreak;
   private boolean beamBreakOverride = false;
   private boolean useCurrentLimits = false;
 
@@ -45,9 +45,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (pieceInIntake() && !beamBreakOverride){
-      stopMotors();
-    }
+    // if (pieceInIntake() && !beamBreakOverride){
+    //   stopMotors();
+    // }
   }
 
   /**
@@ -82,10 +82,10 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public Command getAutomousIntakeCommand() {
-    return new FunctionalCommand(() -> intakeMotorsAtSpeed(IntakeConstants.INNER_INTAKE_SPEED_ACTIVE), null, interrupted -> stopMotors(), this::pieceInIntake, this);
+    return new FunctionalCommand(() -> intakeMotorsAtSpeed(IntakeConstants.INNER_INTAKE_SPEED_ACTIVE), null, interrupted -> stopMotors(), ()->IntakeSubsystem.pieceInIntake(), this);
   }
 
-  public boolean pieceInIntake(){
+  public static boolean pieceInIntake(){
     return !mBeamBreak.get();
   }
   public boolean toggleBeamBreakOverride(){

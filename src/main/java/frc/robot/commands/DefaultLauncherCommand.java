@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Input;
 import frc.robot.constants.LauncherConstants;
 import frc.robot.constants.LauncherConstants.LauncherMode;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
 
 public class DefaultLauncherCommand extends Command {
@@ -26,22 +27,22 @@ public class DefaultLauncherCommand extends Command {
 
   @Override
   public void execute() {
-    if (Input.getX()) {
+    if (Input.getB()) {
       mLauncher.stopLauncher();
     }
     //speaker
-    else if (Input.getY()) {
+    else if (Input.getA()) {
       mLauncher.setLauncherMode(LauncherMode.SPEAKER);
     } 
-    //amp
-    else if (Input.getA()) {
-      mLauncher.setLauncherMode(LauncherMode.AMP);
-    }
-    else if (Input.getB()) {
-      mLauncher.setLauncherMode(LauncherMode.TRAP);
-    }
+    // //amp
+    // else if (Input.getA()) {
+    //   mLauncher.setLauncherMode(LauncherMode.AMP);
+    // }
+    // else if (Input.getB()) {
+    //   mLauncher.setLauncherMode(LauncherMode.TRAP);
+    // }
     
-    if (Input.getLeftBumper() && !mLauncher.pieceInIndexer()) {
+    if (Input.getLeftBumper() && !mLauncher.pieceInIndexer() && !IntakeSubsystem.pieceInIntake()) {
       mLauncher.runIndexer(LauncherConstants.INDEXER_VELOCITY_HANDOFF);
     }
     else if (Input.getRightBumper() && mLauncher.isLauncherReady()) {
