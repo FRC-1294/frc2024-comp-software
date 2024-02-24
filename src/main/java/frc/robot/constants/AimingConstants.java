@@ -61,15 +61,11 @@ public class AimingConstants {
     public static final double MAX_WRIST_ROTATION_VELOCITY = 0;
 
     // ID's
-    public static final int LEFT_ELEVATOR_SPARK_ID = 1;
-    public static final int RIGHT_ELEVATOR_SPARK_ID = 2;
-    public static final int ELEVATOR_TOF_ID = 1;
+    public static final int LEFT_ELEVATOR_SPARK_ID = 33; //Done
+    public static final int RIGHT_ELEVATOR_SPARK_ID = 32; //Done
 
-    public static final int LEFT_WRIST_SPARK_ID = 2; 
-    public static final int LEFT_WRIST_ENCODER_ID = 0;
-
-    public static final int RIGHT_WRIST_SPARK_ID = 2; 
-    public static final int RIGHT_WRIST_ENCODER_ID = 0;
+    public static final int LEFT_WRIST_SPARK_ID = 35; //Done
+    public static final int RIGHT_WRIST_SPARK_ID = 34; //Done
 
     public static final int ELEVATOR_THROUGHBORE_ENCODER_ID = 0;
 
