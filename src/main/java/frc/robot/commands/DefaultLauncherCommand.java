@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Input;
+import frc.robot.constants.AimingConstants;
 import frc.robot.constants.LauncherConstants;
 import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -34,19 +35,23 @@ public class DefaultLauncherCommand extends Command {
     else if (Input.getA()) {
       mLauncher.setLauncherMode(LauncherMode.SPEAKER);
     } 
-    // //amp
-    // else if (Input.getA()) {
-    //   mLauncher.setLauncherMode(LauncherMode.AMP);
-    // }
+    //amp
+    else if (Input.getX()) {
+      mLauncher.setLauncherMode(LauncherMode.AMP);
+    }
     // else if (Input.getB()) {
     //   mLauncher.setLauncherMode(LauncherMode.TRAP);
     // }
     
     if (Input.getLeftBumper() && !mLauncher.pieceInIndexer() && !IntakeSubsystem.pieceInIntake()) {
       mLauncher.runIndexer(LauncherConstants.INDEXER_VELOCITY_DEFAULT);
+    } else {
+      mLauncher.runIndexer(0);
     }
     if (Input.getRightBumper() && mLauncher.isLauncherReady()) {
       mLauncher.runIndexer(LauncherConstants.INDEXER_VELOCITY_DEFAULT);
+    } else {
+      mLauncher.runIndexer(0);
     }
   }
 

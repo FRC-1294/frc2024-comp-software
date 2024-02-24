@@ -170,6 +170,7 @@ public class AimingSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("Raw Wrist Encoder Rotation", mWristThroughBoreEncoder.getAbsolutePosition());
       SmartDashboard.putBoolean("At Elevator setpoint", atElevatorSetpoint());
       SmartDashboard.putBoolean("At Wrist setpoint", atWristSetpoint());
+      SmartDashboard.putNumber("Throughbore Encoder Position", mWristThroughBoreEncoder.getAbsolutePosition()*AimingConstants.WRIST_THROUGHBORE_GEAR_RATIO*360 - AimingConstants.WRIST_THROUGHBORE_ENCODER_OFFSET);
     }
   }
 

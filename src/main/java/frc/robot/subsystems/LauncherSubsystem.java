@@ -12,9 +12,11 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.constants.CompConstants;
 import frc.robot.constants.LauncherConstants;
 import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.constants.LauncherConstants.LauncherState;
@@ -39,10 +41,13 @@ public class LauncherSubsystem extends SubsystemBase {
   }
   
   public void configureDevices() {
+    mLeaderFlywheel.getConfigurator().apply(new TalonFXConfiguration());
+    mFollowerFlywheel.getConfigurator().apply(new TalonFXConfiguration());
+
     mFollowerFlywheel.setControl(new Follower(mLeaderFlywheel.getDeviceID(), true));
 
     TalonFXConfiguration configuration = new TalonFXConfiguration();
-    configuration.Feedback.SensorToMechanismRatio = LauncherConstants.FLYWHEEL_SENSOR_TO_MECHANISM;
+    configuration.Feedback.SensorToMechanismRatio = LauncherConstants.FLYWHEEL_SENSOR_TO_MECHANISM*60;
 
     Slot0Configs slotConfigs = new Slot0Configs();
     slotConfigs.kP = LauncherConstants.LAUNCHER_PID_CONTROLLER.getP();
@@ -61,9 +66,13 @@ public class LauncherSubsystem extends SubsystemBase {
   public void periodic() {
     double actualVelocity = mLeaderFlywheel.getVelocity().getValueAsDouble();
 
+
     mLauncherReady = Math.abs(Math.abs(mDesiredVelocity) - Math.abs(actualVelocity)) <= LauncherConstants.FLYWHEEL_TOLERANCE && 
                      mDesiredVelocity != 0 && mLauncherMode != LauncherMode.PASSIVE;
     runLauncher();
+
+    SmartDashboard.putBoolean("Piece in Indexer", pieceInIndexer());
+    SmartDashboard.putNumber("Flywheel Speed", actualVelocity);
   }
 
   public void runIndexer(double velocity) {
@@ -88,7 +97,9 @@ public class LauncherSubsystem extends SubsystemBase {
       mDesiredVelocity = 0;
     }
 
-    mLeaderFlywheel.setControl(new VoltageOut(mDesiredVelocity*12/LauncherConstants.FLYWHEEL_MAX_VELOCITY));
+    //mLeaderFlywheel.setControl(new VoltageOut(mDesiredVelocity*12/LauncherConstants.FLYWHEEL_MAX_VELOCITY));
+    // mLeaderFlywheel.setControl(new VelocityVoltage(mDesiredVelocity).withSlot(0));
+
     mLauncherReady = true;
   }
 
