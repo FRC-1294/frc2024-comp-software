@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -78,7 +79,7 @@ public class LauncherSubsystem extends SubsystemBase {
       mDesiredVelocity = 0;
     }
 
-    mLeaderFlywheel.setControl(new VelocityVoltage(mDesiredVelocity).withSlot(0));
+    mLeaderFlywheel.setControl(new VoltageOut(mDesiredVelocity/LauncherConstants.FLYWHEEL_MAX_VELOCITY));
   }
 
   public boolean isIndexerOn() {
