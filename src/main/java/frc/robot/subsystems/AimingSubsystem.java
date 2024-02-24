@@ -183,7 +183,7 @@ public class AimingSubsystem extends SubsystemBase {
    * @return Current Wrist Rotation in Degrees
    */
   public double getCurrentWristRotation(){
-    return mWristThroughBoreEncoder.getAbsolutePosition()*AimingConstants.WRIST_THROUGHBORE_GEAR_RATIO - AimingConstants.WRIST_THROUGHBORE_ENCODER_OFFSET;
+    return mWristThroughBoreEncoder.getAbsolutePosition()*AimingConstants.WRIST_THROUGHBORE_GEAR_RATIO*360 - AimingConstants.WRIST_THROUGHBORE_ENCODER_OFFSET;
   }
 
   public double getDesiredElevatorDistance() {
