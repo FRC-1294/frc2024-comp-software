@@ -37,7 +37,7 @@ public class AimingSubsystem extends SubsystemBase {
   private final DutyCycleEncoder mWristThroughBoreEncoder = new DutyCycleEncoder(AimingConstants.ELEVATOR_THROUGHBORE_ENCODER_ID);
 
   // Current States
-  private double mCurrentElevatorDistanceIn = AimingConstants.MIN_ELEVATOR_DIST_IN;
+  private double mCurrentElevatorDistanceIn = AimingConstants.MIN_ELEVATOR_DIST_METERS;
   private double mCurrentWristRotationDeg = AimingConstants.MIN_WRIST_ROTATION_DEG;
 
   // Desired States
@@ -115,7 +115,7 @@ public class AimingSubsystem extends SubsystemBase {
 
   private void elevatorPeriodic() {
     //Clamping Rotation between domain
-    mDesiredElevatorDistanceIn = MathUtil.clamp(mDesiredElevatorDistanceIn, AimingConstants.MIN_ELEVATOR_DIST_IN, AimingConstants.MAX_ELEVATOR_DIST);
+    mDesiredElevatorDistanceIn = MathUtil.clamp(mDesiredElevatorDistanceIn, AimingConstants.MIN_ELEVATOR_DIST_METERS, AimingConstants.MAX_ELEVATOR_DIST);
     mCurrentElevatorDistanceIn = getCurrentElevatorDistance();
 
     //Temp Regular PID
@@ -132,6 +132,7 @@ public class AimingSubsystem extends SubsystemBase {
     double wristPIDCalculation = mWristController.calculate(mCurrentWristRotationDeg, mDesiredWristRotationDeg);    
     double wristFeedforwardCalculation = Math.cos((mCurrentWristRotationDeg-AimingConstants.COG_OFFSET)*AimingConstants.WRIST_KG);
     mLeftWristMotor.set(wristPIDCalculation + wristFeedforwardCalculation);
+    SmartDashboard.putNumber("WristPIDOutput", wristPIDCalculation);
   }
 
   private void updateMotorModes() {
