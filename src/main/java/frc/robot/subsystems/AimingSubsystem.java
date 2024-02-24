@@ -97,6 +97,10 @@ public class AimingSubsystem extends SubsystemBase {
     mLeftElevatorEncoder.setPosition(0);
     mRightElevatorEncoder.setPosition(0);
 
+    // Don't even ask
+    mWristThroughBoreEncoder.setConnectedFrequencyThreshold(AimingConstants.CONNECTION_THRESH_HZ);
+
+
     mLeftElevatorMotor.burnFlash();
     mRightElevatorMotor.burnFlash();
   }
@@ -125,9 +129,8 @@ public class AimingSubsystem extends SubsystemBase {
     mDesiredWristRotationDeg = MathUtil.clamp(mDesiredWristRotationDeg, AimingConstants.MIN_WRIST_ROTATION_DEG, AimingConstants.MAX_WRIST_ROTATION);
     mCurrentWristRotationDeg = getCurrentWristRotation();
 
-    double offset = (Math.PI / 2);
     double wristPIDCalculation = mWristController.calculate(mCurrentWristRotationDeg, mDesiredWristRotationDeg);    
-    double wristFeedforwardCalculation = mWristFeedforwardController.calculate(Math.toRadians(mDesiredWristRotationDeg) - offset, mLeftWristMotor.getEncoder().getVelocity() * AimingConstants.SPARK_THROUGHBORE_GEAR_RATIO);
+    double wristFeedforwardCalculation = Math.cos((mCurrentWristRotationDeg-AimingConstants.COG_OFFSET)*AimingConstants.WRIST_KG);
     mLeftWristMotor.set(wristPIDCalculation + wristFeedforwardCalculation);
   }
 
@@ -179,7 +182,7 @@ public class AimingSubsystem extends SubsystemBase {
    * @return Current Wrist Rotation in Degrees
    */
   public double getCurrentWristRotation(){
-    return mWristThroughBoreEncoder.getAbsolutePosition();
+    return mWristThroughBoreEncoder.getAbsolutePosition()*AimingConstants.WRIST_THROUGHBORE_GEAR_RATIO - AimingConstants.WRIST_THROUGHBORE_ENCODER_OFFSET;
   }
 
   public double getDesiredElevatorDistance() {
