@@ -32,9 +32,9 @@ public class DefaultIntakeCommand extends Command {
     }
 
     if (Input.getIntake()) {
-      mIntake.intakeMotorsAtSpeed(IntakeConstants.ACTIVE_INTAKE_SPEED);
+      mIntake.intakeMotorsAtSpeed(IntakeConstants.INNER_INTAKE_SPEED_ACTIVE);
     }else{
-      mIntake.intakeMotorsAtSpeed(IntakeConstants.PASSIVE_INTAKE_SPEED);
+      mIntake.stopMotors();
     }
   }
 

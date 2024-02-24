@@ -16,7 +16,6 @@ public class IntakeConstants {
     public static final int SMART_CURRENT_LIMIT_INNER = 0; // will change later https://github.com/FRC-1294/frc2024/issues/239
     public static final int SMART_CURRENT_LIMIT_OUTER = 0; // will change later https://github.com/FRC-1294/frc2024/issues/239
     public static final int INTAKE_BEAMBREAK_ID = 0;
-    public static final double ACTIVE_INTAKE_SPEED = 1.0;
-    public static final double PASSIVE_INTAKE_SPEED = 0;
-
+    public static final double OUTER_INTAKE_SPEED_ACTIVE = 1.0;
+    public static final double INNER_INTAKE_SPEED_ACTIVE = 1.0;
 }

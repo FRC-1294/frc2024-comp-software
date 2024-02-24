@@ -45,10 +45,10 @@ public class DefaultLauncherCommand extends Command {
     }
     
     if (Input.getLeftBumper() && !mLauncher.pieceInIndexer()) {
-      mLauncher.runIndexer(LauncherConstants.INDEXER_VELOCITY_DEFAULT);
+      mLauncher.runIndexer(LauncherConstants.INDEXER_VELOCITY_HANDOFF);
     }
     if (Input.getRightBumper() && mLauncher.isLauncherReady()) {
-      mLauncher.runIndexer(LauncherConstants.INDEXER_VELOCITY_DEFAULT);
+      mLauncher.runIndexer(LauncherConstants.INDEXER_VELOCITY_LAUNCH);
     }
   }
 
