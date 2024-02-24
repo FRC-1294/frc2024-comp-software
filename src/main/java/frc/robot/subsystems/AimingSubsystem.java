@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Util.PIDParameters;
 import frc.robot.constants.AimingConstants;
 import frc.robot.constants.CompConstants;
 import frc.robot.constants.AimingConstants.AimState;
@@ -48,8 +49,8 @@ public class AimingSubsystem extends SubsystemBase {
   private final SendableChooser<AimingMotorMode> mChooser = new SendableChooser<>();
 
   // PID Controllers and Motor Configs 
-  PIDController mElevatorController = AimingConstants.mElevatorPIDConstants.toWPIController();  
-  PIDController mWristController = AimingConstants.mWristPIDConstants.toWPIController();
+  private PIDController mElevatorController = AimingConstants.mElevatorPIDConstants.toWPIController();  
+  private PIDController mWristController = AimingConstants.mWristPIDConstants.toWPIController();
   private RelativeEncoder mLeftElevatorEncoder;
   private RelativeEncoder mRightElevatorEncoder;
 
@@ -161,7 +162,7 @@ public class AimingSubsystem extends SubsystemBase {
 
   // Contains Smart Dashboard Statements ONLY ON DEBUG
   private void debugSmartDashboard() {
-    if (CompConstants.DEBUG_MODE) {
+    if (CompConstants.DEBUG_MODE || CompConstants.PID_TUNE_MODE) {
       SmartDashboard.putNumber("Current Wrist Rotation", mCurrentWristRotationDeg);
       SmartDashboard.putNumber("Current Elevator Distance", mCurrentElevatorDistanceIn);
       SmartDashboard.putNumber("Desired Wrist Rotation", mDesiredWristRotationDeg);
@@ -171,6 +172,32 @@ public class AimingSubsystem extends SubsystemBase {
       SmartDashboard.putBoolean("At Elevator setpoint", atElevatorSetpoint());
       SmartDashboard.putBoolean("At Wrist setpoint", atWristSetpoint());
     }
+
+    if (CompConstants.PID_TUNE_MODE) {
+      SmartDashboard.putNumber("Elevator P", AimingConstants.mElevatorPIDConstants.mKP);
+      SmartDashboard.putNumber("Elevator I", AimingConstants.mElevatorPIDConstants.mKI);
+      SmartDashboard.putNumber("Elevator D", AimingConstants.mElevatorPIDConstants.mKD);
+      SmartDashboard.putNumber("Wrist P", AimingConstants.mWristPIDConstants.mKP);
+      SmartDashboard.putNumber("Wrist I", AimingConstants.mWristPIDConstants.mKI);
+      SmartDashboard.putNumber("Wrist D", AimingConstants.mWristPIDConstants.mKD);
+
+
+      double elevatorP = SmartDashboard.getNumber("Elevator P", AimingConstants.mElevatorPIDConstants.mKP);
+      double elevatorI = SmartDashboard.getNumber("Elevator I", AimingConstants.mElevatorPIDConstants.mKI);
+      double elevatorD = SmartDashboard.getNumber("Elevator D", AimingConstants.mElevatorPIDConstants.mKD);
+      double wristP = SmartDashboard.getNumber("Wrist P", AimingConstants.mWristPIDConstants.mKP);
+      double wristI = SmartDashboard.getNumber("Wrist I", AimingConstants.mWristPIDConstants.mKI);
+      double wristD = SmartDashboard.getNumber("Wrist D", AimingConstants.mWristPIDConstants.mKD);
+
+      mElevatorController = new PIDController(elevatorP, elevatorI, elevatorD);
+      mWristController = new PIDController(wristP, wristI, wristD);
+
+      mElevatorController.setTolerance(AimingConstants.ELEVATOR_TOLERANCE_IN);
+      mWristController.setTolerance(AimingConstants.WRIST_TOLERANCE_DEG);
+
+    }
+
+    
   }
 
   // Getters and Setters of States
