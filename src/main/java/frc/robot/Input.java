@@ -109,10 +109,6 @@ public class Input {
     return mRotJoystick.getTriggerReleased();
   }
 
-  public static boolean getIntake() {
-    return mXboxController.getLeftBumper();
-  }
-
   public static boolean overrideIntakeBeamBreak() {
     return mXboxController.getRightStickButton();
   }

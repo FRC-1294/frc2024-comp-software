@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
@@ -40,15 +41,20 @@ public class LauncherSubsystem extends SubsystemBase {
   public void configureDevices() {
     mFollowerFlywheel.setControl(new Follower(mLeaderFlywheel.getDeviceID(), true));
 
-    Slot0Configs slotConfigs = new Slot0Configs();
+    TalonFXConfiguration configuration = new TalonFXConfiguration();
+    configuration.Feedback.SensorToMechanismRatio = LauncherConstants.FLYWHEEL_SENSOR_TO_MECHANISM;
 
+    Slot0Configs slotConfigs = new Slot0Configs();
     slotConfigs.kP = LauncherConstants.LAUNCHER_PID_CONTROLLER.getP();
     slotConfigs.kI = LauncherConstants.LAUNCHER_PID_CONTROLLER.getI();
     slotConfigs.kD = LauncherConstants.LAUNCHER_PID_CONTROLLER.getD();
     slotConfigs.kS = LauncherConstants.LAUNCHER_FF_CONTROLLER.ks;
     slotConfigs.kV = LauncherConstants.LAUNCHER_FF_CONTROLLER.kv;
 
-    mLeaderFlywheel.getConfigurator().apply(slotConfigs);
+
+
+    mLeaderFlywheel.getConfigurator().apply(configuration.withSlot0(slotConfigs));
+    mFollowerFlywheel.getConfigurator().apply(configuration.withSlot0(slotConfigs));
   }
 
   @Override
@@ -82,7 +88,8 @@ public class LauncherSubsystem extends SubsystemBase {
       mDesiredVelocity = 0;
     }
 
-    mLeaderFlywheel.setControl(new VoltageOut(mDesiredVelocity/LauncherConstants.FLYWHEEL_MAX_VELOCITY));
+    mLeaderFlywheel.setControl(new VoltageOut(mDesiredVelocity*12/LauncherConstants.FLYWHEEL_MAX_VELOCITY));
+    mLauncherReady = true;
   }
 
   public boolean isIndexerOn() {

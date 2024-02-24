@@ -31,7 +31,7 @@ public class DefaultIntakeCommand extends Command {
       mIntake.toggleBeamBreakOverride();
     }
 
-    if (Input.getIntake()) {
+    if (Input.getLeftBumper()) {
       mIntake.intakeMotorsAtSpeed(IntakeConstants.ACTIVE_INTAKE_SPEED);
     }else{
       mIntake.intakeMotorsAtSpeed(IntakeConstants.PASSIVE_INTAKE_SPEED);
