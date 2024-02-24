@@ -15,11 +15,11 @@ public class AimingConstants {
 
     // Setpoints
     public enum AimState {
-        STOW(MIN_ELEVATOR_DIST_IN, MIN_WRIST_ROTATION_DEG),
-        SPEAKER(MIN_ELEVATOR_DIST_IN, MIN_WRIST_ROTATION_DEG),
-        AMP(MIN_ELEVATOR_DIST_IN, MIN_WRIST_ROTATION_DEG), //TBD
-        HANDOFF(MIN_ELEVATOR_DIST_IN, MIN_WRIST_ROTATION_DEG),
-        CLIMB(MAX_ELEVATOR_DIST, MIN_WRIST_ROTATION_DEG);
+        STOW(MIN_ELEVATOR_DIST_METERS, MIN_WRIST_ROTATION_DEG),
+        SPEAKER(MIN_ELEVATOR_DIST_METERS, MIN_WRIST_ROTATION_DEG),
+        AMP(MIN_ELEVATOR_DIST_METERS, MIN_WRIST_ROTATION_DEG),
+        HANDOFF(MIN_ELEVATOR_DIST_METERS, MIN_WRIST_ROTATION_DEG),
+        CLIMB(MIN_ELEVATOR_DIST_METERS, MIN_WRIST_ROTATION_DEG);
 
         public final double elevatorDistIn;
         public final double wristAngleDeg;
@@ -52,8 +52,8 @@ public class AimingConstants {
     public static final double WRIST_TOLERANCE_DEG = 0;
 
     // Soft Limits
-    public static final double MAX_ELEVATOR_DIST = 0.31; //TBD
-    public static final double MIN_ELEVATOR_DIST_IN = 0.05; //TBD
+    public static final double MAX_ELEVATOR_DIST_METERS = 0.31; //TBD
+    public static final double MIN_ELEVATOR_DIST_METERS = 0.05; //TBD
     public static final double MAX_ELEVATOR_EXTENSION_VELOCITY = 0.1; //TBD
 
     public static final double MAX_WRIST_ROTATION = 110;
@@ -67,9 +67,15 @@ public class AimingConstants {
     public static final int LEFT_WRIST_SPARK_ID = 35; //Done
     public static final int RIGHT_WRIST_SPARK_ID = 34; //Done
 
-    public static final int ELEVATOR_THROUGHBORE_ENCODER_ID = 0;
+    public static final int WRIST_THROUGHBORE_ENCODER_ID = 0;
+    public static final double WRIST_THROUGHBORE_GEAR_RATIO = 1;
+    public static final double WRIST_THROUGHBORE_ENCODER_OFFSET = 0.0;
+    public static final double COG_OFFSET = 0.0;
+
 
     // If false, then motors are physically inverted
     public static final boolean ELEVATOR_LEFT_IS_NORMAL = false;
     public static final boolean WRIST_LEFT_IS_NORMAL = false;
+
+    public static final int CONNECTION_THRESH_HZ = 975;
 }
