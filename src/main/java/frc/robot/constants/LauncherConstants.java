@@ -32,9 +32,9 @@ public final class LauncherConstants {
   //flywheel setpoints
   public enum LauncherState {
 
-    SPEAKER_DEFAULT(300), //TODO:https://github.com/FRC-1294/frc2024/issues/241
+    SPEAKER_DEFAULT(12000), //TODO:https://github.com/FRC-1294/frc2024/issues/241
 
-    AMP_DEFAULT(50), //TODO:https://github.com/FRC-1294/frc2024/issues/241
+    AMP_DEFAULT(1000), //TODO:https://github.com/FRC-1294/frc2024/issues/241
 
     TRAP_DEFAULT(50), //TODO:https://github.com/FRC-1294/frc2024/issues/241
 
@@ -54,8 +54,8 @@ public final class LauncherConstants {
 
   public static final SimpleMotorFeedforward LAUNCHER_FF_CONTROLLER = new SimpleMotorFeedforward(0, 0, 0); //TODO:https://github.com/FRC-1294/frc2024/issues/241
 
-  public static final double FLYWHEEL_TOLERANCE = 0.01; //TODO:https://github.com/FRC-1294/frc2024/issues/241
+  public static final double FLYWHEEL_TOLERANCE = 10; //TODO:https://github.com/FRC-1294/frc2024/issues/241
 
-  public static final double FLYWHEEL_MAX_VELOCITY = 511.998046875; //rps
+  public static final double FLYWHEEL_MAX_VELOCITY = 12000; //rpm
 
 }
