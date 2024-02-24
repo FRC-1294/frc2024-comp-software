@@ -35,7 +35,7 @@ public class DefaultIntakeCommand extends Command {
       mIntake.intakeMotorsAtSpeed(IntakeConstants.ACTIVE_INTAKE_SPEED);
     }else{
       mIntake.intakeMotorsAtSpeed(IntakeConstants.PASSIVE_INTAKE_SPEED);
-    }
+    } 
   }
 
   // Called once the command ends or is interrupted.

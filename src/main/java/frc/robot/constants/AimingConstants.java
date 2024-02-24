@@ -49,7 +49,7 @@ public class AimingConstants {
     // Issue #281 has been created for the same. Link to the issue: https://github.com/FRC-1294/frc2024/issues/281
     public static final double ELEVATOR_ROTATIONS_TO_METERS = 0.013328525766295266;
 	public static final double ELEVATOR_TOLERANCE_IN = 0.01;
-    public static final double WRIST_TOLERANCE_DEG = 0;
+    public static final double WRIST_TOLERANCE_DEG = 2;
 
     // Soft Limits
     public static final double MAX_ELEVATOR_DIST_METERS = 0.31; //TBD
