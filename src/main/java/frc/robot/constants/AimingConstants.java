@@ -67,7 +67,7 @@ public class AimingConstants {
     public static final int LEFT_WRIST_SPARK_ID = 35; //Done
     public static final int RIGHT_WRIST_SPARK_ID = 34; //Done
 
-    public static final int ELEVATOR_THROUGHBORE_ENCODER_ID = 0;
+    public static final int WRIST_THROUGHBORE_ENCODER_ID = 0;
     public static final double WRIST_THROUGHBORE_GEAR_RATIO = 1;
     public static final double WRIST_THROUGHBORE_ENCODER_OFFSET = 0.0;
     public static final double COG_OFFSET = 0.0;
