@@ -7,6 +7,9 @@ package frc.robot;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.robots.PracticeBotSwerveConfig;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.AimingSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LauncherSubsystem;
 import frc.robot.subsystems.Limelight;
 
 /**
@@ -19,6 +22,11 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem mSwerveSubsystem = new SwerveSubsystem(new PracticeBotSwerveConfig());
   private final Limelight mLightLight = new Limelight();
+  private final IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
+  private final AimingSubsystem mAimingSubsystem = new AimingSubsystem();
+  private final LauncherSubsystem mLauncherSubsystem = new LauncherSubsystem();
+
+
   
   
 
@@ -29,6 +37,18 @@ public class RobotContainer {
   
   public SwerveSubsystem getSwerveSubsystem() {
       return mSwerveSubsystem;
+  }
+
+  public AimingSubsystem getAimingSubsystem() {
+      return mAimingSubsystem;
+  }
+
+  public LauncherSubsystem getLauncherSubsystem() {
+      return mLauncherSubsystem;
+  }
+
+  public IntakeSubsystem getIntakeSubsystem() {
+      return mIntakeSubsystem;
   }
 
 }
