@@ -42,13 +42,11 @@ public class DefaultLauncherCommand extends Command {
     // else if (Input.getB()) {
     //   mLauncher.setLauncherMode(LauncherMode.TRAP);
     // }
-    
-    if (Input.getLeftBumper() && !mLauncher.pieceInIndexer() && !IntakeSubsystem.pieceInIntake()) {
+
+    if (Input.getLeftBumper() && !mLauncher.pieceInIndexer()) {
       mLauncher.runIndexer(LauncherConstants.INDEXER_VELOCITY_DEFAULT);
-    } else {
-      mLauncher.runIndexer(0);
     }
-    if (Input.getRightBumper() && mLauncher.isLauncherReady()) {
+    else if (Input.getRightBumper() && mLauncher.isLauncherReady()) {
       mLauncher.runIndexer(LauncherConstants.INDEXER_VELOCITY_DEFAULT);
     } else {
       mLauncher.runIndexer(0);

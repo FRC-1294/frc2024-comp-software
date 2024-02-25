@@ -32,12 +32,12 @@ public class AimingConstants {
     
     // Teleop Constant
     public static final double MAX_ELEVATOR_TELEOP_INCREMENT = 0.05;
-    public static final double MAX_WRIST_TELEOP_INCREMENT = 0;
+    public static final double MAX_WRIST_TELEOP_INCREMENT = 0.15;
     
     
     // PID Constants
     public static final PIDParameters mElevatorPIDConstants = new PIDParameters(3, 0, 0);
-    public static final PIDParameters mWristPIDConstants = new PIDParameters(0.1, 0, 0, 0, 0);
+    public static final PIDParameters mWristPIDConstants = new PIDParameters(0.01, 0, 0, 0, 0);
     public static final double WRIST_KG = 0.0;
     public static final double ELEVATOR_FEEDFORWARD_CONSTANT = 0.05;
     public static final double SPARK_THROUGHBORE_GEAR_RATIO = 1;
@@ -60,6 +60,8 @@ public class AimingConstants {
     public static final double MIN_WRIST_ROTATION_DEG = 0;
     public static final double MAX_WRIST_ROTATION_VELOCITY = 0;
 
+    public static final double MAX_WRIST_PID_CONTRIBUTION = 0.15;
+
     // ID's
     public static final int LEFT_ELEVATOR_SPARK_ID = 33; //Done
     public static final int RIGHT_ELEVATOR_SPARK_ID = 32; //Done
@@ -69,7 +71,7 @@ public class AimingConstants {
 
     public static final int WRIST_THROUGHBORE_ENCODER_ID = 0;
     public static final double WRIST_THROUGHBORE_GEAR_RATIO = 1;
-    public static final double WRIST_THROUGHBORE_ENCODER_OFFSET = 0.0;
+    public static final double WRIST_THROUGHBORE_ENCODER_OFFSET = 289.0;
     public static final double COG_OFFSET = 0.0;
 
 
@@ -77,5 +79,5 @@ public class AimingConstants {
     public static final boolean ELEVATOR_LEFT_IS_NORMAL = false;
     public static final boolean WRIST_LEFT_IS_NORMAL = false;
 
-    public static final int CONNECTION_THRESH_HZ = 975;
+    public static final int CONNECTION_THRESH_HZ = 945;
 }

@@ -9,7 +9,9 @@ import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,8 +26,8 @@ import frc.robot.constants.LauncherConstants.LauncherState;
 public class LauncherSubsystem extends SubsystemBase {
   private final CANSparkMax mIndexer = new CANSparkMax(LauncherConstants.INDEXER_ID, MotorType.kBrushless);
 
-  private final TalonFX mLeaderFlywheel = new TalonFX(LauncherConstants.LEADER_FLYWHEEL_ID);
-  private final TalonFX mFollowerFlywheel = new TalonFX(LauncherConstants.FOLLOWER_FLYWHEEL_ID);
+  private final TalonFX mLeaderFlywheel = new TalonFX(LauncherConstants.LEADER_FLYWHEEL_ID, "DriveMotors");
+  private final TalonFX mFollowerFlywheel = new TalonFX(LauncherConstants.FOLLOWER_FLYWHEEL_ID, "DriveMotors");
 
   private final DigitalInput mBeamBreak = new DigitalInput(LauncherConstants.BEAMBREAK_ID);
 
@@ -44,10 +46,10 @@ public class LauncherSubsystem extends SubsystemBase {
     mLeaderFlywheel.getConfigurator().apply(new TalonFXConfiguration());
     mFollowerFlywheel.getConfigurator().apply(new TalonFXConfiguration());
 
-    mFollowerFlywheel.setControl(new Follower(mLeaderFlywheel.getDeviceID(), true));
+    mFollowerFlywheel.setControl(new Follower(mLeaderFlywheel.getDeviceID(), false));
 
     TalonFXConfiguration configuration = new TalonFXConfiguration();
-    configuration.Feedback.SensorToMechanismRatio = LauncherConstants.FLYWHEEL_SENSOR_TO_MECHANISM*60;
+    configuration.Feedback.SensorToMechanismRatio = 1/(LauncherConstants.FLYWHEEL_SENSOR_TO_MECHANISM*60);
 
     Slot0Configs slotConfigs = new Slot0Configs();
     slotConfigs.kP = LauncherConstants.LAUNCHER_PID_CONTROLLER.getP();
@@ -56,10 +58,18 @@ public class LauncherSubsystem extends SubsystemBase {
     slotConfigs.kS = LauncherConstants.LAUNCHER_FF_CONTROLLER.ks;
     slotConfigs.kV = LauncherConstants.LAUNCHER_FF_CONTROLLER.kv;
 
-
-
     mLeaderFlywheel.getConfigurator().apply(configuration.withSlot0(slotConfigs));
     mFollowerFlywheel.getConfigurator().apply(configuration.withSlot0(slotConfigs));
+
+    mLeaderFlywheel.setNeutralMode(NeutralModeValue.Coast);
+    mFollowerFlywheel.setNeutralMode(NeutralModeValue.Coast);
+
+
+
+    mIndexer.restoreFactoryDefaults();
+    mIndexer.setInverted(LauncherConstants.INDEXER_IS_INVERTED);
+    mIndexer.setIdleMode(IdleMode.kBrake);
+    mIndexer.burnFlash();
   }
 
   @Override
@@ -73,6 +83,7 @@ public class LauncherSubsystem extends SubsystemBase {
 
     SmartDashboard.putBoolean("Piece in Indexer", pieceInIndexer());
     SmartDashboard.putNumber("Flywheel Speed", actualVelocity);
+    SmartDashboard.putNumber("Indexer Applied Output", mIndexer.getAppliedOutput());
   }
 
   public void runIndexer(double velocity) {
@@ -94,7 +105,7 @@ public class LauncherSubsystem extends SubsystemBase {
       mDesiredVelocity = 0;
     }
 
-    //mLeaderFlywheel.setControl(new VoltageOut(mDesiredVelocity*12/LauncherConstants.FLYWHEEL_MAX_VELOCITY));
+    mLeaderFlywheel.setControl(new VoltageOut(mDesiredVelocity*12/LauncherConstants.FLYWHEEL_MAX_VELOCITY));
     // mLeaderFlywheel.setControl(new VelocityVoltage(mDesiredVelocity).withSlot(0));
 
     mLauncherReady = true;
@@ -109,14 +120,11 @@ public class LauncherSubsystem extends SubsystemBase {
   }
 
   public boolean isLauncherReady() {
-    return mLauncherReady;
+    return true;
   }
 
   public void setLauncherMode(LauncherMode mode) {
     mLauncherMode = mode;
-    if (mode == LauncherMode.OFF) {
-      runLauncher();
-    }
   }
   
   public void stopLauncher() {
