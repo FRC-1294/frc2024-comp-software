@@ -18,12 +18,11 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 public final class LauncherConstants {
 
   //IDs
-  public static final int LEADER_FLYWHEEL_ID = 1; //TODO:https://github.com/FRC-1294/frc2024/issues/241
-  public static final int FOLLOWER_FLYWHEEL_ID = 2; //TODO:https://github.com/FRC-1294/frc2024/issues/241
+  public static final int LEADER_FLYWHEEL_ID = 40; //TODO:https://github.com/FRC-1294/frc2024/issues/241
+  public static final int FOLLOWER_FLYWHEEL_ID = 41; //TODO:https://github.com/FRC-1294/frc2024/issues/241
 
-  public static final int INDEXER_ID = 3; //TODO:https://github.com/FRC-1294/frc2024/issues/241
-
-  public static final int BEAMBREAK_ID = 4; //TODO:https://github.com/FRC-1294/frc2024/issues/241
+  public static final int INDEXER_ID = 31; //TODO:https://github.com/FRC-1294/frc2024/issues/241
+  public static final int BEAMBREAK_ID = 3; //TODO:https://github.com/FRC-1294/frc2024/issues/241
 
   //current flywheel mode
   public enum LauncherMode {
@@ -33,13 +32,13 @@ public final class LauncherConstants {
   //flywheel setpoints
   public enum LauncherState {
 
-    SPEAKER_DEFAULT(300), //TODO:https://github.com/FRC-1294/frc2024/issues/241
+    SPEAKER_DEFAULT(LauncherConstants.FLYWHEEL_MAX_VELOCITY), //TODO:https://github.com/FRC-1294/frc2024/issues/241
 
-    AMP_DEFAULT(50), //TODO:https://github.com/FRC-1294/frc2024/issues/241
+    AMP_DEFAULT(5000), //TODO:https://github.com/FRC-1294/frc2024/issues/241
 
-    TRAP_DEFAULT(50), //TODO:https://github.com/FRC-1294/frc2024/issues/241
+    TRAP_DEFAULT(1000), //TODO:https://github.com/FRC-1294/frc2024/issues/241
 
-    PASSIVE_DEFAULT(50); //TODO:https://github.com/FRC-1294/frc2024/issues/241
+    PASSIVE_DEFAULT(5000);
 
     public final double velocity;
 
@@ -49,14 +48,16 @@ public final class LauncherConstants {
   }
 
   //indexer setpoint
-  public static final double INDEXER_VELOCITY_DEFAULT = 1; //TODO:https://github.com/FRC-1294/frc2024/issues/241
+  public static final double INDEXER_VELOCITY_DEFAULT = 0.3; //TODO:https://github.com/FRC-1294/frc2024/issues/241
   
-  public static final PIDController LAUNCHER_PID_CONTROLLER = new PIDController(0, 0, 0, 0); //TODO:https://github.com/FRC-1294/frc2024/issues/241
+  public static final PIDController LAUNCHER_PID_CONTROLLER = new PIDController(0.1, 0, 0); //TODO:https://github.com/FRC-1294/frc2024/issues/241
 
-  public static final SimpleMotorFeedforward LAUNCHER_FF_CONTROLLER = new SimpleMotorFeedforward(0, 0, 0); //TODO:https://github.com/FRC-1294/frc2024/issues/241
+  public static final SimpleMotorFeedforward LAUNCHER_FF_CONTROLLER = new SimpleMotorFeedforward(0, 12/LauncherConstants.FLYWHEEL_MAX_VELOCITY, 0); //TODO:https://github.com/FRC-1294/frc2024/issues/241
 
-  public static final double FLYWHEEL_TOLERANCE = 0.01; //TODO:https://github.com/FRC-1294/frc2024/issues/241
+  public static final double FLYWHEEL_TOLERANCE = 10; //TODO:https://github.com/FRC-1294/frc2024/issues/241
 
-  public static final double FLYWHEEL_MAX_VELOCITY = 511.998046875; //rps
+  public static final double FLYWHEEL_MAX_VELOCITY = 12000; //rpm
+  public static final double FLYWHEEL_SENSOR_TO_MECHANISM = 2;
 
+  public static final boolean INDEXER_IS_INVERTED = false;
 }

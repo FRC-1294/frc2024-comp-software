@@ -27,7 +27,4 @@ public class JoystickConstants {
     public static final double DRIVE_REG_ROT_DEADZONE = 0.15;
 
     public static final double XBOX_Y_DEADZONE = 0.1;
-
-
-
 }

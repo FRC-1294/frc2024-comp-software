@@ -1,6 +1,8 @@
-package main.java.frc.robot.commands;
+package frc.robot.commands;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.wpilibj.DriverStation;
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
@@ -39,12 +41,12 @@ public class AutoAimCommand extends Command {
   //AutoLock System
   public double getVerticalAngleSpeakerDEGS(){
     Pose2d currentRobotPose2D = SwerveSubsystem.getRobotPose();
-    Pose3d currentRobotPose3D = new Pose3D (currentRobotPose2D.getX(), currentRobotPose2D.getY(), 0, currentRobotPose2D.getRotation());
+    // Pose3d currentRobotPose3D = new Pose3d(currentRobotPose2D.getX(), currentRobotPose2D.getY(), 0.0, currentRobotPose2D.getRotation());
 
-    double distanceFromSpeaker3D = currentRobotPose3D.minus(CompConstants.BLUE_SPEAKER_POSE_3D);
-    double distanceFromSpeaker2D = currentRobotPose2D.minus(CompConstants.BLUE_SPEAKER_POSE_2D);
-    double verticalAngle = Math.toDegrees(Math.acos(distanceFromSpeaker2D / distanceFromSpeaker3D));
-      return verticalAngle;
+    // double distanceFromSpeaker3D = currentRobotPose3D.minus(CompConstants.BLUE_SPEAKER_POSE_3D);
+    // double distanceFromSpeaker2D = currentRobotPose2D.minus(CompConstants.BLUE_SPEAKER_POSE_2D);
+    // double verticalAngle = Math.toDegrees(Math.acos(distanceFromSpeaker2D / distanceFromSpeaker3D));
+    return 0;
     }
 
   // Get distance between robot & speaker
