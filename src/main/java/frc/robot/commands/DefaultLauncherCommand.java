@@ -28,15 +28,15 @@ public class DefaultLauncherCommand extends Command {
 
   @Override
   public void execute() {
-    if (Input.getB()) {
+    if (Input.getX()) {
       mLauncher.stopLauncher();
     }
     //speaker
-    else if (Input.getA()) {
+    else if (Input.getY()) {
       mLauncher.setLauncherMode(LauncherMode.SPEAKER);
     } 
     //amp
-    else if (Input.getX()) {
+    else if (Input.getA()) {
       mLauncher.setLauncherMode(LauncherMode.AMP);
     }
     // else if (Input.getB()) {
@@ -45,11 +45,8 @@ public class DefaultLauncherCommand extends Command {
 
     if (Input.getLeftBumper() && !mLauncher.pieceInIndexer()) {
       mLauncher.runIndexer(LauncherConstants.INDEXER_VELOCITY_DEFAULT);
-    }
-    else if (Input.getRightBumper() && mLauncher.isLauncherReady()) {
+    } else if (Input.getRightBumper() && mLauncher.isLauncherReady()) {
       mLauncher.runIndexer(LauncherConstants.INDEXER_VELOCITY_DEFAULT);
-    } else {
-      mLauncher.runIndexer(0);
     }
   }
 

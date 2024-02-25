@@ -26,7 +26,7 @@ public final class LauncherConstants {
 
   //current flywheel mode
   public enum LauncherMode {
-    SPEAKER, AMP, TRAP, OFF;
+    SPEAKER, AMP, TRAP, OFF, PASSIVE;
   }
 
   //flywheel setpoints
@@ -36,7 +36,9 @@ public final class LauncherConstants {
 
     AMP_DEFAULT(5000), //TODO:https://github.com/FRC-1294/frc2024/issues/241
 
-    TRAP_DEFAULT(1000); //TODO:https://github.com/FRC-1294/frc2024/issues/241
+    TRAP_DEFAULT(1000), //TODO:https://github.com/FRC-1294/frc2024/issues/241
+
+    PASSIVE_DEFAULT(5000);
 
     public final double velocity;
 
