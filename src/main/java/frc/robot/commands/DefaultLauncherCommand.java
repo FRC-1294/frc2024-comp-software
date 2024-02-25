@@ -43,7 +43,7 @@ public class DefaultLauncherCommand extends Command {
       mLauncher.setLauncherMode(LauncherMode.TRAP);
     }
     
-    if (Input.getLeftBumper() && !mLauncher.pieceInIndexer() && !IntakeSubsystem.pieceInIntake()) {
+    if (Input.getLeftBumper() && !mLauncher.pieceInIndexer()) {
       mLauncher.runIndexer(LauncherConstants.INDEXER_VELOCITY_DEFAULT);
     } else {
       mLauncher.runIndexer(0);
