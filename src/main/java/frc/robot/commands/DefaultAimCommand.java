@@ -24,9 +24,9 @@ public class DefaultAimCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // if (Input.getA()) {
-    //   mAimingSubsystem.setDesiredSetpoint(AimState.AMP);
-    // }
+    if (Input.getA()) {
+      mAimingSubsystem.setDesiredSetpoint(AimState.AMP);
+    }
     if (Input.getY()) {
       mAimingSubsystem.setDesiredSetpoint(AimState.SPEAKER);
     }

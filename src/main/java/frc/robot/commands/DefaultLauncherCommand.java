@@ -28,20 +28,20 @@ public class DefaultLauncherCommand extends Command {
 
   @Override
   public void execute() {
-    if (Input.getX()) {
-      mLauncher.stopLauncher();
-    }
+    // if (Input.getX()) {
+    //   mLauncher.stopLauncher();
+    // }
     //speaker
-    else if (Input.getY()) {
+    if (Input.getY()) {
       mLauncher.setLauncherMode(LauncherMode.SPEAKER);
     } 
     //amp
     else if (Input.getA()) {
       mLauncher.setLauncherMode(LauncherMode.AMP);
     }
-    // else if (Input.getB()) {
-    //   mLauncher.setLauncherMode(LauncherMode.TRAP);
-    // }
+    else if (Input.getB()) {
+      mLauncher.setLauncherMode(LauncherMode.TRAP);
+    }
 
     if (Input.getLeftBumper() && !mLauncher.pieceInIndexer()) {
       mLauncher.runIndexer(LauncherConstants.INDEXER_VELOCITY_DEFAULT);
