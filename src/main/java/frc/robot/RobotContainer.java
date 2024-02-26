@@ -4,9 +4,12 @@
 
 package frc.robot;
 
+import frc.robot.commands.DefaultAimCommand;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.DefaultIntakeCommand;
+import frc.robot.commands.DefaultLauncherCommand;
 import frc.robot.commands.DefaultMechCommand;
-import frc.robot.robots.PracticeBotSwerveConfig;
+import frc.robot.robots.CompetitionBotSwerveConfig;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.AimingSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -21,20 +24,20 @@ import frc.robot.subsystems.Limelight;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final SwerveSubsystem mSwerveSubsystem = new SwerveSubsystem(new PracticeBotSwerveConfig());
-  private final IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
-  private final AimingSubsystem mAimingSubsystem = new AimingSubsystem();
-  private final LauncherSubsystem mLauncherSubsystem = new LauncherSubsystem();
+  private final SwerveSubsystem mSwerveSubsystem = new SwerveSubsystem(new CompetitionBotSwerveConfig());
   private final Limelight mLightLight = new Limelight();
+  private final IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
+  private final LauncherSubsystem mLauncherSubsystem = new LauncherSubsystem();
+  private final AimingSubsystem mAimingSubsystem = new AimingSubsystem();
   
   
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     mSwerveSubsystem.setDefaultCommand(new DefaultDriveCommand(mSwerveSubsystem, mLightLight));
-    // mLauncherSubsystem.setDefaultCommand(mDefaultMechCommand);
-    // mAimingSubsystem.setDefaultCommand(mDefaultMechCommand);
-    // mIntakeSubsystem.setDefaultCommand(mDefaultMechCommand);
+    mIntakeSubsystem.setDefaultCommand(new DefaultIntakeCommand(mIntakeSubsystem));
+    mLauncherSubsystem.setDefaultCommand(new DefaultLauncherCommand(mLauncherSubsystem));
+    mAimingSubsystem.setDefaultCommand(new DefaultAimCommand(mAimingSubsystem));
   }
   
   public SwerveSubsystem getSwerveSubsystem() {

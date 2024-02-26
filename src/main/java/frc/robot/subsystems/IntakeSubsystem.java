@@ -5,8 +5,10 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -18,29 +20,27 @@ import frc.robot.constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new Intake. */
-  private final CANSparkMax mIntakeMotorInner;
-  private final CANSparkMax mIntakeMotorOuter;
-  private static DigitalInput mBeamBreak;
+  private final CANSparkMax mIntakeMotorInner = new CANSparkMax(IntakeConstants.INTAKE_SPARK_ID_INNER, MotorType.kBrushless);
+  private final CANSparkMax mIntakeMotorOuter = new CANSparkMax(IntakeConstants.INTAKE_SPARK_ID_OUTER, MotorType.kBrushless);
+  private static final DigitalInput mBeamBreak = new DigitalInput(IntakeConstants.INTAKE_BEAMBREAK_ID);
   private boolean beamBreakOverride = false;
   private boolean useCurrentLimits = false;
 
   public IntakeSubsystem() {
-    mIntakeMotorInner = new CANSparkMax(IntakeConstants.INTAKE_SPARK_ID_INNER, MotorType.kBrushless);  
-    if (useCurrentLimits){
-      mIntakeMotorInner.setSmartCurrentLimit(IntakeConstants.SMART_CURRENT_LIMIT_INNER);
-    } //set current limit as to not burn out motor
-    
+    //mIntakeMotorInner.setSmartCurrentLimit(IntakeConstants.SMART_CURRENT_LIMIT_INNER); //set current limit as to not burn out motor
     mIntakeMotorInner.setInverted(IntakeConstants.INTAKE_INVERTED_INNER);
-    mIntakeMotorInner.disableVoltageCompensation();//No voltage comp since we want intake to run at full power
-
-    mIntakeMotorOuter = new CANSparkMax(IntakeConstants.INTAKE_SPARK_ID_OUTER, MotorType.kBrushless);
-    if (useCurrentLimits){
-      mIntakeMotorOuter.setSmartCurrentLimit(IntakeConstants.SMART_CURRENT_LIMIT_OUTER);
-    } //set current limit as to not burn out motor
+    mIntakeMotorInner.enableVoltageCompensation(11);//No voltage comp since we want intake to run at full power
+ 
+    //mIntakeMotorOuter.setSmartCurrentLimit(IntakeConstants.SMART_CURRENT_LIMIT_OUTER); //set current limit as to not burn out motor
     mIntakeMotorOuter.setInverted(IntakeConstants.INTAKE_INVERTED_OUTER);
-    mIntakeMotorOuter.disableVoltageCompensation();//No voltage comp since we want intake to run at full power
+    mIntakeMotorOuter.enableVoltageCompensation(11);//No voltage comp since we want intake to run at full power
 
-    mBeamBreak = new DigitalInput(IntakeConstants.INTAKE_BEAMBREAK_ID);
+
+    mIntakeMotorInner.setIdleMode(IdleMode.kBrake);
+    mIntakeMotorOuter.setIdleMode(IdleMode.kBrake);
+
+    mIntakeMotorInner.burnFlash();
+    mIntakeMotorOuter.burnFlash();
   }
 
   @Override
@@ -48,6 +48,7 @@ public class IntakeSubsystem extends SubsystemBase {
     // if (pieceInIntake() && !beamBreakOverride){
     //   stopMotors();
     // }
+    SmartDashboard.putBoolean("Piece in Intake", pieceInIntake());
   }
 
   /**

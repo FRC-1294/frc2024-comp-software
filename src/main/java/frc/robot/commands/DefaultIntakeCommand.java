@@ -32,10 +32,10 @@ public class DefaultIntakeCommand extends Command {
     }
 
     if (Input.getLeftBumper()) {
-      mIntake.intakeMotorsAtSpeed(IntakeConstants.INNER_INTAKE_SPEED_ACTIVE);
+      mIntake.runIntakeMotors();
     }else{
       mIntake.stopMotors();
-    }
+    } 
   }
 
   // Called once the command ends or is interrupted.
