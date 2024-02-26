@@ -20,23 +20,20 @@ import frc.robot.constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new Intake. */
-  private final CANSparkMax mIntakeMotorInner;
-  private final CANSparkMax mIntakeMotorOuter;
-  private static DigitalInput mBeamBreak;
+  private final CANSparkMax mIntakeMotorInner = new CANSparkMax(IntakeConstants.INTAKE_SPARK_ID_INNER, MotorType.kBrushless);
+  private final CANSparkMax mIntakeMotorOuter = new CANSparkMax(IntakeConstants.INTAKE_SPARK_ID_OUTER, MotorType.kBrushless);
+  private static final DigitalInput mBeamBreak = new DigitalInput(IntakeConstants.INTAKE_BEAMBREAK_ID);
   private boolean beamBreakOverride = false;
 
   public IntakeSubsystem() {
-    mIntakeMotorInner = new CANSparkMax(IntakeConstants.INTAKE_SPARK_ID_INNER, MotorType.kBrushless);
     //mIntakeMotorInner.setSmartCurrentLimit(IntakeConstants.SMART_CURRENT_LIMIT_INNER); //set current limit as to not burn out motor
     mIntakeMotorInner.setInverted(IntakeConstants.INTAKE_INVERTED_INNER);
     mIntakeMotorInner.enableVoltageCompensation(11);//No voltage comp since we want intake to run at full power
  
-    mIntakeMotorOuter = new CANSparkMax(IntakeConstants.INTAKE_SPARK_ID_OUTER, MotorType.kBrushless);
     //mIntakeMotorOuter.setSmartCurrentLimit(IntakeConstants.SMART_CURRENT_LIMIT_OUTER); //set current limit as to not burn out motor
     mIntakeMotorOuter.setInverted(IntakeConstants.INTAKE_INVERTED_OUTER);
     mIntakeMotorOuter.enableVoltageCompensation(11);//No voltage comp since we want intake to run at full power
 
-    mBeamBreak = new DigitalInput(IntakeConstants.INTAKE_BEAMBREAK_ID);
 
     mIntakeMotorInner.setIdleMode(IdleMode.kBrake);
     mIntakeMotorOuter.setIdleMode(IdleMode.kBrake);
