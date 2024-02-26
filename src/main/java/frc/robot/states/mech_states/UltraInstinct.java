@@ -1,10 +1,8 @@
 package frc.robot.states.mech_states;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.constants.IntakeConstants;
 import frc.robot.constants.LauncherConstants;
-import frc.robot.commands.AutonomousCommands.Handoff;
 import frc.robot.constants.AimState;
 import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.states.MechState;
@@ -70,38 +68,26 @@ public class UltraInstinct extends MechState {
 
     @Override
     public void preformHandoff(){
-        new Handoff(mIntakeSubsystem, mLauncherSubsystem).schedule();
+        mHandoffPositionCommand.schedule();
     }
 
     @Override
     public void speakerPosition(){
-        new InstantCommand(()->{
-            mAimingSubsystem.setDesiredSetpoint(AimState.SUBWOOFER);
-            mLauncherSubsystem.setLauncherMode(LauncherMode.SPEAKER);},mAimingSubsystem,mLauncherSubsystem
-        ).schedule();
+        mSpeakerPositionCommand.schedule();
     }
 
     @Override
     public void ampPosition(){
-        new InstantCommand(()->{
-            mAimingSubsystem.setDesiredSetpoint(AimState.AMP);
-            mLauncherSubsystem.setLauncherMode(LauncherMode.AMP);},mAimingSubsystem,mLauncherSubsystem
-        ).schedule();
+        mAmpPositionCommand.schedule();
     }
     
     @Override
     public void trapPosition(){
-        new InstantCommand(()->{
-            mAimingSubsystem.setDesiredSetpoint(AimState.TRAP);
-            mLauncherSubsystem.setLauncherMode(LauncherMode.TRAP);},mAimingSubsystem,mLauncherSubsystem
-        ).schedule();
+        mTrapPositionCommand.schedule();
     }
 
     @Override
     public void handoffPosition(){
-        new InstantCommand(()->{
-            mAimingSubsystem.setDesiredSetpoint(AimState.HANDOFF);
-            mLauncherSubsystem.setLauncherMode(LauncherMode.OFF);},mLauncherSubsystem,mAimingSubsystem
-        ).schedule();
+        mHandoffPositionCommand.schedule();
     }
 }

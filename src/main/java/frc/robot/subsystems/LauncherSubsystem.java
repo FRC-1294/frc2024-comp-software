@@ -5,18 +5,18 @@
 package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
-import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.constants.LauncherConstants;
 import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.constants.LauncherConstants.LauncherState;
@@ -128,9 +128,9 @@ public class LauncherSubsystem extends SubsystemBase {
      null, this::isLauncherReady, this);    
   }
   
-  public Command waitUntilNoteLaunchedCommand() {
-    return new FunctionalCommand(() -> runIndexer(LauncherConstants.INDEXER_VELOCITY_LAUNCH), null,
-     (interupted)->runIndexer(0), ()->!pieceInIndexer(), this);    
+  public Command indexUntilNoteLaunchedCommand() {
+    return new SequentialCommandGroup(new FunctionalCommand(() -> runIndexer(LauncherConstants.INDEXER_VELOCITY_LAUNCH), null,
+     null, ()->!pieceInIndexer(), this), new WaitCommand(LauncherConstants.LAUNCH_COOLDOWN_SEC), new InstantCommand(()->stopIndexer(),this));   
   }
 
   @Override

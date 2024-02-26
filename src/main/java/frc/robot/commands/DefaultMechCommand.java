@@ -120,17 +120,23 @@ public class DefaultMechCommand extends Command {
     public void runAction() {
         if (mMechState == mReadyForIntake) {
             aimSelected = false;
-            mMechState.handoffPosition();
+            if (!mMechState.mHandoffPositionCommand.isScheduled()){
+                mMechState.handoffPosition();
+            }
         }
         else if (mMechState == mIntaken) {
             aimSelected = false;
             mMechState.brakeIntake();
-            mMechState.handoffPosition();
+            if (!mMechState.mHandoffPositionCommand.isScheduled()){
+                mMechState.handoffPosition();
+            }
         }
         else if (mMechState == mReadyForHandoff) {
             aimSelected = false;
             mMechState.brakeIntake();
-            mMechState.preformHandoff();
+            if (!mMechState.mPreformHandoffCommand.isScheduled()){
+                mMechState.preformHandoff();
+            }
         }
         else if (mMechState == mReadyForAim) {
             mMechState.brakeIntake();

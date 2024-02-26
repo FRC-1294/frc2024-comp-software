@@ -61,4 +61,6 @@ public final class LauncherConstants {
   public static final double FLYWHEEL_SENSOR_TO_MECHANISM = 1;
 
   public static final boolean INDEXER_IS_INVERTED = false; //TODO:
+
+  public static final double LAUNCH_COOLDOWN_SEC = 0.2;
 }

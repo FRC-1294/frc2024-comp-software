@@ -1,6 +1,5 @@
 package frc.robot.states.mech_states;
 
-import frc.robot.commands.AutonomousCommands.Handoff;
 import frc.robot.states.MechState;
 import frc.robot.subsystems.AimingSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -14,6 +13,6 @@ public class ReadyForHandoff extends MechState {
 
     @Override
     public void preformHandoff(){
-        new Handoff(mIntakeSubsystem, mLauncherSubsystem).schedule();
+        mPreformHandoffCommand.schedule();
     }
 }

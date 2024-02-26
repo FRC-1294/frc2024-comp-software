@@ -1,6 +1,9 @@
 package frc.robot.states;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import frc.robot.commands.AutonomousCommands.Handoff;
 import frc.robot.constants.AimState;
 import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.subsystems.AimingSubsystem;
@@ -11,11 +14,25 @@ public abstract class MechState {
     protected final LauncherSubsystem mLauncherSubsystem;
     protected final IntakeSubsystem mIntakeSubsystem;
     protected final AimingSubsystem mAimingSubsystem;
+    public final Command mHandoffPositionCommand;
+    public final Command mSpeakerPositionCommand;
+    public final Command mAmpPositionCommand;
+    public final Command mTrapPositionCommand;
+    public final Command mPreformHandoffCommand;
+    public final Command mLaunchCommand;
+    
 
     protected MechState (LauncherSubsystem launcherSubsystem,AimingSubsystem aimingSubsystem,IntakeSubsystem intakeSubsystem){ 
         mLauncherSubsystem = launcherSubsystem;
         mIntakeSubsystem = intakeSubsystem;
         mAimingSubsystem = aimingSubsystem;
+
+        mHandoffPositionCommand = new ParallelCommandGroup(mAimingSubsystem.waitUntilSetpoint(AimState.HANDOFF), mLauncherSubsystem.waitUntilFlywheelSetpointCommand(LauncherMode.OFF));
+        mSpeakerPositionCommand = new ParallelCommandGroup(mAimingSubsystem.waitUntilSetpoint(AimState.SUBWOOFER), mLauncherSubsystem.waitUntilFlywheelSetpointCommand(LauncherMode.SPEAKER));
+        mAmpPositionCommand = new ParallelCommandGroup(mAimingSubsystem.waitUntilSetpoint(AimState.AMP), mLauncherSubsystem.waitUntilFlywheelSetpointCommand(LauncherMode.AMP));
+        mTrapPositionCommand = new ParallelCommandGroup(mAimingSubsystem.waitUntilSetpoint(AimState.TRAP), mLauncherSubsystem.waitUntilFlywheelSetpointCommand(LauncherMode.TRAP));
+        mPreformHandoffCommand = new Handoff(mIntakeSubsystem, mLauncherSubsystem);
+        mLaunchCommand = mLauncherSubsystem.indexUntilNoteLaunchedCommand();
     }
 
     public void setLauncherSpeed(LauncherMode mode) {}
