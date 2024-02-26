@@ -103,19 +103,15 @@ public class AimingSubsystem extends SubsystemBase {
     // Don't even ask
     mWristThroughBoreEncoder.setConnectedFrequencyThreshold(AimingConstants.CONNECTION_THRESH_HZ);
 
-
-
     mLeftElevatorMotor.burnFlash();
     mRightElevatorMotor.burnFlash();
   }
 
   @Override
   public void periodic() {
-    //updateMotorModes();
+    updateMotorModes();
     //elevatorPeriodic();
     wristPeriodic();
-
-
 
     debugSmartDashboard();
   }
@@ -173,7 +169,7 @@ public class AimingSubsystem extends SubsystemBase {
 
   // Contains Smart Dashboard Statements ONLY ON DEBUG
   private void debugSmartDashboard() {
-    if (true || CompConstants.DEBUG_MODE || CompConstants.PID_TUNE_MODE) {
+    if (CompConstants.DEBUG_MODE || CompConstants.PID_TUNE_MODE) {
       SmartDashboard.putNumber("Current Wrist Rotation", mCurrentWristRotationDeg);
       SmartDashboard.putNumber("Current Elevator Distance", mCurrentElevatorDistanceIn);
       SmartDashboard.putNumber("Desired Wrist Rotation", mDesiredWristRotationDeg);
