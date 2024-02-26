@@ -14,66 +14,116 @@ import frc.robot.subsystems.LauncherSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class TestAll extends Command {
-  IntakeSubsystem intake;
-  AimingSubsystem aiming;
-  LauncherSubsystem launcher;
-  SwerveSubsystem swerve;
+  IntakeSubsystem mIntake;
+  AimingSubsystem mAiming;
+  LauncherSubsystem mLauncher;
+  SwerveSubsystem mSwerve;
+  boolean mTestIntakeSeperately;
+  boolean mTestAimingSeperately;
+  boolean mTestLauncherSeperately;
+  boolean mTestSwerveSeperately;
 
-  public TestAll(IntakeSubsystem intake, AimingSubsystem aiming, LauncherSubsystem launcher, SwerveSubsystem swerve) {
+  public TestAll(IntakeSubsystem intake, AimingSubsystem aiming, LauncherSubsystem launcher, SwerveSubsystem swerve,
+  boolean testIntakeSeperately, boolean testAimingSeperately, boolean testLauncherSeperately, boolean testSwerveSeperately) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.intake = intake;
-    this.aiming = aiming;
-    this.launcher = launcher;
-    this.swerve = swerve;
+    mIntake = intake;
+    mAiming = aiming;
+    mLauncher = launcher;
+    mSwerve = swerve;
+
+    mTestIntakeSeperately = testIntakeSeperately;
+    mTestAimingSeperately = testAimingSeperately;
+    mTestLauncherSeperately = testLauncherSeperately;
+    mTestSwerveSeperately = testSwerveSeperately;
   }
   
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    testIntake();
-    testAim();
-    testLauncher();
-    testSwerve();
+    if (mTestIntakeSeperately) {
+      testIntake();
+    }
+    if (mTestAimingSeperately) {
+      testAim();
+    }
+    if (mTestLauncherSeperately) {
+      testLauncher();
+    }
+    if (mTestSwerveSeperately) {
+      testSwerve();
+    }
+    testCycle();
+  }
+
+  public void testCycle() {
+    // Intake Portion
+    mSwerve.setChassisSpeed(1, 0, 0, false,false); 
+    mIntake.intakeMotorsAtSpeed(IntakeConstants.ACTIVE_INTAKE_SPEED);
+    new WaitUntilCommand(mIntake::pieceInIntake);
+    mIntake.stopMotors();
+    mSwerve.setChassisSpeed(0, 0, 0, false);
+
+    // Handoff Portion
+    mAiming.setDesiredElevatorDistance(0);
+    mAiming.setDesiredWristRotation(0); 
+    mLauncher.runLauncher();
+    new WaitCommand(1);
+    mIntake.intakeMotorsAtSpeed(IntakeConstants.ACTIVE_INTAKE_SPEED);
+    new WaitUntilCommand(mLauncher::pieceInIndexer);
+    mLauncher.stopLauncher();
+    mIntake.stopMotors();
+
+    // Aiming and Laucher Portion
+    mAiming.changeDesiredElevatorPosition(5);
+    mAiming.changeDesiredWristRotation(45);
+    new WaitUntilCommand(mAiming::atElevatorSetpoint);
+    new WaitUntilCommand(mAiming::atWristSetpoint);
+    mLauncher.runLauncher();
+    new WaitCommand(2);
+    
+    // Reset Aiming to a normal position
+    mAiming.setDesiredElevatorDistance(0);
+    mAiming.setDesiredWristRotation(0); 
   }
 
   public void testIntake() {
-    intake.intakeMotorsAtSpeed(IntakeConstants.ACTIVE_INTAKE_SPEED);
-    new WaitUntilCommand(intake::pieceInIntake);
-    intake.stopMotors();
+    mIntake.intakeMotorsAtSpeed(IntakeConstants.ACTIVE_INTAKE_SPEED);
+    new WaitCommand(5);
+    mIntake.stopMotors();
   }
 
   public void testAim() {
-    aiming.changeDesiredWristRotation(90);
-    new WaitUntilCommand(aiming::atWristSetpoint);
-    aiming.changeDesiredWristRotation(-90);
-    aiming.changeDesiredElevatorPosition(5);
-    new WaitUntilCommand(aiming::atElevatorSetpoint);
-    aiming.changeDesiredElevatorPosition(-5);
+    mAiming.changeDesiredWristRotation(90);
+    new WaitUntilCommand(mAiming::atWristSetpoint);
+    mAiming.changeDesiredWristRotation(-90);
+    mAiming.changeDesiredElevatorPosition(5);
+    new WaitUntilCommand(mAiming::atElevatorSetpoint);
+    mAiming.changeDesiredElevatorPosition(-5);
   }
 
   public void testLauncher() {
-    launcher.runLauncher();
-    while (true) {
-      if (!launcher.pieceInIndexer()) {
-        launcher.stopLauncher();
-        break;
-      }
-    } 
+    mLauncher.runLauncher();
+    new WaitCommand(5);
+    mLauncher.stopLauncher();
   }
 
   public void testSwerve() {
-    swerve.setChassisSpeed(1, 1, 1, false);
+    mSwerve.setChassisSpeed(1, 1, 1, false);
     new WaitCommand(5);
-    swerve.setChassisSpeed(0,0,0,false);
+    mSwerve.setChassisSpeed(0,0,0,false);
   }
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    // only gets executed once, so no need
+  }
 
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    // dont need
+  }
 
   // Returns true when the command should end.
   @Override

@@ -37,10 +37,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-   
-
-    RobotContainer robotContainer = new RobotContainer();
-    
+       
     new InitializePathPlanner(robotContainer.getSwerveSubsystem()).initialize();
     
     SmartDashboard.putData("Pick your Auton...",pathSelector);
@@ -99,6 +96,7 @@ public class Robot extends TimedRobot {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
     CANSparkLowLevel.enableExternalUSBControl(true);
-    new TestAll(robotContainer.getIntakeSubsystem(), robotContainer.getAimingSubsystem(), robotContainer.getLauncherSubsystem(), robotContainer.getSwerveSubsystem()).schedule();
+    new TestAll(robotContainer.getIntakeSubsystem(), robotContainer.getAimingSubsystem(), robotContainer.getLauncherSubsystem(), robotContainer.getSwerveSubsystem(),
+    false, false, false, false).schedule();
   }
 }
