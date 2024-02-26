@@ -54,8 +54,6 @@ public abstract class MechState {
 
     public void controlElevator(double increment) {}
 
-    public void ClimbExtendedState(AimState state) {}
-
     public void ClimbExtendedState() {}
     
     public void ClimbRetractedState() {}
