@@ -53,7 +53,7 @@ public class AimingConstants {
 
     // Soft Limits
     public static final double MAX_ELEVATOR_DIST_METERS = 0.5; //TBD
-    public static final double MIN_ELEVATOR_DIST_METERS = 0.05; //TBD
+    public static final double MIN_ELEVATOR_DIST_METERS = 0.0; //TBD
     public static final double MAX_ELEVATOR_EXTENSION_VELOCITY = 0.1; //TBD
 
     public static final double MAX_WRIST_ROTATION = 110;

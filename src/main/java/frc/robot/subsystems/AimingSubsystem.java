@@ -112,7 +112,7 @@ public class AimingSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     updateMotorModes();
-    //elevatorPeriodic();
+    elevatorPeriodic();
     wristPeriodic();
 
     debugSmartDashboard();
@@ -130,7 +130,6 @@ public class AimingSubsystem extends SubsystemBase {
 
     mLeftElevatorMotor.set(elevatorPIDCalculation + AimingConstants.ELEVATOR_FEEDFORWARD_CONSTANT);
     SmartDashboard.putNumber("ElevatorPIDOutput", elevatorPIDCalculation);
-    //mLeftElevatorMotor.set(0.2);
   }
 
 
@@ -176,7 +175,7 @@ public class AimingSubsystem extends SubsystemBase {
 
   // Contains Smart Dashboard Statements ONLY ON DEBUG
   private void debugSmartDashboard() {
-    if (true || CompConstants.DEBUG_MODE || CompConstants.PID_TUNE_MODE) {
+    if (CompConstants.DEBUG_MODE || CompConstants.PID_TUNE_MODE) {
       SmartDashboard.putNumber("Current Wrist Rotation", mCurrentWristRotationDeg);
       SmartDashboard.putNumber("Current Elevator Distance", mCurrentElevatorDistanceIn);
       SmartDashboard.putNumber("Desired Wrist Rotation", mDesiredWristRotationDeg);
