@@ -121,7 +121,7 @@ public class LauncherSubsystem extends SubsystemBase {
   }
 
   public boolean isLauncherReady() {
-    return true;
+    return true; // Returning True until we set up velocity PID
   }
 
   public void setLauncherMode(LauncherMode mode) {
@@ -130,7 +130,6 @@ public class LauncherSubsystem extends SubsystemBase {
   
   public void stopLauncher() {
     mLauncherMode = LauncherMode.OFF;
-    runLauncher();
   }
 
   private void resetEncoders() {

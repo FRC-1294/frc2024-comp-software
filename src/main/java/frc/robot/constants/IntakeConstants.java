@@ -19,4 +19,8 @@ public class IntakeConstants {
     public static final double ACTIVE_INTAKE_SPEED = 0.6;
     public static final double PASSIVE_INTAKE_SPEED = 0;
 
+    public static final double HANDOFF_SPEED = 0.3;
+
+    public static final double NOMINAL_VOLTAGE = 11;
+
 }

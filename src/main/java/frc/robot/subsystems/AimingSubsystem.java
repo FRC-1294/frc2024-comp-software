@@ -146,7 +146,6 @@ public class AimingSubsystem extends SubsystemBase {
     mLeftWristMotor.set(wristPIDCalculation + wristFeedforwardCalculation);
     SmartDashboard.putNumber("WristPIDOutput", wristPIDCalculation);
 
-    //mLeftWristMotor.set(0.05);
   }
 
   private void updateMotorModes() {
