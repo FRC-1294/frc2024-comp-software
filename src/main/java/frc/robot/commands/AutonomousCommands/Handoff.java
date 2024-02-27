@@ -24,7 +24,7 @@ public class Handoff extends Command {
   @Override
   public void initialize() {
     mIntake.innerMotorAtSpeed(IntakeConstants.INNER_INTAKE_SPEED_ACTIVE);
-    mLauncher.runIndexer(LauncherConstants.INDEXER_VELOCITY_HANDOFF);
+    mLauncher.runIndexer(LauncherConstants.INDEXER_VELOCITY_INDEXING);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

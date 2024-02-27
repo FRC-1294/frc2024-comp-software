@@ -66,8 +66,8 @@ public class DefaultDriveCommand extends Command {
     y *= mSwerve.mConfig.TELE_MAX_SPEED_MPS;
     rot *= mSwerve.mConfig.TELE_MAX_ROT_SPEED_RAD_SEC;
     boolean isFieldOriented = true;
+    // SmartDashboard.putNumber("tx", mLimelight.getNoteAngle());
     // if (Input.getNoteAlignment() && mLimelight.isDetectionValid()) {
-    //     SmartDashboard.putNumber("tx", mLimelight.getNoteAngle());
     //     rot = mNotePID.calculate(Units.degreesToRadians(mLimelight.getNoteAngle()));
     //     isFieldOriented = false;
     // }

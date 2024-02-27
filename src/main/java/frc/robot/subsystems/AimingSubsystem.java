@@ -102,6 +102,8 @@ public class AimingSubsystem extends SubsystemBase {
 
     mLeftElevatorMotor.burnFlash();
     mRightElevatorMotor.burnFlash();
+    mLeftWristMotor.burnFlash();
+    mRightWristMotor.burnFlash();
   }
 
   @Override
@@ -121,9 +123,13 @@ public class AimingSubsystem extends SubsystemBase {
 
     //Temp Regular PID
     double elevatorPIDCalculation = mElevatorController.calculate(mCurrentElevatorDistanceIn, mDesiredElevatorDistanceIn);
+    elevatorPIDCalculation = MathUtil.clamp(elevatorPIDCalculation, -AimingConstants.MAX_ELEVATOR_PID_CONTRIBUTION, AimingConstants.MAX_ELEVATOR_PID_CONTRIBUTION);
+
     mLeftElevatorMotor.set(elevatorPIDCalculation + AimingConstants.ELEVATOR_FEEDFORWARD_CONSTANT);
     SmartDashboard.putNumber("ElevatorPIDOutput", elevatorPIDCalculation);
+    //mLeftElevatorMotor.set(0.2);
   }
+
 
   private void wristPeriodic() {
     //Clamping Rotation between domain
@@ -133,7 +139,8 @@ public class AimingSubsystem extends SubsystemBase {
     double wristPIDCalculation = mWristController.calculate(mCurrentWristRotationDeg, mDesiredWristRotationDeg);  
     wristPIDCalculation = MathUtil.clamp(wristPIDCalculation, -AimingConstants.MAX_WRIST_PID_CONTRIBUTION, AimingConstants.MAX_WRIST_PID_CONTRIBUTION);
     
-    double wristFeedforwardCalculation = Math.cos((mCurrentWristRotationDeg-AimingConstants.COG_OFFSET))*AimingConstants.WRIST_KG;
+
+    double wristFeedforwardCalculation = Math.cos(Math.toRadians(mCurrentWristRotationDeg-AimingConstants.COG_OFFSET))*AimingConstants.WRIST_KG;
     mLeftWristMotor.set(wristPIDCalculation + wristFeedforwardCalculation);
     SmartDashboard.putNumber("WristPIDOutput", wristPIDCalculation);
 
@@ -166,7 +173,7 @@ public class AimingSubsystem extends SubsystemBase {
 
   // Contains Smart Dashboard Statements ONLY ON DEBUG
   private void debugSmartDashboard() {
-    if (CompConstants.DEBUG_MODE || CompConstants.PID_TUNE_MODE) {
+    if (true || CompConstants.DEBUG_MODE || CompConstants.PID_TUNE_MODE) {
       SmartDashboard.putNumber("Current Wrist Rotation", mCurrentWristRotationDeg);
       SmartDashboard.putNumber("Current Elevator Distance", mCurrentElevatorDistanceIn);
       SmartDashboard.putNumber("Desired Wrist Rotation", mDesiredWristRotationDeg);

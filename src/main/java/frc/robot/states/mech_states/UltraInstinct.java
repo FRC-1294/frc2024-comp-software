@@ -33,12 +33,12 @@ public class UltraInstinct extends MechState {
 
     @Override
     public void index(){
-        new InstantCommand(() -> mLauncherSubsystem.runIndexer(LauncherConstants.INDEXER_VELOCITY_HANDOFF),mLauncherSubsystem).schedule();;
+        new InstantCommand(() -> mLauncherSubsystem.runIndexer(LauncherConstants.INDEXER_VELOCITY_INDEXING),mLauncherSubsystem).schedule();;
     }
 
     @Override
     public void launch() {
-        new InstantCommand(() -> mLauncherSubsystem.runIndexer(LauncherConstants.INDEXER_VELOCITY_LAUNCH),mLauncherSubsystem).schedule();;
+        new InstantCommand(() -> mLauncherSubsystem.runIndexer(LauncherConstants.INDEXER_VELOCITY_LAUNCHING),mLauncherSubsystem).schedule();;
     }
 
     @Override
