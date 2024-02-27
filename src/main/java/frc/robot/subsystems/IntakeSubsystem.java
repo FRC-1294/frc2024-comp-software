@@ -72,7 +72,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void runIntakeMotors(){
-    mIntakeMotorInner.set(IntakeConstants.INNER_INTAKE_SPEED_ACTIVE);
+    mIntakeMotorInner.set(IntakeConstants.INNER_INTAKE_SPEED_AQUIRE);
     mIntakeMotorOuter.set(IntakeConstants.OUTER_INTAKE_SPEED_ACTIVE);
   }
 
@@ -86,7 +86,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public Command getAutomousIntakeCommand() {
-    return new FunctionalCommand(() -> intakeMotorsAtSpeed(IntakeConstants.INNER_INTAKE_SPEED_ACTIVE), null, interrupted -> stopMotors(), ()->IntakeSubsystem.pieceInIntake(), this);
+    return new FunctionalCommand(() -> intakeMotorsAtSpeed(IntakeConstants.INNER_INTAKE_SPEED_AQUIRE), null, interrupted -> stopMotors(), ()->IntakeSubsystem.pieceInIntake(), this);
   }
 
   public static boolean pieceInIntake(){

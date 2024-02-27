@@ -13,7 +13,7 @@ public class Intaken extends MechState {
 
     @Override
     public void handoffPosition(){
-        mHandoffPositionCommand.schedule();;
+        mHandoffPositionCommand.schedule();
     }
 
 }

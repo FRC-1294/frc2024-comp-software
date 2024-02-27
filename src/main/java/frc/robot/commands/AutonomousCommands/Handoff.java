@@ -23,7 +23,7 @@ public class Handoff extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    mIntake.innerMotorAtSpeed(IntakeConstants.INNER_INTAKE_SPEED_ACTIVE);
+    mIntake.innerMotorAtSpeed(IntakeConstants.INNER_INTAKE_SPEED_AQUIRE);
     mLauncher.runIndexer(LauncherConstants.INDEXER_VELOCITY_INDEXING);
   }
 
