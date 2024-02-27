@@ -25,7 +25,7 @@ public class SwerveVoltageCharacterization extends Command {
   public SwerveVoltageCharacterization(SwerveSubsystem swerve) {
     mSwerve = swerve;
     mModules = mSwerve.getRawModules();
-    mTargVelMPS = 1;
+    mTargVelMPS = 0.5 ;
     addRequirements(mSwerve);
   }
 
