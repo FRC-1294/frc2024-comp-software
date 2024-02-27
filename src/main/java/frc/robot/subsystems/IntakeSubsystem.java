@@ -26,6 +26,8 @@ public class IntakeSubsystem extends SubsystemBase {
   private boolean beamBreakOverride = false;
 
   public IntakeSubsystem() {
+    mIntakeMotorInner.restoreFactoryDefaults();
+    mIntakeMotorOuter.restoreFactoryDefaults();
     //mIntakeMotorInner.setSmartCurrentLimit(IntakeConstants.SMART_CURRENT_LIMIT_INNER); //set current limit as to not burn out motor
     mIntakeMotorInner.setInverted(IntakeConstants.INTAKE_INVERTED_INNER);
     mIntakeMotorInner.enableVoltageCompensation(11);//No voltage comp since we want intake to run at full power
@@ -48,6 +50,7 @@ public class IntakeSubsystem extends SubsystemBase {
     //   stopMotors();
     // }
     SmartDashboard.putBoolean("Piece in Intake", pieceInIntake());
+    SmartDashboard.putNumber("IntakeSpeed", mIntakeMotorInner.getAppliedOutput());
   }
 
   /**

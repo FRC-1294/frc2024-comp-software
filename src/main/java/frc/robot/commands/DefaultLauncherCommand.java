@@ -26,9 +26,9 @@ public class DefaultLauncherCommand extends Command {
 
   @Override
   public void execute() {
-    // if (Input.getX()) {
-    //   mLauncher.stopLauncher();
-    // }
+    if (Input.getDPad()==Input.DPADRIGHT) {
+      mLauncher.stopLauncher();
+    }
     //speaker
     if (Input.getY()) {
       mLauncher.setLauncherMode(LauncherMode.SPEAKER);
@@ -41,10 +41,12 @@ public class DefaultLauncherCommand extends Command {
       mLauncher.setLauncherMode(LauncherMode.TRAP);
     }
 
-    if (Input.getLeftBumper() && !mLauncher.pieceInIndexer()) {
-      mLauncher.runIndexer(LauncherConstants.INDEXER_VELOCITY_DEFAULT);
+    if (Input.getLeftTrigger()>0.1 && !mLauncher.pieceInIndexer()) {
+      mLauncher.runIndexer(LauncherConstants.INDEXER_VELOCITY_INDEXING);
     } else if (Input.getRightBumper() && mLauncher.isLauncherReady()) {
-      mLauncher.runIndexer(LauncherConstants.INDEXER_VELOCITY_DEFAULT);
+      mLauncher.runIndexer(LauncherConstants.INDEXER_VELOCITY_LAUNCHING);
+    } else {
+      mLauncher.runIndexer(0);
     }
   }
 
