@@ -23,13 +23,15 @@ public class Handoff extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    mIntake.innerMotorAtSpeed(IntakeConstants.INNER_INTAKE_SPEED_AQUIRE);
-    mLauncher.runIndexer(LauncherConstants.INDEXER_VELOCITY_INDEXING);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    mIntake.innerMotorAtSpeed(IntakeConstants.INNER_INTAKE_SPEED_HANDOFF);
+    mLauncher.runIndexer(LauncherConstants.INDEXER_VELOCITY_INDEXING);
+  }
 
   // Called once the command ends or is interrupted.
   @Override

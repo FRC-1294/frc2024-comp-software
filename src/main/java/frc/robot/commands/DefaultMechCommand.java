@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.AimingConstants;
 import frc.robot.constants.AimState;
@@ -29,9 +30,10 @@ public class DefaultMechCommand extends Command {
     private static MechState mReadyForAim;
     private static MechState mReadyForLaunch;
     private static MechState mUltraInstinct;
+    private static boolean noteCurrentlyLaunching;
 
     private static boolean mUseUltraInstinct = false;
-    private static boolean aimSelected = false;
+    private static boolean mAimSelected = false;
     private static MechState mMechState;
 
     public DefaultMechCommand(IntakeSubsystem intakeSubsystem, LauncherSubsystem launcherSubsystem, AimingSubsystem aimingSubsystem) {
@@ -54,39 +56,40 @@ public class DefaultMechCommand extends Command {
         if (mUseUltraInstinct) {
             return mUltraInstinct;
         }
-        if (getIntakeBeamBreak() && getIndexerBeamBreak()) {
+        if (!getIntakeBeamBreak() && !getIndexerBeamBreak()) {
             return mReadyForIntake;
         }
-        else if (!getIntakeBeamBreak() && getIndexerBeamBreak()) {
-            return mIntaken;
-        }
-        else if (!getIntakeBeamBreak() && getIndexerBeamBreak() && mAimingSubsystem.getCurrentState() == AimState.HANDOFF) {
+        else if (getIntakeBeamBreak() && !getIndexerBeamBreak() && mAimingSubsystem.getCurrentState() == AimState.HANDOFF) {
             return mReadyForHandoff;
         }
-        else if (!getIndexerBeamBreak()) {
-            return mReadyForAim;
+        else if (getIntakeBeamBreak() && !getIndexerBeamBreak()) {
+            return mIntaken;
         }
-        else if (!getIndexerBeamBreak() && isFlywheelAtSP() && isAimAtSP() && isVisionAligned() && aimSelected) {
+        else if (getIndexerBeamBreak() && isFlywheelAtSP() && isAimAtSP() && isVisionAligned()) {
             return mReadyForLaunch;
+        }
+        else if (getIndexerBeamBreak()) {
+            return mReadyForAim;
         }
         return mUltraInstinct;
     }
 
     @Override
     public void execute() {
+        if (mMechState.mLaunchCommand.isScheduled()){
+            noteCurrentlyLaunching = !mMechState.mLaunchCommand.isFinished();
+        }
+
         if (Input.getX()) {
             mMechState.brakeLauncher();
         }
         else if (Input.getY()) {
-            aimSelected = true;
             mMechState.speakerPosition();
         } 
         else if (Input.getA()) {
-            aimSelected = true;
             mMechState.ampPosition();
         }
         else if (Input.getB()) {
-            aimSelected = true;
             mMechState.trapPosition();
         }
         if (Input.getLeftBumper()) {
@@ -114,25 +117,32 @@ public class DefaultMechCommand extends Command {
 
         runAction();
         mMechState = determineState();
+
+        SmartDashboard.putString("CurrentState", mMechState.getClass().getSimpleName());
     }
 
     //automatic actions
     public void runAction() {
         if (mMechState == mReadyForIntake) {
-            aimSelected = false;
+            if (!noteCurrentlyLaunching){
+                mMechState.brakeIndexer();
+                mMechState.brakeLauncher();
+            }
             if (!mMechState.mHandoffPositionCommand.isScheduled()){
                 mMechState.handoffPosition();
             }
         }
         else if (mMechState == mIntaken) {
-            aimSelected = false;
             mMechState.brakeIntake();
+            if (!noteCurrentlyLaunching){
+                mMechState.brakeIndexer();
+                mMechState.brakeLauncher();
+            }
             if (!mMechState.mHandoffPositionCommand.isScheduled()){
                 mMechState.handoffPosition();
             }
         }
         else if (mMechState == mReadyForHandoff) {
-            aimSelected = false;
             mMechState.brakeIntake();
             if (!mMechState.mPreformHandoffCommand.isScheduled()){
                 mMechState.preformHandoff();

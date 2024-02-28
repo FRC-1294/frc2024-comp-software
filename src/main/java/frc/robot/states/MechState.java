@@ -15,9 +15,9 @@ public abstract class MechState {
     protected final IntakeSubsystem mIntakeSubsystem;
     protected final AimingSubsystem mAimingSubsystem;
     public final Command mHandoffPositionCommand;
-    public final Command mSpeakerPositionCommand;
-    public final Command mAmpPositionCommand;
-    public final Command mTrapPositionCommand;
+    public  Command mSpeakerPositionCommand;
+    public  Command mAmpPositionCommand;
+    public  Command mTrapPositionCommand;
     public final Command mPreformHandoffCommand;
     public final Command mLaunchCommand;
     
@@ -37,10 +37,14 @@ public abstract class MechState {
 
     public void setLauncherSpeed(LauncherMode mode) {}
 
-    public void brakeLauncher() {}
-
+    public void brakeLauncher() {
+        new InstantCommand(()->mLauncherSubsystem.stopLauncher(),mLauncherSubsystem).schedule();
+    }
+    public void brakeIndexer() {
+        new InstantCommand(()->mLauncherSubsystem.stopIndexer(),mLauncherSubsystem).schedule();
+    }
     public void brakeIntake() {
-       new InstantCommand(()->mIntakeSubsystem.stopMotors(),mIntakeSubsystem);
+       new InstantCommand(()->mIntakeSubsystem.stopMotors(),mIntakeSubsystem).schedule();
     }
     public void runIntakeMotors(){}
 

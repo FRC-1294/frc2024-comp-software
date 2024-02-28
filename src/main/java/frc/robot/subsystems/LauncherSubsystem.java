@@ -146,13 +146,13 @@ public class LauncherSubsystem extends SubsystemBase {
   }
 
   public Command waitUntilFlywheelSetpointCommand(LauncherMode launcherMode) {
-    return new FunctionalCommand(() -> setLauncherMode(launcherMode), null,
-     null, this::isLauncherReady, this);    
+    return new FunctionalCommand(() -> setLauncherMode(launcherMode), ()->System.out.println("None"),
+    (Interruptable)->System.out.println("None"), this::isLauncherReady, this);    
   }
   
   public Command indexUntilNoteLaunchedCommand() {
-    return new SequentialCommandGroup(new FunctionalCommand(() -> runIndexer(LauncherConstants.INDEXER_VELOCITY_LAUNCHING), null,
-     null, ()->!pieceInIndexer(), this), new WaitCommand(LauncherConstants.LAUNCH_COOLDOWN_SEC), new InstantCommand(()->stopIndexer(),this));   
+    return new SequentialCommandGroup(new FunctionalCommand(() -> runIndexer(LauncherConstants.INDEXER_VELOCITY_LAUNCHING), ()->System.out.println("None"),
+    (Interruptable)->System.out.println("None"), ()->!pieceInIndexer(), this), new WaitCommand(LauncherConstants.LAUNCH_COOLDOWN_SEC), new InstantCommand(()->stopIndexer(),this));   
   }
 
   @Override
