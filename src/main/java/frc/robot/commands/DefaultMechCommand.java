@@ -31,9 +31,9 @@ public class DefaultMechCommand extends Command {
     private static MechState mReadyForLaunch;
     private static MechState mUltraInstinct;
     private static boolean noteCurrentlyLaunching;
+    private static boolean returnFromLaunch = false;
 
     private static boolean mUseUltraInstinct = false;
-    private static boolean mAimSelected = false;
     private static MechState mMechState;
 
     public DefaultMechCommand(IntakeSubsystem intakeSubsystem, LauncherSubsystem launcherSubsystem, AimingSubsystem aimingSubsystem) {
@@ -43,12 +43,11 @@ public class DefaultMechCommand extends Command {
 
         //addRequirements(mIntakeSubsystem, mLauncherSubsystem, mAimingSubsystem);
 
-        mReadyForIntake = new ReadyForIntake(launcherSubsystem,aimingSubsystem,intakeSubsystem);
-        mIntaken = new Intaken(launcherSubsystem,aimingSubsystem,intakeSubsystem);
-        mReadyForHandoff = new ReadyForHandoff(launcherSubsystem,aimingSubsystem,intakeSubsystem);
-        mReadyForAim = new ReadyForAim(launcherSubsystem,aimingSubsystem,intakeSubsystem);
-        mReadyForLaunch = new ReadyForLaunch(launcherSubsystem,aimingSubsystem,intakeSubsystem);
-        mUltraInstinct = new UltraInstinct(launcherSubsystem,aimingSubsystem,intakeSubsystem);
+        mReadyForIntake = new ReadyForIntake(mLauncherSubsystem,mAimingSubsystem,mIntakeSubsystem);
+        mReadyForHandoff = new ReadyForHandoff(mLauncherSubsystem,mAimingSubsystem,mIntakeSubsystem);
+        mReadyForAim = new ReadyForAim(mLauncherSubsystem,mAimingSubsystem,mIntakeSubsystem);
+        mReadyForLaunch = new ReadyForLaunch(mLauncherSubsystem,mAimingSubsystem,mIntakeSubsystem);
+        mUltraInstinct = new UltraInstinct(mLauncherSubsystem,mAimingSubsystem,mIntakeSubsystem);
         mMechState = determineState();
     }
 
@@ -66,6 +65,7 @@ public class DefaultMechCommand extends Command {
             return mIntaken;
         }
         else if (getIndexerBeamBreak() && isFlywheelAtSP() && isAimAtSP() && isVisionAligned()) {
+            returnFromLaunch = true;
             return mReadyForLaunch;
         }
         else if (getIndexerBeamBreak()) {
@@ -126,7 +126,10 @@ public class DefaultMechCommand extends Command {
         if (mMechState == mReadyForIntake) {
             if (!noteCurrentlyLaunching){
                 mMechState.brakeIndexer();
-                mMechState.brakeLauncher();
+                if (returnFromLaunch){
+                    mMechState.brakeLauncher();
+                    returnFromLaunch = false;
+                }
             }
             if (!mMechState.mHandoffPositionCommand.isScheduled()){
                 mMechState.handoffPosition();
