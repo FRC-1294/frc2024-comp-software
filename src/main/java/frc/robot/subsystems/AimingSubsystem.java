@@ -68,7 +68,6 @@ public class AimingSubsystem extends SubsystemBase {
 
     mLeftElevatorEncoder = mLeftElevatorMotor.getEncoder();
     mRightElevatorEncoder = mRightElevatorMotor.getEncoder();
-
     configureDevices();
   }
 

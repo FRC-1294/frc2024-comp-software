@@ -10,7 +10,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 
 /** Add your docs here. */
 public enum AimState {
-
     SUBWOOFER(0,0,0,3), //Tolerance TBD
     LINE(0,0,0,0), //Everything TBD
     MIDNOTE(0,0,0,0), //Everything TBD

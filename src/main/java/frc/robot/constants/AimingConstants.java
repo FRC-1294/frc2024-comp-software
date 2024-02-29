@@ -4,6 +4,8 @@
 
 package frc.robot.constants;
 
+import edu.wpi.first.math.InterpolatingMatrixTreeMap;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import frc.robot.Util.PIDParameters;
 import frc.robot.subsystems.AimingSubsystem.AimingMotorMode;
 
@@ -61,4 +63,13 @@ public class AimingConstants {
     public static final boolean WRIST_LEFT_IS_NORMAL = false;
 
     public static final int CONNECTION_THRESH_HZ = 945;
+
+    public static final InterpolatingDoubleTreeMap AIM_MAP = new InterpolatingDoubleTreeMap();
+
+    public static void populate_aim_map(){
+        AimingConstants.AIM_MAP.put(AimState.MIDNOTE.mWristAngleDegrees, AimState.MIDNOTE.mRadialDistanceMeters);
+        AimingConstants.AIM_MAP.put(AimState.SUBWOOFER.mWristAngleDegrees, AimState.SUBWOOFER.mRadialDistanceMeters);
+        AimingConstants.AIM_MAP.put(AimState.LINE.mWristAngleDegrees, AimState.LINE.mRadialDistanceMeters);
+        AimingConstants.AIM_MAP.put(AimState.WING.mWristAngleDegrees, AimState.WING.mRadialDistanceMeters);
+    }
 }
