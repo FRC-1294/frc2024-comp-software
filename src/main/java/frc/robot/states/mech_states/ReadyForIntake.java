@@ -12,9 +12,6 @@ public class ReadyForIntake extends MechState {
 
     public ReadyForIntake(LauncherSubsystem launcherSubsystem,AimingSubsystem aimingSubsystem,IntakeSubsystem intakeSubsystem) {
         super(launcherSubsystem,aimingSubsystem,intakeSubsystem);
-        mSpeakerPositionCommand = mLauncherSubsystem.waitUntilFlywheelSetpointCommand(LauncherMode.SPEAKER);
-        mAmpPositionCommand = mLauncherSubsystem.waitUntilFlywheelSetpointCommand(LauncherMode.AMP);
-        mTrapPositionCommand = mLauncherSubsystem.waitUntilFlywheelSetpointCommand(LauncherMode.TRAP);
     }
 
     @Override
@@ -31,15 +28,15 @@ public class ReadyForIntake extends MechState {
 
     @Override
     public void speakerPosition() {
-        mSpeakerPositionCommand.schedule();
+        mLauncherSubsystem.waitUntilFlywheelSetpointCommand(LauncherMode.SPEAKER).schedule();
     }
 
     @Override
     public void ampPosition() {
-        mAmpPositionCommand.schedule();
+        mLauncherSubsystem.waitUntilFlywheelSetpointCommand(LauncherMode.AMP).schedule();
     }
 
     public void trapPosition() {
-        mTrapPositionCommand.schedule();
+        mLauncherSubsystem.waitUntilFlywheelSetpointCommand(LauncherMode.TRAP).schedule();
     }
 }
