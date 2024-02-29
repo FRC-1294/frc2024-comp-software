@@ -6,9 +6,9 @@ package frc.robot.commands.subsystemtests;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class TestAimingSubsystem extends Command {
+public class TestWristSubsystem extends Command {
   /** Creates a new TestAimingSubsystem. */
-  public TestAimingSubsystem() {
+  public TestWristSubsystem() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
