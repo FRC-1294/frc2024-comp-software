@@ -29,17 +29,25 @@ public class InitializePathPlanner{
   private IntakeSubsystem mIntake;
   private LauncherSubsystem mLauncher;
   private AimingSubsystem mAiming;
+  private DefaultMechCommand mStateMachine;
   private boolean populateEventMaps;
+  private boolean useStateMachine;
   public InitializePathPlanner(SwerveSubsystem swerve, IntakeSubsystem intake, LauncherSubsystem launcher, AimingSubsystem aiming) {
     mSwerve = swerve;
     mIntake = intake;
     mLauncher = launcher;
     mAiming = aiming;
     populateEventMaps = true;
+    useStateMachine = false;
   }
   public InitializePathPlanner(SwerveSubsystem swerve){
     mSwerve = swerve;
     populateEventMaps = false;
+    useStateMachine = false;
+  }
+  public InitializePathPlanner(SwerveSubsystem swerve, DefaultMechCommand mech){
+    mSwerve = swerve;
+    useStateMachine = true;
   }
   
   public void initializeNamedCommands(){
@@ -49,6 +57,7 @@ public class InitializePathPlanner{
     NamedCommands.registerCommand("ShootFromWing", new ScoreSpeaker(mLauncher, mAiming, mIntake,AimState.WING));
     NamedCommands.registerCommand("ShootFromLine", new ScoreSpeaker(mLauncher, mAiming, mIntake,AimState.LINE));
     NamedCommands.registerCommand("StartLauncherSW", mLauncher.waitUntilFlywheelSetpointCommand(LauncherMode.SPEAKER));
+    NamedCommands.registerCommand("StartWristSW", mLauncher.waitUntilFlywheelSetpointCommand(LauncherMode.SPEAKER));
     NamedCommands.registerCommand("Handoff", new Handoff(mIntake, mLauncher));
   }
 
