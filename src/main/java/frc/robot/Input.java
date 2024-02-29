@@ -58,7 +58,7 @@ public class Input {
   }
 
   public static double getRot() {
-    return mRotJoystick.getX();
+    return mRotJoystick.getX()*mRotJoystick.getX() * Math.signum(mRotJoystick.getX());
   }
 
   public static boolean getA() {
@@ -80,7 +80,7 @@ public class Input {
   public static double getDPad() {
     return mXboxController.getPOV();
   }
-
+  
   public static double getLeftStickY() {
     return -mXboxController.getLeftY();
   }
@@ -115,6 +115,10 @@ public class Input {
 
   public static boolean getNoteAlignment() {
     return mRotJoystick.getRawButton(2);
+  }
+
+  public static boolean getReverseButton(){
+    return mXboxController.getRawButton(7);
   }
 }
 

@@ -6,6 +6,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.AimingConstants;
+import frc.robot.constants.LauncherConstants;
 import frc.robot.constants.AimState;
 import frc.robot.states.MechState;
 import frc.robot.states.mech_states.Intaken;
@@ -30,8 +31,8 @@ public class DefaultMechCommand extends Command {
     private static MechState mReadyForAim;
     private static MechState mReadyForLaunch;
     private static MechState mUltraInstinct;
-    private static boolean noteCurrentlyLaunching;
-    private static boolean returnFromLaunch = false;
+    private static boolean noteCurrentlyLaunching = false;
+    private static boolean returnFromLaunch = true;
 
     private static boolean mUseUltraInstinct = false;
     private static MechState mMechState;
@@ -100,19 +101,28 @@ public class DefaultMechCommand extends Command {
         if (Input.getRightBumper()) {
             mMechState.launch();
         }
-        if (Math.abs(Input.getLeftStickY()) > 0) {
+        if (Math.abs(Input.getLeftStickY()) > 0.1) {
             mMechState.controlWrist(Input.getLeftStickY()*AimingConstants.MAX_WRIST_TELEOP_INCREMENT);
         }
-        if (Math.abs(Input.getRightStickY()) > 0) {
-            mMechState.controlElevator(Input.getLeftStickY()*AimingConstants.MAX_WRIST_TELEOP_INCREMENT);
+        if (Math.abs(Input.getRightStickY()) > 0.1) {
+            mMechState.controlElevator(Input.getRightStickY()*AimingConstants.MAX_ELEVATOR_TELEOP_INCREMENT);
         }
+        if (Math.abs(Input.getLeftTrigger()) > LauncherConstants.INDEX_TRIGGER_DEADZONE) {
+            mMechState.index((Input.getLeftTrigger()-LauncherConstants.INDEX_TRIGGER_DEADZONE)*(Input.getReverseButton() ? 1 : -1));
+        } 
+        if (Math.abs(Input.getRightTrigger()) > LauncherConstants.INDEX_TRIGGER_DEADZONE) {
+            mMechState.index((Input.getRightTrigger()-LauncherConstants.INDEX_TRIGGER_DEADZONE)*(Input.getReverseButton() ? 1 : -1));
+        } 
         if (Input.getDPad() == Input.DPADUP) {
             mMechState.ClimbExtendedState();
         } else if (Input.getDPad() == Input.DPADDOWN) {
-            mMechState.ClimbExtendedState();
+            mMechState.ClimbRetractedState();
         }
         if (Input.getDPad() == Input.DPADRIGHT){
-            mUseUltraInstinct = !mUseUltraInstinct;
+            mUseUltraInstinct = true;
+        }
+        if (Input.getDPad() == Input.DPADLEFT){
+            mUseUltraInstinct = false;
         }
 
         runAction();
@@ -139,7 +149,10 @@ public class DefaultMechCommand extends Command {
             mMechState.brakeIntake();
             if (!noteCurrentlyLaunching){
                 mMechState.brakeIndexer();
-                mMechState.brakeLauncher();
+                if (returnFromLaunch){
+                    mMechState.brakeLauncher();
+                    returnFromLaunch = false;
+                }
             }
             if (!mMechState.mHandoffPositionCommand.isScheduled()){
                 mMechState.handoffPosition();

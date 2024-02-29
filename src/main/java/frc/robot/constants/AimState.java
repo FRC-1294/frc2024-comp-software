@@ -19,7 +19,7 @@ public enum AimState {
     AMP(0,-1,-1,0), //Everything TBD
     TRAP(0,-1,-1,0,0,0), //Everything TBD
     HANDOFF(0,-1,-1,3), //Tolerance TBD
-    CLIMB_UP(0,-1,-1,0,AimingConstants.MAX_ELEVATOR_DIST_METERS,0.1),
+    CLIMB_UP(0,-1,-1,0,AimingConstants.MAX_ELEVATOR_DIST_METERS-0.2,0.1),
     CLIMB_DOWN(0,-1,-1,0,AimingConstants.MIN_ELEVATOR_DIST_METERS,0.1),
     TRANSITION(-1,-1,-1,-1);
 

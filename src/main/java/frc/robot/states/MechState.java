@@ -27,7 +27,7 @@ public abstract class MechState {
         mIntakeSubsystem = intakeSubsystem;
         mAimingSubsystem = aimingSubsystem;
 
-        mHandoffPositionCommand = new ParallelCommandGroup(mAimingSubsystem.waitUntilSetpoint(AimState.HANDOFF), mLauncherSubsystem.waitUntilFlywheelSetpointCommand(LauncherMode.OFF));
+        mHandoffPositionCommand = mAimingSubsystem.waitUntilSetpoint(AimState.HANDOFF);
         mSpeakerPositionCommand = new ParallelCommandGroup(mAimingSubsystem.waitUntilSetpoint(AimState.SUBWOOFER), mLauncherSubsystem.waitUntilFlywheelSetpointCommand(LauncherMode.SPEAKER));
         mAmpPositionCommand = new ParallelCommandGroup(mAimingSubsystem.waitUntilSetpoint(AimState.AMP), mLauncherSubsystem.waitUntilFlywheelSetpointCommand(LauncherMode.AMP));
         mTrapPositionCommand = new ParallelCommandGroup(mAimingSubsystem.waitUntilSetpoint(AimState.TRAP), mLauncherSubsystem.waitUntilFlywheelSetpointCommand(LauncherMode.TRAP));
@@ -50,7 +50,7 @@ public abstract class MechState {
 
     public void preformHandoff(){}
 
-    public void index(){}
+    public void index(double vel){}
 
     public void launch() {}
 

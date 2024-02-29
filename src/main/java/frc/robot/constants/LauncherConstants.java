@@ -63,4 +63,5 @@ public final class LauncherConstants {
   public static final boolean INDEXER_IS_INVERTED = false;
 
   public static final double LAUNCH_COOLDOWN_SEC = 0.2;
+  public static final double INDEX_TRIGGER_DEADZONE = 0.1;
 }

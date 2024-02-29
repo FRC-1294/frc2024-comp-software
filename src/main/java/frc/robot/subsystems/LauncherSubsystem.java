@@ -65,10 +65,9 @@ public class LauncherSubsystem extends SubsystemBase {
     mLeaderFlywheel.setNeutralMode(NeutralModeValue.Coast);
     mFollowerFlywheel.setNeutralMode(NeutralModeValue.Coast);
 
-
-
     mIndexer.restoreFactoryDefaults();
     mIndexer.setInverted(LauncherConstants.INDEXER_IS_INVERTED);
+    mIndexer.enableVoltageCompensation(10);
     mIndexer.setIdleMode(IdleMode.kBrake);
     mIndexer.burnFlash();
   }
@@ -137,7 +136,6 @@ public class LauncherSubsystem extends SubsystemBase {
   
   public void stopLauncher() {
     mLauncherMode = LauncherMode.OFF;
-    runLauncher();
   }
 
   private void resetEncoders() {

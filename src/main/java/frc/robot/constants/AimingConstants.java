@@ -11,7 +11,7 @@ import frc.robot.subsystems.AimingSubsystem.AimingMotorMode;
 public class AimingConstants {
     
     // Teleop Constant
-    public static final double MAX_ELEVATOR_TELEOP_INCREMENT = 0.05;
+    public static final double MAX_ELEVATOR_TELEOP_INCREMENT = 0.005;
     public static final double MAX_WRIST_TELEOP_INCREMENT = 0.15;
     
     
@@ -33,7 +33,7 @@ public class AimingConstants {
 
     // Soft Limits
     public static final double MAX_ELEVATOR_DIST_METERS = 0.5; //TBD
-    public static final double MIN_ELEVATOR_DIST_METERS = 0.05; //TBD
+    public static final double MIN_ELEVATOR_DIST_METERS = 0; //TBD
     public static final double MAX_ELEVATOR_EXTENSION_VELOCITY = 0.1; //TBD
 
     public static final double MAX_WRIST_ROTATION = 110;
@@ -41,7 +41,7 @@ public class AimingConstants {
     public static final double MAX_WRIST_ROTATION_VELOCITY = 0;
 
     public static final double MAX_WRIST_PID_CONTRIBUTION = 0.15;
-    public static final double MAX_ELEVATOR_PID_CONTRIBUTION = 0.15;
+    public static final double MAX_ELEVATOR_PID_CONTRIBUTION = 0.3;
 
     // ID's
     public static final int LEFT_ELEVATOR_SPARK_ID = 33; //Done

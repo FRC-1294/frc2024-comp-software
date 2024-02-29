@@ -30,7 +30,6 @@ public class ReadyForIntake extends MechState {
     public void speakerPosition() {
         mLauncherSubsystem.waitUntilFlywheelSetpointCommand(LauncherMode.SPEAKER).schedule();
     }
-
     @Override
     public void ampPosition() {
         mLauncherSubsystem.waitUntilFlywheelSetpointCommand(LauncherMode.AMP).schedule();
