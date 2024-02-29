@@ -6,9 +6,9 @@ package frc.robot.commands.subsystemtests;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class TestSwerveSubsystem extends Command {
-  /** Creates a new TestSwerveSubsystem. */
-  public TestSwerveSubsystem() {
+public class TestAllSubSystems extends Command {
+  /** Creates a new TestAllSubSystems. */
+  public TestAllSubSystems() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
