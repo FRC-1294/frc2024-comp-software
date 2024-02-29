@@ -5,11 +5,13 @@
   "pathFolders": [
     "Center_Left",
     "Misc_Tests",
+    "Mid_Center",
     "Wing_Focused"
   ],
   "autoFolders": [
     "4_Wing_Piece",
-    "Left_Center_Piece"
+    "Left_Center_Piece",
+    "Mid_Center_Piece"
   ],
   "defaultMaxVel": 4.5,
   "defaultMaxAccel": 2.1,

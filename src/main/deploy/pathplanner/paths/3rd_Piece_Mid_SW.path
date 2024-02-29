@@ -8,24 +8,40 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8625584731141076,
-        "y": 4.971487360217248
+        "x": 2.323257979849293,
+        "y": 5.411904157141649
       },
-      "isLocked": true,
+      "isLocked": false,
       "linkedName": "Center_Subwoofer_Shot"
     },
     {
       "anchor": {
-        "x": 2.5247228667648325,
-        "y": 4.2361138103059135
+        "x": 4.876809753619507,
+        "y": 4.653289306578613
       },
       "prevControl": {
-        "x": 2.1155881807793526,
-        "y": 4.616704215873803
+        "x": 3.7944209715452386,
+        "y": 5.1360814252016675
       },
       "nextControl": {
-        "x": 2.943465151461739,
-        "y": 3.846586103611116
+        "x": 5.8183049699432745,
+        "y": 4.233341800016933
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.216069765472865,
+        "y": 2.506138345610024
+      },
+      "prevControl": {
+        "x": 7.870629074591483,
+        "y": 3.136059605452544
+      },
+      "nextControl": {
+        "x": 8.418414023440013,
+        "y": 2.137157639905224
       },
       "isLocked": false,
       "linkedName": null
@@ -36,26 +52,26 @@
         "y": 5.537433881885308
       },
       "prevControl": {
-        "x": 1.3852053688142616,
-        "y": 5.506702127605944
+        "x": 6.454999576665821,
+        "y": 4.924223181779697
       },
       "nextControl": null,
-      "isLocked": true,
+      "isLocked": false,
       "linkedName": "Center_Subwoofer_Shot"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.9,
-      "rotationDegrees": -26.639699582408575,
+      "waypointRelativePos": 1.75,
+      "rotationDegrees": -40.123924992389945,
       "rotateFast": false
     }
   ],
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "IntakeUntilNote",
-      "waypointRelativePos": 0.8,
+      "name": "New Event Marker",
+      "waypointRelativePos": 1.6500000000000001,
       "command": {
         "type": "sequential",
         "data": {
@@ -65,7 +81,18 @@
               "data": {
                 "name": "IntakeUntilNote"
               }
-            },
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 2.35,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
             {
               "type": "named",
               "data": {
@@ -89,7 +116,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Wing_Focused",
+  "folder": "Mid_Center",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

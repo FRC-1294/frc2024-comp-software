@@ -15,9 +15,9 @@ public abstract class MechState {
     protected final IntakeSubsystem mIntakeSubsystem;
     protected final AimingSubsystem mAimingSubsystem;
     public final Command mHandoffPositionCommand;
-    public  Command mSpeakerPositionCommand;
-    public  Command mAmpPositionCommand;
-    public  Command mTrapPositionCommand;
+    public final Command mSpeakerPositionCommand;
+    public final Command mAmpPositionCommand;
+    public final Command mTrapPositionCommand;
     public final Command mPreformHandoffCommand;
     public final Command mLaunchCommand;
     
