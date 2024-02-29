@@ -18,7 +18,16 @@ public class TestAllSubSystems extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    switch (0) {
+      case 0:
+        
+        break;
+    
+      default:
+        break;
+    }
+  }
 
   // Called once the command ends or is interrupted.
   @Override
