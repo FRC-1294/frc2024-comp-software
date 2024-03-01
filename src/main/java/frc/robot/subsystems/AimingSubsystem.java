@@ -109,10 +109,8 @@ public class AimingSubsystem extends SubsystemBase {
   public void periodic() {
     updateMotorModes();
     elevatorPeriodic();
-    wristPeriodic();
+    // wristPeriodic();
     SmartDashboard.putString("CurrentAimState", getCurrentState().toString());
-
-
     debugSmartDashboard();
   }
 
@@ -305,18 +303,18 @@ public class AimingSubsystem extends SubsystemBase {
   }
 
   public Command waitUntilSetpoint(AimState state) {
-    return new FunctionalCommand(() -> setDesiredSetpoint(state), ()->System.out.println("Fuck you"), (Interruptable)->System.out.println("None"), this::atSetpoints, this);  
+    return new FunctionalCommand(() -> setDesiredSetpoint(state), ()->{}, (Interruptable)->{}, this::atSetpoints, this);  
   }
 
   public Command waitUntilWristSetpoint(double wristSP, double wristTolerance) {
-    return new FunctionalCommand(()->setDesiredWristRotation(wristSP, wristTolerance), ()->System.out.println("None"), (Interruptable)->System.out.println("None"), this::atWristSetpoint, this);
+    return new FunctionalCommand(()->setDesiredWristRotation(wristSP, wristTolerance), ()->{}, (Interruptable)->{}, this::atWristSetpoint, this);
   }
 
   public Command waitUntilElevatorSetpoint(double sp) {
-    return new FunctionalCommand(() -> setDesiredElevatorDistance(sp), ()->System.out.println("None"), (Interruptable)->System.out.println("None"), this::atElevatorSetpoint, this);  
+    return new FunctionalCommand(() -> setDesiredElevatorDistance(sp), ()->{}, (Interruptable)->{}, this::atElevatorSetpoint, this);  
   }
 
   public Command waitUntilWristSetpoint(double sp) {
-    return new FunctionalCommand(() -> setDesiredWristRotation(sp), ()->System.out.println("None"), (Interruptable)->System.out.println("None"), this::atWristSetpoint, this);  
+    return new FunctionalCommand(() -> setDesiredWristRotation(sp), ()->{}, (Interruptable)->{}, this::atWristSetpoint, this);  
   }
 }

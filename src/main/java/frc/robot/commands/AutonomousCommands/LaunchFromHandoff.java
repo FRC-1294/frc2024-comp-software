@@ -23,13 +23,14 @@ public class LaunchFromHandoff extends Command {
     mLauncher = launcher;
     mDesiredState = desiredState;
     addRequirements(mWrist,mLauncher);
-    mCommand = new SequentialCommandGroup(mWrist.waitUntilSetpoint(desiredState),
-    mLauncher.waitUntilFlywheelSetpointCommand(LauncherMode.SPEAKER),mLauncher.indexUntilNoteLaunchedCommand());
+
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    mCommand = new SequentialCommandGroup(mWrist.waitUntilSetpoint(mDesiredState),
+    mLauncher.waitUntilFlywheelSetpointCommand(LauncherMode.SPEAKER),mLauncher.indexUntilNoteLaunchedCommand());
     mCommand.schedule();
   }
 

@@ -5,6 +5,7 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathPlannerPath;
 import com.revrobotics.CANSparkLowLevel;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -13,10 +14,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.DefaultMechCommand;
 import frc.robot.commands.InitializePathPlanner;
 import frc.robot.commands.SwerveFrictionCharacterization;
 import frc.robot.commands.SwerveVoltageCharacterization;
+import frc.robot.commands.AutonomousCommands.LaunchFromHandoff;
+import frc.robot.commands.AutonomousCommands.ScoreSpeaker;
+import frc.robot.constants.AimState;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -39,7 +44,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
    
     mDefaultMechCommand = new DefaultMechCommand(robotContainer.getIntakeSubsystem(), robotContainer.getLauncher(), robotContainer.getAimingSubsystem());
-    new InitializePathPlanner(robotContainer.getSwerveSubsystem()).initialize();
+    new InitializePathPlanner(robotContainer.getSwerveSubsystem(),robotContainer.getIntakeSubsystem(),robotContainer.getLauncher(),robotContainer.getAimingSubsystem()).initialize();
     
     SmartDashboard.putData("Pick your Auton...",pathSelector);
 
@@ -53,6 +58,18 @@ public class Robot extends TimedRobot {
     pathSelector.addOption("4 Piece Midnote", AutoBuilder.buildAuto("4_Piece_V2"));
     pathSelector.addOption("5 Meter Test", AutoBuilder.buildAuto("5_Meter_Test"));
     pathSelector.addOption("None", new PrintCommand("Damn that sucks"));
+
+
+    pathSelector.addOption("4 Piece SW Method 2", 
+    new SequentialCommandGroup(
+      new LaunchFromHandoff(robotContainer.getAimingSubsystem(), robotContainer.getLauncher(), AimState.SUBWOOFER),
+      AutoBuilder.followPath(PathPlannerPath.fromPathFile("2nd_Piece_SW")),
+      new LaunchFromHandoff(robotContainer.getAimingSubsystem(), robotContainer.getLauncher(), AimState.SUBWOOFER),
+      AutoBuilder.followPath(PathPlannerPath.fromPathFile("3rd_Piece_SW")),
+      new LaunchFromHandoff(robotContainer.getAimingSubsystem(), robotContainer.getLauncher(), AimState.SUBWOOFER),
+      AutoBuilder.followPath(PathPlannerPath.fromPathFile("4th_Piece_SW")),
+      new LaunchFromHandoff(robotContainer.getAimingSubsystem(), robotContainer.getLauncher(), AimState.SUBWOOFER)
+    ));
   }
 
   /**
@@ -69,7 +86,11 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    SmartDashboard.putString("CurrentStateMech", DefaultMechCommand.determineState().toString());
     SmartDashboard.updateValues();
+    SmartDashboard.putBoolean("IsFinishedScoreSpeaker", ScoreSpeaker.mCommand.isFinished());
+    SmartDashboard.putBoolean("IsScheduledScoreSpeaker", ScoreSpeaker.mCommand.isScheduled());
+
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -85,7 +106,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    mDefaultMechCommand.initialize();
     //Not used
   }
 

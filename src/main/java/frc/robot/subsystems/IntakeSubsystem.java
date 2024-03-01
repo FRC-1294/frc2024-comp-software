@@ -86,7 +86,8 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public Command getAutomousIntakeCommand() {
-    return new FunctionalCommand(() -> intakeMotorsAtSpeed(IntakeConstants.INNER_INTAKE_SPEED_AQUIRE), ()->System.out.println("None"), interrupted -> stopMotors(), ()->IntakeSubsystem.pieceInIntake(), this);
+    return new FunctionalCommand(() -> intakeMotorsAtSpeed(IntakeConstants.INNER_INTAKE_SPEED_AQUIRE), 
+    ()->{}, interrupted -> stopMotors(), ()->IntakeSubsystem.pieceInIntake(), this);
   }
 
   public static boolean pieceInIntake(){

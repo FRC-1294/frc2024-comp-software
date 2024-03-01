@@ -20,7 +20,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.Input;
 import frc.robot.subsystems.LauncherSubsystem;
 
-public class DefaultMechCommand extends Command {
+public class DefaultMechCommand{
     private static IntakeSubsystem mIntakeSubsystem;
     private static LauncherSubsystem mLauncherSubsystem;
     private static AimingSubsystem mAimingSubsystem;
@@ -75,7 +75,6 @@ public class DefaultMechCommand extends Command {
         return mUltraInstinct;
     }
 
-    @Override
     public void execute() {
         if (mMechState.mLaunchCommand.isScheduled()){
             noteCurrentlyLaunching = !mMechState.mLaunchCommand.isFinished();
