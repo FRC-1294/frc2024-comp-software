@@ -1,5 +1,8 @@
 package frc.robot.states.mech_states;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import frc.robot.constants.AimState;
+import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.states.MechState;
 import frc.robot.subsystems.AimingSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -13,7 +16,7 @@ public class ReadyForAim extends MechState {
 
     @Override
     public void speakerPosition(){
-        mSpeakerPositionCommand.schedule();;
+        mSpeakerPositionCommand.schedule();
     }
 
     @Override
@@ -29,5 +32,11 @@ public class ReadyForAim extends MechState {
     @Override
     public void handoffPosition(){
         mHandoffPositionCommand.schedule();
+    }
+
+    @Override
+    public void aimStatePosition(AimState aim){
+        new ParallelCommandGroup(mAimingSubsystem.waitUntilSetpoint(aim),
+         mLauncherSubsystem.waitUntilFlywheelSetpointCommand(LauncherMode.SPEAKER));
     }
 }

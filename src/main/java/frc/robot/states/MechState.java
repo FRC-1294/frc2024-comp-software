@@ -20,6 +20,7 @@ public abstract class MechState {
     public final Command mTrapPositionCommand;
     public final Command mPreformHandoffCommand;
     public final Command mLaunchCommand;
+    public Command mAimStatePositionCommand;
     
 
     protected MechState (LauncherSubsystem launcherSubsystem,AimingSubsystem aimingSubsystem,IntakeSubsystem intakeSubsystem){ 
@@ -71,6 +72,8 @@ public abstract class MechState {
     public void ampPosition(){}
     
     public void trapPosition(){}
+
+    public void aimStatePosition(AimState state){}
 
     public void resetEncoders() {}
 }
