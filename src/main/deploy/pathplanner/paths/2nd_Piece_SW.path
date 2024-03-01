@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.1022796353327378,
-        "y": 5.530604603156561
+        "x": 2.1023118481949297,
+        "y": 5.537433881885308
       },
       "isLocked": false,
       "linkedName": "Center_Subwoofer_Shot"
@@ -20,12 +20,12 @@
         "y": 5.537433881885308
       },
       "prevControl": {
-        "x": 2.6275575026413356,
-        "y": 5.516229768461392
+        "x": 2.5984514765277207,
+        "y": 5.537433881885308
       },
       "nextControl": {
-        "x": 2.613898945183841,
-        "y": 5.5586379953092235
+        "x": 2.6430049712974557,
+        "y": 5.537433881885308
       },
       "isLocked": false,
       "linkedName": null
@@ -36,8 +36,8 @@
         "y": 5.537433881885308
       },
       "prevControl": {
-        "x": 2.1091089140614843,
-        "y": 5.544263160614057
+        "x": 2.1090295268732975,
+        "y": 5.5501874850644635
       },
       "nextControl": null,
       "isLocked": false,
@@ -73,9 +73,9 @@
   ],
   "globalConstraints": {
     "maxVelocity": 4.5,
-    "maxAcceleration": 2.1,
-    "maxAngularVelocity": 400.0,
-    "maxAngularAcceleration": 200.0
+    "maxAcceleration": 1.7,
+    "maxAngularVelocity": 300.0,
+    "maxAngularAcceleration": 120.0
   },
   "goalEndState": {
     "velocity": 0,

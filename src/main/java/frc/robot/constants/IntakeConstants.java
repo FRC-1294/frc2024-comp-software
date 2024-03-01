@@ -20,5 +20,5 @@ public class IntakeConstants {
     public static final double INNER_INTAKE_SPEED_HANDOFF = 0.6;
     public static final double OUTER_INTAKE_SPEED_ACTIVE = 0.6;
     public static final double PASSIVE_INTAKE_SPEED = 0;
-    public static final double HANDOFF_TIMER_MULTIPLIER = 0.05;
+    public static final double HANDOFF_TIMER_MULTIPLIER = 0.1;
 }

@@ -102,7 +102,7 @@
             {
               "type": "named",
               "data": {
-                "name": "ShootDynamic"
+                "name": "ShootFromSubwoofer"
               }
             }
           ]
@@ -112,9 +112,9 @@
   ],
   "globalConstraints": {
     "maxVelocity": 4.5,
-    "maxAcceleration": 2.1,
-    "maxAngularVelocity": 400.0,
-    "maxAngularAcceleration": 200.0
+    "maxAcceleration": 1.7,
+    "maxAngularVelocity": 300.0,
+    "maxAngularAcceleration": 120.0
   },
   "goalEndState": {
     "velocity": 0.0,

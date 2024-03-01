@@ -40,6 +40,18 @@
           "data": {
             "name": "ShootFromSubwoofer"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4th_Piece_SW"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootFromSubwoofer"
+          }
         }
       ]
     }

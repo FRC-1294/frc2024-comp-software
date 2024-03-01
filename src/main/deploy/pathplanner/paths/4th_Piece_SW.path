@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8625584731141076,
-        "y": 4.971487360217248
+        "x": 1.961004531603735,
+        "y": 4.954805440367087
       },
-      "isLocked": true,
+      "isLocked": false,
       "linkedName": "Center_Subwoofer_Shot"
     },
     {
       "anchor": {
-        "x": 2.5247228667648325,
-        "y": 4.2361138103059135
+        "x": 2.9464058928117858,
+        "y": 4.050461434256202
       },
       "prevControl": {
-        "x": 2.1155881807793526,
-        "y": 4.616704215873803
+        "x": 2.5124357028629896,
+        "y": 4.484431624204998
       },
       "nextControl": {
-        "x": 2.943465151461739,
-        "y": 3.846586103611116
+        "x": 3.2575328765338663,
+        "y": 3.7393344505341215
       },
       "isLocked": false,
       "linkedName": null
@@ -36,8 +36,8 @@
         "y": 5.537433881885308
       },
       "prevControl": {
-        "x": 1.3852053688142616,
-        "y": 5.506702127605944
+        "x": 1.3941167997982469,
+        "y": 5.510170172915661
       },
       "nextControl": null,
       "isLocked": true,
@@ -46,8 +46,8 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.9,
-      "rotationDegrees": -26.639699582408575,
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": -39.99125838574117,
       "rotateFast": false
     }
   ],
@@ -55,7 +55,7 @@
   "eventMarkers": [
     {
       "name": "IntakeUntilNote",
-      "waypointRelativePos": 0.8,
+      "waypointRelativePos": 0.45,
       "command": {
         "type": "sequential",
         "data": {
@@ -79,9 +79,9 @@
   ],
   "globalConstraints": {
     "maxVelocity": 4.5,
-    "maxAcceleration": 2.1,
-    "maxAngularVelocity": 400.0,
-    "maxAngularAcceleration": 200.0
+    "maxAcceleration": 1.7,
+    "maxAngularVelocity": 300.0,
+    "maxAngularAcceleration": 120.0
   },
   "goalEndState": {
     "velocity": 0,

@@ -42,8 +42,9 @@ public class ReadyForLaunch extends MechState {
 
     @Override
     public void aimStatePosition(AimState aim){
-        new ParallelCommandGroup(mAimingSubsystem.waitUntilSetpoint(aim),
+        mAimStatePositionCommand = new ParallelCommandGroup(mAimingSubsystem.waitUntilSetpoint(aim),
          mLauncherSubsystem.waitUntilFlywheelSetpointCommand(LauncherMode.SPEAKER));
+        mAimStatePositionCommand.schedule();
     }
 
 }
