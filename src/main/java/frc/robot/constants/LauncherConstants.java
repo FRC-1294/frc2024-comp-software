@@ -31,19 +31,20 @@ public final class LauncherConstants {
 
   //indexer setpoint
   public static final double INDEXER_VELOCITY_INDEXING = 0.2; //TODO:https://github.com/FRC-1294/frc2024/issues/241
-  public static final double INDEXER_VELOCITY_LAUNCHING = 1;
+  public static final double INDEXER_VELOCITY_LAUNCHING = 0.6;
 
-  public static final PIDController LAUNCHER_PID_CONTROLLER = new PIDController(0.1, 0, 0); //TODO:https://github.com/FRC-1294/frc2024/issues/241
+  public static final PIDController LAUNCHER_PID_CONTROLLER = new PIDController(0.0, 0.01, 0); //TODO:https://github.com/FRC-1294/frc2024/issues/241
 
   public static final SimpleMotorFeedforward LAUNCHER_FF_CONTROLLER = new SimpleMotorFeedforward(0, 12/LauncherConstants.FLYWHEEL_MAX_VELOCITY, 0); //TODO:https://github.com/FRC-1294/frc2024/issues/241
 
   public static final double FLYWHEEL_TOLERANCE = 10; //TODO:https://github.com/FRC-1294/frc2024/issues/241
 
-  public static final double FLYWHEEL_MAX_VELOCITY = 12000; //rpm
+  public static final double FLYWHEEL_MAX_VELOCITY = 12500; //rpM
   public static final double FLYWHEEL_SENSOR_TO_MECHANISM = 2;
 
   public static final boolean INDEXER_IS_INVERTED = false;
 
   public static final double LAUNCH_COOLDOWN_SEC = 0.2;
   public static final double INDEX_TRIGGER_DEADZONE = 0.1;
+
 }

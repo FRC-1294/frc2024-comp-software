@@ -45,25 +45,32 @@ public class DefaultMechCommand{
         //addRequirements(mIntakeSubsystem, mLauncherSubsystem, mAimingSubsystem);
 
         mReadyForIntake = new ReadyForIntake(mLauncherSubsystem,mAimingSubsystem,mIntakeSubsystem);
+        mIntaken = new Intaken(launcherSubsystem, aimingSubsystem, intakeSubsystem);
         mReadyForHandoff = new ReadyForHandoff(mLauncherSubsystem,mAimingSubsystem,mIntakeSubsystem);
         mReadyForAim = new ReadyForAim(mLauncherSubsystem,mAimingSubsystem,mIntakeSubsystem);
         mReadyForLaunch = new ReadyForLaunch(mLauncherSubsystem,mAimingSubsystem,mIntakeSubsystem);
         mUltraInstinct = new UltraInstinct(mLauncherSubsystem,mAimingSubsystem,mIntakeSubsystem);
+
+        mMechState = mUltraInstinct;
         mMechState = determineState();
     }
 
     public static MechState determineState() {
+        SmartDashboard.putBoolean("AtHandoff", AimState.HANDOFF.atState(mAimingSubsystem.getCurrentWristDegreees(), mAimingSubsystem.getCurrentElevatorDistance(), mLauncherSubsystem.getCurrentVelocity()));
         if (mUseUltraInstinct) {
             return mUltraInstinct;
         }
         if (!getIntakeBeamBreak() && !getIndexerBeamBreak()) {
             return mReadyForIntake;
         }
-        else if (getIntakeBeamBreak() && !getIndexerBeamBreak() && AimState.HANDOFF.atState(mAimingSubsystem.getCurrentWristDegreees(), mAimingSubsystem.getCurrentElevatorDistance(), mLauncherSubsystem.getCurrentVelocity())) {
-            return mReadyForHandoff;
-        }
         else if (getIntakeBeamBreak() && !getIndexerBeamBreak()) {
-            return mIntaken;
+            if (AimState.HANDOFF.atState(mAimingSubsystem.getCurrentWristDegreees(),
+                                         mAimingSubsystem.getCurrentElevatorDistance(),
+                                         mLauncherSubsystem.getCurrentVelocity())) {
+                return mReadyForHandoff;
+            } else {
+                return mIntaken;
+            }
         }
         else if (getIndexerBeamBreak() && isFlywheelAtSP() && isAimAtSP() && isVisionAligned()) {
             returnFromLaunch = true;
@@ -128,6 +135,9 @@ public class DefaultMechCommand{
         mMechState = determineState();
 
         SmartDashboard.putString("CurrentState", mMechState.getClass().getSimpleName());
+        SmartDashboard.putBoolean("LauncherReady", isFlywheelAtSP());
+        SmartDashboard.putBoolean("AimReady", isAimAtSP());
+
     }
 
     //automatic actions
@@ -190,7 +200,7 @@ public class DefaultMechCommand{
     }
 
     public static boolean isAimAtSP() {
-        return mAimingSubsystem.atSetpoints();
+        return mAimingSubsystem.atWristSetpoint() && mAimingSubsystem.atElevatorSetpoint();
     }
 
     public static MechState getReadyForIntake() {

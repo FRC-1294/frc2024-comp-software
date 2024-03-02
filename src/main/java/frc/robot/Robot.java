@@ -32,7 +32,8 @@ import frc.robot.constants.AimState;
 public class Robot extends TimedRobot {
   private SendableChooser<Command> pathSelector = new SendableChooser<>();
   private RobotContainer robotContainer = new RobotContainer();
-  private DefaultMechCommand mDefaultMechCommand;
+  private DefaultMechCommand mDefaultMechCommand = new DefaultMechCommand(robotContainer.getIntakeSubsystem(), robotContainer.getLauncher(), robotContainer.getAimingSubsystem());
+;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -43,7 +44,6 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
    
-    mDefaultMechCommand = new DefaultMechCommand(robotContainer.getIntakeSubsystem(), robotContainer.getLauncher(), robotContainer.getAimingSubsystem());
     new InitializePathPlanner(robotContainer.getSwerveSubsystem(),robotContainer.getIntakeSubsystem(),robotContainer.getLauncher(),robotContainer.getAimingSubsystem()).initialize();
     
     SmartDashboard.putData("Pick your Auton...",pathSelector);
@@ -85,13 +85,12 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
-    CommandScheduler.getInstance().run();
-    SmartDashboard.putString("CurrentStateMech", DefaultMechCommand.determineState().toString());
-    SmartDashboard.updateValues();
     SmartDashboard.putBoolean("IsFinishedScoreSpeaker", ScoreSpeaker.mCommand.isFinished());
     SmartDashboard.putBoolean("IsScheduledScoreSpeaker", ScoreSpeaker.mCommand.isScheduled());
+    SmartDashboard.updateValues();
 
-    mDefaultMechCommand.execute();
+
+    CommandScheduler.getInstance().run();
 
 
   }
@@ -115,6 +114,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     //Not used
+    mDefaultMechCommand.execute();
+
   }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */

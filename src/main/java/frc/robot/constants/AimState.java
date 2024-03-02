@@ -7,13 +7,14 @@ package frc.robot.constants;
 import com.pathplanner.lib.path.PathPlannerTrajectory.State;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /** Add your docs here. */
 public enum AimState {
     SUBWOOFER(0,3, 8000, 500), //Tolerance TBD
-    AMP(100,5, 1000, 200), //Everything TBD
+    AMP(100,5, 2000, 200), //Everything TBD
     TRAP(110,-1,-1,0,0,0), //Everything TBD
-    HANDOFF(0,-1,-1,3), //Tolerance TBD
+    HANDOFF(0,2,-1,-1), //Tolerance TBD
 
 
 
@@ -52,7 +53,7 @@ public enum AimState {
         mWristAngleDegrees = wristAngleDeg;
         mRadialDistanceMeters = radialDistanceMeters;
         mElevatorHeightMeters = 0;
-        mElevatorToleranceMeters = 0.005;
+        mElevatorToleranceMeters = 0.01;
         mPositionToleranceMeters = shotToleranceMeters;
         mWristToleranceDegrees = wristAngleDeg;
         mLauncherSetpointRPM = launcherSetpoint;
@@ -67,13 +68,16 @@ public enum AimState {
 
         mRadialDistanceMeters = -1;
         mElevatorHeightMeters = 0;
-        mElevatorToleranceMeters = 0.005;
+        mElevatorToleranceMeters = 0.01;
         mPositionToleranceMeters = -1;
 
     }
 
     public boolean atState(double curWristAngle, double curElevatorHeight, double curLauncherSpeed){
         //return true if the current state is within the tolerance of the desired state ignoring the parameters that are -1
+        SmartDashboard.putBoolean("withinWristTolerance", withinWristTolerance(curWristAngle));
+        SmartDashboard.putBoolean("withinElevatorTolerance", withinElevatorTolerance(curElevatorHeight));
+        SmartDashboard.putBoolean("withinLauncherTolerance", withinLauncherTolerance(curLauncherSpeed));
         return withinWristTolerance(curWristAngle) && withinElevatorTolerance(curElevatorHeight) && withinLauncherTolerance(curLauncherSpeed);
     }
 
@@ -84,7 +88,7 @@ public enum AimState {
     }
 
     public boolean withinWristTolerance(double curWristAngle){
-        return (Math.abs(curWristAngle-mWristAngleDegrees)<=mWristToleranceDegrees || mWristAngleDegrees == -1);
+        return Math.abs(curWristAngle-mWristAngleDegrees)<=mWristToleranceDegrees || mWristAngleDegrees == -1;
     }
         
     public boolean withinElevatorTolerance(double curElevatorHeight){
@@ -92,7 +96,7 @@ public enum AimState {
     }
 
     public boolean withinLauncherTolerance(double curLauncherSpeed){
-        return (Math.abs(curLauncherSpeed-mLauncherSetpointRPM)<=mLauncherToleranceRPM || mLauncherSetpointRPM == -1);
+        return Math.abs(curLauncherSpeed-mLauncherSetpointRPM)<=mLauncherToleranceRPM || mLauncherSetpointRPM == -1;
     }
 
     public boolean withinSwerveTolerance(Pose2d curServePose){

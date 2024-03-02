@@ -12,6 +12,7 @@ import frc.robot.subsystems.LauncherSubsystem;
 public class UltraInstinct extends MechState {
     public UltraInstinct (LauncherSubsystem launcherSubsystem,AimingSubsystem aimingSubsystem,IntakeSubsystem intakeSubsystem){ 
         super(launcherSubsystem,aimingSubsystem,intakeSubsystem);
+        
     }
 
     @Override

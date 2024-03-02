@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -41,15 +42,17 @@ public class LauncherSubsystem extends SubsystemBase {
   }
   
   public void configureDevices() {
+    resetEncoders();
+
     mLeaderFlywheel.getConfigurator().apply(new TalonFXConfiguration());
     mFollowerFlywheel.getConfigurator().apply(new TalonFXConfiguration());
 
     mFollowerFlywheel.setControl(new Follower(mLeaderFlywheel.getDeviceID(), false));
 
     TalonFXConfiguration configuration = new TalonFXConfiguration();
-    configuration.Feedback.SensorToMechanismRatio = 1/(LauncherConstants.FLYWHEEL_SENSOR_TO_MECHANISM*60);
-
     Slot0Configs slotConfigs = new Slot0Configs();
+    configuration.Feedback.SensorToMechanismRatio = 1/(LauncherConstants.FLYWHEEL_SENSOR_TO_MECHANISM);
+
     slotConfigs.kP = LauncherConstants.LAUNCHER_PID_CONTROLLER.getP();
     slotConfigs.kI = LauncherConstants.LAUNCHER_PID_CONTROLLER.getI();
     slotConfigs.kD = LauncherConstants.LAUNCHER_PID_CONTROLLER.getD();
@@ -76,6 +79,8 @@ public class LauncherSubsystem extends SubsystemBase {
 
     runLauncher();
 
+    SmartDashboard.putNumber("Flywheel Position", mLeaderFlywheel.getPosition().getValueAsDouble()*LauncherConstants.FLYWHEEL_MAX_VELOCITY*LauncherConstants.FLYWHEEL_SENSOR_TO_MECHANISM);
+
     SmartDashboard.putBoolean("Piece in Indexer", pieceInIndexer());
     SmartDashboard.putNumber("Flywheel Speed", actualVelocity);
     SmartDashboard.putNumber("Indexer Applied Output", mIndexer.getAppliedOutput());
@@ -92,8 +97,13 @@ public class LauncherSubsystem extends SubsystemBase {
   public void runLauncher() {
     //predicted velocity values
 
-    mLeaderFlywheel.setControl(new VoltageOut(mDesiredState.mLauncherSetpointRPM/LauncherConstants.FLYWHEEL_MAX_VELOCITY*12));
-    // mLeaderFlywheel.setControl(new VelocityVoltage(mDesiredVelocity).withSlot(0));
+    mLeaderFlywheel.setControl(
+      new VoltageOut(
+        mDesiredState.mLauncherSetpointRPM*LauncherConstants.LAUNCHER_FF_CONTROLLER.kv
+         + LauncherConstants.LAUNCHER_PID_CONTROLLER.calculate(getCurrentVelocity(), mDesiredState.mLauncherSetpointRPM)
+      ));
+    //mLeaderFlywheel.setControl(new VelocityVoltage(mDesiredState.mLauncherSetpointRPM).withSlot(0));
+
 
   }
 
@@ -132,9 +142,11 @@ public class LauncherSubsystem extends SubsystemBase {
   } 
 
   public double getCurrentVelocity() {
-    return mLeaderFlywheel.getVelocity().getValueAsDouble();
+    return mLeaderFlywheel.getVelocity().getValueAsDouble()*60;
   }
-
+  private double toFalconUnits(double val){
+    return val/(LauncherConstants.FLYWHEEL_SENSOR_TO_MECHANISM*60);
+  }
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
