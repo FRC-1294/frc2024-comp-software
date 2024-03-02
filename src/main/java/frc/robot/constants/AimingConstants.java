@@ -60,7 +60,7 @@ public class AimingConstants {
 
     // If false, then motors are physically inverted
     public static final boolean ELEVATOR_LEFT_IS_NORMAL = true;
-    public static final boolean WRIST_LEFT_IS_NORMAL = false;
+    public static final boolean WRIST_LEFT_IS_NORMAL = true;
 
     public static final int CONNECTION_THRESH_HZ = 945;
 
