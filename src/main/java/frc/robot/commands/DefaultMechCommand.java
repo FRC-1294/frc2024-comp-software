@@ -113,8 +113,10 @@ public class DefaultMechCommand{
             mMechState.index((Input.getRightTrigger()-LauncherConstants.INDEX_TRIGGER_DEADZONE)*(Input.getReverseButton() ? 1 : -1));
         } 
         if (Input.getDPad() == Input.DPADUP) {
+            AimingConstants.MAX_ELEVATOR_PID_CONTRIBUTION = 0.15;
             mMechState.ClimbExtendedState();
         } else if (Input.getDPad() == Input.DPADDOWN) {
+            AimingConstants.MAX_ELEVATOR_PID_CONTRIBUTION = 0.25;
             mMechState.ClimbRetractedState();
         }
         if (Input.getDPad() == Input.DPADRIGHT){

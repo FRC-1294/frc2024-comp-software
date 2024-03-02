@@ -37,7 +37,7 @@ public class ScoreSpeaker extends Command {
     mWrist = wrist;
     mIntake = intake;
     mPrioSpeakerState = prioSpeakerState;
-    addRequirements(mLauncher,mWrist);
+    //addRequirements(mLauncher,mWrist);
   }
 
   public ScoreSpeaker(SwerveSubsystem swerveSubsystem,LauncherSubsystem launcher, AimingSubsystem wrist, IntakeSubsystem intake) {
@@ -45,7 +45,7 @@ public class ScoreSpeaker extends Command {
     mWrist = wrist;
     mIntake = intake;
     mPrioSpeakerState = getBestSpeakerState();
-    addRequirements(mLauncher,mWrist);
+    //addRequirements(mLauncher,mWrist);
   }
 
   public AimState getBestSpeakerState(){

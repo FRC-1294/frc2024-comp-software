@@ -149,8 +149,10 @@ public class LauncherSubsystem extends SubsystemBase {
   }
   
   public Command indexUntilNoteLaunchedCommand() {
-    return new SequentialCommandGroup(new FunctionalCommand(() -> runIndexer(LauncherConstants.INDEXER_VELOCITY_LAUNCHING), ()->{},
-    (Interruptable)->{}, ()->!pieceInIndexer(), this), new WaitCommand(LauncherConstants.LAUNCH_COOLDOWN_SEC), new InstantCommand(()->stopIndexer(),this));   
+    return new SequentialCommandGroup(
+        new FunctionalCommand(() -> runIndexer(LauncherConstants.INDEXER_VELOCITY_LAUNCHING), ()->{},(Interruptable)->{}, ()->!pieceInIndexer(), this), 
+        new WaitCommand(LauncherConstants.LAUNCH_COOLDOWN_SEC), new InstantCommand(()->stopIndexer(),this)
+    );   
   } 
 
   @Override

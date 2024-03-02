@@ -22,7 +22,7 @@ public class LaunchFromHandoff extends Command {
     mWrist = wrist;
     mLauncher = launcher;
     mDesiredState = desiredState;
-    addRequirements(mWrist,mLauncher);
+    //addRequirements(mWrist,mLauncher);
 
   }
 
