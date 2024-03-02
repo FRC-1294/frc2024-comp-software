@@ -7,6 +7,7 @@ package frc.robot.constants;
 import java.sql.Driver;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -43,8 +44,8 @@ public class AimingConstants {
     
     // PID Constants
     public static final PIDParameters mElevatorPIDConstants = new PIDParameters(3, 0, 0);
-    public static final PIDParameters mWristPIDConstants = new PIDParameters(0.01, 0, 0, 0, 0);
-    public static final double WRIST_KG = 0.0;
+    public static final PIDParameters mWristPIDConstants = new PIDParameters(0.03, 0, 0, 0, 0);
+    public static final double WRIST_KG = 0.03;
     public static final double ELEVATOR_FEEDFORWARD_CONSTANT = 0.05;
     public static final double SPARK_THROUGHBORE_GEAR_RATIO = 1;
 
@@ -58,8 +59,8 @@ public class AimingConstants {
     public static final double WRIST_TOLERANCE_DEG = 2;
 
     // Soft Limits
-    public static final double MAX_ELEVATOR_DIST = 0.64;
-    public static final double MIN_ELEVATOR_DIST_IN = 0.05;
+    public static final double MAX_ELEVATOR_DIST = 0.5;
+    public static final double MIN_ELEVATOR_DIST_IN = 0.0;
     public static final double MAX_ELEVATOR_EXTENSION_VELOCITY = 0.1;
 
     public static final double MAX_WRIST_ROTATION = 110;
@@ -67,6 +68,7 @@ public class AimingConstants {
     public static final double MAX_WRIST_ROTATION_VELOCITY = 0;
 
     public static final double MAX_WRIST_PID_CONTRIBUTION = 0.15;
+    public static final double MAX_ELEVATOR_PID_CONTRIBUTION = 0.15;
 
     // ID's
     public static final int LEFT_ELEVATOR_SPARK_ID = 33; //Done
@@ -78,24 +80,29 @@ public class AimingConstants {
     public static final int WRIST_THROUGHBORE_ENCODER_ID = 0;
 
     public static final double WRIST_THROUGHBORE_GEAR_RATIO = 1;
-    public static final double WRIST_THROUGHBORE_ENCODER_OFFSET = 289.0;
-    public static final double COG_OFFSET = 0.0;
+    public static final double WRIST_THROUGHBORE_ENCODER_OFFSET = 289.4;
+    public static final double COG_OFFSET = 27.9;
 
     // If false, then motors are physically inverted
-    public static final boolean ELEVATOR_LEFT_IS_NORMAL = false;
+    public static final boolean ELEVATOR_LEFT_IS_NORMAL = true;
     public static final boolean WRIST_LEFT_IS_NORMAL = false;
 
     // Auto-aim constants
     public static final double SPEAKER_X_COORDINATE = 0;
     public static final double SPEAKER_Y_COORDINATE = 0;
-    public static final double SPEAKER_HEIGHT_TO_ROBOT = 0; //Delta between Speaker and Robot
+    public static final double SPEAKER_HEIGHT = 0;
     public static final double WRIST_PIVOT_ANGLE_OFFSET = 50.43; //DEGS
+    public static final double WRIST_RADIUS_METERS = 0;
+    public static final double ROBOT_HEIGHT_NO_WRIST_METERS = 0;
 
     public static final int CONNECTION_THRESH_HZ = 945;
 
-        public static final Pose3d BLUE_SPEAKER_POSE_3D = new Pose3d(0, 5.55, 2.05, Rotation3d.fromDegrees(180));
-    public static final Pose3d RED_SPEAKER_POSE_3D = new Pose3d(16.5, 5.55, 2.05, Rotation3d.fromDegrees(180));
+    // public static final Pose3d BLUE_SPEAKER_POSE_3D = new Pose3d(0, 5.55, 2.05, Rotation3d.fromDegrees(180));
+    // public static final Pose3d RED_SPEAKER_POSE_3D = new Pose3d(16.5, 5.55, 2.05, Rotation3d.fromDegrees(180));
 
-    public static final Pose2d BLUE_SPEAKER_POSE_2D = new Pose2d(0, 5.55, Rotation3d.fromDegrees(180));
-    public static final Pose2d RED_SPEAKER_POSE_2D = new Pose2d(16.5, 5.55, Rotation3d.fromDegrees(180));
+    public static final Rotation2d BLUE_SPEAKER_ROTATION_2D = new Rotation2d(1, 0);
+    public static final Rotation2d RED_SPEAKER_ROTATION_2D = new Rotation2d(-1, 0);
+
+    public static final Pose2d BLUE_SPEAKER_POSE_2D = new Pose2d(0, 5.55, BLUE_SPEAKER_ROTATION_2D);
+    public static final Pose2d RED_SPEAKER_POSE_2D = new Pose2d(16.5, 5.55, RED_SPEAKER_ROTATION_2D);
 }

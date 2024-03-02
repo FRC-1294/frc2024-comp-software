@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import java.sql.Driver;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -52,7 +53,6 @@ public class AutoAimCommand extends Command {
   // Get distance between robot & speaker
   public double getHorizontalAngleSpeakerDEGS(){
     Pose2d currentRobotPose = SwerveSubsystem.getRobotPose();
-
     //Equation: angle needed to add = 180 - current angle - angle relative to top of field
     //Assumptions: current angle < 180 ???
 
@@ -60,6 +60,24 @@ public class AutoAimCommand extends Command {
     double cornerSpeakerAngle = Math.atan((AimingConstants.SPEAKER_Y_COORDINATE - currentRobotPose.getY()) / (currentRobotPose.getX() - AimingConstants.SPEAKER_X_COORDINATE)); //THETA F
     double addedAngle = 180 - currentAngle - cornerSpeakerAngle; //THETA A
     return addedAngle;
+  }
+
+  public double getAutoAimWristRotation(){
+    Pose2d currentRobotPose = SwerveSubsystem.getRobotPose();
+    Pose2d currentSpeaker;
+    if (DriverStation.getAlliance().get().name().equals("RED")){
+      currentSpeaker = AimingConstants.RED_SPEAKER_POSE_2D;
+    }
+    else{
+      currentSpeaker = AimingConstants.BLUE_SPEAKER_POSE_2D;
+    }
+    
+    double distanceFromRobotToSpeaker = Math.sqrt(Math.pow((currentRobotPose.getX() + currentSpeaker.getX()), 2) + Math.pow((currentRobotPose.getY() + currentSpeaker.getY()), 2));
+    double robotTotalHeight = AimingConstants.ROBOT_HEIGHT_NO_WRIST_METERS + (Math.sin(this.mAimingSubsystem.getCurrentWristRotation()) * AimingConstants.WRIST_RADIUS_METERS);
+
+    double desiredWristRotationDeg = Math.atan((AimingConstants.SPEAKER_HEIGHT - robotTotalHeight)/distanceFromRobotToSpeaker);
+
+    return desiredWristRotationDeg;
   }
 
 

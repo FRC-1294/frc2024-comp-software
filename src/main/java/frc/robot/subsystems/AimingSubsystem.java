@@ -103,6 +103,8 @@ public class AimingSubsystem extends SubsystemBase {
 
     mLeftElevatorMotor.burnFlash();
     mRightElevatorMotor.burnFlash();
+    mLeftWristMotor.burnFlash();
+    mRightWristMotor.burnFlash();
   }
 
   @Override
@@ -120,6 +122,7 @@ public class AimingSubsystem extends SubsystemBase {
 
     //Temp Regular PID
     double elevatorPIDCalculation = mElevatorController.calculate(mCurrentElevatorDistanceIn, mDesiredElevatorDistanceIn);
+    elevatorPIDCalculation = MathUtil.clamp(elevatorPIDCalculation, -AimingConstants.MAX_ELEVATOR_PID_CONTRIBUTION, AimingConstants.MAX_ELEVATOR_PID_CONTRIBUTION);
     mLeftElevatorMotor.set(elevatorPIDCalculation + AimingConstants.ELEVATOR_FEEDFORWARD_CONSTANT);
     SmartDashboard.putNumber("ElevatorPIDOutput", elevatorPIDCalculation);
   }
