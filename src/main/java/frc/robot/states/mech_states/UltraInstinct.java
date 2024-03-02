@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.constants.IntakeConstants;
 import frc.robot.constants.LauncherConstants;
 import frc.robot.constants.AimState;
-import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.states.MechState;
 import frc.robot.subsystems.AimingSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -16,8 +15,8 @@ public class UltraInstinct extends MechState {
     }
 
     @Override
-    public void setLauncherSpeed(LauncherMode mode) {
-        new InstantCommand(()->mLauncherSubsystem.setLauncherMode(mode),mLauncherSubsystem).schedule();
+    public void setLauncherSpeed(AimState state) {
+        new InstantCommand(()->mLauncherSubsystem.setLauncherState(state),mLauncherSubsystem).schedule();
     }
     @Override
     public void brakeLauncher() {

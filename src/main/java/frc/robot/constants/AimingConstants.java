@@ -42,8 +42,8 @@ public class AimingConstants {
     public static final double MIN_WRIST_ROTATION_DEG = 0;
     public static final double MAX_WRIST_ROTATION_VELOCITY = 0;
 
-    public static final double MAX_WRIST_PID_CONTRIBUTION = 0.15;
-    public static double MAX_ELEVATOR_PID_CONTRIBUTION = 0.3;
+    public static final double MAX_WRIST_PID_CONTRIBUTION = 0.5;
+    public static final double MAX_ELEVATOR_PID_CONTRIBUTION = 0.3;
 
     // ID's
     public static final int LEFT_ELEVATOR_SPARK_ID = 33; //Done
@@ -54,7 +54,7 @@ public class AimingConstants {
 
     public static final int WRIST_THROUGHBORE_ENCODER_ID = 0;
     public static final double WRIST_THROUGHBORE_GEAR_RATIO = 1;
-    public static final double WRIST_THROUGHBORE_ENCODER_OFFSET = 289.4;
+    public static final double WRIST_THROUGHBORE_ENCODER_OFFSET = 297.5;
     public static final double COG_OFFSET = 27.9;
 
 

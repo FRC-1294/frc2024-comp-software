@@ -20,9 +20,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.constants.AimState;
 import frc.robot.constants.LauncherConstants;
-import frc.robot.constants.LauncherConstants.LauncherMode;
-import frc.robot.constants.LauncherConstants.LauncherState;
 
 public class LauncherSubsystem extends SubsystemBase {
   private final CANSparkMax mIndexer = new CANSparkMax(LauncherConstants.INDEXER_ID, MotorType.kBrushless);
@@ -32,9 +31,7 @@ public class LauncherSubsystem extends SubsystemBase {
 
   private final DigitalInput mBeamBreak = new DigitalInput(LauncherConstants.BEAMBREAK_ID);
 
-  private double mDesiredVelocity = 0;
-
-  private LauncherMode mLauncherMode = LauncherMode.OFF;
+  private AimState mDesiredState = AimState.HANDOFF;
 
   private boolean mLauncherReady = false;
 
@@ -74,12 +71,9 @@ public class LauncherSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    double actualVelocity = mLeaderFlywheel.getVelocity().getValueAsDouble();
+    double actualVelocity = getCurrentVelocity();
+    mLauncherReady = mDesiredState.withinLauncherTolerance(actualVelocity);
 
-
-
-    mLauncherReady = Math.abs(Math.abs(mDesiredVelocity) - Math.abs(actualVelocity)) <= LauncherConstants.FLYWHEEL_TOLERANCE && 
-                     mDesiredVelocity != 0 && mLauncherMode != LauncherMode.PASSIVE;
     runLauncher();
 
     SmartDashboard.putBoolean("Piece in Indexer", pieceInIndexer());
@@ -97,23 +91,8 @@ public class LauncherSubsystem extends SubsystemBase {
   
   public void runLauncher() {
     //predicted velocity values
-    if (mLauncherMode == LauncherMode.SPEAKER) {
-      mDesiredVelocity = LauncherState.SPEAKER_DEFAULT.velocity;
-    }
-    else if (mLauncherMode == LauncherMode.AMP) {
-      mDesiredVelocity = LauncherState.AMP_DEFAULT.velocity;
-    }
-    else if (mLauncherMode == LauncherMode.TRAP) {
-      mDesiredVelocity = LauncherState.TRAP_DEFAULT.velocity;
-    }
-    else if (mLauncherMode == LauncherMode.PASSIVE) {
-      mDesiredVelocity = LauncherState.PASSIVE_DEFAULT.velocity;
-    }
-    else if (mLauncherMode == LauncherMode.OFF) {
-      mDesiredVelocity = 0;
-    }
 
-    mLeaderFlywheel.setControl(new VoltageOut(mDesiredVelocity*12/LauncherConstants.FLYWHEEL_MAX_VELOCITY));
+    mLeaderFlywheel.setControl(new VoltageOut(mDesiredState.mLauncherSetpointRPM/LauncherConstants.FLYWHEEL_MAX_VELOCITY*12));
     // mLeaderFlywheel.setControl(new VelocityVoltage(mDesiredVelocity).withSlot(0));
 
   }
@@ -127,15 +106,15 @@ public class LauncherSubsystem extends SubsystemBase {
   }
 
   public boolean isLauncherReady() {
-    return true;
+    return mLauncherReady;
   }
 
-  public void setLauncherMode(LauncherMode mode) {
-    mLauncherMode = mode;
+  public void setLauncherState(AimState state) {
+    mDesiredState = state;
   }
   
   public void stopLauncher() {
-    mLauncherMode = LauncherMode.OFF;
+    mDesiredState = AimState.HANDOFF;
   }
 
   private void resetEncoders() {
@@ -143,17 +122,18 @@ public class LauncherSubsystem extends SubsystemBase {
     mFollowerFlywheel.setPosition(0);
   }
 
-  public Command waitUntilFlywheelSetpointCommand(LauncherMode launcherMode) {
-    return new SequentialCommandGroup(new FunctionalCommand(() -> setLauncherMode(launcherMode), ()->{},
+  public Command waitUntilFlywheelSetpointCommand(AimState aimState) {
+    return new SequentialCommandGroup(new FunctionalCommand(() -> setLauncherState(aimState), ()->{},
     (Interruptable)->{}, this::isLauncherReady, this));    
   }
   
   public Command indexUntilNoteLaunchedCommand() {
-    return new SequentialCommandGroup(
-        new FunctionalCommand(() -> runIndexer(LauncherConstants.INDEXER_VELOCITY_LAUNCHING), ()->{},(Interruptable)->{}, ()->!pieceInIndexer(), this), 
-        new WaitCommand(LauncherConstants.LAUNCH_COOLDOWN_SEC), new InstantCommand(()->stopIndexer(),this)
-    );   
+    return new FunctionalCommand(() -> runIndexer(LauncherConstants.INDEXER_VELOCITY_LAUNCHING), ()->{},(Interruptable)->stopIndexer(), ()->!pieceInIndexer(), this);
   } 
+
+  public double getCurrentVelocity() {
+    return mLeaderFlywheel.getVelocity().getValueAsDouble();
+  }
 
   @Override
   public void simulationPeriodic() {

@@ -59,7 +59,7 @@ public class DefaultMechCommand{
         if (!getIntakeBeamBreak() && !getIndexerBeamBreak()) {
             return mReadyForIntake;
         }
-        else if (getIntakeBeamBreak() && !getIndexerBeamBreak() && mAimingSubsystem.getCurrentState() == AimState.HANDOFF) {
+        else if (getIntakeBeamBreak() && !getIndexerBeamBreak() && AimState.HANDOFF.atState(mAimingSubsystem.getCurrentWristDegreees(), mAimingSubsystem.getCurrentElevatorDistance(), mLauncherSubsystem.getCurrentVelocity())) {
             return mReadyForHandoff;
         }
         else if (getIntakeBeamBreak() && !getIndexerBeamBreak()) {
@@ -113,10 +113,8 @@ public class DefaultMechCommand{
             mMechState.index((Input.getRightTrigger()-LauncherConstants.INDEX_TRIGGER_DEADZONE)*(Input.getReverseButton() ? 1 : -1));
         } 
         if (Input.getDPad() == Input.DPADUP) {
-            AimingConstants.MAX_ELEVATOR_PID_CONTRIBUTION = 0.15;
             mMechState.ClimbExtendedState();
         } else if (Input.getDPad() == Input.DPADDOWN) {
-            AimingConstants.MAX_ELEVATOR_PID_CONTRIBUTION = 0.25;
             mMechState.ClimbRetractedState();
         }
         if (Input.getDPad() == Input.DPADRIGHT){

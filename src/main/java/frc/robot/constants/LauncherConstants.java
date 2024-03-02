@@ -25,27 +25,9 @@ public final class LauncherConstants {
   public static final int BEAMBREAK_ID = 3; //TODO:https://github.com/FRC-1294/frc2024/issues/241
 
   //current flywheel mode
-  public enum LauncherMode {
-    SPEAKER, AMP, TRAP, OFF, PASSIVE;
-  }
 
-  //flywheel setpoints
-  public enum LauncherState {
 
-    SPEAKER_DEFAULT(LauncherConstants.FLYWHEEL_MAX_VELOCITY), //TODO:https://github.com/FRC-1294/frc2024/issues/241
 
-    AMP_DEFAULT(5000), //TODO:https://github.com/FRC-1294/frc2024/issues/241
-
-    TRAP_DEFAULT(1000), //TODO:https://github.com/FRC-1294/frc2024/issues/241
-
-    PASSIVE_DEFAULT(5000);
-
-    public final double velocity;
-
-    private LauncherState(double velocity) {
-      this.velocity = velocity;
-    }
-  }
 
   //indexer setpoint
   public static final double INDEXER_VELOCITY_INDEXING = 0.2; //TODO:https://github.com/FRC-1294/frc2024/issues/241

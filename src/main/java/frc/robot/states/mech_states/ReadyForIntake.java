@@ -1,8 +1,8 @@
 package frc.robot.states.mech_states;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.constants.AimState;
 import frc.robot.constants.IntakeConstants;
-import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.states.MechState;
 import frc.robot.subsystems.AimingSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -28,14 +28,14 @@ public class ReadyForIntake extends MechState {
 
     @Override
     public void speakerPosition() {
-        mLauncherSubsystem.waitUntilFlywheelSetpointCommand(LauncherMode.SPEAKER).schedule();
+        mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.SUBWOOFER).schedule();
     }
     @Override
     public void ampPosition() {
-        mLauncherSubsystem.waitUntilFlywheelSetpointCommand(LauncherMode.AMP).schedule();
+        mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.AMP).schedule();
     }
 
     public void trapPosition() {
-        mLauncherSubsystem.waitUntilFlywheelSetpointCommand(LauncherMode.TRAP).schedule();
+        mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.TRAP).schedule();
     }
 }

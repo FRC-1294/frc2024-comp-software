@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.DefaultMechCommand;
 import frc.robot.constants.CompConstants;
 import frc.robot.constants.AimState;
-import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.states.MechState;
 import frc.robot.states.mech_states.Intaken;
 import frc.robot.states.mech_states.ReadyForAim;

@@ -229,11 +229,10 @@ public class AimingSubsystem extends SubsystemBase {
     for (AimState state : AimState.values()){
       if (state.withinWristTolerance(getCurrentWristDegreees())
         && state.withinElevatorTolerance(getCurrentElevatorDistance()) && state != AimState.TRANSITION){
-        SmartDashboard.putString("CurrentAimState", state.toString());
         return state;
       }
     }
-    return AimState.HANDOFF;
+    return AimState.TRANSITION;
   }
 
   public double getDesiredElevatorDistance() {
@@ -291,14 +290,14 @@ public class AimingSubsystem extends SubsystemBase {
   }
 
   public boolean atElevatorSetpoint() {
-    return true; // mElevatorController.atSetpoint();
+    return mElevatorController.atSetpoint();
   }
   public boolean atWristSetpoint() {
-    return true; //mWristController.atSetpoint();
+    return mWristController.atSetpoint();
   }
 
   public boolean atSetpoints() {
-    return true; //atElevatorSetpoint() && atWristSetpoint() ;
+    return atElevatorSetpoint() && atWristSetpoint() ;
     
   }
 

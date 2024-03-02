@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AutonomousCommands.Handoff;
 import frc.robot.commands.AutonomousCommands.ScoreSpeaker;
 import frc.robot.constants.AimState;
-import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.subsystems.AimingSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
@@ -50,8 +49,8 @@ public class InitializePathPlanner{
     NamedCommands.registerCommand("ShootFromSubwoofer", new ScoreSpeaker(mLauncher, mAiming, mIntake,AimState.SUBWOOFER));
     NamedCommands.registerCommand("ShootFromWing", new ScoreSpeaker(mLauncher, mAiming, mIntake,AimState.WING));
     NamedCommands.registerCommand("ShootFromLine", new ScoreSpeaker(mLauncher, mAiming, mIntake,AimState.LINE));
-    NamedCommands.registerCommand("StartLauncherSW", mLauncher.waitUntilFlywheelSetpointCommand(LauncherMode.SPEAKER));
-    NamedCommands.registerCommand("StartWristSW", mLauncher.waitUntilFlywheelSetpointCommand(LauncherMode.SPEAKER));
+    NamedCommands.registerCommand("StartLauncherSW", mLauncher.waitUntilFlywheelSetpointCommand(AimState.SUBWOOFER));
+    NamedCommands.registerCommand("StartWristSW", mAiming.waitUntilSetpoint(AimState.SUBWOOFER));
     NamedCommands.registerCommand("Handoff", new Handoff(mIntake,mLauncher));
   }
 

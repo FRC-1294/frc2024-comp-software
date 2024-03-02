@@ -4,10 +4,7 @@
 
 package frc.robot;
 
-import frc.robot.commands.DefaultAimCommand;
 import frc.robot.commands.DefaultDriveCommand;
-import frc.robot.commands.DefaultIntakeCommand;
-import frc.robot.commands.DefaultLauncherCommand;
 import frc.robot.commands.DefaultMechCommand;
 import frc.robot.robots.CompetitionBotSwerveConfig;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -35,9 +32,6 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     mSwerveSubsystem.setDefaultCommand(new DefaultDriveCommand(mSwerveSubsystem, mLightLight));
-    // mIntakeSubsystem.setDefaultCommand(new DefaultIntakeCommand(mIntakeSubsystem));
-    // mLauncherSubsystem.setDefaultCommand(new DefaultLauncherCommand(mLauncherSubsystem));
-    // mAimingSubsystem.setDefaultCommand(new DefaultAimCommand(mAimingSubsystem));
   }
   
   public SwerveSubsystem getSwerveSubsystem() {

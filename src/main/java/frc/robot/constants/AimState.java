@@ -10,14 +10,17 @@ import edu.wpi.first.math.geometry.Translation2d;
 
 /** Add your docs here. */
 public enum AimState {
-    SUBWOOFER(0,0,0,3), //Tolerance TBD
+    SUBWOOFER(0,3, 8000, 500), //Tolerance TBD
+    AMP(100,5, 1000, 200), //Everything TBD
+    TRAP(110,-1,-1,0,0,0), //Everything TBD
+    HANDOFF(0,-1,-1,3), //Tolerance TBD
+
+
+
     LINE(0,0,0,0), //Everything TBD
     MIDNOTE(0,0,0,0), //Everything TBD
     WING(0,0,0,0), //Everything TBD
     PROTECTED(0,0,0,0), //Everything TBD
-    AMP(0,-1,-1,0), //Everything TBD
-    TRAP(0,-1,-1,0,0,0), //Everything TBD
-    HANDOFF(0,-1,-1,3), //Tolerance TBD
     CLIMB_UP(0,-1,-1,0,AimingConstants.MAX_ELEVATOR_DIST_METERS-0.2,0.1),
     CLIMB_DOWN(0,-1,-1,0,AimingConstants.MIN_ELEVATOR_DIST_METERS,0.1),
     TRANSITION(-1,-1,-1,-1);
@@ -28,25 +31,50 @@ public enum AimState {
     public final double mPositionToleranceMeters;
     public final double mWristToleranceDegrees;
     public final double mElevatorToleranceMeters;
+    public final double mLauncherSetpointRPM;
+    public final double mLauncherToleranceRPM;
 
     AimState(double wristAngleDeg, double radialDistanceMeters, double shotToleranceMeters,
-     double wristToleranceDegrees, double elevatorHeight, double elevatorTolerance) {
+     double wristToleranceDegrees, double elevatorHeight, double elevatorTolerance, double launcherSetpoint, double launcherTolerance) {
         mWristAngleDegrees = wristAngleDeg;
         mRadialDistanceMeters = radialDistanceMeters;
         mElevatorHeightMeters = elevatorHeight;
         mElevatorToleranceMeters = elevatorTolerance;
         mPositionToleranceMeters = shotToleranceMeters;
         mWristToleranceDegrees = wristAngleDeg;
+        mLauncherSetpointRPM = launcherSetpoint;
+        mLauncherToleranceRPM = launcherTolerance;
+
     }
 
     AimState(double wristAngleDeg, double radialDistanceMeters, double shotToleranceMeters,
-     double wristToleranceDegrees) {
+     double wristToleranceDegrees, double launcherSetpoint, double launcherTolerance) {
         mWristAngleDegrees = wristAngleDeg;
         mRadialDistanceMeters = radialDistanceMeters;
         mElevatorHeightMeters = 0;
-        mElevatorToleranceMeters = 0.03;
+        mElevatorToleranceMeters = 0.005;
         mPositionToleranceMeters = shotToleranceMeters;
         mWristToleranceDegrees = wristAngleDeg;
+        mLauncherSetpointRPM = launcherSetpoint;
+        mLauncherToleranceRPM = launcherTolerance;
+    }
+
+    AimState(double wristAngleDeg,double wristToleranceDegrees, double launcherSetpoint, double launcherTolerance) {
+        mWristAngleDegrees = wristAngleDeg;
+        mWristToleranceDegrees = wristToleranceDegrees;
+        mLauncherSetpointRPM = launcherSetpoint;
+        mLauncherToleranceRPM = launcherTolerance;
+
+        mRadialDistanceMeters = -1;
+        mElevatorHeightMeters = 0;
+        mElevatorToleranceMeters = 0.005;
+        mPositionToleranceMeters = -1;
+
+    }
+
+    public boolean atState(double curWristAngle, double curElevatorHeight, double curLauncherSpeed){
+        //return true if the current state is within the tolerance of the desired state ignoring the parameters that are -1
+        return withinWristTolerance(curWristAngle) && withinElevatorTolerance(curElevatorHeight) && withinLauncherTolerance(curLauncherSpeed);
     }
 
     private double[] getPolarCoordsFromXY(Pose2d curSwervePose){
@@ -61,6 +89,10 @@ public enum AimState {
         
     public boolean withinElevatorTolerance(double curElevatorHeight){
         return (Math.abs(curElevatorHeight-mElevatorHeightMeters)<=mElevatorToleranceMeters || mElevatorHeightMeters == -1);
+    }
+
+    public boolean withinLauncherTolerance(double curLauncherSpeed){
+        return (Math.abs(curLauncherSpeed-mLauncherSetpointRPM)<=mLauncherToleranceRPM || mLauncherSetpointRPM == -1);
     }
 
     public boolean withinSwerveTolerance(Pose2d curServePose){

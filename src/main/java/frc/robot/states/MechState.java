@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.commands.AutonomousCommands.Handoff;
 import frc.robot.constants.AimState;
-import frc.robot.constants.LauncherConstants.LauncherMode;
 import frc.robot.subsystems.AimingSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
@@ -29,14 +28,14 @@ public abstract class MechState {
         mAimingSubsystem = aimingSubsystem;
 
         mHandoffPositionCommand = mAimingSubsystem.waitUntilSetpoint(AimState.HANDOFF);
-        mSpeakerPositionCommand = new ParallelCommandGroup(mAimingSubsystem.waitUntilSetpoint(AimState.SUBWOOFER), mLauncherSubsystem.waitUntilFlywheelSetpointCommand(LauncherMode.SPEAKER));
-        mAmpPositionCommand = new ParallelCommandGroup(mAimingSubsystem.waitUntilSetpoint(AimState.AMP), mLauncherSubsystem.waitUntilFlywheelSetpointCommand(LauncherMode.AMP));
-        mTrapPositionCommand = new ParallelCommandGroup(mAimingSubsystem.waitUntilSetpoint(AimState.TRAP), mLauncherSubsystem.waitUntilFlywheelSetpointCommand(LauncherMode.TRAP));
+        mSpeakerPositionCommand = new ParallelCommandGroup(mAimingSubsystem.waitUntilSetpoint(AimState.SUBWOOFER), mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.SUBWOOFER));
+        mAmpPositionCommand = new ParallelCommandGroup(mAimingSubsystem.waitUntilSetpoint(AimState.AMP), mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.AMP));
+        mTrapPositionCommand = new ParallelCommandGroup(mAimingSubsystem.waitUntilSetpoint(AimState.TRAP), mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.TRAP));
         mPreformHandoffCommand = new Handoff(mIntakeSubsystem, mLauncherSubsystem);
         mLaunchCommand = mLauncherSubsystem.indexUntilNoteLaunchedCommand();
     }
 
-    public void setLauncherSpeed(LauncherMode mode) {}
+    public void setLauncherSpeed(AimState state) {}
 
     public void brakeLauncher() {
         new InstantCommand(()->mLauncherSubsystem.stopLauncher(),mLauncherSubsystem).schedule();
