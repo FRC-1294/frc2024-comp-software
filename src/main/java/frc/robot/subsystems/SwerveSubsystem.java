@@ -15,6 +15,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.BetterSwerveModuleState;
 import frc.robot.SwerveConfig;
 import frc.robot.SwerveModule;
 import frc.robot.constants.CompConstants;
@@ -117,7 +118,6 @@ public class SwerveSubsystem extends SubsystemBase {
     for (int i = 0; i < desiredStates.length; i++) {
       mModules[i].setDesiredState(desiredStates[i]);
     }
-
   }
 
   /**
@@ -146,7 +146,7 @@ public class SwerveSubsystem extends SubsystemBase {
    * @apiNote Keep in mind all of this is field relative so resetting the gyro midmatch will also
    *          reset these params
    */
-  public void setChassisSpeed(double vxMPS, double vyMPS, double angle, double angleSpeedRADPS, double axMPS, double ayMPS, boolean fieldOriented) {
+  public void setChassisSpeed(double vxMPS, double vyMPS, double angleSpeedRADPS, boolean fieldOriented) {
 
     ChassisSpeeds chassisSpeeds;
 
@@ -156,8 +156,7 @@ public class SwerveSubsystem extends SubsystemBase {
     } else {
       chassisSpeeds = new ChassisSpeeds(vxMPS, vyMPS, angleSpeedRADPS);
     }
-    SwerveModuleState[] moduleStates = mKinematics.toSwerveModuleStates(chassisSpeeds);
-
+    BetterSwerveModuleState[] moduleStates = mKinematics.toSwerveModuleStates(chassisSpeeds);
 
     setModuleStates(moduleStates);
 
