@@ -20,7 +20,7 @@
         {
           "type": "named",
           "data": {
-            "name": "IntakeUntilNote"
+            "name": null
           }
         },
         {
@@ -32,7 +32,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootFromSubwoofer"
+            "name": null
           }
         },
         {
@@ -44,7 +44,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootFromMidnote"
+            "name": null
           }
         },
         {
@@ -56,7 +56,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootFromMidnote"
+            "name": null
           }
         },
         {
@@ -68,7 +68,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootFromMidnote"
+            "name": null
           }
         }
       ]

@@ -33,7 +33,7 @@ public class TimedHandoff extends Command {
   @Override
   public void execute() {
     //accelerates intake if it runs for too long
-    if (time.get() > 1.5) {
+    if (time.get() > 0.5) {
       mIntake.innerMotorAtSpeed(Math.min(IntakeConstants.INNER_INTAKE_SPEED_HANDOFF + time.get() * IntakeConstants.HANDOFF_TIMER_MULTIPLIER, 1));
     }
     else {

@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.AutonomousCommands.ScoreSpeaker;
 import frc.robot.constants.AimState;
 import frc.robot.constants.LauncherConstants;
 
@@ -84,6 +85,7 @@ public class LauncherSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("Piece in Indexer", pieceInIndexer());
     SmartDashboard.putNumber("Flywheel Speed", actualVelocity);
     SmartDashboard.putNumber("Indexer Applied Output", mIndexer.getAppliedOutput());
+    SmartDashboard.putBoolean("LauncherReady", isLauncherReady());
   }
 
   public void runIndexer(double velocity) {
@@ -133,12 +135,15 @@ public class LauncherSubsystem extends SubsystemBase {
   }
 
   public Command waitUntilFlywheelSetpointCommand(AimState aimState) {
-    return new SequentialCommandGroup(new FunctionalCommand(() -> setLauncherState(aimState), ()->{},
-    (Interruptable)->{}, this::isLauncherReady, this));    
+    return new FunctionalCommand(() -> setLauncherState(aimState), ()->{},
+    (Interruptable)->{}, this::isLauncherReady, this);    
   }
   
   public Command indexUntilNoteLaunchedCommand() {
-    return new FunctionalCommand(() -> runIndexer(LauncherConstants.INDEXER_VELOCITY_LAUNCHING), ()->{},(Interruptable)->stopIndexer(), ()->!pieceInIndexer(), this);
+    return new FunctionalCommand(() -> runIndexer(LauncherConstants.INDEXER_VELOCITY_LAUNCHING), 
+    ()->{},
+    (Interruptable)->{stopIndexer();}, 
+    ()->!pieceInIndexer(), this);
   } 
 
   public double getCurrentVelocity() {

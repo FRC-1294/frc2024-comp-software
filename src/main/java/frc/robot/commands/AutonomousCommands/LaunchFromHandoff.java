@@ -4,6 +4,7 @@
 
 package frc.robot.commands.AutonomousCommands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.constants.AimState;
@@ -15,21 +16,23 @@ public class LaunchFromHandoff extends Command {
   private final AimingSubsystem mWrist;
   private final LauncherSubsystem mLauncher;
   private final AimState mDesiredState; 
-  private Command mCommand;
+  private final Command mCommand;
 
   public LaunchFromHandoff(AimingSubsystem wrist, LauncherSubsystem launcher, AimState desiredState) {
     mWrist = wrist;
     mLauncher = launcher;
     mDesiredState = desiredState;
-    //addRequirements(mWrist,mLauncher);
-
+    mCommand = new SequentialCommandGroup(
+      mWrist.waitUntilSetpoint(mDesiredState),
+      mLauncher.waitUntilFlywheelSetpointCommand(mDesiredState),
+      mLauncher.indexUntilNoteLaunchedCommand());
+    addRequirements(mWrist,mLauncher);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    mCommand = new SequentialCommandGroup(mWrist.waitUntilSetpoint(mDesiredState),
-    mLauncher.waitUntilFlywheelSetpointCommand(mDesiredState),mLauncher.indexUntilNoteLaunchedCommand());
+
     mCommand.schedule();
   }
 
@@ -44,6 +47,7 @@ public class LaunchFromHandoff extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    SmartDashboard.putBoolean("LaunchFromHandoffFinished", mCommand.isFinished());
     return mCommand.isFinished();
   }
 }

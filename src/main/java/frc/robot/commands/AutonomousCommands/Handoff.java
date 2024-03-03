@@ -29,7 +29,7 @@ public class Handoff extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    mIntake.innerMotorAtSpeed(IntakeConstants.INNER_INTAKE_SPEED_HANDOFF);
+    mIntake.innerMotorAtSpeed(1);
     mLauncher.runIndexer(LauncherConstants.INDEXER_VELOCITY_INDEXING);
   }
 
