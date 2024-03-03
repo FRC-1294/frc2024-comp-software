@@ -94,4 +94,8 @@ public class IntakeSubsystem extends SubsystemBase {
   private boolean functionalCommandIsFinished() {
     return pieceInIntake() || Input.getLeftBumper();
   }
+
+  public double[] getIntakeSpeed(){
+    return new double[] {mIntakeMotorInner.get(),mIntakeMotorOuter.get()};
+  }
 }
