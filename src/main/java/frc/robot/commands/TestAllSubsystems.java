@@ -73,13 +73,11 @@ public TestAllSubsystems(IntakeSubsystem intake, AimingSubsystem aiming, Launche
         SmartDashboard.putBoolean("pieceInIndexer", mLauncher.pieceInIndexer());
         break;
       case 2: 
-        double sp = SmartDashboard.getNumber("wristSetpointDegrees", 90);
-        mAiming.setDesiredWristRotation(sp);
+        mAiming.setDesiredWristRotation(SmartDashboard.getNumber("wristSetpointDegrees", 90));
         mAiming.debugSmartDashboard();
         break;
       case 3:
-        double sp = SmartDashboard.getNumber("elevatorSetpointInches", 2);
-        mAiming.setDesiredElevatorDistance(sp);
+        mAiming.setDesiredElevatorDistance(SmartDashboard.getNumber("elevatorSetpointInches", 2));
         mAiming.debugSmartDashboard();
         break;
       default:
