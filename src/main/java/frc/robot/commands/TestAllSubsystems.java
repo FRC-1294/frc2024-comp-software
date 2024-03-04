@@ -14,13 +14,13 @@ import frc.robot.constants.IntakeConstants;
 import frc.robot.subsystems.AimingSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
+import frc.robot.constants.CompConstants;
 
 public class TestAllSubsystems extends Command {
   /** Creates a new TestAllSubsystems. */
   IntakeSubsystem mIntake;
   AimingSubsystem mAiming;
-  LauncherSubsystem mLauncher;
-  int mCase_num = 0; 
+  LauncherSubsystem mLauncher; 
   SendableChooser<Integer> mChoose = new SendableChooser<>();
 public TestAllSubsystems(IntakeSubsystem intake, AimingSubsystem aiming, LauncherSubsystem launcher)
 {
@@ -28,6 +28,9 @@ public TestAllSubsystems(IntakeSubsystem intake, AimingSubsystem aiming, Launche
     mIntake = intake;
     mAiming = aiming;
     mLauncher = launcher;
+    addRequirements(mIntake);
+    addRequirements(mAiming);
+    addRequirements(mLauncher);
 }
 
   // Called when the command is initially scheduled.
@@ -38,13 +41,17 @@ public TestAllSubsystems(IntakeSubsystem intake, AimingSubsystem aiming, Launche
     mChoose.addOption("laucher", 1);
     mChoose.addOption("wrist", 2);
     mChoose.addOption("elevator", 3);
+
+    mAiming.setDesiredElevatorDistance(0);
+    mAiming.setDesiredWristRotation(0); 
+
+    CompConstants.DEBUG_MODE = true;
   }
 
   // Called every time the scheduler runs which the command is scheduled.
   @Override
   public void execute() {
-    mCase_num = mChoose.getSelected();
-    switch (mCase_num) {
+    switch (mChoose.getSelected()) {
       case 0:
         mIntake.intakeMotorsAtSpeed(IntakeConstants.ACTIVE_INTAKE_SPEED);
         if (mIntake.pieceInIntake()) {
@@ -64,9 +71,17 @@ public TestAllSubsystems(IntakeSubsystem intake, AimingSubsystem aiming, Launche
         SmartDashboard.putNumber("leaderMotor", mLauncher.getLauncherSpeeds()[1]);
         SmartDashboard.putNumber("followerMotor", mLauncher.getLauncherSpeeds()[2]);
         SmartDashboard.putBoolean("pieceInIndexer", mLauncher.pieceInIndexer());
-
+        break;
       case 2: 
-        
+        double sp = SmartDashboard.getNumber("wristSetpointDegrees", 90);
+        mAiming.setDesiredWristRotation(sp);
+        mAiming.debugSmartDashboard();
+        break;
+      case 3:
+        double sp = SmartDashboard.getNumber("elevatorSetpointInches", 2);
+        mAiming.setDesiredElevatorDistance(sp);
+        mAiming.debugSmartDashboard();
+        break;
       default:
         break;
     }
@@ -79,6 +94,6 @@ public TestAllSubsystems(IntakeSubsystem intake, AimingSubsystem aiming, Launche
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return SmartDashboard.getBoolean("endTesting", false);
   }
 }

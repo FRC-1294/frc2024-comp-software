@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.commands.InitializePathPlanner;
 import frc.robot.commands.SwerveFrictionCharacterization;
 import frc.robot.commands.SwerveVoltageCharacterization;
-import frc.robot.commands.TestAll;
+import frc.robot.commands.TestAllSubsystems;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -96,7 +96,6 @@ public class Robot extends TimedRobot {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
     CANSparkLowLevel.enableExternalUSBControl(true);
-    new TestAll(robotContainer.getIntakeSubsystem(), robotContainer.getAimingSubsystem(), robotContainer.getLauncherSubsystem(), robotContainer.getSwerveSubsystem(),
-    false, false, false, false).schedule();
+    new TestAllSubsystems(robotContainer.getIntakeSubsystem(), robotContainer.getAimingSubsystem(), robotContainer.getLauncherSubsystem()).schedule();
   }
 }
