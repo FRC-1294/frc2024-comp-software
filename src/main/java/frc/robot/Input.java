@@ -46,7 +46,7 @@ public class Input {
   }
 
   public static boolean getRightBumper() {
-    return mXboxController.getRightBumperPressed();
+    return mXboxController.getRightBumper();
   }
 
   public static double getLeftTrigger() {
@@ -107,10 +107,6 @@ public class Input {
 
   public static boolean togglePIDTuning() {
     return mRotJoystick.getTriggerReleased();
-  }
-
-  public static boolean getIntake() {
-    return mXboxController.getLeftBumper();
   }
 
   public static boolean overrideIntakeBeamBreak() {

@@ -27,8 +27,11 @@ public class DefaultAimCommand extends Command {
     if (Input.getA()) {
       mAimingSubsystem.setDesiredSetpoint(AimState.AMP);
     }
-    else if (Input.getY()) {
+    if (Input.getY()) {
       mAimingSubsystem.setDesiredSetpoint(AimState.SPEAKER);
+    }
+    else if (Input.getX()) {
+      mAimingSubsystem.setDesiredSetpoint(AimState.HANDOFF);
     }
     else if (Input.getDPad() == 0.0) {
       mAimingSubsystem.setDesiredSetpoint(AimState.CLIMB);
