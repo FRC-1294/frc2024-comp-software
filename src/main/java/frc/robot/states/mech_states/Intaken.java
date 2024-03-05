@@ -22,7 +22,6 @@ public class Intaken extends MechState {
     public void handoffPosition(){
         mHandoffPositionCommand.schedule();
     }
-
     @Override
     public void speakerPosition() {
         mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.SUBWOOFER).schedule();
