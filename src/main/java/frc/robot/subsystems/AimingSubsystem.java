@@ -44,6 +44,7 @@ public class AimingSubsystem extends SubsystemBase {
   private double mDesiredElevatorDistanceIn = mCurrentElevatorDistanceIn;
   private double mDesiredWristRotationDeg = mCurrentWristRotationDeg;
 
+
   // MotorMode Chooser
   private final SendableChooser<AimingMotorMode> mChooser = new SendableChooser<>();
 
@@ -228,6 +229,10 @@ public class AimingSubsystem extends SubsystemBase {
     return -(mWristThroughBoreEncoder.getAbsolutePosition()*AimingConstants.WRIST_THROUGHBORE_GEAR_RATIO*360 - AimingConstants.WRIST_THROUGHBORE_ENCODER_OFFSET);
   }
 
+  public double getCurrentLaunchDegrees(){
+    return -mCurrentWristRotationDeg + AimingConstants.REST_LAUNCH_ANGLE;
+  }
+
   public AimState getCurrentState(){
     for (AimState state : AimState.values()){
       if (state.withinWristTolerance(getCurrentWristDegreees())
@@ -246,12 +251,20 @@ public class AimingSubsystem extends SubsystemBase {
     return mDesiredWristRotationDeg;
   }
 
+  public double getDesiredLaunchRotation() {
+    return -mDesiredWristRotationDeg + AimingConstants.REST_LAUNCH_ANGLE;
+  }
+
   public void setDesiredElevatorDistance(double distance) {
     mDesiredElevatorDistanceIn = distance;
   }
   public void setDesiredElevatorDistance(double distance, double tolerance) {
     mDesiredElevatorDistanceIn = distance;
     mElevatorController.setTolerance(tolerance);
+  }
+
+  public void setDesiredLaunchRotation(double launchDegrees){
+    mDesiredWristRotationDeg = -launchDegrees + AimingConstants.REST_LAUNCH_ANGLE;
   }
 
   public void setDesiredWristRotation(double rotation) {
