@@ -49,6 +49,7 @@ public class AimingConstants {
     // inaccurate values
     public static final double REST_LAUNCH_ANGLE = 51.0; // rest is when wrist rotation is zero degrees
     public static final double NOTE_EXIT_SPEED = 15.75;
+    public static final double DRAG_COEFFICIENT = 0.0;
     public static final double WRIST_D1 = .1778;
     public static final double WRIST_D2 = .01;
     public static final double WRIST_BEND_ANGLE = Units.degreesToRadians(51.0);
