@@ -1,0 +1,98 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 6.12,
+        "y": 6.58
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.902040470747608,
+        "y": 6.305985945305224
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.358310049953435,
+        "y": 5.757344848023029
+      },
+      "prevControl": {
+        "x": 8.206092464119333,
+        "y": 5.712948052154751
+      },
+      "nextControl": {
+        "x": 8.520870375074084,
+        "y": 5.804758276183218
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.1095588857844385,
+        "y": 6.59723986114639
+      },
+      "prevControl": {
+        "x": 6.454999576665821,
+        "y": 6.488866311065955
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.35,
+      "rotationDegrees": -21.89489446578773,
+      "rotateFast": true
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "IntakeUntilNote",
+      "waypointRelativePos": 0.5,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeUntilNote"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Handoff"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.5,
+    "maxAcceleration": 2.5,
+    "maxAngularVelocity": 300.0,
+    "maxAngularAcceleration": 120.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 8.806792694435195,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Center_Line_Only",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

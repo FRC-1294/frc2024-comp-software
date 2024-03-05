@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.63,
+        "y": 4.65
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.0184573702480737,
+        "y": 4.856489712979426
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.63,
+        "y": 5.560917788502243
+      },
+      "prevControl": {
+        "x": 1.2598425196850396,
+        "y": 5.459317585301837
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.5,
+    "maxAcceleration": 2.5,
+    "maxAngularVelocity": 300.0,
+    "maxAngularAcceleration": 120.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Wing_Focused",
+  "previewStartingState": {
+    "rotation": -19.860000000000014,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

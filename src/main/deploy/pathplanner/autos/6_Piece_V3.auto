@@ -1,12 +1,6 @@
 {
   "version": 1.0,
-  "startingPose": {
-    "position": {
-      "x": 0.76,
-      "y": 4.42
-    },
-    "rotation": -60.0
-  },
+  "startingPose": null,
   "command": {
     "type": "sequential",
     "data": {
@@ -38,7 +32,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "3rd_Piece_Mid"
+            "pathName": "3rd_Piece_V3"
           }
         },
         {
@@ -50,13 +44,37 @@
         {
           "type": "path",
           "data": {
-            "pathName": "4th_Piece_Mid"
+            "pathName": "4th_Piece_V3"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "ShootFromMidnote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center_Line_Note_1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootFromWing"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center_Line_Note_2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootFromWing"
           }
         }
       ]
