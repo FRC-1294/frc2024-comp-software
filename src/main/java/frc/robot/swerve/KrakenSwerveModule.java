@@ -42,7 +42,8 @@ public class KrakenSwerveModule extends SwerveModuleAbstract{
         mTransMotor = new TalonFX(transID,"DriveMotors");
         mTransConfiguration = new TalonFXConfiguration();
         
-        mTransConfiguration.CurrentLimits.SupplyCurrentLimit = 120;
+        mTransConfiguration.CurrentLimits.SupplyCurrentThreshold = 120;
+        mTransConfiguration.CurrentLimits.SupplyTimeThreshold = 1;
         mTransConfiguration.CurrentLimits.SupplyCurrentLimitEnable = true;
 
         mTransConfiguration.Feedback.SensorToMechanismRatio = 1/(transGearRatio *wheelCircumference);
