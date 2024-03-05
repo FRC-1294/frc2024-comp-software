@@ -38,10 +38,10 @@ public class VisionConstants {
 
 
   public static final Transform3d ROBOT_TO_CAM_VEC_FRONT = new Transform3d(
-      new Translation3d(.0496, .0626872, 1.28), new Rotation3d(0, -Math.toRadians(15), 0));
+      new Translation3d(-0.2337199, -0.22485, 0.3361519), new Rotation3d(0, Math.toRadians(40.341349), 0));
   public static final Transform3d ROBOT_TO_CAM_VEC_BACK =
-      new Transform3d(new Translation3d(.0496, .0626872, 1.28),
-          new Rotation3d(0, -Math.toRadians(15), Math.toRadians(180)));
+      new Transform3d(new Translation3d(-0.1287653508, 0.205200, 0.5492065978),
+          new Rotation3d(0, Math.toRadians(0), Math.toRadians(0)));
 
   public static final double SINGLE_TAG_AMBIGUITY_THRESH = 0.15;
 }
