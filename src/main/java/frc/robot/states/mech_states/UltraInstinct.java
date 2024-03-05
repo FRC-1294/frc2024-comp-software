@@ -35,6 +35,11 @@ public class UltraInstinct extends MechState {
     public void index(double vel){
         new InstantCommand(() -> mLauncherSubsystem.runIndexer(vel),mLauncherSubsystem).schedule();;
     }
+    
+    @Override
+    public void overrideIntake(double vel){
+        new InstantCommand(() -> mIntakeSubsystem.intakeMotorsAtSpeed(vel),mLauncherSubsystem).schedule();
+    }
 
     @Override
     public void launch() {

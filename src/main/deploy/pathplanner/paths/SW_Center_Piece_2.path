@@ -3,34 +3,69 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.81,
-        "y": 6.57
+        "x": 0.7450681568029804,
+        "y": 6.678520023706714
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.9084807753012208,
-        "y": 6.5873648177666935
+        "x": 0.8435489321042012,
+        "y": 6.695884841473407
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Left_Subwoofer_Shot"
     },
     {
       "anchor": {
-        "x": 2.9,
-        "y": 7.0
+        "x": 3.36,
+        "y": 7.08
       },
       "prevControl": {
-        "x": 2.8034074173710932,
-        "y": 6.974118095489748
+        "x": 3.263407417371093,
+        "y": 7.054118095489748
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.65,
+      "rotationDegrees": 10.03,
+      "rotateFast": true
+    },
+    {
+      "waypointRelativePos": 0.4,
+      "rotationDegrees": 1.0032083619945058,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "IntakeUntilNote",
+      "waypointRelativePos": 0.6,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeUntilNote"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Handoff"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 4.5,
     "maxAcceleration": 1.7,
@@ -39,8 +74,8 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 30.0,
-    "rotateFast": false
+    "rotation": 20.55604521958339,
+    "rotateFast": true
   },
   "reversed": false,
   "folder": "Center_Left",

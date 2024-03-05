@@ -20,7 +20,7 @@
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "ShootFromLine"
           }
         },
         {
@@ -32,7 +32,7 @@
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "ShootFromMidnote"
           }
         },
         {
@@ -44,7 +44,7 @@
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "ShootFromMidnote"
           }
         }
       ]

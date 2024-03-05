@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "ShootFromSubwoofer"
           }
         },
         {
@@ -26,7 +26,7 @@
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "ShootFromMidnote"
           }
         },
         {
@@ -38,7 +38,7 @@
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "ShootFromMidnote"
           }
         },
         {
@@ -50,7 +50,7 @@
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "ShootFromMidnote"
           }
         }
       ]

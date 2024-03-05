@@ -72,14 +72,19 @@ public class DefaultMechCommand{
                 return mIntaken;
             }
         }
-        else if (getIndexerBeamBreak() && isFlywheelAtSP() && isAimAtSP() && isVisionAligned()) {
-            returnFromLaunch = true;
-            return mReadyForLaunch;
-        }
         else if (getIndexerBeamBreak()) {
-            return mReadyForAim;
+            if (isFlywheelAtSP() && isAimAtSP() && isVisionAligned()) {
+                returnFromLaunch = true;
+                return mReadyForLaunch;
+            }
+            else{
+                return mReadyForAim;
+            }
         }
-        return mUltraInstinct;
+        else{
+            return mUltraInstinct;
+        }
+        
     }
 
     public void execute() {
@@ -97,28 +102,34 @@ public class DefaultMechCommand{
             mMechState.ampPosition();
         }
         else if (Input.getB()) {
-            mMechState.trapPosition();
+            mMechState.handoffPosition();
+            mMechState.brakeLauncher();
         }
         if (Input.getLeftBumper()) {
             mMechState.runIntakeMotors();
+        } else if (Math.abs(Input.getRightTrigger()) > LauncherConstants.INDEX_TRIGGER_DEADZONE) {
+            mMechState.overrideIntake((Input.getRightTrigger()-LauncherConstants.INDEX_TRIGGER_DEADZONE)
+            *(Input.getReverseButton() ? 1 : -1));
         } else{
             mMechState.brakeIntake();
         }
+
         if (Input.getRightBumper()) {
             mMechState.launch();
+        } else if (determineState().getClass() == mUltraInstinct.getClass()){
+            if (Math.abs(Input.getLeftTrigger()) > LauncherConstants.INDEX_TRIGGER_DEADZONE) {
+                mMechState.index((Input.getLeftTrigger()-LauncherConstants.INDEX_TRIGGER_DEADZONE)*(Input.getReverseButton() ? 1 : -1));
+            }else{
+                mMechState.brakeIndexer();
+            }
         }
+
         if (Math.abs(Input.getLeftStickY()) > 0.1) {
             mMechState.controlWrist(Input.getLeftStickY()*AimingConstants.MAX_WRIST_TELEOP_INCREMENT);
         }
         if (Math.abs(Input.getRightStickY()) > 0.1) {
             mMechState.controlElevator(Input.getRightStickY()*AimingConstants.MAX_ELEVATOR_TELEOP_INCREMENT);
         }
-        if (Math.abs(Input.getLeftTrigger()) > LauncherConstants.INDEX_TRIGGER_DEADZONE) {
-            mMechState.index((Input.getLeftTrigger()-LauncherConstants.INDEX_TRIGGER_DEADZONE)*(Input.getReverseButton() ? 1 : -1));
-        } 
-        if (Math.abs(Input.getRightTrigger()) > LauncherConstants.INDEX_TRIGGER_DEADZONE) {
-            mMechState.index((Input.getRightTrigger()-LauncherConstants.INDEX_TRIGGER_DEADZONE)*(Input.getReverseButton() ? 1 : -1));
-        } 
         if (Input.getDPad() == Input.DPADUP) {
             mMechState.ClimbExtendedState();
         } else if (Input.getDPad() == Input.DPADDOWN) {

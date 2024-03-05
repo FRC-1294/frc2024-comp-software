@@ -51,9 +51,9 @@
       "rotateFast": false
     },
     {
-      "waypointRelativePos": 0.15,
-      "rotationDegrees": 0,
-      "rotateFast": false
+      "waypointRelativePos": 0.2,
+      "rotationDegrees": 5.6949766905315355,
+      "rotateFast": true
     },
     {
       "waypointRelativePos": 0.35,
@@ -61,19 +61,43 @@
       "rotateFast": true
     }
   ],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0.3,
+      "maxWaypointRelativePos": 0.5,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 0.7,
+        "maxAngularVelocity": 300.0,
+        "maxAngularAcceleration": 120.0
+      }
+    }
+  ],
   "eventMarkers": [
     {
       "name": "IntakeUntilNote",
       "waypointRelativePos": 0.1,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
               "type": "named",
               "data": {
-                "name": null
+                "name": "IntakeUntilNote"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Handoff"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "ShootFromMidnote"
               }
             }
           ]
@@ -81,16 +105,22 @@
       }
     },
     {
-      "name": "LaunchGoofy",
-      "waypointRelativePos": 0.35,
+      "name": "IntakeUntilNote",
+      "waypointRelativePos": 1.25,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
               "type": "named",
               "data": {
-                "name": null
+                "name": "IntakeUntilNote"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Handoff"
               }
             }
           ]

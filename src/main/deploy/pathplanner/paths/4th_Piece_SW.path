@@ -3,52 +3,52 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3783760900855138,
+        "x": 1.354669376005419,
         "y": 5.537433881885308
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.961004531603735,
-        "y": 4.954805440367087
+        "x": 1.8779283940834643,
+        "y": 5.014174863807263
       },
-      "isLocked": false,
+      "isLocked": true,
       "linkedName": "Center_Subwoofer_Shot"
     },
     {
       "anchor": {
-        "x": 2.9464058928117858,
-        "y": 4.050461434256202
+        "x": 2.6890187113707564,
+        "y": 4.260435187537042
       },
       "prevControl": {
-        "x": 2.5124357028629896,
-        "y": 4.484431624204998
+        "x": 2.618308033252102,
+        "y": 4.331145865655697
       },
       "nextControl": {
-        "x": 3.2575328765338663,
-        "y": 3.7393344505341215
+        "x": 2.759729389489411,
+        "y": 4.1897245094183875
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.3783760900855138,
+        "x": 1.354669376005419,
         "y": 5.537433881885308
       },
       "prevControl": {
-        "x": 1.3941167997982469,
-        "y": 5.510170172915661
+        "x": 1.863786258459733,
+        "y": 5.028316999430993
       },
       "nextControl": null,
-      "isLocked": true,
+      "isLocked": false,
       "linkedName": "Center_Subwoofer_Shot"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.5,
-      "rotationDegrees": -39.99125838574117,
-      "rotateFast": false
+      "waypointRelativePos": 1.45,
+      "rotationDegrees": -42.0,
+      "rotateFast": true
     }
   ],
   "constraintZones": [],

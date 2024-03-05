@@ -16,11 +16,11 @@
     },
     {
       "anchor": {
-        "x": 2.902443459717638,
+        "x": 3.048006096012192,
         "y": 7.0
       },
       "prevControl": {
-        "x": 2.802443459717638,
+        "x": 2.948006096012192,
         "y": 7.0
       },
       "nextControl": null,
@@ -38,16 +38,22 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "New Event Marker",
+      "name": "IntakeUntilNote",
       "waypointRelativePos": 0.5,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
               "type": "named",
               "data": {
-                "name": null
+                "name": "IntakeUntilNote"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Handoff"
               }
             }
           ]
@@ -63,7 +69,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 30.0,
+    "rotation": 24.620786017449202,
     "rotateFast": false
   },
   "reversed": false,

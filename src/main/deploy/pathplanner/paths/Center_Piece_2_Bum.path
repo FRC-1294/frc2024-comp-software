@@ -79,13 +79,19 @@
       "name": "IntakeUntilNote",
       "waypointRelativePos": 0.1,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
               "type": "named",
               "data": {
-                "name": null
+                "name": "IntakeUntilNote"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "ShootFromMidnote"
               }
             }
           ]
@@ -93,16 +99,22 @@
       }
     },
     {
-      "name": "ShootDynamic",
-      "waypointRelativePos": 0.35,
+      "name": "New Event Marker",
+      "waypointRelativePos": 0.9,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
               "type": "named",
               "data": {
-                "name": null
+                "name": "IntakeUntilNote"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Handoff"
               }
             }
           ]

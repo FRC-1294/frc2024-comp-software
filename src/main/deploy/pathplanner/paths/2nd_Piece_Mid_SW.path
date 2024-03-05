@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3783760900855138,
+        "x": 1.354669376005419,
         "y": 5.537433881885308
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.572009144018288,
+        "x": 4.548302429938193,
         "y": 5.445770891541783
       },
       "isLocked": false,
@@ -64,11 +64,11 @@
     },
     {
       "anchor": {
-        "x": 1.3783760900855138,
+        "x": 1.354669376005419,
         "y": 5.537433881885308
       },
       "prevControl": {
-        "x": 4.622809245618492,
+        "x": 4.5991025315383975,
         "y": 5.422286984924847
       },
       "nextControl": null,
@@ -78,7 +78,31 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 1.65,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeUntilNote"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Handoff"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 4.5,
     "maxAcceleration": 1.7,

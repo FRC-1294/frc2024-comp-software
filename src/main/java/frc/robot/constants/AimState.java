@@ -4,9 +4,7 @@
 
 package frc.robot.constants;
 
-import com.pathplanner.lib.path.PathPlannerTrajectory.State;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /** Add your docs here. */
@@ -15,8 +13,6 @@ public enum AimState {
     AMP(100,5, 2000, 200), //Everything TBD
     TRAP(110,-1,-1,0,0,0), //Everything TBD
     HANDOFF(0,2,-1,-1), //Tolerance TBD
-
-
 
     LINE(0,0,0,0), //Everything TBD
     MIDNOTE(0,0,0,0), //Everything TBD

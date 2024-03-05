@@ -52,6 +52,8 @@ public abstract class MechState {
 
     public void index(double vel){}
 
+    public void overrideIntake(double vel){}
+
     public void launch() {}
 
     public void controlWrist(double increment) {}

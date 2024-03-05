@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3783760900855138,
+        "x": 1.354669376005419,
         "y": 5.537433881885308
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.323257979849293,
+        "x": 2.2995512657691983,
         "y": 5.411904157141649
       },
       "isLocked": false,
@@ -48,11 +48,11 @@
     },
     {
       "anchor": {
-        "x": 1.3783760900855138,
+        "x": 1.354669376005419,
         "y": 5.537433881885308
       },
       "prevControl": {
-        "x": 6.454999576665821,
+        "x": 6.431292862585726,
         "y": 4.924223181779697
       },
       "nextControl": null,
@@ -79,24 +79,13 @@
             {
               "type": "named",
               "data": {
-                "name": null
+                "name": "IntakeUntilNote"
               }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "New Event Marker",
-      "waypointRelativePos": 2.35,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
+            },
             {
               "type": "named",
               "data": {
-                "name": null
+                "name": "Handoff"
               }
             }
           ]

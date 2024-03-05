@@ -2,7 +2,7 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.38,
+      "x": 0.45,
       "y": 5.54
     },
     "rotation": 0
@@ -11,6 +11,12 @@
     "type": "sequential",
     "data": {
       "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Jink"
+          }
+        },
         {
           "type": "named",
           "data": {
@@ -21,6 +27,18 @@
           "type": "path",
           "data": {
             "pathName": "2nd_Piece_SW"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootFromSubwoofer"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3rd_Piece_SW"
           }
         },
         {
@@ -44,13 +62,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "3rd_Piece_SW"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShootFromSubwoofer"
+            "pathName": "3rd_Piece_Mid_SW"
           }
         }
       ]
