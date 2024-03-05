@@ -4,14 +4,22 @@ import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.commands.SwerveFrictionCharacterization;
 import frc.robot.constants.AimingConstants;
 
 public class Autoaim {
 
     // only chance this ever works is if pose estimation works as it uses field coords
-    private double neededlauncherAngleRadians = 0.0;
+    private static double neededlauncherAngleRadians = 0.0;
+    private static double neededRobotYaw = 0.0;
     SwerveSubsystem swerveSubsystem;
     AimingSubsystem aimingSubsystem;
+
+    private double prevSpeedX = 0.0;
+    private double prevSpeedY = 0.0;
+
+    private double lastTime = 0.0;
+    private double currentTime = 0.0;
 
     public Autoaim(SwerveSubsystem _swerveSubsystem, AimingSubsystem _aimingSubsystem){
         swerveSubsystem = _swerveSubsystem;
@@ -19,9 +27,28 @@ public class Autoaim {
     }
 
     public void update(){
+        lastTime = currentTime;
+        currentTime = Timer.getFPGATimestamp();
+        double deltaTime = currentTime - lastTime;
+
+        prevSpeedX = SwerveSubsystem.getChassisSpeeds().vxMetersPerSecond;
+        prevSpeedY = SwerveSubsystem.getChassisSpeeds().vyMetersPerSecond;
+        ChassisSpeeds speeds = ChassisSpeeds.fromRobotRelativeSpeeds(SwerveSubsystem.getChassisSpeeds(), SwerveSubsystem.getRotation2d());
+        
+        // predict future robot location
+        double accelX = (speeds.vxMetersPerSecond - prevSpeedX) / deltaTime;
+        double accelY = (speeds.vyMetersPerSecond - prevSpeedY) / deltaTime;
+
+        double velX = speeds.vxMetersPerSecond + accelX * AimingConstants.AUTOAIM_TIME_LOOKAHEAD;
+        double velY = speeds.vyMetersPerSecond + accelY * AimingConstants.AUTOAIM_TIME_LOOKAHEAD;
+
+        double robotX = SwerveSubsystem.getRobotPose().getX() + velX * AimingConstants.AUTOAIM_TIME_LOOKAHEAD;
+        double robotY = SwerveSubsystem.getRobotPose().getY() + velY * AimingConstants.AUTOAIM_TIME_LOOKAHEAD;
+
+
         // get field launcher pivot location
-        double launcherPivotX = SwerveSubsystem.getRobotPose().getX() - SwerveSubsystem.getRobotPose().getRotation().getSin() * Units.inchesToMeters(11.25);
-        double launcherPivotY = SwerveSubsystem.getRobotPose().getY() - SwerveSubsystem.getRobotPose().getRotation().getCos() * Units.inchesToMeters(11.25);
+        double launcherPivotX = robotX + SwerveSubsystem.getRobotPose().getRotation().getCos() * Units.inchesToMeters(11.25);
+        double launcherPivotY = robotY + SwerveSubsystem.getRobotPose().getRotation().getSin() * Units.inchesToMeters(11.25);
         double launcherPivotZ = Units.inchesToMeters(25.055);
 
         double xDistance = AimingConstants.BLUE_SPEAKER_POS.getX() - launcherPivotX;
@@ -30,29 +57,22 @@ public class Autoaim {
         
         double distance2D = Math.sqrt(xDistance * xDistance + yDistance * yDistance);        
 
-        ChassisSpeeds speeds = ChassisSpeeds.fromRobotRelativeSpeeds(SwerveSubsystem.getChassisSpeeds(), SwerveSubsystem.getRotation2d());
         double speakerApproachSpeed = speeds.vxMetersPerSecond * (xDistance/distance2D) + speeds.vyMetersPerSecond * (yDistance/distance2D);
         
         neededlauncherAngleRadians = searchForLaunchAngle(distance2D, zDistance, speakerApproachSpeed);
-        //aimingSubsystem.setDesiredLaunchRotation(launcherAngleRadians * 180 / Math.PI);
 
-        double neededYaw = searchForYaw(xDistance, yDistance, speeds.vxMetersPerSecond, speeds.vyMetersPerSecond);
-        if (xDistance < 0 && yDistance < 0) neededYaw -= Math.PI;
-        else if (xDistance < 0 && yDistance >= 0) neededYaw += Math.PI;
+        neededRobotYaw = searchForYaw(xDistance, yDistance, speeds.vxMetersPerSecond, speeds.vyMetersPerSecond);
+        if (xDistance < 0 && yDistance < 0) neededRobotYaw -= Math.PI;
+        else if (xDistance < 0 && yDistance >= 0) neededRobotYaw += Math.PI;
     }    
 
-    public double getNeededLaunchAngle(){
-        return 0.0;
+    public static double getNeededLaunchAngle(){
+        return neededlauncherAngleRadians;
     }
 
-    public double getNeededRobotYaw(){
-        return 0.0;
+    public static double getNeededRobotYaw(){
+        return neededRobotYaw;
     }
-
-    public boolean canMakeIt(){
-        return false;
-    }
-
 
     private double launcherAngleEquation(double xDist2D, double yDist2D, double speakerApproachSpeed, double angleGuess){
         double time = ((xDist2D - AimingConstants.WRIST_D1 * Math.cos(angleGuess + AimingConstants.WRIST_BEND_ANGLE) + AimingConstants.WRIST_D2 * Math.cos(angleGuess)) / (AimingConstants.NOTE_EXIT_SPEED * Math.cos(angleGuess) + speakerApproachSpeed));

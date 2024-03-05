@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
+import java.util.Currency;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.AimingConstants;
@@ -140,6 +141,10 @@ public class DefaultMechCommand{
         }
         if (Input.getDPad() == Input.DPADLEFT){
             mUseUltraInstinct = false;
+        }
+
+        if (Input.doAutoaim()){
+            mMechState.triggerAutoaim();
         }
 
         runAction();

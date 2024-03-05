@@ -41,6 +41,10 @@ public class Input {
     return mTransJoystick.getY();
   }
 
+  public static boolean doAutoaim(){
+    return mRotJoystick.getRawButton(4);
+  }
+
   public static boolean getLeftBumper() {
     return mXboxController.getLeftBumper();
   }

@@ -4,15 +4,12 @@
 
 package frc.robot.constants;
 
-<<<<<<< HEAD
 import edu.wpi.first.math.InterpolatingMatrixTreeMap;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
-=======
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.util.Units;
->>>>>>> autoaim
 import frc.robot.Util.PIDParameters;
 import frc.robot.subsystems.AimingSubsystem.AimingMotorMode;
 
@@ -62,7 +59,7 @@ public class AimingConstants {
     public static final double WRIST_BEND_ANGLE = Units.degreesToRadians(51.0);
     public static final Pose3d BLUE_SPEAKER_POS = new Pose3d(.75, 5.6, 2.0, new Rotation3d());
     public static final Pose3d RED_SPEAKER_POS = new Pose3d(0, 0, 0, new Rotation3d());
-
+    public static final double AUTOAIM_TIME_LOOKAHEAD = 0.0;
 
     // ID's
     public static final int LEFT_ELEVATOR_SPARK_ID = 33; //Done

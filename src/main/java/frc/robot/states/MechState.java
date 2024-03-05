@@ -77,4 +77,6 @@ public abstract class MechState {
     public void aimStatePosition(AimState state){}
 
     public void resetEncoders() {}
+
+    public void triggerAutoaim() {}
 }

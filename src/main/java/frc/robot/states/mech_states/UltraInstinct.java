@@ -1,11 +1,13 @@
 package frc.robot.states.mech_states;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.constants.IntakeConstants;
 import frc.robot.constants.LauncherConstants;
 import frc.robot.constants.AimState;
 import frc.robot.states.MechState;
 import frc.robot.subsystems.AimingSubsystem;
+import frc.robot.subsystems.Autoaim;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
 
@@ -94,5 +96,10 @@ public class UltraInstinct extends MechState {
     @Override
     public void handoffPosition(){
         mHandoffPositionCommand.schedule();
+    }
+
+    @Override 
+    public void triggerAutoaim(){
+        mAimingSubsystem.setDesiredLaunchRotation(Units.degreesToRadians(Autoaim.getNeededLaunchAngle()));
     }
 }

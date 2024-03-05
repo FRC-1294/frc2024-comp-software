@@ -8,6 +8,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.JoystickConstants;
 import frc.robot.Input;
+import frc.robot.subsystems.Autoaim;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.SwerveSubsystem;
 
@@ -17,7 +18,7 @@ public class DefaultDriveCommand extends Command {
   private final Limelight mLimelight;
   private boolean mIsPrecisionToggle = false;
   private final PIDController mNotePID = new PIDController(5, 0, 0.1);
-  
+  private final PIDController yawAutoaim = new PIDController(5, 0, 0.1);
 
 
   public DefaultDriveCommand(SwerveSubsystem swerve, Limelight limelight) {
@@ -48,6 +49,7 @@ public class DefaultDriveCommand extends Command {
       mIsPrecisionToggle = !mIsPrecisionToggle;
     }
 
+
     if (mIsPrecisionToggle) {
       x = x / JoystickConstants.DRIVE_PRECISION_X_DESATURATION;
       y = y / JoystickConstants.DRIVE_PRECISION_Y_DESATURATION;
@@ -62,6 +64,7 @@ public class DefaultDriveCommand extends Command {
       rot = Math.abs(rot) > JoystickConstants.DRIVE_REG_ROT_DEADZONE ? rot : 0.0;
     }
 
+
     x *= mSwerve.mConfig.TELE_MAX_SPEED_MPS;
     y *= mSwerve.mConfig.TELE_MAX_SPEED_MPS;
     rot *= mSwerve.mConfig.TELE_MAX_ROT_SPEED_RAD_SEC;
@@ -71,6 +74,11 @@ public class DefaultDriveCommand extends Command {
     //     rot = mNotePID.calculate(Units.degreesToRadians(mLimelight.getNoteAngle()));
     //     isFieldOriented = false;
     // }
+
+    if (Input.doAutoaim()) {
+      rot = yawAutoaim.calculate(SwerveSubsystem.getRobotPose().getRotation().getRadians(), Autoaim.getNeededRobotYaw());
+    }
+
     mSwerve.setChassisSpeed(x, y, rot, isFieldOriented, false);
   }
 
