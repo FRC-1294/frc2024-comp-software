@@ -86,6 +86,12 @@ public class AimingSubsystem extends SubsystemBase {
     mWristController.setTolerance(AimingConstants.WRIST_TOLERANCE_DEG);
     mElevatorController.setTolerance(AimingConstants.ELEVATOR_TOLERANCE_IN);
 
+    mLeftElevatorMotor.setSmartCurrentLimit(40);
+    mRightElevatorMotor.setSmartCurrentLimit(40);
+
+    mLeftWristMotor.setSmartCurrentLimit(80);
+    mRightWristMotor.setSmartCurrentLimit(80);
+
     //follower configuration
     mRightWristMotor.follow(mLeftWristMotor, true);
     mRightElevatorMotor.follow(mLeftElevatorMotor, true);
@@ -113,10 +119,7 @@ public class AimingSubsystem extends SubsystemBase {
     updateMotorModes();
     elevatorPeriodic();
     wristPeriodic();
-    SmartDashboard.putString("CurrentAimState", getCurrentState().toString());
     debugSmartDashboard();
-
-
   }
 
   private void elevatorPeriodic() {
@@ -128,8 +131,6 @@ public class AimingSubsystem extends SubsystemBase {
     elevatorPIDCalculation = MathUtil.clamp(elevatorPIDCalculation, -AimingConstants.MAX_ELEVATOR_PID_CONTRIBUTION, AimingConstants.MAX_ELEVATOR_PID_CONTRIBUTION);
 
     mLeftElevatorMotor.set(elevatorPIDCalculation);
-    SmartDashboard.putNumber("ElevatorPIDOutput", elevatorPIDCalculation);
-    //mLeftElevatorMotor.set(0.2);
   }
 
 
@@ -143,11 +144,6 @@ public class AimingSubsystem extends SubsystemBase {
 
     double wristFeedforwardCalculation = Math.cos(Math.toRadians(mCurrentWristRotationDeg-AimingConstants.COG_OFFSET))*AimingConstants.WRIST_KG;
     mLeftWristMotor.set(wristPIDCalculation + wristFeedforwardCalculation);
-    SmartDashboard.putNumber("WristPIDOutput", wristPIDCalculation);
-    SmartDashboard.putNumber("kGOutput", wristFeedforwardCalculation);
-
-
-    // mLeftWristMotor.set(0.05);
   }
 
   private void updateMotorModes() {
