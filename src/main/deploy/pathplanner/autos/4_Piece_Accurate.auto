@@ -14,12 +14,6 @@
         {
           "type": "path",
           "data": {
-            "pathName": "WallToCL"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
             "pathName": "Center_Piece_1"
           }
         },
