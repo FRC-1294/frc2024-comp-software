@@ -7,7 +7,7 @@ package frc.robot.subsystems;
 
 import org.photonvision.EstimatedRobotPose;
 import com.ctre.phoenix6.hardware.Pigeon2;
-
+import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -16,6 +16,8 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.CompConstants;
@@ -272,7 +274,9 @@ public class SwerveSubsystem extends SubsystemBase {
   public static void updateVision(EstimatedRobotPose pose) {
     mOdometry.addVisionMeasurement(pose.estimatedPose.toPose2d(), pose.timestampSeconds);
   }
-
+  public static void updateVision(EstimatedRobotPose pose, Matrix<N3, N1> std) {
+    mOdometry.addVisionMeasurement(pose.estimatedPose.toPose2d(), pose.timestampSeconds, std);
+  }
   /**
    * @return provide the pose of the robot in meters
    */
