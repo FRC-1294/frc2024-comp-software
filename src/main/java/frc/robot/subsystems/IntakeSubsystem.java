@@ -28,11 +28,11 @@ public class IntakeSubsystem extends SubsystemBase {
   public IntakeSubsystem() {
     mIntakeMotorInner.restoreFactoryDefaults();
     mIntakeMotorOuter.restoreFactoryDefaults();
-    //mIntakeMotorInner.setSmartCurrentLimit(IntakeConstants.SMART_CURRENT_LIMIT_INNER); //set current limit as to not burn out motor
+    // mIntakeMotorInner.setSmartCurrentLimit(40); //set current limit as to not burn out motor
     mIntakeMotorInner.setInverted(IntakeConstants.INTAKE_INVERTED_INNER);
     mIntakeMotorInner.enableVoltageCompensation(11);//No voltage comp since we want intake to run at full power
  
-    //mIntakeMotorOuter.setSmartCurrentLimit(IntakeConstants.SMART_CURRENT_LIMIT_OUTER); //set current limit as to not burn out motor
+    mIntakeMotorOuter.setSmartCurrentLimit(40); //set current limit as to not burn out motor
     mIntakeMotorOuter.setInverted(IntakeConstants.INTAKE_INVERTED_OUTER);
     mIntakeMotorOuter.enableVoltageCompensation(11);//No voltage comp since we want intake to run at full power
 

@@ -3,6 +3,7 @@ package frc.robot.states;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.AutonomousCommands.Handoff;
 import frc.robot.constants.AimState;
 import frc.robot.subsystems.AimingSubsystem;
@@ -46,6 +47,7 @@ public abstract class MechState {
     public void brakeIntake() {
        new InstantCommand(()->mIntakeSubsystem.stopMotors(),mIntakeSubsystem).schedule();
     }
+    public void emergencyOuttake(){}
     public void runIntakeMotors(){}
 
     public void preformHandoff(){}

@@ -13,6 +13,7 @@ public enum AimState {
     AMP(100,5, 2000, 200), //Everything TBD
     TRAP(110,-1,-1,0,0,0), //Everything TBD
     HANDOFF(0,2,-1,-1), //Tolerance TBD
+    OUTTAKE(30,3,-1,-1,-1000,100),
 
     LINE(0,0,0,0), //Everything TBD
     MIDNOTE(0,0,0,0), //Everything TBD

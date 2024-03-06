@@ -52,12 +52,6 @@
           "data": {
             "name": "ShootFromSubwoofer"
           }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "3rd_Piece_Mid_SW"
-          }
         }
       ]
     }

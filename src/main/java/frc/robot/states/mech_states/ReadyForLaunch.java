@@ -1,7 +1,9 @@
 package frc.robot.states.mech_states;
 
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.constants.AimState;
 import frc.robot.states.MechState;
 import frc.robot.subsystems.AimingSubsystem;
@@ -45,5 +47,11 @@ public class ReadyForLaunch extends MechState {
          mLauncherSubsystem.waitUntilFlywheelSetpointCommand(aim));
         mAimStatePositionCommand.schedule();
     }
-
+    @Override
+    public void emergencyOuttake(){
+        mLaunchCommand.cancel();
+        new SequentialCommandGroup(new ParallelCommandGroup(mAimingSubsystem.waitUntilSetpoint(AimState.OUTTAKE),
+            mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.OUTTAKE)),
+            new InstantCommand(()->mLauncherSubsystem.runIndexer(-0.6))); 
+    }
 }

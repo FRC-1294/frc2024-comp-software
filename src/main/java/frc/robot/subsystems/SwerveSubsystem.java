@@ -62,9 +62,9 @@ public class SwerveSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run    
     mOdometry.update(getRotation2d(), getModulePositions());
-      // SmartDashboard.putNumber("XPos", mOdometry.getEstimatedPosition().getX());
-      // SmartDashboard.putNumber("YPos", mOdometry.getEstimatedPosition().getY());
-      // SmartDashboard.putNumber("Heading", getRotation2d().getDegrees());
+    SmartDashboard.putNumber("XPos", mOdometry.getEstimatedPosition().getX());
+    SmartDashboard.putNumber("YPos", mOdometry.getEstimatedPosition().getY());
+    SmartDashboard.putNumber("Heading", getRotation2d().getDegrees());
     if (CompConstants.DEBUG_MODE) {
       SmartDashboard.putData("Swerve", this);
 
@@ -186,7 +186,7 @@ public class SwerveSubsystem extends SubsystemBase {
    * @apiNote Keep in mind all of this is field relative so resetting the gyro midmatch will also
    *          reset these params
    */
-  public void setChassisSpeed(double vxMPS, double vyMPS, double angleSpeedRADPS,
+  public void   setChassisSpeed(double vxMPS, double vyMPS, double angleSpeedRADPS,
     boolean fieldOriented, boolean isOpenLoop) {
     ChassisSpeeds chassisSpeeds;
     if (fieldOriented) {

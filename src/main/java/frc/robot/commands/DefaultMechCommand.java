@@ -129,9 +129,7 @@ public class DefaultMechCommand{
             mMechState.controlElevator(Input.getRightStickY()*AimingConstants.MAX_ELEVATOR_TELEOP_INCREMENT);
         }
         if (Input.getDPad() == Input.DPADUP) {
-            mMechState.ClimbExtendedState();
-        } else if (Input.getDPad() == Input.DPADDOWN) {
-            mMechState.ClimbRetractedState();
+            mMechState.emergencyOuttake();
         }
         if (Input.getDPad() == Input.DPADRIGHT){
             mUseUltraInstinct = true;
