@@ -58,7 +58,7 @@ public class Input {
   }
 
   public static double getRot() {
-    return mRotJoystick.getX()*mRotJoystick.getX() * Math.signum(mRotJoystick.getX());
+    return mRotJoystick.getX();
   }
 
   public static boolean getA() {

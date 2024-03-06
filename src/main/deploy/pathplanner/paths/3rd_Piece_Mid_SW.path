@@ -67,7 +67,19 @@
       "rotateFast": false
     }
   ],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 3.0,
+      "constraints": {
+        "maxVelocity": 3.0,
+        "maxAcceleration": 2.0,
+        "maxAngularVelocity": 300.0,
+        "maxAngularAcceleration": 120.0
+      }
+    }
+  ],
   "eventMarkers": [
     {
       "name": "New Event Marker",
