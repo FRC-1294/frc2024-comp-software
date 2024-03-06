@@ -60,9 +60,9 @@ public class SwerveSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run    
     mOdometry.update(getRotation2d(), getModulePositions());
-      SmartDashboard.putNumber("XPos", mOdometry.getEstimatedPosition().getX());
-      SmartDashboard.putNumber("YPos", mOdometry.getEstimatedPosition().getY());
-      SmartDashboard.putNumber("Heading", getRotation2d().getDegrees());
+      // SmartDashboard.putNumber("XPos", mOdometry.getEstimatedPosition().getX());
+      // SmartDashboard.putNumber("YPos", mOdometry.getEstimatedPosition().getY());
+      // SmartDashboard.putNumber("Heading", getRotation2d().getDegrees());
     if (CompConstants.DEBUG_MODE) {
       SmartDashboard.putData("Swerve", this);
 
@@ -204,17 +204,17 @@ public class SwerveSubsystem extends SubsystemBase {
           rotPID = 0;
         }
        
-        SmartDashboard.putNumber("ChassisSpeedXPID", xPID);
-        SmartDashboard.putNumber("ChassisSpeedYPID", yPID);
-        SmartDashboard.putNumber("ChassisSpeedRotPID", rotPID);
+        // SmartDashboard.putNumber("ChassisSpeedXPID", xPID);
+        // SmartDashboard.putNumber("ChassisSpeedYPID", yPID);
+        // SmartDashboard.putNumber("ChassisSpeedRotPID", rotPID);
 
-        SmartDashboard.putNumber("ChassisSpeedX", vxMPS);
-        SmartDashboard.putNumber("ChassisSpeedy", vyMPS);
-        SmartDashboard.putNumber("ChassisSpeedRot", angleSpeedRADPS);
+        // SmartDashboard.putNumber("ChassisSpeedX", vxMPS);
+        // SmartDashboard.putNumber("ChassisSpeedy", vyMPS);
+        // SmartDashboard.putNumber("ChassisSpeedRot", angleSpeedRADPS);
 
-        SmartDashboard.putNumber("ChassisSpeedXError", chassisXPID.getPositionError());
-        SmartDashboard.putNumber("ChassisSpeedYError", chassisYPID.getPositionError());
-        SmartDashboard.putNumber("ChassisSpeedRotError", chassisRotPID.getPositionError());
+        // SmartDashboard.putNumber("ChassisSpeedXError", chassisXPID.getPositionError());
+        // SmartDashboard.putNumber("ChassisSpeedYError", chassisYPID.getPositionError());
+        // SmartDashboard.putNumber("ChassisSpeedRotError", chassisRotPID.getPositionError());
         chassisSpeeds =  ChassisSpeeds.fromFieldRelativeSpeeds(vxMPS+xPID,
                                                         vyMPS+yPID, 
                                                         angleSpeedRADPS+rotPID, getRotation2d());

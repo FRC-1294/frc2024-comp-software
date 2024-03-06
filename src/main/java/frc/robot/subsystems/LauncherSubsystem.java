@@ -75,12 +75,12 @@ public class LauncherSubsystem extends SubsystemBase {
 
     runLauncher();
 
-    SmartDashboard.putNumber("Flywheel Position", mLeaderFlywheel.getPosition().getValueAsDouble()*LauncherConstants.FLYWHEEL_MAX_VELOCITY*LauncherConstants.FLYWHEEL_SENSOR_TO_MECHANISM);
+    // SmartDashboard.putNumber("Flywheel Position", mLeaderFlywheel.getPosition().getValueAsDouble()*LauncherConstants.FLYWHEEL_MAX_VELOCITY*LauncherConstants.FLYWHEEL_SENSOR_TO_MECHANISM);
 
     SmartDashboard.putBoolean("Piece in Indexer", pieceInIndexer());
     SmartDashboard.putNumber("Flywheel Speed", actualVelocity);
-    SmartDashboard.putNumber("Indexer Applied Output", mIndexer.getAppliedOutput());
-    SmartDashboard.putBoolean("LauncherReady", isLauncherReady());
+    // SmartDashboard.putNumber("Indexer Applied Output", mIndexer.getAppliedOutput());
+    // SmartDashboard.putBoolean("LauncherReady", isLauncherReady());
   }
 
   public void runIndexer(double velocity) {

@@ -83,7 +83,7 @@ public class ScoreSpeaker extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    SmartDashboard.putBoolean("ScoreSpeakerIsFinished", mCommand.isFinished());
+    // SmartDashboard.putBoolean("ScoreSpeakerIsFinished", mCommand.isFinished());
     return mCommand.isFinished();
     //TBD We also need to check if swerve is at the right position and angle tolerance
   }

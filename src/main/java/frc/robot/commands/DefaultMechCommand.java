@@ -55,7 +55,6 @@ public class DefaultMechCommand{
     }
 
     public static MechState determineState() {
-        SmartDashboard.putBoolean("AtHandoff", AimState.HANDOFF.atState(mAimingSubsystem.getCurrentWristDegreees(), mAimingSubsystem.getCurrentElevatorDistance(), mLauncherSubsystem.getCurrentVelocity()));
         if (mUseUltraInstinct) {
             return mUltraInstinct;
         }

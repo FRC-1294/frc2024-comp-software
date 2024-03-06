@@ -7,7 +7,7 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.revrobotics.CANSparkLowLevel;
-
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -39,37 +39,32 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
-  @Override
+  @Override 
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-   
+   CameraServer.startAutomaticCapture();
     new InitializePathPlanner(robotContainer.getSwerveSubsystem(),robotContainer.getIntakeSubsystem(),robotContainer.getLauncher(),robotContainer.getAimingSubsystem()).initialize();
     
     SmartDashboard.putData("Pick your Auton...",pathSelector);
 
-    pathSelector.addOption("kSCharacterization", new SwerveFrictionCharacterization(robotContainer.getSwerveSubsystem()));
-    pathSelector.addOption("kVCharacterization", new SwerveVoltageCharacterization(robotContainer.getSwerveSubsystem()));
-    pathSelector.addOption("4 Piece LC SW", AutoBuilder.buildAuto("4_Piece_SW_Accurate"));
-    pathSelector.addOption("4 Piece LC Line", AutoBuilder.buildAuto("4_Piece_Accurate"));
-    pathSelector.addOption("4 Piece LC Hail Mary", AutoBuilder.buildAuto("4_Piece_Bum"));
-    pathSelector.addOption("4 Piece LC SW Hail Mary", AutoBuilder.buildAuto("4_Piece_SW_Bum"));
-    pathSelector.addOption("4 Piece Subwoofer", AutoBuilder.buildAuto("4_Piece_V1"));
-    pathSelector.addOption("4 Piece Midnote", AutoBuilder.buildAuto("4_Piece_V2"));
-    pathSelector.addOption("5 Meter Test", AutoBuilder.buildAuto("5_Meter_Test"));
-    pathSelector.addOption("None", new PrintCommand("Damn that sucks"));
+    // pathSelector.addOption("4 Piece Subwoofer", AutoBuilder.buildAuto("4_Piece_V1"));
+    // pathSelector.addOption("4 Piece LC SW", AutoBuilder.buildAuto("4_Piece_SW_Accurate"));
+    // pathSelector.addOption("4 Piece LC SW Hail Mary", AutoBuilder.buildAuto("4_Piece_SW_Bum"));
+    // pathSelector.addOption("Cool Shit", AutoBuilder.buildAuto("6_Piece_V3"));
+    // pathSelector.addOption("4 Piece RC SW", AutoBuilder.buildAuto("3_Piece_Lower_Center"));
 
 
-    pathSelector.addOption("4 Piece SW Method 2", 
-    new SequentialCommandGroup(
-      new LaunchFromHandoff(robotContainer.getAimingSubsystem(), robotContainer.getLauncher(), AimState.SUBWOOFER),
-      AutoBuilder.followPath(PathPlannerPath.fromPathFile("2nd_Piece_SW")),
-      new LaunchFromHandoff(robotContainer.getAimingSubsystem(), robotContainer.getLauncher(), AimState.SUBWOOFER),
-      AutoBuilder.followPath(PathPlannerPath.fromPathFile("3rd_Piece_SW")),
-      new LaunchFromHandoff(robotContainer.getAimingSubsystem(), robotContainer.getLauncher(), AimState.SUBWOOFER),
-      AutoBuilder.followPath(PathPlannerPath.fromPathFile("4th_Piece_SW")),
-      new LaunchFromHandoff(robotContainer.getAimingSubsystem(), robotContainer.getLauncher(), AimState.SUBWOOFER)
-    ));
+    // pathSelector.addOption("None", new PrintCommand("Damn that sucks"));
+
+
+    // pathSelector.addOption("kSCharacterization", new SwerveFrictionCharacterization(robotContainer.getSwerveSubsystem()));
+    // pathSelector.addOption("kVCharacterization", new SwerveVoltageCharacterization(robotContainer.getSwerveSubsystem()));
+    // // pathSelector.addOption("4 Piece LC Line", AutoBuilder.buildAuto("4_Piece_Accurate"));
+    // // pathSelector.addOption("4 Piece LC Hail Mary", AutoBuilder.buildAuto("4_Piece_Bum"));
+    // // pathSelector.addOption("4 Piece Midnote", AutoBuilder.buildAuto("4_Piece_V2"));
+    // pathSelector.addOption("5 Meter Test", AutoBuilder.buildAuto("5_Meter_Test"));
+
   }
 
   /**
@@ -85,8 +80,6 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
-    SmartDashboard.putBoolean("IsFinishedScoreSpeaker", ScoreSpeaker.mCommand.isFinished());
-    SmartDashboard.putBoolean("IsScheduledScoreSpeaker", ScoreSpeaker.mCommand.isScheduled());
     SmartDashboard.updateValues();
 
 

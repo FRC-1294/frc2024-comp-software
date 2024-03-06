@@ -50,7 +50,6 @@ public class IntakeSubsystem extends SubsystemBase {
     //   stopMotors();
     // }
     SmartDashboard.putBoolean("Piece in Intake", pieceInIntake());
-    SmartDashboard.putNumber("IntakeSpeed", mIntakeMotorInner.getAppliedOutput());
   }
 
   /**
