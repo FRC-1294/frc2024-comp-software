@@ -14,11 +14,11 @@ public enum AimState {
     TRAP(110,-1,-1,0,0,0), //Everything TBD
     HANDOFF(0,2,-1,-1), //Tolerance TBD
     OUTTAKE(30,3,-1,-1,-1000,100),
+    PODIUM(21, 1, 10000, 1000),
 
     LINE(0,0,0,0), //Everything TBD
     MIDNOTE(0,0,0,0), //Everything TBD
     WING(0,0,0,0), //Everything TBD
-    PROTECTED(0,0,0,0), //Everything TBD
     CLIMB_UP(0,-1,-1,0,AimingConstants.MAX_ELEVATOR_DIST_METERS-0.2,0.1),
     CLIMB_DOWN(0,-1,-1,0,AimingConstants.MIN_ELEVATOR_DIST_METERS,0.1),
     TRANSITION(-1,-1,-1,-1);

@@ -30,18 +30,18 @@ public class VisionConstants {
   // These are tunable constants for the reliability of odometry and vision measurements in the form
   // of a vector of (x, y, theta), in meters, meters, and radians respectively
   public static final Matrix<N3, N1> STATE_STD_DEVS =
-      VecBuilder.fill(0.1, 0.1, 0.1);
+      VecBuilder.fill(0.1, 0.1, Units.degreesToRadians(2));
   public static final Matrix<N3, N1> SINGLE_TAG_VISION_MEASUREMENTS_STD_DEVS =
-      VecBuilder.fill(0.5, 0.5, 0.5);
+      VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(7));
   public static final Matrix<N3, N1> MULTI_TAG_VISION_MEASUREMENTS_STD_DEVS =
-      VecBuilder.fill(0.2, 0.2, 0.2);
+      VecBuilder.fill(0.2, 0.2, Units.degreesToRadians(3));
 
 
   public static final Transform3d ROBOT_TO_CAM_VEC_FRONT = new Transform3d(
-      new Translation3d(-0.2337199, -0.22485, 0.3361519), new Rotation3d(0, Math.toRadians(40.341349), 0));
+      new Translation3d(-0.2337199, -0.22485, 0.3361519), new Rotation3d(0, Math.toRadians(40.341349), Math.toRadians(180)));
   public static final Transform3d ROBOT_TO_CAM_VEC_BACK =
       new Transform3d(new Translation3d(-0.1287653508, 0.205200, 0.5492065978),
-          new Rotation3d(0, Math.toRadians(0), Math.toRadians(0)));
+          new Rotation3d(0, Math.toRadians(0), Math.toRadians(90)));
 
   public static final double SINGLE_TAG_AMBIGUITY_THRESH = 0.15;
 }
