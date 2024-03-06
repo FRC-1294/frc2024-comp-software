@@ -22,7 +22,6 @@ import frc.robot.subsystems.Limelight;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem mSwerveSubsystem = new SwerveSubsystem(new CompetitionBotSwerveConfig());
-  private final Limelight mLightLight = new Limelight();
   private final IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
   private final LauncherSubsystem mLauncherSubsystem = new LauncherSubsystem();
   private final AimingSubsystem mAimingSubsystem = new AimingSubsystem();
@@ -31,7 +30,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    mSwerveSubsystem.setDefaultCommand(new DefaultDriveCommand(mSwerveSubsystem, mLightLight));
+    mSwerveSubsystem.setDefaultCommand(new DefaultDriveCommand(mSwerveSubsystem));
   }
   
   public SwerveSubsystem getSwerveSubsystem() {

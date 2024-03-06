@@ -14,17 +14,14 @@ import frc.robot.subsystems.SwerveSubsystem;
 public class DefaultDriveCommand extends Command {
 
   private final SwerveSubsystem mSwerve;
-  private final Limelight mLimelight;
   private boolean mIsPrecisionToggle = false;
   private final PIDController mNotePID = new PIDController(5, 0, 0.1);
   
 
 
-  public DefaultDriveCommand(SwerveSubsystem swerve, Limelight limelight) {
+  public DefaultDriveCommand(SwerveSubsystem swerve) {
     mSwerve = swerve;
-    mLimelight = limelight;
     addRequirements(mSwerve);
-    addRequirements(mLimelight);
     mNotePID.setTolerance(2);
   }
 
@@ -65,13 +62,7 @@ public class DefaultDriveCommand extends Command {
     x *= mSwerve.mConfig.TELE_MAX_SPEED_MPS;
     y *= mSwerve.mConfig.TELE_MAX_SPEED_MPS;
     rot *= mSwerve.mConfig.TELE_MAX_ROT_SPEED_RAD_SEC;
-    boolean isFieldOriented = true;
-    // SmartDashboard.putNumber("tx", mLimelight.getNoteAngle());
-    // if (Input.getNoteAlignment() && mLimelight.isDetectionValid()) {
-    //     rot = mNotePID.calculate(Units.degreesToRadians(mLimelight.getNoteAngle()));
-    //     isFieldOriented = false;
-    // }
-    mSwerve.setChassisSpeed(x, y, rot, isFieldOriented, false);
+    mSwerve.setChassisSpeed(x, y, rot, true, false);
   }
 
   // Returns true when the command should end.
