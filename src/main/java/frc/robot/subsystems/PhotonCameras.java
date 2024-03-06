@@ -6,7 +6,12 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.VisionConstants;
 import java.util.List;
@@ -22,6 +27,7 @@ public class PhotonCameras extends SubsystemBase {
     private final PhotonCamera mPhotonCameraBack;
     private PhotonPoseEstimator mPhotonPoseEstimatorFront;
     private PhotonPoseEstimator mPhotonPoseEstimatorBack;
+    private AprilTagFieldLayout fieldLayout;
 
     public PhotonCameras() {
         // Change the name of your camera here to whatever it is in the PhotonVision UI.
@@ -29,7 +35,7 @@ public class PhotonCameras extends SubsystemBase {
         mPhotonCameraBack = new PhotonCamera(VisionConstants.CAMERA_NAME_BACK);
 
         
-        AprilTagFieldLayout fieldLayout =
+        fieldLayout =
                 AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
         // Create pose estimator
         mPhotonPoseEstimatorFront =
@@ -54,9 +60,9 @@ public class PhotonCameras extends SubsystemBase {
         Optional<EstimatedRobotPose> poseBack = getEstimatedGlobalPoseBack(SwerveSubsystem.getRobotPose());
 
         if (poseFront.isPresent() && isValidPose(poseFront.get())) {
-            SwerveSubsystem.updateVision(poseFront.get());
+            SwerveSubsystem.updateVision(poseFront.get(), getVisionSTD(poseFront.get()));
         } else if (poseBack.isPresent() && isValidPose(poseBack.get())) {
-            SwerveSubsystem.updateVision(poseBack.get());
+            SwerveSubsystem.updateVision(poseBack.get(), getVisionSTD(poseBack.get()));
         }
 
     }
@@ -93,9 +99,38 @@ public class PhotonCameras extends SubsystemBase {
     private boolean isValidPose(EstimatedRobotPose pose) {
     List<PhotonTrackedTarget> targets = pose.targetsUsed;
     if (targets.size() == 1) {
-    return targets.get(0).getPoseAmbiguity() < VisionConstants.SINGLE_TAG_AMBIGUITY_THRESH;
+        return targets.get(0).getPoseAmbiguity() < VisionConstants.SINGLE_TAG_AMBIGUITY_THRESH;
+    } else if (targets.size() > 1) {
+        return true;
     }
 
-    return true;
+    return false;
+    }
+
+    private Matrix<N3,N1> getVisionSTD(EstimatedRobotPose pose) {
+        List<PhotonTrackedTarget> targets = pose.targetsUsed;
+        int numTags = 0;
+        double avgDist = 0;
+        for (PhotonTrackedTarget target:targets) {
+            Optional<Pose3d> tagPose = fieldLayout.getTagPose(target.getFiducialId());
+            if (tagPose.isEmpty()) continue;
+
+            numTags ++;
+            avgDist += tagPose.get().toPose2d().getTranslation().getDistance(pose.estimatedPose.getTranslation().toTranslation2d());
+        }
+
+        if (numTags == 0) return VisionConstants.SINGLE_TAG_VISION_MEASUREMENTS_STD_DEVS;
+
+        avgDist /= numTags;
+
+        if (numTags > 1) {
+            return VisionConstants.MULTI_TAG_VISION_MEASUREMENTS_STD_DEVS;
+        } else if (numTags == 1 && avgDist > 4) {
+            return VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
+        }
+        else {
+            return VisionConstants.SINGLE_TAG_VISION_MEASUREMENTS_STD_DEVS.times(1 + avgDist*avgDist/30);
+        } 
+        
     }
 }
