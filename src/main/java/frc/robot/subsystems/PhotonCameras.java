@@ -123,14 +123,18 @@ public class PhotonCameras extends SubsystemBase {
 
         avgDist /= numTags;
 
-        if (numTags > 1) {
-            return VisionConstants.MULTI_TAG_VISION_MEASUREMENTS_STD_DEVS;
-        } else if (numTags == 1 && avgDist > 4) {
+
+        // Remove all readings above 4m on avg
+        if (numTags == 1 && avgDist > 4) {
             return VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
         }
-        else {
-            return VisionConstants.SINGLE_TAG_VISION_MEASUREMENTS_STD_DEVS.times(1 + avgDist*avgDist/30);
+        // Don't scale by distance for Multi Tag Estimation(Literal Magic)
+        if (numTags > 1) {
+            return VisionConstants.MULTI_TAG_VISION_MEASUREMENTS_STD_DEVS;
         } 
+        // Just Scale By Distance        
+        return VisionConstants.SINGLE_TAG_VISION_MEASUREMENTS_STD_DEVS.times(1 + avgDist*avgDist/30);
+        
         
     }
 }
