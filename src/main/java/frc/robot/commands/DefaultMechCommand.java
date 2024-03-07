@@ -242,23 +242,8 @@ public class DefaultMechCommand{
         return mAimingSubsystem.atWristSetpoint() && mAimingSubsystem.atElevatorSetpoint();
     }
 
-    public static MechState getReadyForIntake() {
-        return mReadyForIntake;
+    public static MechState getMechState(){
+        return mMechState;
     }
 
-    public static MechState getIntaken() {
-        return mIntaken;
-    }
-
-    public static MechState getReadyForHandoff() {
-        return mReadyForHandoff;
-    }
-
-    public static MechState getReadyForAim() {
-        return mReadyForAim;
-    }
-
-    public static MechState getReadyForLaunch() {
-        return mReadyForLaunch;
-    }
 }
