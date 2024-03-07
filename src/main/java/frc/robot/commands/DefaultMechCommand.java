@@ -17,7 +17,6 @@ import frc.robot.states.mech_states.ReadyForIntake;
 import frc.robot.states.mech_states.ReadyForLaunch;
 import frc.robot.states.mech_states.UltraInstinct;
 import frc.robot.subsystems.AimingSubsystem;
-import frc.robot.subsystems.AimingSubsystem.AimingMotorMode;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.Input;
 import frc.robot.subsystems.LauncherSubsystem;
@@ -55,9 +54,18 @@ public class DefaultMechCommand{
 
         mMechState = mUltraInstinct;
         mMechState = determineState();
-        
+        defineEventListeners();
+
+    }
+
+    public static void defineEventListeners(){
+        //Brakes the indexer ONE time when the left trigger is released
         BooleanSupplier getIndexer = ()-> Math.abs(Input.getLeftTrigger()) < LauncherConstants.INDEX_TRIGGER_DEADZONE;
         new Trigger(getIndexer).onTrue(mMechState.brakeIndexer());
+        
+        //Brakes the indexer ONE time when the current state transitions to ready to launch or ready to aim
+        BooleanSupplier returnToIndex = ()-> mMechState == mReadyForAim || determineState() == mReadyForLaunch;
+        new Trigger(returnToIndex).onTrue(mMechState.brakeIndexer());
     }
 
     public static MechState determineState() {
@@ -160,8 +168,16 @@ public class DefaultMechCommand{
             if (!noteCurrentlyLaunching){
                 mMechState.brakeIndexer().schedule();
                 if (returnFromLaunch){
-                    mMechState.brakeLauncher().schedule();
-                    returnFromLaunch = false;
+                    if ((!mMechState.mAmpPositionCommand.isFinished() && mMechState.mAmpPositionCommand.isScheduled()) 
+                    || (!mMechState.mSpeakerPositionCommand.isFinished() && mMechState.mSpeakerPositionCommand.isScheduled()) 
+                    || (!mMechState.mPodiumPositionCommand.isFinished() && mMechState.podiumPosition().isScheduled())){
+                        //Indexer adjusts note if it slides out of launcher when one of the setpoints are triggered
+                        mMechState.index(0.3);
+                        return;
+                    } else{
+                        mMechState.brakeLauncher().schedule();
+                        returnFromLaunch = false;
+                    }
                 }
             }
             if (!mMechState.mHandoffPositionCommand.isScheduled()){
