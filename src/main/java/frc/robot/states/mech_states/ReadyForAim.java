@@ -48,4 +48,9 @@ public class ReadyForAim extends MechState {
             mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.OUTTAKE)),
             new InstantCommand(()->mLauncherSubsystem.runIndexer(-0.6))); 
     }
+
+    @Override
+    public Command staticAutoAim(){
+        return mStaticAutoAimCommand;
+    }
 }

@@ -114,7 +114,7 @@ public class DefaultMechCommand{
         }
 
         if (Input.getX()) {
-            mMechState.brakeLauncher().schedule();
+            mMechState.staticAutoAim().schedule();;
         }
         else if (Input.getY()) {
             mMechState.speakerPosition().schedule();
@@ -179,7 +179,8 @@ public class DefaultMechCommand{
                 if (returnFromLaunch){
                     if ((!mMechState.mAmpPositionCommand.isFinished() && mMechState.mAmpPositionCommand.isScheduled()) 
                     || (!mMechState.mSpeakerPositionCommand.isFinished() && mMechState.mSpeakerPositionCommand.isScheduled()) 
-                    || (!mMechState.mPodiumPositionCommand.isFinished() && mMechState.podiumPosition().isScheduled())){
+                    || (!mMechState.mPodiumPositionCommand.isFinished() && mMechState.podiumPosition().isScheduled())
+                    || (!mMechState.mStaticAutoAimCommand.isFinished() && mMechState.mStaticAutoAimCommand.isScheduled())){
                         //Indexer adjusts note if it slides out of launcher when one of the setpoints are triggered
                         mMechState.index(0.3);
                         return;

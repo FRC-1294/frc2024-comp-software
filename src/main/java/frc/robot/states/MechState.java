@@ -1,5 +1,6 @@
 package frc.robot.states;
 
+import java.lang.reflect.Field;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -8,22 +9,26 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.DefaultMechCommand;
 import frc.robot.commands.AutonomousCommands.Handoff;
 import frc.robot.constants.AimState;
+import frc.robot.constants.AimingConstants;
+import frc.robot.constants.FieldConstants;
 import frc.robot.subsystems.AimingSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
+import frc.robot.subsystems.SwerveSubsystem;
 
 public abstract class MechState {
     protected final LauncherSubsystem mLauncherSubsystem;
     protected final IntakeSubsystem mIntakeSubsystem;
     protected final AimingSubsystem mAimingSubsystem;
-    public final Command mHandoffPositionCommand;
-    public final Command mSpeakerPositionCommand;
-    public final Command mAmpPositionCommand;
-    public final Command mTrapPositionCommand;
-    public final Command mPreformHandoffCommand;
-    public final Command mLaunchCommand;
-    public final Command mPodiumPositionCommand;
-    public final Command mBrakeIndexerCommand;
+    public static Command mHandoffPositionCommand;
+    public static Command mSpeakerPositionCommand;
+    public static Command mAmpPositionCommand;
+    public static Command mTrapPositionCommand;
+    public static Command mPreformHandoffCommand;
+    public static Command mLaunchCommand;
+    public static Command mPodiumPositionCommand;
+    public static Command mBrakeIndexerCommand;
+    public static Command mStaticAutoAimCommand;
 
     public Command mAimStatePositionCommand;
     
@@ -41,6 +46,7 @@ public abstract class MechState {
         mPodiumPositionCommand = new ParallelCommandGroup(mAimingSubsystem.waitUntilSetpoint(AimState.PODIUM), mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.PODIUM));
         mLaunchCommand = new SequentialCommandGroup(mLauncherSubsystem.indexUntilNoteLaunchedCommand());
         mBrakeIndexerCommand = new InstantCommand(()->mLauncherSubsystem.stopIndexer(),mLauncherSubsystem);
+        mStaticAutoAimCommand = new ParallelCommandGroup(mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.SUBWOOFER), mAimingSubsystem.waitUntilElevatorSetpoint(AimingConstants.AIM_MAP.get(FieldConstants.getSpeakerDistance(SwerveSubsystem.getRobotPose()))));
     }
 
     public Command setLauncherSpeed(AimState state) {
@@ -126,6 +132,10 @@ public abstract class MechState {
 
     public Command podiumPosition(){
         return new PrintCommand("Can't set podiumPosition speed now");
+    }
+
+    public Command staticAutoAim(){
+        return new PrintCommand("Can't set static auto aim now");
     }
 
 }
