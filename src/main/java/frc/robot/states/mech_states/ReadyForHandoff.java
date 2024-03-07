@@ -1,5 +1,6 @@
 package frc.robot.states.mech_states;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.constants.AimState;
 import frc.robot.states.MechState;
@@ -14,24 +15,29 @@ public class ReadyForHandoff extends MechState {
     }
 
     @Override
-    public void preformHandoff(){
-        mPreformHandoffCommand.schedule();
+    public Command preformHandoff(){
+       return mPreformHandoffCommand;
     }
 
     @Override
-    public void brakeIntake() {
-        new InstantCommand(()->this.mIntakeSubsystem.outerMotorAtSpeed(0)).schedule();
+    public Command brakeIntake() {
+       return new InstantCommand(()->this.mIntakeSubsystem.outerMotorAtSpeed(0));
     }
     @Override
-    public void speakerPosition() {
-        mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.SUBWOOFER).schedule();
+    public Command speakerPosition() {
+       return mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.SUBWOOFER);
     }
     @Override
-    public void ampPosition() {
-        mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.AMP).schedule();
+    public Command ampPosition() {
+       return mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.AMP);
+    }
+    @Override
+    public Command trapPosition() {
+       return mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.TRAP);
     }
 
-    public void trapPosition() {
-        mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.TRAP).schedule();
+    @Override
+    public Command podiumPosition() {
+       return mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.PODIUM);
     }
 }

@@ -76,23 +76,23 @@ public class KrakenSwerveModule extends SwerveModuleAbstract{
         return new SwerveModuleState(getTransVelocity(), Rotation2d.fromRadians(getRotPosition()));
     }
 
-    @Override
-    public void setDesiredState(SwerveModuleState desiredState) {
-        if (Math.abs(desiredState.speedMetersPerSecond) < 0.0001) {
-            stop();
-            return;
-        }
+    // @Override
+    // public void setDesiredState(SwerveModuleState desiredState) {
+    //     if (Math.abs(desiredState.speedMetersPerSecond) < 0.0001) {
+    //         stop();
+    //         return;
+    //     }
 
-        desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
+    //     desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
 
-        mDesiredRadians = desiredState.angle.getRadians();
-        mPIDOutput = mRotPID.calculate(getRotPosition(), desiredState.angle.getRadians());
-        mRotMotor.set(mPIDOutput);
+    //     mDesiredRadians = desiredState.angle.getRadians();
+    //     mPIDOutput = mRotPID.calculate(getRotPosition(), desiredState.angle.getRadians());
+    //     mRotMotor.set(mPIDOutput);
 
-        // No turning motors over 90 degrees
-        mDesiredVel = desiredState.speedMetersPerSecond;
-        mTransMotor.setControl(mVelocityVoltageSignal.withVelocity(mDesiredVel));
-    }
+    //     // No turning motors over 90 degrees
+    //     mDesiredVel = desiredState.speedMetersPerSecond;
+    //     mTransMotor.setControl(mVelocityVoltageSignal.withVelocity(mDesiredVel));
+    // }
 
 
     /**

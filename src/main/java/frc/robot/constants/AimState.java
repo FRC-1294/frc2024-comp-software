@@ -14,7 +14,7 @@ public enum AimState {
     TRAP(110,-1,-1,0,0,0), //Everything TBD
     HANDOFF(0,2,-1,-1), //Tolerance TBD
     OUTTAKE(30,3,-1,-1,-1000,100),
-    PODIUM(21, 1, 10000, 1000),
+    PODIUM(25, 2, 10000, 1000),
 
     LINE(0,0,0,0), //Everything TBD
     MIDNOTE(0,0,0,0), //Everything TBD
@@ -72,6 +72,10 @@ public enum AimState {
 
     public boolean atState(double curWristAngle, double curElevatorHeight, double curLauncherSpeed){
         //return true if the current state is within the tolerance of the desired state ignoring the parameters that are -1
+        SmartDashboard.putBoolean("WithinWristTolerance", withinWristTolerance(curWristAngle));
+        SmartDashboard.putBoolean("WithinElevatorTolerance", withinElevatorTolerance(curElevatorHeight));
+        SmartDashboard.putBoolean("WithinLaucherTolerance", withinLauncherTolerance(curLauncherSpeed));
+
         return withinWristTolerance(curWristAngle) && withinElevatorTolerance(curElevatorHeight) && withinLauncherTolerance(curLauncherSpeed);
     }
 

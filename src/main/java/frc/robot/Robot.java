@@ -82,6 +82,8 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     SmartDashboard.updateValues();
 
+    AimState.PODIUM.atState(robotContainer.getAimingSubsystem().getCurrentWristDegreees(), robotContainer.getAimingSubsystem().getCurrentElevatorDistance(), robotContainer.getLauncher().getCurrentVelocity());
+
 
     CommandScheduler.getInstance().run();
 

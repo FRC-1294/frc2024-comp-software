@@ -30,7 +30,8 @@ public class Input {
   }
 
   public static boolean resetOdo() {
-    return mTransJoystick.getRawButton(3);
+    // return mTransJoystick.getRawButton(3);
+    return false;
   }
 
   public static double getJoystickX() {

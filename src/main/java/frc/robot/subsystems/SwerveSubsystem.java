@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 
+import java.lang.reflect.Field;
 import org.photonvision.EstimatedRobotPose;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import edu.wpi.first.math.Matrix;
@@ -18,6 +19,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.CompConstants;
@@ -40,6 +42,7 @@ public class SwerveSubsystem extends SubsystemBase {
   private PIDController chassisYPID = new PIDController(0, 0, 0);
   public final SwerveConfig mConfig;
   private ChassisSpeeds desiredChassisSpeeds = new ChassisSpeeds();
+  private Field2d mField = new Field2d();
 
 
   public SwerveSubsystem(SwerveConfig configuration) {
@@ -56,6 +59,8 @@ public class SwerveSubsystem extends SubsystemBase {
     mOdometry = new SwerveDrivePoseEstimator(mKinematics, getRotation2d(), getModulePositions(), new Pose2d());
     resetGyro();
     resetRobotPose();
+
+    SmartDashboard.putData("Field", mField);
   }
 
   @Override
@@ -65,6 +70,7 @@ public class SwerveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("XPos", mOdometry.getEstimatedPosition().getX());
     SmartDashboard.putNumber("YPos", mOdometry.getEstimatedPosition().getY());
     SmartDashboard.putNumber("Heading", getRotation2d().getDegrees());
+    mField.setRobotPose(mOdometry.getEstimatedPosition());
     if (CompConstants.DEBUG_MODE) {
       SmartDashboard.putData("Swerve", this);
 
