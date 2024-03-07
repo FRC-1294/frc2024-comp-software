@@ -81,7 +81,7 @@ public class AimingSubsystem extends SubsystemBase {
     mRightElevatorMotor.setIdleMode(IdleMode.kBrake);
 
     mRightWristMotor.setIdleMode(IdleMode.kBrake);
-    mLeftWristMotor.setIdleMode(IdleMode.kBrake);}));
+    mLeftWristMotor.setIdleMode(IdleMode.kBrake);}).ignoringDisable(true));
 
     new Trigger(getCoast).onTrue(
       new InstantCommand(()->{
@@ -89,7 +89,7 @@ public class AimingSubsystem extends SubsystemBase {
     mRightElevatorMotor.setIdleMode(IdleMode.kCoast);
 
     mRightWristMotor.setIdleMode(IdleMode.kCoast);
-    mLeftWristMotor.setIdleMode(IdleMode.kCoast);}));
+    mLeftWristMotor.setIdleMode(IdleMode.kCoast);}).ignoringDisable(true));
   }
 
   // Setting Conversions and Inversions
