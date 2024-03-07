@@ -51,12 +51,12 @@ public class AimingConstants {
 
 
     // inaccurate values
-    public static final double REST_LAUNCH_ANGLE = 50.35; // rest is when wrist rotation is zero degrees
+    public static final double REST_LAUNCH_ANGLE = 50.429; // rest is when wrist rotation is zero degrees
     public static final double NOTE_EXIT_SPEED = 15.75;
     public static final double DRAG_COEFFICIENT = 0.0;
     public static final double WRIST_D1 = .1778;
     public static final double WRIST_D2 = .01;
-    public static final double WRIST_BEND_ANGLE = Units.degreesToRadians(51.0);
+    public static final double WRIST_BEND_ANGLE = Units.degreesToRadians(50.429);
     public static final Pose3d BLUE_SPEAKER_POS = new Pose3d(.4, 5.5, 2.05, new Rotation3d());
     public static final Pose3d RED_SPEAKER_POS = new Pose3d(16.14, 5.5, 2.05, new Rotation3d());
     public static final double AUTOAIM_TIME_LOOKAHEAD = 0.0;
