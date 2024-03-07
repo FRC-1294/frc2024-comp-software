@@ -99,7 +99,7 @@ public class LauncherSubsystem extends SubsystemBase {
   
   public void runLauncher() {
     //predicted velocity values
-    if (mDesiredState.mLauncherSetpointRPM == 0){
+    if (mDesiredState.mLauncherSetpointRPM == 0 || mDesiredState.mLauncherSetpointRPM == -1){
       mLeaderFlywheel.setControl(mCoastSignal);
     }else{
       mLeaderFlywheel.setControl(

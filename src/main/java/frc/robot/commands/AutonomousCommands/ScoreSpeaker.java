@@ -51,27 +51,7 @@ public class ScoreSpeaker extends Command {
 
   @Override
   public void initialize(){
-    curState = DefaultMechCommand.determineState();
-    if (curState.getClass() == ReadyForIntake.class){
-      mCommand = new PrintCommand("No Note L");
-    } 
-    else if (curState.getClass() == Intaken.class){
-      mCommand = mWrist.waitUntilSetpoint(AimState.HANDOFF)
-      .andThen(new Handoff(mIntake, mLauncher))
-      .andThen(new LaunchFromHandoff(mWrist, mLauncher, mPrioSpeakerState));
-    } 
-    else if (curState.getClass() == ReadyForHandoff.class){
-      mCommand =new Handoff(mIntake, mLauncher)
-      .andThen(new LaunchFromHandoff(mWrist, mLauncher, mPrioSpeakerState));
-    } 
-    else if (curState.getClass() == ReadyForAim.class || curState.getClass() == ReadyForLaunch.class){
-      mCommand = new LaunchFromHandoff(mWrist, mLauncher, mPrioSpeakerState);
-      System.out.println("Launching from Handoff");
-    } 
-    else{
-      mCommand = new PrintCommand("How tf u get here??");
-    }
-    mCommand.schedule();
+    
   }
 
   @Override
