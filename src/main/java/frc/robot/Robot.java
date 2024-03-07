@@ -22,6 +22,7 @@ import frc.robot.commands.SwerveVoltageCharacterization;
 import frc.robot.commands.AutonomousCommands.LaunchFromHandoff;
 import frc.robot.commands.AutonomousCommands.ScoreSpeaker;
 import frc.robot.constants.AimState;
+import frc.robot.subsystems.Autoaim;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -92,7 +93,7 @@ public class Robot extends TimedRobot {
 
     CommandScheduler.getInstance().run();
 
-
+    Autoaim.update();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

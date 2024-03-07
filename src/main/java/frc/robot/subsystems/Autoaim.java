@@ -15,18 +15,13 @@ public class Autoaim {
     SwerveSubsystem swerveSubsystem;
     AimingSubsystem aimingSubsystem;
 
-    private double prevSpeedX = 0.0;
-    private double prevSpeedY = 0.0;
+    private static double prevSpeedX = 0.0;
+    private static double prevSpeedY = 0.0;
 
-    private double lastTime = 0.0;
-    private double currentTime = 0.0;
+    private static double lastTime = 0.0;
+    private static double currentTime = 0.0;
 
-    public Autoaim(SwerveSubsystem _swerveSubsystem, AimingSubsystem _aimingSubsystem){
-        swerveSubsystem = _swerveSubsystem;
-        aimingSubsystem = _aimingSubsystem;
-    }
-
-    public void update(){
+    public static void update(){
         lastTime = currentTime;
         currentTime = Timer.getFPGATimestamp();
         double deltaTime = currentTime - lastTime;
@@ -74,18 +69,18 @@ public class Autoaim {
         return neededRobotYaw;
     }
 
-    private double launcherAngleEquation(double xDist2D, double yDist2D, double speakerApproachSpeed, double angleGuess){
+    private static double launcherAngleEquation(double xDist2D, double yDist2D, double speakerApproachSpeed, double angleGuess){
         double time = ((xDist2D - AimingConstants.WRIST_D1 * Math.cos(angleGuess + AimingConstants.WRIST_BEND_ANGLE) + AimingConstants.WRIST_D2 * Math.cos(angleGuess)) / (AimingConstants.NOTE_EXIT_SPEED * Math.cos(angleGuess) + speakerApproachSpeed));
         return -(9.807/2.0) * Math.pow(time, 2) + AimingConstants.NOTE_EXIT_SPEED * Math.sin(angleGuess) * time + AimingConstants.WRIST_D1 * Math.sin(angleGuess + AimingConstants.WRIST_BEND_ANGLE) - AimingConstants.WRIST_D2 * Math.sin(angleGuess) - yDist2D;
     }
 
-    private double robotYawEquation(double xDist3D, double yDist3D, double xVel, double yVel, double yawGuess)
+    private static double robotYawEquation(double xDist3D, double yDist3D, double xVel, double yVel, double yawGuess)
     {
         return xDist3D * (yVel + Math.sin(yawGuess) * Math.cos(neededlauncherAngleRadians) * AimingConstants.NOTE_EXIT_SPEED) / (xVel + Math.cos(yawGuess) * Math.cos(neededlauncherAngleRadians) * AimingConstants.NOTE_EXIT_SPEED) - yDist3D;
     }
     
 
-    private double searchForLaunchAngle(double xDist2D, double yDist2D, double speakerApproachSpeed){
+    private static double searchForLaunchAngle(double xDist2D, double yDist2D, double speakerApproachSpeed){
         double step = 0.01;
 
         double start = 0.0; // zero because anything less would be pointing down
@@ -102,7 +97,7 @@ public class Autoaim {
         return end;
     }
 
-    private double searchForYaw(double xDist3D, double yDist3D, double xVel, double yVel){
+    private static double searchForYaw(double xDist3D, double yDist3D, double xVel, double yVel){
         double step = 0.01;
 
         double start = -90 * Math.PI / 180.0;
