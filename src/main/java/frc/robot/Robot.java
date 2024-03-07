@@ -7,7 +7,7 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.revrobotics.CANSparkLowLevel;
-
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -93,7 +93,9 @@ public class Robot extends TimedRobot {
 
     CommandScheduler.getInstance().run();
 
-    Autoaim.update();
+
+    
+
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

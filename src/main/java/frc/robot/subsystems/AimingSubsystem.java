@@ -187,6 +187,7 @@ public class AimingSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("Wrist Throughbore Frequency", mWristThroughBoreEncoder.getFrequency());
       SmartDashboard.putNumber("Wrist Tolerance", mWristController.getPositionTolerance());
       SmartDashboard.putNumber("Wrist Error", mWristController.getPositionError());
+      SmartDashboard.putNumber("Current Launch Angle", getCurrentLaunchDegrees());
     }
 
     if (CompConstants.PID_TUNE_MODE) {

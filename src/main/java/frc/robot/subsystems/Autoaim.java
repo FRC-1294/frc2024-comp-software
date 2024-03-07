@@ -1,10 +1,14 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.math.Vector;
+import java.sql.Driver;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-import frc.robot.commands.SwerveFrictionCharacterization;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.constants.AimingConstants;
 
 public class Autoaim {
@@ -21,6 +25,8 @@ public class Autoaim {
     private static double lastTime = 0.0;
     private static double currentTime = 0.0;
 
+    public static boolean accountForVelocity = true;
+
     public static void update(){
         lastTime = currentTime;
         currentTime = Timer.getFPGATimestamp();
@@ -28,7 +34,7 @@ public class Autoaim {
 
         prevSpeedX = SwerveSubsystem.getChassisSpeeds().vxMetersPerSecond;
         prevSpeedY = SwerveSubsystem.getChassisSpeeds().vyMetersPerSecond;
-        ChassisSpeeds speeds = ChassisSpeeds.fromRobotRelativeSpeeds(SwerveSubsystem.getChassisSpeeds(), SwerveSubsystem.getRotation2d());
+        ChassisSpeeds speeds = ChassisSpeeds.fromRobotRelativeSpeeds(SwerveSubsystem.getChassisSpeeds(), SwerveSubsystem.getRobotPose().getRotation());
         
         // predict future robot location
         double accelX = (speeds.vxMetersPerSecond - prevSpeedX) / deltaTime;
@@ -42,21 +48,41 @@ public class Autoaim {
 
 
         // get field launcher pivot location
-        double launcherPivotX = robotX + SwerveSubsystem.getRobotPose().getRotation().getCos() * Units.inchesToMeters(11.25);
-        double launcherPivotY = robotY + SwerveSubsystem.getRobotPose().getRotation().getSin() * Units.inchesToMeters(11.25);
+        double launcherPivotX = robotX - SwerveSubsystem.getRobotPose().getRotation().getCos() * Units.inchesToMeters(11.25);
+        double launcherPivotY = robotY - SwerveSubsystem.getRobotPose().getRotation().getSin() * Units.inchesToMeters(11.25);
         double launcherPivotZ = Units.inchesToMeters(25.055);
 
-        double xDistance = AimingConstants.BLUE_SPEAKER_POS.getX() - launcherPivotX;
-        double yDistance = AimingConstants.BLUE_SPEAKER_POS.getY() - launcherPivotY;
-        double zDistance = AimingConstants.BLUE_SPEAKER_POS.getZ() - launcherPivotZ;
+
+        double xDistance = 0.0;
+        double yDistance = 0.0;
+        double zDistance = 0.0;
+
+        if (!DriverStation.getAlliance().isEmpty() && DriverStation.getAlliance().get() == Alliance.Red){
+            xDistance = AimingConstants.BLUE_SPEAKER_POS.getX() - launcherPivotX;
+            yDistance = AimingConstants.BLUE_SPEAKER_POS.getY() - launcherPivotY;
+            zDistance = AimingConstants.BLUE_SPEAKER_POS.getZ() - launcherPivotZ;
+        }else{
+            xDistance = AimingConstants.RED_SPEAKER_POS.getX() - launcherPivotX;
+            yDistance = AimingConstants.RED_SPEAKER_POS.getY() - launcherPivotY;
+            zDistance = AimingConstants.RED_SPEAKER_POS.getZ() - launcherPivotZ;
+        }
+
         
         double distance2D = Math.sqrt(xDistance * xDistance + yDistance * yDistance);        
 
-        double speakerApproachSpeed = speeds.vxMetersPerSecond * (xDistance/distance2D) + speeds.vyMetersPerSecond * (yDistance/distance2D);
+        double speakerApproachSpeed = accountForVelocity ? speeds.vxMetersPerSecond * (Math.abs(xDistance)/distance2D) + speeds.vyMetersPerSecond * (Math.abs(yDistance)/distance2D) : 0.0;
         
         neededlauncherAngleRadians = searchForLaunchAngle(distance2D, zDistance, speakerApproachSpeed);
 
-        neededRobotYaw = searchForYaw(xDistance, yDistance, speeds.vxMetersPerSecond, speeds.vyMetersPerSecond);
+        double xSpeed = accountForVelocity ? speeds.vxMetersPerSecond : 0.0;
+        double ySpeed = accountForVelocity ? speeds.vyMetersPerSecond : 0.0;
+
+        neededRobotYaw = searchForYaw(xDistance, yDistance, xSpeed, ySpeed);
+
+        SmartDashboard.putNumber("Launcher Angle Deg", neededlauncherAngleRadians * 180.0 / Math.PI);
+        SmartDashboard.putNumber("Robot Yaw", neededRobotYaw * 180.0 / Math.PI);
+
+
         if (xDistance < 0 && yDistance < 0) neededRobotYaw -= Math.PI;
         else if (xDistance < 0 && yDistance >= 0) neededRobotYaw += Math.PI;
     }    
@@ -70,13 +96,13 @@ public class Autoaim {
     }
 
     private static double launcherAngleEquation(double xDist2D, double yDist2D, double speakerApproachSpeed, double angleGuess){
-        double time = ((xDist2D - AimingConstants.WRIST_D1 * Math.cos(angleGuess + AimingConstants.WRIST_BEND_ANGLE) + AimingConstants.WRIST_D2 * Math.cos(angleGuess)) / (AimingConstants.NOTE_EXIT_SPEED * Math.cos(angleGuess) + speakerApproachSpeed));
-        return -(9.807/2.0) * Math.pow(time, 2) + AimingConstants.NOTE_EXIT_SPEED * Math.sin(angleGuess) * time + AimingConstants.WRIST_D1 * Math.sin(angleGuess + AimingConstants.WRIST_BEND_ANGLE) - AimingConstants.WRIST_D2 * Math.sin(angleGuess) - yDist2D;
+        double time = ((xDist2D + AimingConstants.WRIST_D1 * Math.cos(-angleGuess + AimingConstants.WRIST_BEND_ANGLE) + AimingConstants.WRIST_D2 * Math.cos(angleGuess)) / (AimingConstants.NOTE_EXIT_SPEED * Math.cos(angleGuess) + speakerApproachSpeed));
+        return -(9.807/2.0) * Math.pow(time, 2) + AimingConstants.NOTE_EXIT_SPEED * Math.sin(angleGuess) * time + AimingConstants.WRIST_D1 * Math.sin(-angleGuess + AimingConstants.WRIST_BEND_ANGLE) - AimingConstants.WRIST_D2 * Math.sin(angleGuess) - yDist2D;
     }
 
     private static double robotYawEquation(double xDist3D, double yDist3D, double xVel, double yVel, double yawGuess)
     {
-        return xDist3D * (yVel + Math.sin(yawGuess) * Math.cos(neededlauncherAngleRadians) * AimingConstants.NOTE_EXIT_SPEED) / (xVel + Math.cos(yawGuess) * Math.cos(neededlauncherAngleRadians) * AimingConstants.NOTE_EXIT_SPEED) - yDist3D;
+        return xDist3D * (yVel - Math.sin(yawGuess) * Math.cos(neededlauncherAngleRadians) * AimingConstants.NOTE_EXIT_SPEED) / (xVel - Math.cos(yawGuess) * Math.cos(neededlauncherAngleRadians) * AimingConstants.NOTE_EXIT_SPEED) - yDist3D;
     }
     
 
@@ -84,7 +110,7 @@ public class Autoaim {
         double step = 0.01;
 
         double start = 0.0; // zero because anything less would be pointing down
-        double end = 51.0 * Math.PI / 180.0; // max launch angle
+        double end = AimingConstants.REST_LAUNCH_ANGLE * Math.PI / 180.0; // max launch angle
         double sign = Math.signum(launcherAngleEquation(xDist2D, yDist2D, speakerApproachSpeed, start));
 
 

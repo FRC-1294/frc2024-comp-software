@@ -100,7 +100,9 @@ public class UltraInstinct extends MechState {
 
     @Override 
     public void triggerAutoaim(){
-        mAimingSubsystem.setDesiredLaunchRotation(Units.degreesToRadians(Autoaim.getNeededLaunchAngle()));
-        mLauncherSubsystem.setLauncherState(AimState.WING);
+
+        Autoaim.update();
+        // mAimingSubsystem.setDesiredLaunchRotation(Units.degreesToRadians(Autoaim.getNeededLaunchAngle()));
+        // mLauncherSubsystem.setLauncherState(AimState.WING);
     }
 }
