@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
+import java.util.function.BooleanSupplier;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.revrobotics.CANSparkMax;
@@ -18,7 +19,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.AimingConstants;
 import frc.robot.constants.CompConstants;
 import frc.robot.constants.AimState;
@@ -69,6 +72,24 @@ public class AimingSubsystem extends SubsystemBase {
     mLeftElevatorEncoder = mLeftElevatorMotor.getEncoder();
     mRightElevatorEncoder = mRightElevatorMotor.getEncoder();
     configureDevices();
+    BooleanSupplier getBrake = ()-> mChooser.getSelected() == AimingMotorMode.BRAKE;
+    BooleanSupplier getCoast = ()-> mChooser.getSelected() == AimingMotorMode.COAST;
+
+    new Trigger(getBrake).onTrue(
+      new InstantCommand(()->{
+    mLeftElevatorMotor.setIdleMode(IdleMode.kBrake);
+    mRightElevatorMotor.setIdleMode(IdleMode.kBrake);
+
+    mRightWristMotor.setIdleMode(IdleMode.kBrake);
+    mLeftWristMotor.setIdleMode(IdleMode.kBrake);}));
+
+    new Trigger(getCoast).onTrue(
+      new InstantCommand(()->{
+    mLeftElevatorMotor.setIdleMode(IdleMode.kCoast);
+    mRightElevatorMotor.setIdleMode(IdleMode.kCoast);
+
+    mRightWristMotor.setIdleMode(IdleMode.kCoast);
+    mLeftWristMotor.setIdleMode(IdleMode.kCoast);}));
   }
 
   // Setting Conversions and Inversions
@@ -151,28 +172,28 @@ public class AimingSubsystem extends SubsystemBase {
 
     AimingMotorMode mode = mChooser.getSelected();
     
-    // Motors go towards setpoints
-    IdleMode idleMode;
+    // // Motors go towards setpoints
+    // IdleMode idleMode;
 
-    switch (mode) {
-        case COAST:
-            idleMode = IdleMode.kCoast;
-            break;
-        default:
-            idleMode = IdleMode.kBrake;
-            break;
-    }
+    // switch (mode) {
+    //     case COAST:
+    //         idleMode = IdleMode.kCoast;
+    //         break;
+    //     default:
+    //         idleMode = IdleMode.kBrake;
+    //         break;
+    // }
 
-    mLeftElevatorMotor.setIdleMode(idleMode);
-    mRightElevatorMotor.setIdleMode(idleMode);
+    // mLeftElevatorMotor.setIdleMode(idleMode);
+    // mRightElevatorMotor.setIdleMode(idleMode);
 
-    mRightWristMotor.setIdleMode(idleMode);
-    mLeftWristMotor.setIdleMode(idleMode);
+    // mRightWristMotor.setIdleMode(idleMode);
+    // mLeftWristMotor.setIdleMode(idleMode);
   }
 
   // Contains Smart Dashboard Statements ONLY ON DEBUG
   private void debugSmartDashboard() {
-    if (true || CompConstants.DEBUG_MODE || CompConstants.PID_TUNE_MODE) {
+    if (CompConstants.DEBUG_MODE || CompConstants.PID_TUNE_MODE) {
       SmartDashboard.putNumber("Current Wrist Rotation", getCurrentWristDegreees());
       SmartDashboard.putNumber("Current Elevator Distance", getCurrentElevatorDistance());
       SmartDashboard.putNumber("Desired Wrist Rotation", getDesiredWristRotation());
