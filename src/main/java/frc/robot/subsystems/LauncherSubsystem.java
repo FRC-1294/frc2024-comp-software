@@ -5,8 +5,8 @@
 package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.CoastOut;
 import com.ctre.phoenix6.controls.Follower;
-import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -17,11 +17,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.AutonomousCommands.ScoreSpeaker;
 import frc.robot.constants.AimState;
 import frc.robot.constants.LauncherConstants;
 
@@ -32,6 +28,8 @@ public class LauncherSubsystem extends SubsystemBase {
   private final TalonFX mFollowerFlywheel = new TalonFX(LauncherConstants.FOLLOWER_FLYWHEEL_ID, "DriveMotors");
 
   private final DigitalInput mBeamBreak = new DigitalInput(LauncherConstants.BEAMBREAK_ID);
+  private final CoastOut mCoastSignal = new CoastOut();
+  private final VoltageOut mVoltageSignal = new VoltageOut(0);
 
   private AimState mDesiredState = AimState.HANDOFF;
 
@@ -53,6 +51,9 @@ public class LauncherSubsystem extends SubsystemBase {
     TalonFXConfiguration configuration = new TalonFXConfiguration();
     Slot0Configs slotConfigs = new Slot0Configs();
     configuration.Feedback.SensorToMechanismRatio = 1/(LauncherConstants.FLYWHEEL_SENSOR_TO_MECHANISM);
+    configuration.CurrentLimits.SupplyCurrentLimit = 80;
+    configuration.CurrentLimits.SupplyCurrentLimitEnable = true;
+
 
     slotConfigs.kP = LauncherConstants.LAUNCHER_PID_CONTROLLER.getP();
     slotConfigs.kI = LauncherConstants.LAUNCHER_PID_CONTROLLER.getI();
@@ -80,12 +81,12 @@ public class LauncherSubsystem extends SubsystemBase {
 
     runLauncher();
 
-    SmartDashboard.putNumber("Flywheel Position", mLeaderFlywheel.getPosition().getValueAsDouble()*LauncherConstants.FLYWHEEL_MAX_VELOCITY*LauncherConstants.FLYWHEEL_SENSOR_TO_MECHANISM);
+    // SmartDashboard.putNumber("Flywheel Position", mLeaderFlywheel.getPosition().getValueAsDouble()*LauncherConstants.FLYWHEEL_MAX_VELOCITY*LauncherConstants.FLYWHEEL_SENSOR_TO_MECHANISM);
 
     SmartDashboard.putBoolean("Piece in Indexer", pieceInIndexer());
     SmartDashboard.putNumber("Flywheel Speed", actualVelocity);
-    SmartDashboard.putNumber("Indexer Applied Output", mIndexer.getAppliedOutput());
-    SmartDashboard.putBoolean("LauncherReady", isLauncherReady());
+    // SmartDashboard.putNumber("Indexer Applied Output", mIndexer.getAppliedOutput());
+    // SmartDashboard.putBoolean("LauncherReady", isLauncherReady());
   }
 
   public void runIndexer(double velocity) {
@@ -98,15 +99,16 @@ public class LauncherSubsystem extends SubsystemBase {
   
   public void runLauncher() {
     //predicted velocity values
-
-    mLeaderFlywheel.setControl(
-      new VoltageOut(
-        mDesiredState.mLauncherSetpointRPM*LauncherConstants.LAUNCHER_FF_CONTROLLER.kv
-         + LauncherConstants.LAUNCHER_PID_CONTROLLER.calculate(getCurrentVelocity(), mDesiredState.mLauncherSetpointRPM)
-      ));
+    if (mDesiredState.mLauncherSetpointRPM == 0 || mDesiredState.mLauncherSetpointRPM == -1){
+      mLeaderFlywheel.setControl(mCoastSignal);
+    }else{
+      mLeaderFlywheel.setControl(
+        mVoltageSignal.withOutput(
+          mDesiredState.mLauncherSetpointRPM*LauncherConstants.LAUNCHER_FF_CONTROLLER.kv
+          + LauncherConstants.LAUNCHER_PID_CONTROLLER.calculate(getCurrentVelocity(), mDesiredState.mLauncherSetpointRPM)
+        ));
+    }
     //mLeaderFlywheel.setControl(new VelocityVoltage(mDesiredState.mLauncherSetpointRPM).withSlot(0));
-
-
   }
 
   public boolean isIndexerOn() {

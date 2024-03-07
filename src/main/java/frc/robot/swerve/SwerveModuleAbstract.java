@@ -29,17 +29,17 @@ import frc.robot.Util.PIDParameters;
     // Motor Controllers
     protected final CANSparkMax mRotMotor;
     // Encoders
-    private final CANcoder mRotEncoder;
-    private final RelativeEncoder mRotRelativeEncoder;
+    protected final CANcoder mRotEncoder;
+    protected final RelativeEncoder mRotRelativeEncoder;
     protected final double mPhysicalMaxSpeedMPS;
-    private final double mAbsEncoderGearRatio;
-    private final double mRelEncoderGearRatio;
+    protected final double mAbsEncoderGearRatio;
+    protected final double mRelEncoderGearRatio;
     
 
     // Public Debugging Values
-    private double mPIDOutput = 0.0;
-    private double mDesiredRadians = 0.0;
-    private double mDesiredVel = 0.0;
+    protected double mPIDOutput = 0.0;
+    protected double mDesiredRadians = 0.0;
+    protected double mDesiredVel = 0.0;
 
 
     protected SwerveModuleAbstract(int rotID, int transID, int rotEncoderID, boolean rotInverse,

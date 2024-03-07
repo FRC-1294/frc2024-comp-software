@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.robot.constants.JoystickConstants;
 
 
@@ -30,7 +31,15 @@ public class Input {
   }
 
   public static boolean resetOdo() {
-    return mTransJoystick.getRawButton(3);
+    // return mTransJoystick.getRawButton(3);
+    return false;
+  }
+
+  public static void enableRumble(double intensity){
+    mXboxController.setRumble(RumbleType.kBothRumble, intensity);
+  }
+  public static void disableRumble(){
+    mXboxController.setRumble(RumbleType.kBothRumble, 0);
   }
 
   public static double getJoystickX() {
@@ -62,7 +71,7 @@ public class Input {
   }
 
   public static double getRot() {
-    return mRotJoystick.getX()*mRotJoystick.getX() * Math.signum(mRotJoystick.getX());
+    return mRotJoystick.getX();
   }
 
   public static boolean getA() {
@@ -99,6 +108,10 @@ public class Input {
 
   public static boolean getPrecisionToggle() {
     return mTransJoystick.getTriggerPressed();
+  }
+
+  public static boolean getRobotOriented() {
+    return mRotJoystick.getTrigger();
   }
 
   public static boolean getIncPID() {

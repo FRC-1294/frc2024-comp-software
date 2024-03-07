@@ -58,10 +58,10 @@ public class CompetitionBotSwerveConfig extends SwerveConfig{
                 BACK_LEFT_TRANS_PID = new PIDParameters(0.1, 0, 0,0.0,0.0); //TODO: https://github.com/FRC-1294/frc2024/issues/280
                 BACK_RIGHT_TRANS_PID = new PIDParameters(0.1, 0, 0,0.0,0.0); //TODO: https://github.com/FRC-1294/frc2024/issues/280
 
-                FRONT_LEFT_TRANS_CARPET_PID = new PIDParameters(0.1, 0, 0,0.01,0.19340435175717755); //TODO: https://github.com/FRC-1294/frc2024/issues/280
-                FRONT_RIGHT_TRANS_CARPET_PID = new PIDParameters(0.1, 0, 0,0.01,0.1954050897563214);//TODO: https://github.com/FRC-1294/frc2024/issues/280
-                BACK_LEFT_TRANS_CARPET_PID = new PIDParameters(0.1, 0, 0,0.01,0.19460021566253563);//TODO: https://github.com/FRC-1294/frc2024/issues/280
-                BACK_RIGHT_TRANS_CARPET_PID = new PIDParameters(0.1, 0, 0,0.01083,0.19391226578771872);//TODO: https://github.com/FRC-1294/frc2024/issues/280       
+                FRONT_LEFT_TRANS_CARPET_PID = new PIDParameters(0.1, 0, 0,0.01,0.1946*1); //TODO: https://github.com/FRC-1294/frc2024/issues/280
+                FRONT_RIGHT_TRANS_CARPET_PID = new PIDParameters(0.1, 0, 0,0.01,0.1946*1);//TODO: https://github.com/FRC-1294/frc2024/issues/280
+                BACK_LEFT_TRANS_CARPET_PID = new PIDParameters(0.1, 0, 0,0.01,0.1946*1);//TODO: https://github.com/FRC-1294/frc2024/issues/280
+                BACK_RIGHT_TRANS_CARPET_PID = new PIDParameters(0.1, 0, 0,0.01,0.1946*1);//TODO: https://github.com/FRC-1294/frc2024/issues/280       
         }
 
         @Override

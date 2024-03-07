@@ -4,7 +4,6 @@
 
 package frc.robot.commands.AutonomousCommands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.commands.DefaultMechCommand;
@@ -52,27 +51,7 @@ public class ScoreSpeaker extends Command {
 
   @Override
   public void initialize(){
-    curState = DefaultMechCommand.determineState();
-    if (curState.getClass() == ReadyForIntake.class){
-      mCommand = new PrintCommand("No Note L");
-    } 
-    else if (curState.getClass() == Intaken.class){
-      mCommand = mWrist.waitUntilSetpoint(AimState.HANDOFF)
-      .andThen(new Handoff(mIntake, mLauncher))
-      .andThen(new LaunchFromHandoff(mWrist, mLauncher, mPrioSpeakerState));
-    } 
-    else if (curState.getClass() == ReadyForHandoff.class){
-      mCommand =new Handoff(mIntake, mLauncher)
-      .andThen(new LaunchFromHandoff(mWrist, mLauncher, mPrioSpeakerState));
-    } 
-    else if (curState.getClass() == ReadyForAim.class || curState.getClass() == ReadyForLaunch.class){
-      mCommand = new LaunchFromHandoff(mWrist, mLauncher, mPrioSpeakerState);
-      System.out.println("Launching from Handoff");
-    } 
-    else{
-      mCommand = new PrintCommand("How tf u get here??");
-    }
-    mCommand.schedule();
+    
   }
 
   @Override
@@ -83,7 +62,7 @@ public class ScoreSpeaker extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    SmartDashboard.putBoolean("ScoreSpeakerIsFinished", mCommand.isFinished());
+    // SmartDashboard.putBoolean("ScoreSpeakerIsFinished", mCommand.isFinished());
     return mCommand.isFinished();
     //TBD We also need to check if swerve is at the right position and angle tolerance
   }

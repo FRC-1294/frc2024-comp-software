@@ -1,24 +1,35 @@
 package frc.robot.states;
 
+import java.lang.reflect.Field;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.DefaultMechCommand;
 import frc.robot.commands.AutonomousCommands.Handoff;
 import frc.robot.constants.AimState;
+import frc.robot.constants.AimingConstants;
+import frc.robot.constants.FieldConstants;
 import frc.robot.subsystems.AimingSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
+import frc.robot.subsystems.SwerveSubsystem;
 
 public abstract class MechState {
     protected final LauncherSubsystem mLauncherSubsystem;
     protected final IntakeSubsystem mIntakeSubsystem;
     protected final AimingSubsystem mAimingSubsystem;
-    public final Command mHandoffPositionCommand;
-    public final Command mSpeakerPositionCommand;
-    public final Command mAmpPositionCommand;
-    public final Command mTrapPositionCommand;
-    public final Command mPreformHandoffCommand;
-    public final Command mLaunchCommand;
+    public static Command mHandoffPositionCommand;
+    public static Command mSpeakerPositionCommand;
+    public static Command mAmpPositionCommand;
+    public static Command mTrapPositionCommand;
+    public static Command mPreformHandoffCommand;
+    public static Command mLaunchCommand;
+    public static Command mPodiumPositionCommand;
+    public static Command mBrakeIndexerCommand;
+    public static Command mStaticAutoAimCommand;
+
     public Command mAimStatePositionCommand;
     
 
@@ -32,51 +43,100 @@ public abstract class MechState {
         mAmpPositionCommand = new ParallelCommandGroup(mAimingSubsystem.waitUntilSetpoint(AimState.AMP),mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.AMP));
         mTrapPositionCommand = new ParallelCommandGroup(mAimingSubsystem.waitUntilSetpoint(AimState.TRAP), mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.TRAP));
         mPreformHandoffCommand = new Handoff(mIntakeSubsystem, mLauncherSubsystem);
-        mLaunchCommand = mLauncherSubsystem.indexUntilNoteLaunchedCommand();
+        mPodiumPositionCommand = new ParallelCommandGroup(mAimingSubsystem.waitUntilSetpoint(AimState.PODIUM), mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.PODIUM));
+        mLaunchCommand = new SequentialCommandGroup(mLauncherSubsystem.indexUntilNoteLaunchedCommand());
+        mBrakeIndexerCommand = new InstantCommand(()->mLauncherSubsystem.stopIndexer(),mLauncherSubsystem);
+        mStaticAutoAimCommand = new ParallelCommandGroup(mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.SUBWOOFER), mAimingSubsystem.waitUntilWristSetpoint(() -> AimingConstants.AIM_MAP.get(FieldConstants.getSpeakerDistance(SwerveSubsystem.getRobotPose()))));
     }
 
-    public void setLauncherSpeed(AimState state) {}
-
-    public void brakeLauncher() {
-        new InstantCommand(()->mLauncherSubsystem.stopLauncher(),mLauncherSubsystem).schedule();
+    public Command setLauncherSpeed(AimState state) {
+        return new PrintCommand("Can't set launcher speed now");
     }
-    public void brakeIndexer() {
-        new InstantCommand(()->mLauncherSubsystem.stopIndexer(),mLauncherSubsystem).schedule();
+
+    public Command brakeLauncher() {
+        return new InstantCommand(()->mLauncherSubsystem.stopLauncher(),mLauncherSubsystem);
     }
-    public void brakeIntake() {
-       new InstantCommand(()->mIntakeSubsystem.stopMotors(),mIntakeSubsystem).schedule();
+    public Command brakeIndexer() {
+       return mBrakeIndexerCommand;
     }
-    public void runIntakeMotors(){}
+    public Command brakeIntake() {
+       return new InstantCommand(()->mIntakeSubsystem.stopMotors(),mIntakeSubsystem);
+    }
+    public Command emergencyOuttake(){
+        return new PrintCommand("Can't emergency outtake now");
+    }
 
-    public void preformHandoff(){}
+    public Command runIntakeMotors(){
+        return new PrintCommand("Can't run intake motors now");
+    }
 
-    public void index(double vel){}
+    public Command preformHandoff(){
+        return new PrintCommand("Can't preform handoff now");
+    }
 
-    public void overrideIntake(double vel){}
+    public Command index(double vel){
+        return new PrintCommand("Can't index now");
+    }
 
-    public void launch() {}
+    public Command overrideIntake(double vel){
+        return new PrintCommand("Can't overrideIntake now");
+    }
 
-    public void controlWrist(double increment) {}
+    public Command launch() {
+        return new PrintCommand("Can't launch now");
+    }
 
-    public void controlElevator(double increment) {}
+    public Command controlWrist(double increment) {
+        return new PrintCommand("Can't control wrist now");
+    }
 
-    public void ClimbExtendedState() {}
+    public Command controlElevator(double increment) {
+        return new PrintCommand("Can't control elevator now");
+    }
+
+    public Command ClimbExtendedState() {
+        return new PrintCommand("Can't set climbExtended now");
+    }
     
-    public void ClimbRetractedState() {}
+    public Command ClimbRetractedState() {
+        return new PrintCommand("Can't set climbRetracted now");
+    }
 
-    public void setWristSP(AimState state) {}
+    public Command setWristSP(AimState state) {
+        return new PrintCommand("Can't set wristSP speed now");
+    }
     
-    public void handoffPosition(){}
+    public Command handoffPosition(){
+        return new PrintCommand("Can't set handoffPosition speed now");
+    }
 
-    public void speakerPosition(){}
+    public Command speakerPosition(){
+        return new PrintCommand("Can't set speakerPosition speed now");
+    }
 
-    public void ampPosition(){}
+    public Command ampPosition(){
+        return new PrintCommand("Can't set ampPosition speed now");
+    }
     
-    public void trapPosition(){}
+    public Command trapPosition(){
+        return new PrintCommand("Can't set trapPosition now");
+    }
 
-    public void aimStatePosition(AimState state){}
+    public Command aimStatePosition(AimState state){
+        return new PrintCommand("Can't set launcher speed now");
+    }
 
-    public void resetEncoders() {}
+    public Command resetEncoders() {
+        return new PrintCommand("Can't resetEncoders speed now");
+    }
+
+    public Command podiumPosition(){
+        return new PrintCommand("Can't set podiumPosition speed now");
+    }
+
+    public Command staticAutoAim(){
+        return new PrintCommand("Can't set static auto aim now");
+    }
 
     public void triggerAutoaim() {}
 }

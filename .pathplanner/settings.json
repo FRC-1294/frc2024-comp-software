@@ -1,11 +1,12 @@
 {
   "robotWidth": 0.8382,
-  "robotLength": 0.917575,
+  "robotLength": 0.92,
   "holonomicMode": true,
   "pathFolders": [
     "Center_Left",
-    "Misc_Tests",
     "Mid_Center",
+    "Misc_Tests",
+    "Center_Line_Only",
     "Wing_Focused"
   ],
   "autoFolders": [

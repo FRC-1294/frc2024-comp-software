@@ -70,7 +70,7 @@ public class AimingConstants {
 
     public static final int WRIST_THROUGHBORE_ENCODER_ID = 0;
     public static final double WRIST_THROUGHBORE_GEAR_RATIO = 1;
-    public static final double WRIST_THROUGHBORE_ENCODER_OFFSET = 298.2;
+    public static final double WRIST_THROUGHBORE_ENCODER_OFFSET = 298.2-177.44;
     public static final double COG_OFFSET = 27.9;
 
 

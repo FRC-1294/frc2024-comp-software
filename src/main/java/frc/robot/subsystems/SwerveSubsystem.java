@@ -5,9 +5,10 @@
 package frc.robot.subsystems;
 
 
+import java.lang.reflect.Field;
 import org.photonvision.EstimatedRobotPose;
 import com.ctre.phoenix6.hardware.Pigeon2;
-
+import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -16,6 +17,9 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.CompConstants;
@@ -38,6 +42,7 @@ public class SwerveSubsystem extends SubsystemBase {
   private PIDController chassisYPID = new PIDController(0, 0, 0);
   public final SwerveConfig mConfig;
   private ChassisSpeeds desiredChassisSpeeds = new ChassisSpeeds();
+  private Field2d mField = new Field2d();
 
 
   public SwerveSubsystem(SwerveConfig configuration) {
@@ -54,6 +59,8 @@ public class SwerveSubsystem extends SubsystemBase {
     mOdometry = new SwerveDrivePoseEstimator(mKinematics, getRotation2d(), getModulePositions(), new Pose2d());
     resetGyro();
     resetRobotPose();
+
+    SmartDashboard.putData("Field", mField);
   }
 
   @Override
@@ -61,9 +68,10 @@ public class SwerveSubsystem extends SubsystemBase {
     
     // This method will be called once per scheduler run    
     mOdometry.update(getRotation2d(), getModulePositions());
-      SmartDashboard.putNumber("XPos", mOdometry.getEstimatedPosition().getX());
-      SmartDashboard.putNumber("YPos", mOdometry.getEstimatedPosition().getY());
-      SmartDashboard.putNumber("Heading", getRotation2d().getDegrees());
+    SmartDashboard.putNumber("XPos", mOdometry.getEstimatedPosition().getX());
+    SmartDashboard.putNumber("YPos", mOdometry.getEstimatedPosition().getY());
+    SmartDashboard.putNumber("Heading", getRotation2d().getDegrees());
+    mField.setRobotPose(mOdometry.getEstimatedPosition());
     if (CompConstants.DEBUG_MODE) {
       SmartDashboard.putData("Swerve", this);
 
@@ -185,7 +193,7 @@ public class SwerveSubsystem extends SubsystemBase {
    * @apiNote Keep in mind all of this is field relative so resetting the gyro midmatch will also
    *          reset these params
    */
-  public void setChassisSpeed(double vxMPS, double vyMPS, double angleSpeedRADPS,
+  public void   setChassisSpeed(double vxMPS, double vyMPS, double angleSpeedRADPS,
     boolean fieldOriented, boolean isOpenLoop) {
     ChassisSpeeds chassisSpeeds;
     if (fieldOriented) {
@@ -205,17 +213,17 @@ public class SwerveSubsystem extends SubsystemBase {
           rotPID = 0;
         }
        
-        SmartDashboard.putNumber("ChassisSpeedXPID", xPID);
-        SmartDashboard.putNumber("ChassisSpeedYPID", yPID);
-        SmartDashboard.putNumber("ChassisSpeedRotPID", rotPID);
+        // SmartDashboard.putNumber("ChassisSpeedXPID", xPID);
+        // SmartDashboard.putNumber("ChassisSpeedYPID", yPID);
+        // SmartDashboard.putNumber("ChassisSpeedRotPID", rotPID);
 
-        SmartDashboard.putNumber("ChassisSpeedX", vxMPS);
-        SmartDashboard.putNumber("ChassisSpeedy", vyMPS);
-        SmartDashboard.putNumber("ChassisSpeedRot", angleSpeedRADPS);
+        // SmartDashboard.putNumber("ChassisSpeedX", vxMPS);
+        // SmartDashboard.putNumber("ChassisSpeedy", vyMPS);
+        // SmartDashboard.putNumber("ChassisSpeedRot", angleSpeedRADPS);
 
-        SmartDashboard.putNumber("ChassisSpeedXError", chassisXPID.getPositionError());
-        SmartDashboard.putNumber("ChassisSpeedYError", chassisYPID.getPositionError());
-        SmartDashboard.putNumber("ChassisSpeedRotError", chassisRotPID.getPositionError());
+        // SmartDashboard.putNumber("ChassisSpeedXError", chassisXPID.getPositionError());
+        // SmartDashboard.putNumber("ChassisSpeedYError", chassisYPID.getPositionError());
+        // SmartDashboard.putNumber("ChassisSpeedRotError", chassisRotPID.getPositionError());
         chassisSpeeds =  ChassisSpeeds.fromFieldRelativeSpeeds(vxMPS+xPID,
                                                         vyMPS+yPID, 
                                                         angleSpeedRADPS+rotPID, getRotation2d());
@@ -273,7 +281,9 @@ public class SwerveSubsystem extends SubsystemBase {
   public static void updateVision(EstimatedRobotPose pose) {
     mOdometry.addVisionMeasurement(pose.estimatedPose.toPose2d(), pose.timestampSeconds);
   }
-
+  public static void updateVision(EstimatedRobotPose pose, Matrix<N3, N1> std) {
+    mOdometry.addVisionMeasurement(pose.estimatedPose.toPose2d(), pose.timestampSeconds, std);
+  }
   /**
    * @return provide the pose of the robot in meters
    */
