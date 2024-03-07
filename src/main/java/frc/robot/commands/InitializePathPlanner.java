@@ -90,7 +90,8 @@ public class InitializePathPlanner{
 
     NamedCommands.registerCommand("StartLauncherSW", mLauncher.waitUntilFlywheelSetpointCommand(AimState.SUBWOOFER));
     NamedCommands.registerCommand("StartWristSW", mAiming.waitUntilSetpoint(AimState.SUBWOOFER));
-    NamedCommands.registerCommand("Handoff", new TimedHandoff(mIntake,mLauncher));
+    NamedCommands.registerCommand("Handoff", new SequentialCommandGroup(mAiming.waitUntilSetpoint(AimState.HANDOFF), 
+                                        new TimedHandoff(mIntake,mLauncher)));
   }
 
   public void initializeEmptyNamedCommands(){
