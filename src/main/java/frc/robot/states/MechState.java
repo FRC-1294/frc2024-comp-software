@@ -46,7 +46,7 @@ public abstract class MechState {
         mPodiumPositionCommand = new ParallelCommandGroup(mAimingSubsystem.waitUntilSetpoint(AimState.PODIUM), mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.PODIUM));
         mLaunchCommand = new SequentialCommandGroup(mLauncherSubsystem.indexUntilNoteLaunchedCommand());
         mBrakeIndexerCommand = new InstantCommand(()->mLauncherSubsystem.stopIndexer(),mLauncherSubsystem);
-        mStaticAutoAimCommand = new ParallelCommandGroup(mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.SUBWOOFER), mAimingSubsystem.waitUntilElevatorSetpoint(AimingConstants.AIM_MAP.get(FieldConstants.getSpeakerDistance(SwerveSubsystem.getRobotPose()))));
+        mStaticAutoAimCommand = new ParallelCommandGroup(mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.SUBWOOFER), mAimingSubsystem.waitUntilWristSetpoint(() -> AimingConstants.AIM_MAP.get(FieldConstants.getSpeakerDistance(SwerveSubsystem.getRobotPose()))));
     }
 
     public Command setLauncherSpeed(AimState state) {

@@ -109,8 +109,8 @@ public class DefaultMechCommand{
     }
 
     public void execute() {
-        if (mMechState.mLaunchCommand.isScheduled()){
-            noteCurrentlyLaunching = !mMechState.mLaunchCommand.isFinished();
+        if (MechState.mLaunchCommand.isScheduled()){
+            noteCurrentlyLaunching = !MechState.mLaunchCommand.isFinished();
         }
 
         if (Input.getX()) {
@@ -177,10 +177,10 @@ public class DefaultMechCommand{
             if (!noteCurrentlyLaunching){
                 mMechState.brakeIndexer().schedule();
                 if (returnFromLaunch){
-                    if ((!mMechState.mAmpPositionCommand.isFinished() && mMechState.mAmpPositionCommand.isScheduled()) 
-                    || (!mMechState.mSpeakerPositionCommand.isFinished() && mMechState.mSpeakerPositionCommand.isScheduled()) 
-                    || (!mMechState.mPodiumPositionCommand.isFinished() && mMechState.podiumPosition().isScheduled())
-                    || (!mMechState.mStaticAutoAimCommand.isFinished() && mMechState.mStaticAutoAimCommand.isScheduled())){
+                    if ((!MechState.mAmpPositionCommand.isFinished() && MechState.mAmpPositionCommand.isScheduled()) 
+                    || (!MechState.mSpeakerPositionCommand.isFinished() && MechState.mSpeakerPositionCommand.isScheduled()) 
+                    || (!MechState.mPodiumPositionCommand.isFinished() && MechState.mPodiumPositionCommand.isScheduled())
+                    || (!MechState.mStaticAutoAimCommand.isFinished() && MechState.mStaticAutoAimCommand.isScheduled())){
                         //Indexer adjusts note if it slides out of launcher when one of the setpoints are triggered
                         mMechState.index(0.3);
                         return;
@@ -190,7 +190,7 @@ public class DefaultMechCommand{
                     }
                 }
             }
-            if (!mMechState.mHandoffPositionCommand.isScheduled()){
+            if (!MechState.mHandoffPositionCommand.isScheduled()){
                 mMechState.handoffPosition().schedule();
             }
         }
@@ -203,13 +203,13 @@ public class DefaultMechCommand{
                     returnFromLaunch = false;
                 }
             }
-            if (!mMechState.mHandoffPositionCommand.isScheduled()){
+            if (!MechState.mHandoffPositionCommand.isScheduled()){
                 mMechState.handoffPosition().schedule();
             }
         }
         else if (mMechState == mReadyForHandoff) {
             mMechState.brakeIntake().schedule();
-            if (!mMechState.mPreformHandoffCommand.isScheduled()){
+            if (!MechState.mPreformHandoffCommand.isScheduled()){
                 mMechState.preformHandoff().schedule();
             }
         }

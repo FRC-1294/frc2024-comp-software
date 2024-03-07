@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.revrobotics.CANSparkMax;
@@ -272,6 +274,11 @@ public class AimingSubsystem extends SubsystemBase {
   public void setDesiredElevatorDistance(double distance) {
     mDesiredElevatorDistanceIn = distance;
   }
+
+  public void setDesiredWristRotation(Supplier<Double> sp) {
+    mDesiredWristRotationDeg = sp.get();
+  } 
+
   public void setDesiredElevatorDistance(double distance, double tolerance) {
     mDesiredElevatorDistanceIn = distance;
     mElevatorController.setTolerance(tolerance);
@@ -340,6 +347,10 @@ public class AimingSubsystem extends SubsystemBase {
   }
 
   public Command waitUntilWristSetpoint(double sp) {
+    return new FunctionalCommand(() -> setDesiredWristRotation(sp), ()->{}, (Interruptable)->{}, this::atWristSetpoint, this);  
+  }
+
+  public Command waitUntilWristSetpoint(Supplier<Double> sp) {
     return new FunctionalCommand(() -> setDesiredWristRotation(sp), ()->{}, (Interruptable)->{}, this::atWristSetpoint, this);  
   }
 }
