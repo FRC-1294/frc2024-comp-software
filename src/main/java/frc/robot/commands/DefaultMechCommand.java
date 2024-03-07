@@ -5,8 +5,10 @@
 package frc.robot.commands;
 import java.util.function.BooleanSupplier;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.AimingConstants;
+import frc.robot.constants.JoystickConstants;
 import frc.robot.constants.LauncherConstants;
 import frc.robot.constants.AimState;
 import frc.robot.states.MechState;
@@ -66,6 +68,12 @@ public class DefaultMechCommand{
         //Brakes the indexer ONE time when the current state transitions to ready to launch or ready to aim
         BooleanSupplier returnToIndex = ()-> mMechState == mReadyForAim || determineState() == mReadyForLaunch;
         new Trigger(returnToIndex).onTrue(mMechState.brakeIndexer());
+
+        BooleanSupplier readyToAim = ()-> mMechState == mReadyForAim;
+        new Trigger(readyToAim).onTrue(new InstantCommand(()->Input.enableRumble(JoystickConstants.XBOX_RUMBLE_SOFT)));
+
+        BooleanSupplier readyToLaunch = ()-> mMechState == mReadyForLaunch;
+        new Trigger(readyToLaunch).onTrue(new InstantCommand(()->Input.enableRumble(JoystickConstants.XBOX_RUMBLE_VIGEROUS)));
     }
 
     public static MechState determineState() {
@@ -165,6 +173,7 @@ public class DefaultMechCommand{
     //automatic actions
     public void runAction() {
         if (mMechState == mReadyForIntake) {
+            Input.disableRumble();
             if (!noteCurrentlyLaunching){
                 mMechState.brakeIndexer().schedule();
                 if (returnFromLaunch){

@@ -28,5 +28,7 @@ public class JoystickConstants {
 
     public static final double XBOX_Y_DEADZONE = 0.1;
 
+    public static final double XBOX_RUMBLE_SOFT = 0.2;
+    public static final double XBOX_RUMBLE_VIGEROUS = 0.7;
 
 }
