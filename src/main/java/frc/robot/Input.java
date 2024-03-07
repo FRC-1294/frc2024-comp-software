@@ -97,6 +97,10 @@ public class Input {
     return mTransJoystick.getTriggerPressed();
   }
 
+  public static boolean getRobotOriented() {
+    return mRotJoystick.getTrigger();
+  }
+
   public static boolean getIncPID() {
     return mRotJoystick.getRawButton(5);
   }

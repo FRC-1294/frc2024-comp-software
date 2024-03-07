@@ -8,7 +8,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.JoystickConstants;
 import frc.robot.Input;
-import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class DefaultDriveCommand extends Command {
@@ -62,7 +61,7 @@ public class DefaultDriveCommand extends Command {
     x *= mSwerve.mConfig.TELE_MAX_SPEED_MPS;
     y *= mSwerve.mConfig.TELE_MAX_SPEED_MPS;
     rot *= mSwerve.mConfig.TELE_MAX_ROT_SPEED_RAD_SEC;
-    mSwerve.setChassisSpeed(x, y, rot, true, false);
+    mSwerve.setChassisSpeed(x, y, rot, !Input.getRobotOriented(), false);
   }
 
   // Returns true when the command should end.
