@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.CoastOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -27,6 +28,8 @@ public class LauncherSubsystem extends SubsystemBase {
   private final TalonFX mFollowerFlywheel = new TalonFX(LauncherConstants.FOLLOWER_FLYWHEEL_ID, "DriveMotors");
 
   private final DigitalInput mBeamBreak = new DigitalInput(LauncherConstants.BEAMBREAK_ID);
+  private final CoastOut mCoastSignal = new CoastOut();
+  private final VoltageOut mVoltageSignal = new VoltageOut(0);
 
   private AimState mDesiredState = AimState.HANDOFF;
 
@@ -96,15 +99,16 @@ public class LauncherSubsystem extends SubsystemBase {
   
   public void runLauncher() {
     //predicted velocity values
-
-    mLeaderFlywheel.setControl(
-      new VoltageOut(
-        mDesiredState.mLauncherSetpointRPM*LauncherConstants.LAUNCHER_FF_CONTROLLER.kv
-         + LauncherConstants.LAUNCHER_PID_CONTROLLER.calculate(getCurrentVelocity(), mDesiredState.mLauncherSetpointRPM)
-      ));
+    if (mDesiredState.mLauncherSetpointRPM == 0){
+      mLeaderFlywheel.setControl(mCoastSignal);
+    }else{
+      mLeaderFlywheel.setControl(
+        mVoltageSignal.withOutput(
+          mDesiredState.mLauncherSetpointRPM*LauncherConstants.LAUNCHER_FF_CONTROLLER.kv
+          + LauncherConstants.LAUNCHER_PID_CONTROLLER.calculate(getCurrentVelocity(), mDesiredState.mLauncherSetpointRPM)
+        ));
+    }
     //mLeaderFlywheel.setControl(new VelocityVoltage(mDesiredState.mLauncherSetpointRPM).withSlot(0));
-
-
   }
 
   public boolean isIndexerOn() {
