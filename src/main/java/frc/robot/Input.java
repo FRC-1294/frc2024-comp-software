@@ -31,7 +31,7 @@ public class Input {
   }
 
   public static boolean alignSpeaker() {
-    return false;//TBD
+    return false;// mRotJoystick.getRawButton(5);//TBD
   }
     public static boolean resetOdo() {
     // return mTransJoystick.getRawButton(3);

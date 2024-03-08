@@ -171,14 +171,14 @@ public class DefaultMechCommand{
             mUseUltraInstinct = false;
         }
 
-
+        SmartDashboard.putString("DesiredState", mDesiredState.name());
         SmartDashboard.putString("CurrentState", mMechState.getClass().getSimpleName());
         SmartDashboard.putString("PreviousState", mPrevState.getClass().getSimpleName());
         SmartDashboard.putString("SecondPreviousState", mSecondTolastState.getClass().getSimpleName());
         SmartDashboard.putBoolean("LauncherReady", isFlywheelAtSP());
         SmartDashboard.putBoolean("AimReady", isAimAtSP());
         SmartDashboard.putBoolean("Amp Position Command Scheduled", MechState.mAmpPositionCommand.isScheduled());
-        SmartDashboard.putBoolean("Amp Desired Position Reached",!mDesiredState.withinWristTolerance(mAimingSubsystem.getCurrentWristDegreees()));
+        SmartDashboard.putBoolean("Amp Desired Position Reached",AimState.AMP.withinWristTolerance(mAimingSubsystem.getCurrentWristDegreees()));
 
     }
 
@@ -192,20 +192,22 @@ public class DefaultMechCommand{
             }
             if (!mDesiredState.withinWristTolerance(mAimingSubsystem.getCurrentWristDegreees()) && mDesiredState != AimState.HANDOFF){
                 mMechState.index(0.3).schedule();
+                SmartDashboard.putBoolean("IndexerIsRun", true);
                 return;
             }
-            else if ((MechState.mAmpPositionCommand.isScheduled()) 
-                || (MechState.mSpeakerPositionCommand.isScheduled()) 
-                || (MechState.mPodiumPositionCommand.isScheduled())
-                || (MechState.mStaticAutoAimCommand.isScheduled())){
-                    //Indexer adjusts note if it slides out of launcher when one of the setpoints are triggered
-                    mMechState.index(0.3).schedule();
-                    return;
-            } else{
+            // else if ((MechState.mAmpPositionCommand.isScheduled()) 
+            //     || (MechState.mSpeakerPositionCommand.isScheduled()) 
+            //     || (MechState.mPodiumPositionCommand.isScheduled())
+            //     || (MechState.mStaticAutoAimCommand.isScheduled())){
+            //         //Indexer adjusts note if it slides out of launcher when one of the setpoints are triggered
+            //         mMechState.index(0.3).schedule();
+            //         return;
+            //}
+             else{
                     mMechState.brakeLauncher().schedule();
-                    // if (!MechState.mHandoffPositionCommand.isScheduled()){
-                    //     mMechState.handoffPosition().schedule();
-                    // }
+                    if (!MechState.mHandoffPositionCommand.isScheduled()){
+                        mMechState.handoffPosition().schedule();
+                    }
             }
 
             // if (!launchStateReached) {

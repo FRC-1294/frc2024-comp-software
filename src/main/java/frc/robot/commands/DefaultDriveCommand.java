@@ -20,14 +20,14 @@ public class DefaultDriveCommand extends Command {
   private final SwerveSubsystem mSwerve;
   private boolean mIsPrecisionToggle = false;
   private final PIDController mNotePID = new PIDController(5, 0, 0.1);
-  private final PIDController mSpeakerAlignPID = new PIDController(5, 0, 0.1);
+  private final PIDController mSpeakerAlignPID = new PIDController(1, 0, 0.1);
 
   public DefaultDriveCommand(SwerveSubsystem swerve) {
     mSwerve = swerve;
     addRequirements(mSwerve);
     mNotePID.setTolerance(2);
     mSpeakerAlignPID.setTolerance(2);
-    mSpeakerAlignPID.enableContinuousInput(0, 360);
+    mSpeakerAlignPID.enableContinuousInput(-180, 180);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -40,10 +40,6 @@ public class DefaultDriveCommand extends Command {
 
     if (Input.resetGyro()) {
       mSwerve.resetGyro();
-    }
-
-    if (Input.resetOdo()) {
-      mSwerve.resetRobotPose();
     }
 
     if (Input.getPrecisionToggle()) {
@@ -73,10 +69,15 @@ public class DefaultDriveCommand extends Command {
         mSpeakerAlignPID.calculate(
           SwerveSubsystem.getRobotPose().getRotation().getDegrees(),
           getRotationToSpeakerDegrees()));
+
+      SmartDashboard.putNumber("RotationToSpeaker", getRotationToSpeakerDegrees());
+      SmartDashboard.putNumber("SpeakerAlignPIDOutput", rot);
     }
     SmartDashboard.putBoolean("Speaker Aligned", mSpeakerAlignPID.atSetpoint());
+    SmartDashboard.putBoolean("Precision Toggle", mIsPrecisionToggle);
     mSwerve.setChassisSpeed(x, y, rot, !Input.getRobotOriented(), false);
   }
+
 
   // Returns true when the command should end.
   @Override
@@ -91,18 +92,20 @@ public class DefaultDriveCommand extends Command {
     } else{
       relativeTrans = FieldConstants.Blue.SPEAKER.getPose().toPose2d().minus(SwerveSubsystem.getRobotPose());
     }
+
+    double targAngle = relativeTrans.getTranslation().getAngle().getDegrees();
     //Use atan2 to account for launching on blue side
-    double targAngle = Math.toDegrees(Math.atan2(relativeTrans.getY(), relativeTrans.getX()));
-    if (targAngle < 0){
-      //This is to convert the range from [-180,180] to [0,360]
-      targAngle += 360;
-    }
+    //double targAngle = Math.toDegrees(Math.atan2(relativeTrans.getY(), relativeTrans.getX()));
+    // if (targAngle < 0){
+    //   //This is to convert the range from [-180,180] to [0,360]
+    //   targAngle += 360;
+    // }
     //add 180 degrees because drivebase 0 is relative to intake, we want it to be relative to launcher
-    targAngle += 180;
-    if (targAngle>360){
-      //Take the remainder since we don't want angles above 360
-      targAngle = Math.IEEEremainder(targAngle, 360);
-    }
+    // targAngle += 180;
+    // if (targAngle>360){
+    //   //Take the remainder since we don't want angles above 360
+    //   targAngle = Math.IEEEremainder(targAngle, 360);
+    // }
     return targAngle;
   }
 }

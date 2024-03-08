@@ -5,6 +5,7 @@
 package frc.robot;
 
 import java.util.Optional;
+import java.util.function.BooleanSupplier;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.revrobotics.CANSparkLowLevel;

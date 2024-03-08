@@ -13,12 +13,12 @@ import frc.robot.Robot;
 
 public class FieldConstants {
     public static enum Blue {
-        SPEAKER(new Pose3d(new Translation3d(0.0, 0.0, 0.0), new Rotation3d(0.0, 0.0, 0.0)));
+        SPEAKER(new Pose3d(new Translation3d(0, 5.6, 0.0), new Rotation3d(0.0, 0.0, 0.0)));
 
         private final Pose3d pose;
 
-        Blue(Pose3d pose) {
-            this.pose = pose;
+        Blue(Pose3d pos) {
+            pose = pos;
         }
 
         public Pose3d getPose() {
@@ -27,12 +27,12 @@ public class FieldConstants {
     }
 
     public static enum Red {
-        SPEAKER(new Pose3d(new Translation3d(0.0, 0.0, 0.0), new Rotation3d(0.0, 0.0, 0.0)));
+        SPEAKER(new Pose3d(new Translation3d(15.8, 5.6, 0.0), new Rotation3d(0.0, 0.0, 0.0)));
 
         private final Pose3d pose;
 
-        Red(Pose3d pose) {
-            this.pose = pose;
+        Red(Pose3d pos) {
+            pose = pos;
         }
 
         public Pose3d getPose() {
