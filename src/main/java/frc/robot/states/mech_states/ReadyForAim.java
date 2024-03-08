@@ -55,6 +55,7 @@ public class ReadyForAim extends MechState {
     @Override
     public Command emergencyOuttake(){
         mLaunchCommand.cancel();
+        DefaultMechCommand.mDesiredState = AimState.OUTTAKE;
        return new SequentialCommandGroup(new ParallelCommandGroup(mAimingSubsystem.waitUntilSetpoint(AimState.OUTTAKE),
             mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.OUTTAKE)),
             new InstantCommand(()->mLauncherSubsystem.runIndexer(-0.6))); 

@@ -173,12 +173,6 @@ public class DefaultMechCommand{
 
         SmartDashboard.putString("DesiredState", mDesiredState.name());
         SmartDashboard.putString("CurrentState", mMechState.getClass().getSimpleName());
-        SmartDashboard.putString("PreviousState", mPrevState.getClass().getSimpleName());
-        SmartDashboard.putString("SecondPreviousState", mSecondTolastState.getClass().getSimpleName());
-        SmartDashboard.putBoolean("LauncherReady", isFlywheelAtSP());
-        SmartDashboard.putBoolean("AimReady", isAimAtSP());
-        SmartDashboard.putBoolean("Amp Position Command Scheduled", MechState.mAmpPositionCommand.isScheduled());
-        SmartDashboard.putBoolean("Amp Desired Position Reached",AimState.AMP.withinWristTolerance(mAimingSubsystem.getCurrentWristDegreees()));
 
     }
 
@@ -190,9 +184,8 @@ public class DefaultMechCommand{
             if (mSecondTolastState == mReadyForAim && mPrevState == mReadyForLaunch){
                 mMechState.brakeIndexer().schedule();
             }
-            if (!mDesiredState.withinWristTolerance(mAimingSubsystem.getCurrentWristDegreees()) && mDesiredState != AimState.HANDOFF){
+            if (!mDesiredState.withinWristTolerance(mAimingSubsystem.getCurrentWristDegreees()) && mDesiredState != AimState.HANDOFF && mDesiredState != AimState.OUTTAKE){
                 mMechState.index(0.3).schedule();
-                SmartDashboard.putBoolean("IndexerIsRun", true);
                 return;
             }
             // else if ((MechState.mAmpPositionCommand.isScheduled()) 
@@ -238,7 +231,7 @@ public class DefaultMechCommand{
             mMechState.brakeIndexer().schedule();
 
             if (!getIndexerBeamBreak()) {
-                mMechState.index(0.4).schedule();;
+                mMechState.index(0.4).schedule();
             }
             
             //No Automation Yet

@@ -70,10 +70,7 @@ public class DefaultDriveCommand extends Command {
           SwerveSubsystem.getRobotPose().getRotation().getDegrees(),
           getRotationToSpeakerDegrees()));
 
-      SmartDashboard.putNumber("RotationToSpeaker", getRotationToSpeakerDegrees());
-      SmartDashboard.putNumber("SpeakerAlignPIDOutput", rot);
     }
-    SmartDashboard.putBoolean("Speaker Aligned", mSpeakerAlignPID.atSetpoint());
     SmartDashboard.putBoolean("Precision Toggle", mIsPrecisionToggle);
     mSwerve.setChassisSpeed(x, y, rot, !Input.getRobotOriented(), false);
   }

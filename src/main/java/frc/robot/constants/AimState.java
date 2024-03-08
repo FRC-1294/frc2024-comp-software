@@ -72,10 +72,6 @@ public enum AimState {
 
     public boolean atState(double curWristAngle, double curElevatorHeight, double curLauncherSpeed){
         //return true if the current state is within the tolerance of the desired state ignoring the parameters that are -1
-        SmartDashboard.putBoolean("WithinWristTolerance", withinWristTolerance(curWristAngle));
-        SmartDashboard.putBoolean("WithinElevatorTolerance", withinElevatorTolerance(curElevatorHeight));
-        SmartDashboard.putBoolean("WithinLaucherTolerance", withinLauncherTolerance(curLauncherSpeed));
-
         return withinWristTolerance(curWristAngle) && withinElevatorTolerance(curElevatorHeight) && withinLauncherTolerance(curLauncherSpeed);
     }
 
