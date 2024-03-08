@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.JoystickConstants;
@@ -73,7 +74,7 @@ public class DefaultDriveCommand extends Command {
           SwerveSubsystem.getRobotPose().getRotation().getDegrees(),
           getRotationToSpeakerDegrees()));
     }
-
+    SmartDashboard.putBoolean("Speaker Aligned", mSpeakerAlignPID.atSetpoint());
     mSwerve.setChassisSpeed(x, y, rot, !Input.getRobotOriented(), false);
   }
 
