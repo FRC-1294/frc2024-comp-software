@@ -73,6 +73,7 @@ public class ReadyForLaunch extends MechState {
 
     @Override
     public Command staticAutoAim(){
+      DefaultMechCommand.mDesiredState = AimState.TRANSITION;
         return MechState.mStaticAutoAimCommand;
     }
 }

@@ -177,6 +177,8 @@ public class DefaultMechCommand{
         SmartDashboard.putString("SecondPreviousState", mSecondTolastState.getClass().getSimpleName());
         SmartDashboard.putBoolean("LauncherReady", isFlywheelAtSP());
         SmartDashboard.putBoolean("AimReady", isAimAtSP());
+        SmartDashboard.putBoolean("Amp Position Command Scheduled", MechState.mAmpPositionCommand.isScheduled());
+        SmartDashboard.putBoolean("Amp Desired Position Reached",!mDesiredState.withinWristTolerance(mAimingSubsystem.getCurrentWristDegreees()));
 
     }
 
@@ -188,10 +190,11 @@ public class DefaultMechCommand{
             if (mSecondTolastState == mReadyForAim && mPrevState == mReadyForLaunch){
                 mMechState.brakeIndexer().schedule();
             }
-
-            SmartDashboard.putBoolean("AmpPositionReached", MechState.mAmpPositionCommand.isScheduled());
-
-            if ((MechState.mAmpPositionCommand.isScheduled()) 
+            if (!mDesiredState.withinWristTolerance(mAimingSubsystem.getCurrentWristDegreees()) && mDesiredState != AimState.HANDOFF){
+                mMechState.index(0.3).schedule();
+                return;
+            }
+            else if ((MechState.mAmpPositionCommand.isScheduled()) 
                 || (MechState.mSpeakerPositionCommand.isScheduled()) 
                 || (MechState.mPodiumPositionCommand.isScheduled())
                 || (MechState.mStaticAutoAimCommand.isScheduled())){
