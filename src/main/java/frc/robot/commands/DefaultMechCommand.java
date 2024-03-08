@@ -36,9 +36,11 @@ public class DefaultMechCommand{
     private static MechState mUltraInstinct;
     private static boolean noteCurrentlyLaunching = false;
     private static boolean returnFromLaunch = true;
+    private static boolean launchStateReached = false;  
 
     private static boolean mUseUltraInstinct = false;
     private static MechState mMechState;
+    private static MechState mPrevState;
 
     public DefaultMechCommand(IntakeSubsystem intakeSubsystem, LauncherSubsystem launcherSubsystem, AimingSubsystem aimingSubsystem) {
         mIntakeSubsystem = intakeSubsystem;
@@ -53,9 +55,11 @@ public class DefaultMechCommand{
         mReadyForAim = new ReadyForAim(mLauncherSubsystem,mAimingSubsystem,mIntakeSubsystem);
         mReadyForLaunch = new ReadyForLaunch(mLauncherSubsystem,mAimingSubsystem,mIntakeSubsystem);
         mUltraInstinct = new UltraInstinct(mLauncherSubsystem,mAimingSubsystem,mIntakeSubsystem);
-
+        
+        mPrevState = mUltraInstinct;
         mMechState = mUltraInstinct;
         mMechState = determineState();
+
         defineEventListeners();
 
     }
@@ -94,7 +98,7 @@ public class DefaultMechCommand{
         }
         else if (getIndexerBeamBreak()) {
             if (isFlywheelAtSP() && isAimAtSP() && isVisionAligned() && 
-            !(Math.abs(mLauncherSubsystem.getCurrentVelocity()) < 100)) {
+            !(Math.abs(mLauncherSubsystem.getCurrentVelocity()) < 500)) {
                 returnFromLaunch = true;
                 return mReadyForLaunch;
             }
@@ -109,6 +113,14 @@ public class DefaultMechCommand{
     }
 
     public void execute() {
+        MechState curState = determineState();
+        if (curState != mMechState){
+            mPrevState = mMechState;
+            mMechState = determineState();
+        }
+
+        runAction();
+
         if (MechState.mLaunchCommand.isScheduled()){
             noteCurrentlyLaunching = !MechState.mLaunchCommand.isFinished();
         }
@@ -133,16 +145,20 @@ public class DefaultMechCommand{
             mMechState.runIntakeMotors().schedule();
         } else if (Math.abs(Input.getRightTrigger()) > LauncherConstants.INDEX_TRIGGER_DEADZONE) {
             mMechState.overrideIntake((Input.getRightTrigger()-LauncherConstants.INDEX_TRIGGER_DEADZONE)
-            *(Input.getReverseButton() ? 1 : -1)).schedule();
+            *(Input.getReverseButton() ? -1 : 1)).schedule();
         } else{
             mMechState.brakeIntake().schedule();
         }
 
         if (Input.getRightBumper()) {
             mMechState.launch().schedule();
+            if (mMechState == mReadyForLaunch) {
+                launchStateReached = true;
+                
+            }
         } else if (Math.abs(Input.getLeftTrigger()) > LauncherConstants.INDEX_TRIGGER_DEADZONE) {
                 mMechState.index((Input.getLeftTrigger()-LauncherConstants.INDEX_TRIGGER_DEADZONE)
-                *(Input.getReverseButton() ? 1 : -1)).schedule();
+                *(Input.getReverseButton() ? -1 : 1)).schedule();
         }
 
         if (Math.abs(Input.getLeftStickY()) > 0.1) {
@@ -161,10 +177,9 @@ public class DefaultMechCommand{
             mUseUltraInstinct = false;
         }
 
-        runAction();
-        mMechState = determineState();
 
         SmartDashboard.putString("CurrentState", mMechState.getClass().getSimpleName());
+        SmartDashboard.putString("PreviousState", mPrevState.getClass().getSimpleName());
         SmartDashboard.putBoolean("LauncherReady", isFlywheelAtSP());
         SmartDashboard.putBoolean("AimReady", isAimAtSP());
 
@@ -172,26 +187,33 @@ public class DefaultMechCommand{
 
     //automatic actions
     public void runAction() {
+
         if (mMechState == mReadyForIntake) {
             Input.disableRumble();
             if (!noteCurrentlyLaunching){
                 mMechState.brakeIndexer().schedule();
-                if (returnFromLaunch){
-                    if ((!MechState.mAmpPositionCommand.isFinished() && MechState.mAmpPositionCommand.isScheduled()) 
-                    || (!MechState.mSpeakerPositionCommand.isFinished() && MechState.mSpeakerPositionCommand.isScheduled()) 
-                    || (!MechState.mPodiumPositionCommand.isFinished() && MechState.mPodiumPositionCommand.isScheduled())
-                    || (!MechState.mStaticAutoAimCommand.isFinished() && MechState.mStaticAutoAimCommand.isScheduled())){
-                        //Indexer adjusts note if it slides out of launcher when one of the setpoints are triggered
-                        mMechState.index(0.3);
-                        return;
-                    } else{
-                        mMechState.brakeLauncher().schedule();
-                        returnFromLaunch = false;
-                    }
-                }
+                // if (returnFromLaunch){
+                // }
             }
+
+            // if ((!MechState.mAmpPositionCommand.isFinished() && MechState.mAmpPositionCommand.isScheduled()) 
+            //     || (!MechState.mSpeakerPositionCommand.isFinished() && MechState.mSpeakerPositionCommand.isScheduled()) 
+            //     || (!MechState.mPodiumPositionCommand.isFinished() && MechState.mPodiumPositionCommand.isScheduled())
+            //     || (!MechState.mStaticAutoAimCommand.isFinished() && MechState.mStaticAutoAimCommand.isScheduled())){
+            //         //Indexer adjusts note if it slides out of launcher when one of the setpoints are triggered
+            //         mMechState.index(0.3);
+            //         return;
+            // } else{
+            //         mMechState.brakeLauncher().schedule();
+            //         returnFromLaunch = false;
+            // }
+
+            // if (!launchStateReached) {
+            //     mMechState.index(0.3);
+            // }
             if (!MechState.mHandoffPositionCommand.isScheduled()){
                 mMechState.handoffPosition().schedule();
+                launchStateReached = false;
             }
         }
         else if (mMechState == mIntaken) {
@@ -219,6 +241,7 @@ public class DefaultMechCommand{
         }
         else if (mMechState == mReadyForLaunch) {
             mMechState.brakeIntake().schedule();
+            //launchStateReached = true;
             //Need Operator Confirmation
         }
     }

@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.DefaultMechCommand;
 import frc.robot.constants.AimState;
 import frc.robot.states.MechState;
 import frc.robot.subsystems.AimingSubsystem;
@@ -24,26 +25,31 @@ public class ReadyForLaunch extends MechState {
 
     @Override
     public Command speakerPosition(){
-       return mSpeakerPositionCommand;
+      DefaultMechCommand.mDesiredState = AimState.SUBWOOFER;
+      return mSpeakerPositionCommand;
     }
 
     @Override
     public Command ampPosition(){
+      DefaultMechCommand.mDesiredState = AimState.AMP;
        return mAmpPositionCommand;
     }
     
     @Override
     public Command trapPosition(){
+      DefaultMechCommand.mDesiredState = AimState.TRAP;
        return mTrapPositionCommand;
     }
 
     @Override
     public Command handoffPosition(){
+      DefaultMechCommand.mDesiredState = AimState.HANDOFF;
        return mHandoffPositionCommand;
     }
 
     @Override
     public Command podiumPosition() {
+      DefaultMechCommand.mDesiredState = AimState.PODIUM;
        return mPodiumPositionCommand;
     }
     @Override

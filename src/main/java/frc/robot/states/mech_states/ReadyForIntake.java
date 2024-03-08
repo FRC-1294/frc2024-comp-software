@@ -23,6 +23,11 @@ public class ReadyForIntake extends MechState {
     }
 
     @Override
+    public Command index(double vel){
+       return new InstantCommand(() -> mLauncherSubsystem.runIndexer(vel),mLauncherSubsystem);
+    }
+
+    @Override
     public Command handoffPosition(){
         return mHandoffPositionCommand;
     }
