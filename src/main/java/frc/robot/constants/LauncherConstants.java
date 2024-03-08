@@ -31,7 +31,7 @@ public final class LauncherConstants {
 
   //indexer setpoint
   public static final double INDEXER_VELOCITY_INDEXING = 0.2; //TODO:https://github.com/FRC-1294/frc2024/issues/241
-  public static final double INDEXER_VELOCITY_LAUNCHING = 0.6;
+  public static final double INDEXER_VELOCITY_LAUNCHING = 0.8;
 
   public static final PIDController LAUNCHER_PID_CONTROLLER = new PIDController(0.0, 0.01, 0); //TODO:https://github.com/FRC-1294/frc2024/issues/241
 

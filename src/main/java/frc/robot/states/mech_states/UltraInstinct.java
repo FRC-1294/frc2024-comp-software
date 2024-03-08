@@ -74,26 +74,26 @@ public class UltraInstinct extends MechState {
 
     @Override
     public Command preformHandoff(){
-       return mHandoffPositionCommand;
+       return MechState.mHandoffPositionCommand;
     }
 
     @Override
     public Command speakerPosition(){
-       return mSpeakerPositionCommand;
+       return MechState.mSpeakerPositionCommand;
     }
 
     @Override
     public Command ampPosition(){
-       return mAmpPositionCommand;
+       return MechState.mAmpPositionCommand;
     }
     
     @Override
     public Command trapPosition(){
-       return mTrapPositionCommand;
+       return MechState.mTrapPositionCommand;
     }
 
     @Override
     public Command handoffPosition(){
-       return mHandoffPositionCommand;
+       return MechState.mHandoffPositionCommand;
     }
 }

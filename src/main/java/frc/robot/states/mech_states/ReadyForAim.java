@@ -25,31 +25,31 @@ public class ReadyForAim extends MechState {
     @Override
     public Command speakerPosition(){
       DefaultMechCommand.mDesiredState = AimState.SUBWOOFER;
-      return mSpeakerPositionCommand;
+      return MechState.mSpeakerPositionCommand;
     }
 
     @Override
     public Command ampPosition(){
       DefaultMechCommand.mDesiredState = AimState.AMP;
-       return mAmpPositionCommand;
+       return MechState.mAmpPositionCommand;
     }
     
     @Override
     public Command trapPosition(){
       DefaultMechCommand.mDesiredState = AimState.TRAP;
-       return mTrapPositionCommand;
+       return MechState.mTrapPositionCommand;
     }
 
     @Override
     public Command handoffPosition(){
       DefaultMechCommand.mDesiredState = AimState.HANDOFF;
-       return mHandoffPositionCommand;
+       return MechState.mHandoffPositionCommand;
     }
 
     @Override
     public Command podiumPosition() {
       DefaultMechCommand.mDesiredState = AimState.PODIUM;
-       return mPodiumPositionCommand;
+       return MechState.mPodiumPositionCommand;
     }
 
     @Override
@@ -62,6 +62,6 @@ public class ReadyForAim extends MechState {
 
     @Override
     public Command staticAutoAim(){
-        return mStaticAutoAimCommand;
+        return MechState.mStaticAutoAimCommand;
     }
 }
