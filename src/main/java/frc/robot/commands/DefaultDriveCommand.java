@@ -41,10 +41,6 @@ public class DefaultDriveCommand extends Command {
       mSwerve.resetGyro();
     }
 
-    if (Input.alignSpeaker()){
-      rot = mSpeakerAlignPID.calculate(SwerveSubsystem.getRobotPose().getRotation().getDegrees(), getRotationToSpeakerDegrees());
-    }
-
     if (Input.resetOdo()) {
       mSwerve.resetRobotPose();
     }
@@ -70,6 +66,14 @@ public class DefaultDriveCommand extends Command {
     x *= mSwerve.mConfig.TELE_MAX_SPEED_MPS;
     y *= mSwerve.mConfig.TELE_MAX_SPEED_MPS;
     rot *= mSwerve.mConfig.TELE_MAX_ROT_SPEED_RAD_SEC;
+
+    if (Input.alignSpeaker()){
+      rot = Math.toRadians(
+        mSpeakerAlignPID.calculate(
+          SwerveSubsystem.getRobotPose().getRotation().getDegrees(),
+          getRotationToSpeakerDegrees()));
+    }
+
     mSwerve.setChassisSpeed(x, y, rot, !Input.getRobotOriented(), false);
   }
 
