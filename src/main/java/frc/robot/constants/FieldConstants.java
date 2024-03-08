@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.Robot;
 
 public class FieldConstants {
     public static enum Blue {
@@ -41,8 +42,7 @@ public class FieldConstants {
 
 
     public static double getSpeakerDistance(Pose2d robotPose) {
-        Optional<Alliance> alliance = DriverStation.getAlliance();
-        if (alliance.isPresent() && alliance.get() == Alliance.Red) {
+        if (Robot.mAlliance.isPresent() && Robot.mAlliance.get() == Alliance.Red) {
             return Red.SPEAKER.getPose().toPose2d().minus(robotPose).getTranslation().getNorm();            
         }
         return Blue.SPEAKER.getPose().toPose2d().minus(robotPose).getTranslation().getNorm();

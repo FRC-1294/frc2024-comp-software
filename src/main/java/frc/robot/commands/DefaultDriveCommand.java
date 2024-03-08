@@ -5,9 +5,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.constants.FieldConstants;
 import frc.robot.constants.JoystickConstants;
 import frc.robot.Input;
+import frc.robot.Robot;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class DefaultDriveCommand extends Command {
@@ -15,13 +19,14 @@ public class DefaultDriveCommand extends Command {
   private final SwerveSubsystem mSwerve;
   private boolean mIsPrecisionToggle = false;
   private final PIDController mNotePID = new PIDController(5, 0, 0.1);
-  
-
+  private final PIDController mSpeakerAlignPID = new PIDController(5, 0, 0.1);
 
   public DefaultDriveCommand(SwerveSubsystem swerve) {
     mSwerve = swerve;
     addRequirements(mSwerve);
     mNotePID.setTolerance(2);
+    mSpeakerAlignPID.setTolerance(2);
+    mSpeakerAlignPID.enableContinuousInput(0, 360);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -34,6 +39,10 @@ public class DefaultDriveCommand extends Command {
 
     if (Input.resetGyro()) {
       mSwerve.resetGyro();
+    }
+
+    if (Input.alignSpeaker()){
+      rot = mSpeakerAlignPID.calculate(SwerveSubsystem.getRobotPose().getRotation().getDegrees(), getRotationToSpeakerDegrees());
     }
 
     if (Input.resetOdo()) {
@@ -68,5 +77,27 @@ public class DefaultDriveCommand extends Command {
   @Override
   public boolean isFinished() {
     return false;
+  }
+
+  private double getRotationToSpeakerDegrees(){
+    Transform2d relativeTrans;
+    if (Robot.mAlliance.get() == Alliance.Red){
+      relativeTrans = FieldConstants.Red.SPEAKER.getPose().toPose2d().minus(SwerveSubsystem.getRobotPose());
+    } else{
+      relativeTrans = FieldConstants.Blue.SPEAKER.getPose().toPose2d().minus(SwerveSubsystem.getRobotPose());
+    }
+    //Use atan2 to account for launching on blue side
+    double targAngle = Math.toDegrees(Math.atan2(relativeTrans.getY(), relativeTrans.getX()));
+    if (targAngle < 0){
+      //This is to convert the range from [-180,180] to [0,360]
+      targAngle += 360;
+    }
+    //add 180 degrees because drivebase 0 is relative to intake, we want it to be relative to launcher
+    targAngle += 180;
+    if (targAngle>360){
+      //Take the remainder since we don't want angles above 360
+      targAngle = Math.IEEEremainder(targAngle, 360);
+    }
+    return targAngle;
   }
 }

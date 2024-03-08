@@ -86,10 +86,6 @@ public class DefaultMechCommand{
             return mUltraInstinct;
         }
         if (!getIntakeBeamBreak() && !getIndexerBeamBreak()) {
-            if (mPrevState == mReadyForAim && mSecondTolastState != mReadyForLaunch) {
-                return mReadyForAim;
-            }
-
             return mReadyForIntake;
         }
         else if (getIntakeBeamBreak() && !getIndexerBeamBreak()) {
@@ -107,8 +103,6 @@ public class DefaultMechCommand{
                 return mReadyForLaunch;
             }
             else{
-                if (mPrevState != mReadyForLaunch) {
-                }
                 return mReadyForAim;
             }
         }
@@ -195,7 +189,7 @@ public class DefaultMechCommand{
                 mMechState.brakeIndexer().schedule();
             }
 
-            SmartDashboard.putBoolean("AmpPositionReached", !MechState.mAmpPositionCommand.isFinished() && MechState.mAmpPositionCommand.isScheduled());
+            SmartDashboard.putBoolean("AmpPositionReached", MechState.mAmpPositionCommand.isScheduled());
 
             if ((MechState.mAmpPositionCommand.isScheduled()) 
                 || (MechState.mSpeakerPositionCommand.isScheduled()) 
