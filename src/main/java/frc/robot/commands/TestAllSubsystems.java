@@ -7,10 +7,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.constants.IntakeConstants;
+import frc.robot.constants.LauncherConstants;
 import frc.robot.subsystems.AimingSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
@@ -54,7 +52,7 @@ public TestAllSubsystems(IntakeSubsystem intake, AimingSubsystem aiming, Launche
     switch (mChoose.getSelected()) {
       case 0:
         mIntake.intakeMotorsAtSpeed(IntakeConstants.ACTIVE_INTAKE_SPEED);
-        if (mIntake.pieceInIntake()) {
+        if (!mIntake.pieceInIntake()) {
           mIntake.stopMotors();
         }
         SmartDashboard.putBoolean("pieceInIntake", mIntake.pieceInIntake());
@@ -65,7 +63,9 @@ public TestAllSubsystems(IntakeSubsystem intake, AimingSubsystem aiming, Launche
       case 1:
         mLauncher.runLauncher();
         if (!mLauncher.pieceInIndexer()){
-          mLauncher.stopLauncher();
+          mLauncher.runIndexer(LauncherConstants.INDEXER_VELOCITY_INDEXING);
+        } else if (mLauncher.pieceInIndexer() && mLauncher.isLauncherReady()) {
+          mLauncher.runLauncher();
         }
         SmartDashboard.putNumber("indexerMotor", mLauncher.getLauncherSpeeds()[0]);
         SmartDashboard.putNumber("leaderMotor", mLauncher.getLauncherSpeeds()[1]);
@@ -74,11 +74,9 @@ public TestAllSubsystems(IntakeSubsystem intake, AimingSubsystem aiming, Launche
         break;
       case 2: 
         mAiming.setDesiredWristRotation(SmartDashboard.getNumber("wristSetpointDegrees", 90));
-        mAiming.debugSmartDashboard();
         break;
       case 3:
         mAiming.setDesiredElevatorDistance(SmartDashboard.getNumber("elevatorSetpointInches", 2));
-        mAiming.debugSmartDashboard();
         break;
       default:
         break;
