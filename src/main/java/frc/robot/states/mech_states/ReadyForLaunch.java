@@ -54,7 +54,7 @@ public class ReadyForLaunch extends MechState {
     }
     @Override
     public Command index(double vel){
-       return new InstantCommand(() -> mLauncherSubsystem.runIndexer(vel),mLauncherSubsystem);
+       return new InstantCommand(() -> mLauncherSubsystem.runIndexer(vel));
     }
 
     @Override

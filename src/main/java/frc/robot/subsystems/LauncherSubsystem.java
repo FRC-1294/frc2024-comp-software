@@ -51,8 +51,8 @@ public class LauncherSubsystem extends SubsystemBase {
     TalonFXConfiguration configuration = new TalonFXConfiguration();
     Slot0Configs slotConfigs = new Slot0Configs();
     configuration.Feedback.SensorToMechanismRatio = 1/(LauncherConstants.FLYWHEEL_SENSOR_TO_MECHANISM);
-    configuration.CurrentLimits.SupplyCurrentLimit = 80;
-    configuration.CurrentLimits.SupplyCurrentLimitEnable = true;
+    //configuration.CurrentLimits.SupplyCurrentLimit = 80;
+    configuration.CurrentLimits.SupplyCurrentLimitEnable = false;
 
 
     slotConfigs.kP = LauncherConstants.LAUNCHER_PID_CONTROLLER.getP();
@@ -85,7 +85,8 @@ public class LauncherSubsystem extends SubsystemBase {
 
     SmartDashboard.putBoolean("Piece in Indexer", pieceInIndexer());
     SmartDashboard.putNumber("Flywheel Speed", actualVelocity);
-    // SmartDashboard.putNumber("Indexer Applied Output", mIndexer.getAppliedOutput());
+    SmartDashboard.putNumber("Indexer Applied Output", mIndexer.getAppliedOutput());
+    System.out.println("Indexer Speed " + mIndexer.getAppliedOutput());
     // SmartDashboard.putBoolean("LauncherReady", isLauncherReady());
   }
 
@@ -99,15 +100,15 @@ public class LauncherSubsystem extends SubsystemBase {
   
   public void runLauncher() {
     //predicted velocity values
-    if (mDesiredState.mLauncherSetpointRPM == 0 || mDesiredState.mLauncherSetpointRPM == -1){
-      mLeaderFlywheel.setControl(mCoastSignal);
-    }else{
+    // if (mDesiredState.mLauncherSetpointRPM == 0 || mDesiredState.mLauncherSetpointRPM == -1){
+    //   mLeaderFlywheel.setControl(mCoastSignal);
+    // }else{
       mLeaderFlywheel.setControl(
         mVoltageSignal.withOutput(
           mDesiredState.mLauncherSetpointRPM*LauncherConstants.LAUNCHER_FF_CONTROLLER.kv
           + LauncherConstants.LAUNCHER_PID_CONTROLLER.calculate(getCurrentVelocity(), mDesiredState.mLauncherSetpointRPM)
         ));
-    }
+    //}
     //mLeaderFlywheel.setControl(new VelocityVoltage(mDesiredState.mLauncherSetpointRPM).withSlot(0));
   }
 
@@ -138,14 +139,14 @@ public class LauncherSubsystem extends SubsystemBase {
 
   public Command waitUntilFlywheelSetpointCommand(AimState aimState) {
     return new FunctionalCommand(() -> setLauncherState(aimState), ()->{},
-    (Interruptable)->{}, this::isLauncherReady, this);    
+    (Interruptable)->{}, this::isLauncherReady);    
   }
   
   public Command indexUntilNoteLaunchedCommand() {
     return new FunctionalCommand(() -> runIndexer(LauncherConstants.INDEXER_VELOCITY_LAUNCHING), 
     ()->{},
     (Interruptable)->{stopIndexer();}, 
-    ()->!pieceInIndexer(), this);
+    ()->!pieceInIndexer());
   } 
 
   public double getCurrentVelocity() {

@@ -68,7 +68,7 @@ public class InitializePathPlanner{
       ),()->IntakeSubsystem.pieceInIntake()),
       mAiming.waitUntilSetpoint(AimState.SUBWOOFER), 
       mLauncher.waitUntilFlywheelSetpointCommand(AimState.SUBWOOFER), 
-      mLauncher.indexUntilNoteLaunchedCommand()));
+      mLauncher.indexUntilNoteLaunchedCommand()).withTimeout(4));
 
     NamedCommands.registerCommand("ShootFromWing", new SequentialCommandGroup(
       new SelectCommand<>(Map.ofEntries(

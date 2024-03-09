@@ -20,7 +20,7 @@ public class DefaultDriveCommand extends Command {
   private final SwerveSubsystem mSwerve;
   private boolean mIsPrecisionToggle = false;
   private final PIDController mNotePID = new PIDController(5, 0, 0.1);
-  private final PIDController mSpeakerAlignPID = new PIDController(1, 0, 0.1);
+  private final PIDController mSpeakerAlignPID = new PIDController(3, 0, 0.05);
 
   public DefaultDriveCommand(SwerveSubsystem swerve) {
     mSwerve = swerve;
@@ -88,10 +88,10 @@ public class DefaultDriveCommand extends Command {
     Transform2d relativeTrans;
     double targAngle;
 
-    if (Robot.mAlliance.get() == Alliance.Red){
-      targAngle = 324.85;
+    if (Robot.mAlliance.get() == Alliance.Blue){
+      targAngle = 329.85;
     } else{
-      targAngle = 35.15;
+      targAngle = 30.15;
     }
 
     //Use atan2 to account for launching on blue side

@@ -107,18 +107,17 @@ public class DefaultMechCommand{
             }
         }
         else{
-            return mUltraInstinct;
-        }
+            return mUltraInstinct;}
         
     }
 
     public void execute() {
         MechState curState = determineState();
-        if (curState != mMechState){
-            mSecondTolastState = mPrevState;
-            mPrevState = mMechState;
-            mMechState = determineState();
-        }
+                if (curState != mMechState){
+                    mSecondTolastState = mPrevState;
+                    mPrevState = mMechState;
+                    mMechState = determineState();
+                }
 
         runAction();
 
@@ -133,8 +132,7 @@ public class DefaultMechCommand{
         }
         else if (Input.getB()) {
             mMechState.handoffPosition().schedule();
-            mMechState.brakeLauncher().schedule();
-            
+            mMechState.brakeLauncher().schedule();            
         } else if(Input.getDPad() == Input.DPADDOWN){
             mMechState.podiumPosition().schedule();
         }
@@ -181,9 +179,7 @@ public class DefaultMechCommand{
 
         if (mMechState == mReadyForIntake) {
             Input.disableRumble();
-            if (mSecondTolastState == mReadyForAim && mPrevState == mReadyForLaunch){
-                mMechState.brakeIndexer().schedule();
-            }
+
             if (!mDesiredState.withinWristTolerance(mAimingSubsystem.getCurrentWristDegreees()) && mDesiredState != AimState.HANDOFF && mDesiredState != AimState.OUTTAKE){
                 mMechState.index(0.3).schedule();
                 return;
@@ -198,6 +194,7 @@ public class DefaultMechCommand{
             //}
              else{
                     mMechState.brakeLauncher().schedule();
+                    mMechState.brakeIndexer().schedule();
                     if (!MechState.mHandoffPositionCommand.isScheduled()){
                         mMechState.handoffPosition().schedule();
                     }
@@ -229,10 +226,6 @@ public class DefaultMechCommand{
             
             mMechState.brakeIntake().schedule();
             mMechState.brakeIndexer().schedule();
-
-            if (!getIndexerBeamBreak()) {
-                mMechState.index(0.4).schedule();
-            }
             
             //No Automation Yet
         }
