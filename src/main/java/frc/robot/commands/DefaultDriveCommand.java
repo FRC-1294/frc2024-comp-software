@@ -26,8 +26,9 @@ public class DefaultDriveCommand extends Command {
     mSwerve = swerve;
     addRequirements(mSwerve);
     mNotePID.setTolerance(2);
+
     mSpeakerAlignPID.setTolerance(2);
-    mSpeakerAlignPID.enableContinuousInput(-180, 180);
+    mSpeakerAlignPID.enableContinuousInput(0, 360);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -67,8 +68,9 @@ public class DefaultDriveCommand extends Command {
     if (Input.alignSpeaker()){
       rot = Math.toRadians(
         mSpeakerAlignPID.calculate(
-          SwerveSubsystem.getRobotPose().getRotation().getDegrees(),
+          SwerveSubsystem.getHeading(),
           getRotationToSpeakerDegrees()));
+      SmartDashboard.putBoolean("PodiumAligned", mSpeakerAlignPID.atSetpoint());
 
     }
     SmartDashboard.putBoolean("Precision Toggle", mIsPrecisionToggle);
@@ -84,13 +86,14 @@ public class DefaultDriveCommand extends Command {
 
   private double getRotationToSpeakerDegrees(){
     Transform2d relativeTrans;
+    double targAngle;
+
     if (Robot.mAlliance.get() == Alliance.Red){
-      relativeTrans = FieldConstants.Red.SPEAKER.getPose().toPose2d().minus(SwerveSubsystem.getRobotPose());
+      targAngle = 324.85;
     } else{
-      relativeTrans = FieldConstants.Blue.SPEAKER.getPose().toPose2d().minus(SwerveSubsystem.getRobotPose());
+      targAngle = 35.15;
     }
 
-    double targAngle = relativeTrans.getTranslation().getAngle().getDegrees();
     //Use atan2 to account for launching on blue side
     //double targAngle = Math.toDegrees(Math.atan2(relativeTrans.getY(), relativeTrans.getX()));
     // if (targAngle < 0){
