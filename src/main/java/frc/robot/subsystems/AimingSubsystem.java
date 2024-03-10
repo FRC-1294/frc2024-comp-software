@@ -109,8 +109,8 @@ public class AimingSubsystem extends SubsystemBase {
     mWristController.setTolerance(AimingConstants.WRIST_TOLERANCE_DEG);
     mElevatorController.setTolerance(AimingConstants.ELEVATOR_TOLERANCE_IN);
 
-    mLeftElevatorMotor.setSmartCurrentLimit(40);
-    mRightElevatorMotor.setSmartCurrentLimit(40);
+    mLeftElevatorMotor.setSmartCurrentLimit(10);
+    mRightElevatorMotor.setSmartCurrentLimit(10);
 
     mLeftWristMotor.setSmartCurrentLimit(80);
     mRightWristMotor.setSmartCurrentLimit(80);

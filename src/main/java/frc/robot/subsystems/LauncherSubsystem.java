@@ -51,8 +51,8 @@ public class LauncherSubsystem extends SubsystemBase {
     TalonFXConfiguration configuration = new TalonFXConfiguration();
     Slot0Configs slotConfigs = new Slot0Configs();
     configuration.Feedback.SensorToMechanismRatio = 1/(LauncherConstants.FLYWHEEL_SENSOR_TO_MECHANISM);
-    // configuration.CurrentLimits.SupplyCurrentLimit = 0;
-    configuration.CurrentLimits.SupplyCurrentLimitEnable = false;
+    configuration.CurrentLimits.SupplyCurrentLimit = 80;
+    configuration.CurrentLimits.SupplyCurrentLimitEnable = true;
 
 
     slotConfigs.kP = LauncherConstants.LAUNCHER_PID_CONTROLLER.getP();
@@ -70,7 +70,7 @@ public class LauncherSubsystem extends SubsystemBase {
     mIndexer.restoreFactoryDefaults();
     mIndexer.setInverted(LauncherConstants.INDEXER_IS_INVERTED);
     mIndexer.enableVoltageCompensation(10);
-    mIndexer.setSmartCurrentLimit(40);
+    mIndexer.setSmartCurrentLimit(80);
     mIndexer.setIdleMode(IdleMode.kBrake);
     mIndexer.burnFlash();
   }
