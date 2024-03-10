@@ -152,7 +152,7 @@ public class DefaultMechCommand{
 
         } else if (Math.abs(Input.getLeftTrigger()) > LauncherConstants.INDEX_TRIGGER_DEADZONE) {
                 mMechState.index((Input.getLeftTrigger()-LauncherConstants.INDEX_TRIGGER_DEADZONE)
-                *(Input.getReverseButton() ? -1 : 1)).schedule();
+                *(Input.getReverseButton() ? -1 : 1)*0.4).schedule();
         }
 
         if (Math.abs(Input.getLeftStickY()) > 0.1) {
