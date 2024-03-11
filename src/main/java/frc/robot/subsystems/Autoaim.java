@@ -96,13 +96,24 @@ public class Autoaim {
     }
 
     private static double launcherAngleEquation(double xDist2D, double yDist2D, double speakerApproachSpeed, double angleGuess){
-        double time = ((xDist2D + AimingConstants.WRIST_D1 * Math.cos(-angleGuess + AimingConstants.WRIST_BEND_ANGLE) + AimingConstants.WRIST_D2 * Math.cos(angleGuess)) / (AimingConstants.NOTE_EXIT_SPEED * Math.cos(angleGuess) + speakerApproachSpeed));
-        return -(9.807/2.0) * Math.pow(time, 2) + AimingConstants.NOTE_EXIT_SPEED * Math.sin(angleGuess) * time + AimingConstants.WRIST_D1 * Math.sin(-angleGuess + AimingConstants.WRIST_BEND_ANGLE) - AimingConstants.WRIST_D2 * Math.sin(angleGuess) - yDist2D;
+        double time = (
+            (xDist2D + AimingConstants.WRIST_D1 * Math.cos(-angleGuess + AimingConstants.WRIST_BEND_ANGLE) + AimingConstants.WRIST_D2 * Math.cos(angleGuess)) 
+            / (AimingConstants.NOTE_EXIT_SPEED * Math.cos(angleGuess) + speakerApproachSpeed)
+        );
+        
+        return -(9.807/2.0) * Math.pow(time, 2) 
+        + AimingConstants.NOTE_EXIT_SPEED * Math.sin(angleGuess) * time 
+        + AimingConstants.WRIST_D1 * Math.sin(-angleGuess + AimingConstants.WRIST_BEND_ANGLE) 
+        - AimingConstants.WRIST_D2 * Math.sin(angleGuess) 
+        - yDist2D;
     }
 
     private static double robotYawEquation(double xDist3D, double yDist3D, double xVel, double yVel, double yawGuess)
     {
-        return xDist3D * (yVel - Math.sin(yawGuess) * Math.cos(neededlauncherAngleRadians) * AimingConstants.NOTE_EXIT_SPEED) / (xVel - Math.cos(yawGuess) * Math.cos(neededlauncherAngleRadians) * AimingConstants.NOTE_EXIT_SPEED) - yDist3D;
+        return xDist3D 
+        * (yVel - Math.sin(yawGuess) * Math.cos(neededlauncherAngleRadians) * AimingConstants.NOTE_EXIT_SPEED) 
+        / (xVel - Math.cos(yawGuess) * Math.cos(neededlauncherAngleRadians) * AimingConstants.NOTE_EXIT_SPEED) 
+        - yDist3D;
     }
     
 

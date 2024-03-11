@@ -5,11 +5,11 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.JoystickConstants;
 import frc.robot.Input;
 import frc.robot.subsystems.Autoaim;
-import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class DefaultDriveCommand extends Command {
@@ -17,13 +17,14 @@ public class DefaultDriveCommand extends Command {
   private final SwerveSubsystem mSwerve;
   private boolean mIsPrecisionToggle = false;
   private final PIDController mNotePID = new PIDController(5, 0, 0.1);
-  private final PIDController yawAutoaim = new PIDController(5, 0, 0.1);
+  private final PIDController yawAutoaim = new PIDController(1, 0, 0.1);
 
 
   public DefaultDriveCommand(SwerveSubsystem swerve) {
     mSwerve = swerve;
     addRequirements(mSwerve);
     mNotePID.setTolerance(2);
+    yawAutoaim.enableContinuousInput(-Math.PI, Math.PI);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -33,6 +34,7 @@ public class DefaultDriveCommand extends Command {
     double x = -Input.getJoystickY();
     double y = -Input.getJoystickX();
     double rot = -Input.getRot();
+    boolean isFieldOriented = true;
 
     if (Input.resetGyro()) {
       mSwerve.resetGyro();
@@ -72,10 +74,10 @@ public class DefaultDriveCommand extends Command {
     // }
 
     if (Input.doAutoaim()) {
-      rot = yawAutoaim.calculate(SwerveSubsystem.getRobotPose().getRotation().getRadians(), Autoaim.getNeededRobotYaw());
+      rot = yawAutoaim.calculate(SwerveSubsystem.getRobotPose().getRotation().getDegrees(), Units.radiansToDegrees(Autoaim.getNeededRobotYaw()));
     }
 
-    mSwerve.setChassisSpeed(x, y, rot, !Input.getRobotOriented(), false);
+    mSwerve.setChassisSpeed(x, y, Math.toRadians(rot), true, false);
   }
 
   // Returns true when the command should end.

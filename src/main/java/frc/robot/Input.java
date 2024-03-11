@@ -110,7 +110,7 @@ public class Input {
     return mTransJoystick.getTriggerPressed();
   }
 
-  public static boolean getRobotOriented() {
+  public static boolean getNoteLock() {
     return mRotJoystick.getTrigger();
   }
 
@@ -128,10 +128,6 @@ public class Input {
 
   public static boolean overrideIntakeBeamBreak() {
     return mXboxController.getRightStickButton();
-  }
-
-  public static boolean getNoteAlignment() {
-    return mRotJoystick.getRawButton(2);
   }
 
   public static boolean getReverseButton(){
