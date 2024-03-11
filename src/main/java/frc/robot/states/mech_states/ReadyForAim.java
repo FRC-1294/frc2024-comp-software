@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.DefaultMechCommand;
 import frc.robot.constants.AimState;
 import frc.robot.states.MechState;
 import frc.robot.subsystems.AimingSubsystem;
@@ -15,35 +16,46 @@ public class ReadyForAim extends MechState {
     public ReadyForAim (LauncherSubsystem launcherSubsystem,AimingSubsystem aimingSubsystem,IntakeSubsystem intakeSubsystem) {
         super(launcherSubsystem,aimingSubsystem,intakeSubsystem);
     }
+    
+    @Override
+    public Command index(double vel){
+       return new InstantCommand(() -> mLauncherSubsystem.runIndexer(vel));
+    }
 
     @Override
     public Command speakerPosition(){
-       return mSpeakerPositionCommand;
+      DefaultMechCommand.mDesiredState = AimState.SUBWOOFER;
+      return MechState.mSpeakerPositionCommand;
     }
 
     @Override
     public Command ampPosition(){
-       return mAmpPositionCommand;
+      DefaultMechCommand.mDesiredState = AimState.AMP;
+       return MechState.mAmpPositionCommand;
     }
     
     @Override
     public Command trapPosition(){
-       return mTrapPositionCommand;
+      DefaultMechCommand.mDesiredState = AimState.TRAP;
+       return MechState.mTrapPositionCommand;
     }
 
     @Override
     public Command handoffPosition(){
-       return mHandoffPositionCommand;
+      DefaultMechCommand.mDesiredState = AimState.HANDOFF;
+       return MechState.mHandoffPositionCommand;
     }
 
     @Override
-    public Command podiumPosition(){
-       return mPodiumPositionCommand;
+    public Command podiumPosition() {
+      DefaultMechCommand.mDesiredState = AimState.PODIUM;
+       return MechState.mPodiumPositionCommand;
     }
 
     @Override
     public Command emergencyOuttake(){
         mLaunchCommand.cancel();
+        DefaultMechCommand.mDesiredState = AimState.OUTTAKE;
        return new SequentialCommandGroup(new ParallelCommandGroup(mAimingSubsystem.waitUntilSetpoint(AimState.OUTTAKE),
             mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.OUTTAKE)),
             new InstantCommand(()->mLauncherSubsystem.runIndexer(-0.6))); 
@@ -51,6 +63,7 @@ public class ReadyForAim extends MechState {
 
     @Override
     public Command staticAutoAim(){
-        return mStaticAutoAimCommand;
+      DefaultMechCommand.mDesiredState = AimState.TRANSITION;
+        return MechState.mStaticAutoAimCommand;
     }
 }

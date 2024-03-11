@@ -24,7 +24,7 @@ import frc.robot.subsystems.PhotonCameras;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem mSwerveSubsystem = new SwerveSubsystem(new CompetitionBotSwerveConfig());
-  private final PhotonCameras mCameras = new PhotonCameras();
+  //private final PhotonCameras mCameras = new PhotonCameras();
   private final IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
   private final LauncherSubsystem mLauncherSubsystem = new LauncherSubsystem();
   private final AimingSubsystem mAimingSubsystem = new AimingSubsystem();

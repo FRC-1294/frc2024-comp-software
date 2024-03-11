@@ -237,4 +237,8 @@ public class KrakenSwerveModule extends SwerveModuleAbstract{
     public double getTransNominalVoltage(){
         return mNominalVoltage; 
     }
+
+    public double getCurrent() {
+        return mTransMotor.getStatorCurrent().getValueAsDouble();
+    }
 }

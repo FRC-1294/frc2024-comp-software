@@ -4,11 +4,15 @@
 
 package frc.robot;
 
+import java.util.Optional;
+import java.util.function.BooleanSupplier;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.revrobotics.CANSparkLowLevel;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -35,6 +39,7 @@ public class Robot extends TimedRobot {
   private SendableChooser<Command> pathSelector = new SendableChooser<>();
   private RobotContainer robotContainer = new RobotContainer();
   private DefaultMechCommand mDefaultMechCommand = new DefaultMechCommand(robotContainer.getIntakeSubsystem(), robotContainer.getLauncher(), robotContainer.getAimingSubsystem());
+  public static Optional<Alliance> mAlliance;
 ;
 
   /**
@@ -47,7 +52,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
    CameraServer.startAutomaticCapture();
     new InitializePathPlanner(robotContainer.getSwerveSubsystem(),robotContainer.getIntakeSubsystem(),robotContainer.getLauncher(),robotContainer.getAimingSubsystem()).initialize();
-    
+    mAlliance = DriverStation.getAlliance();
     SmartDashboard.putData("Pick your Auton...",pathSelector);
 
     pathSelector.addOption("4 Piece Subwoofer", AutoBuilder.buildAuto("4_Piece_V1"));
@@ -83,14 +88,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     SmartDashboard.updateValues();
-
-    AimState.PODIUM.atState(robotContainer.getAimingSubsystem().getCurrentWristDegreees(), robotContainer.getAimingSubsystem().getCurrentElevatorDistance(), robotContainer.getLauncher().getCurrentVelocity());
-
-
     CommandScheduler.getInstance().run();
-
-
-    
 
   }
 

@@ -62,7 +62,7 @@ public class PhotonCameras extends SubsystemBase {
         if (poseFront.isPresent() && isValidPose(poseFront.get())) {
             SwerveSubsystem.updateVision(poseFront.get(), getVisionSTD(poseFront.get()));
         } else if (poseBack.isPresent() && isValidPose(poseBack.get())) {
-            SwerveSubsystem.updateVision(poseBack.get(), getVisionSTD(poseBack.get()));
+            //SwerveSubsystem.updateVision(poseBack.get(), getVisionSTD(poseBack.get()));
         }
 
     }

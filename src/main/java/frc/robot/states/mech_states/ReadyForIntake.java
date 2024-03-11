@@ -2,6 +2,7 @@ package frc.robot.states.mech_states;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.commands.DefaultMechCommand;
 import frc.robot.constants.AimState;
 import frc.robot.constants.IntakeConstants;
 import frc.robot.states.MechState;
@@ -23,7 +24,13 @@ public class ReadyForIntake extends MechState {
     }
 
     @Override
+    public Command index(double vel){
+       return new InstantCommand(() -> mLauncherSubsystem.runIndexer(vel),mLauncherSubsystem);
+    }
+
+    @Override
     public Command handoffPosition(){
+        DefaultMechCommand.mDesiredState = AimState.HANDOFF;
         return mHandoffPositionCommand;
     }
 

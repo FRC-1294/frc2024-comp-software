@@ -68,10 +68,18 @@ public class SwerveSubsystem extends SubsystemBase {
     
     // This method will be called once per scheduler run    
     mOdometry.update(getRotation2d(), getModulePositions());
-    SmartDashboard.putNumber("XPos", mOdometry.getEstimatedPosition().getX());
-    SmartDashboard.putNumber("YPos", mOdometry.getEstimatedPosition().getY());
-    SmartDashboard.putNumber("Heading", getRotation2d().getDegrees());
+    // SmartDashboard.putNumber("XPos", mOdometry.getEstimatedPosition().getX());
+    // SmartDashboard.putNumber("YPos", mOdometry.getEstimatedPosition().getY());
+    // SmartDashboard.putNumber("Rot", mOdometry.getEstimatedPosition().getRotation().getDegrees());
+    // SmartDashboard.putNumber("Heading", getRotation2d().getDegrees());
+
     mField.setRobotPose(mOdometry.getEstimatedPosition());
+    double current = 0;
+    for (int i = 0; i<4; i++) {
+      current += mModules[i].getCurrent();
+    }
+    SmartDashboard.putNumber("Swerve Current", current);
+
     if (CompConstants.DEBUG_MODE) {
       SmartDashboard.putData("Swerve", this);
 

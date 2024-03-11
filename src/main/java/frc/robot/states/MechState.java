@@ -63,79 +63,79 @@ public abstract class MechState {
        return new InstantCommand(()->mIntakeSubsystem.stopMotors(),mIntakeSubsystem);
     }
     public Command emergencyOuttake(){
-        return new PrintCommand("Can't emergency outtake now");
+        return new InstantCommand();
     }
 
     public Command runIntakeMotors(){
-        return new PrintCommand("Can't run intake motors now");
+        return new InstantCommand();
     }
 
     public Command preformHandoff(){
-        return new PrintCommand("Can't preform handoff now");
+        return new InstantCommand();
     }
 
     public Command index(double vel){
-        return new PrintCommand("Can't index now");
+        return new InstantCommand();
     }
 
     public Command overrideIntake(double vel){
-        return new PrintCommand("Can't overrideIntake now");
+        return new InstantCommand();
     }
 
     public Command launch() {
-        return new PrintCommand("Can't launch now");
+        return new InstantCommand();
     }
 
     public Command controlWrist(double increment) {
-        return new PrintCommand("Can't control wrist now");
+        return new InstantCommand();
     }
 
     public Command controlElevator(double increment) {
-        return new PrintCommand("Can't control elevator now");
+        return new InstantCommand();
     }
 
     public Command ClimbExtendedState() {
-        return new PrintCommand("Can't set climbExtended now");
+        return new InstantCommand();
     }
     
     public Command ClimbRetractedState() {
-        return new PrintCommand("Can't set climbRetracted now");
+        return new InstantCommand();
     }
 
     public Command setWristSP(AimState state) {
-        return new PrintCommand("Can't set wristSP speed now");
+        return new InstantCommand();
     }
     
     public Command handoffPosition(){
-        return new PrintCommand("Can't set handoffPosition speed now");
+        return new InstantCommand();
     }
 
     public Command speakerPosition(){
-        return new PrintCommand("Can't set speakerPosition speed now");
+        return new InstantCommand();
     }
 
     public Command ampPosition(){
-        return new PrintCommand("Can't set ampPosition speed now");
+        return new InstantCommand();
     }
     
     public Command trapPosition(){
-        return new PrintCommand("Can't set trapPosition now");
+        return new InstantCommand();
     }
 
     public Command aimStatePosition(AimState state){
-        return new PrintCommand("Can't set launcher speed now");
+        return new InstantCommand();
     }
 
     public Command resetEncoders() {
-        return new PrintCommand("Can't resetEncoders speed now");
+        return new InstantCommand();
     }
 
     public Command podiumPosition(){
-        return new PrintCommand("Can't set podiumPosition speed now");
+        return new InstantCommand();
     }
 
     public Command staticAutoAim(){
-        return new PrintCommand("Can't set static auto aim now");
+        return new InstantCommand();
     }
 
     public void triggerAutoaim() {}

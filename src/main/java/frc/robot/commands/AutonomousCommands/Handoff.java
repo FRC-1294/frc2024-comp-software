@@ -16,7 +16,7 @@ public class Handoff extends Command {
   public Handoff(IntakeSubsystem intake, LauncherSubsystem launcher) {
     mIntake = intake;
     mLauncher = launcher;
-    addRequirements(mIntake,mLauncher);
+    addRequirements(mIntake, mLauncher);
   }
 
   // Called when the command is initially scheduled.

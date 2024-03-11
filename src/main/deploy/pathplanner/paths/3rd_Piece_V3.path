@@ -16,19 +16,25 @@
     },
     {
       "anchor": {
-        "x": 2.63,
-        "y": 5.560917788502243
+        "x": 2.8922191177715693,
+        "y": 5.567691135382271
       },
       "prevControl": {
-        "x": 1.2598425196850396,
-        "y": 5.459317585301837
+        "x": 1.522061637456609,
+        "y": 5.4660909321818645
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.75,
+      "rotationDegrees": 0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [
     {
@@ -38,6 +44,12 @@
         "type": "sequential",
         "data": {
           "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "HandoffSetpoint"
+              }
+            },
             {
               "type": "named",
               "data": {
