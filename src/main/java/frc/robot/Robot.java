@@ -86,8 +86,6 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     SmartDashboard.updateValues();
-
-    AimState.PODIUM.atState(robotContainer.getAimingSubsystem().getCurrentWristDegreees(), robotContainer.getAimingSubsystem().getCurrentElevatorDistance(), robotContainer.getLauncher().getCurrentVelocity());
     CommandScheduler.getInstance().run();
   }
 

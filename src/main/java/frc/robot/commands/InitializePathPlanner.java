@@ -49,8 +49,8 @@ public class InitializePathPlanner{
       Map.entry(true, new TimedHandoff(mIntake,mLauncher).withTimeout(2.5)),
       Map.entry(false, new PrintCommand("Failed to pick up Note"))
     ),()->IntakeSubsystem.pieceInIntake()),
-      mAiming.waitUntilSetpoint(AimState.MIDNOTE), 
-      mLauncher.waitUntilFlywheelSetpointCommand(AimState.MIDNOTE), 
+      mAiming.waitUntilSetpoint(AimState.PODIUM), 
+      mLauncher.waitUntilFlywheelSetpointCommand(AimState.PODIUM), 
       mLauncher.indexUntilNoteLaunchedCommand()));
 
     NamedCommands.registerCommand("PutShot", new SequentialCommandGroup(new SelectCommand<>(Map.ofEntries(

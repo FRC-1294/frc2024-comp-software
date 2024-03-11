@@ -109,11 +109,11 @@ public class AimingSubsystem extends SubsystemBase {
     mWristController.setTolerance(AimingConstants.WRIST_TOLERANCE_DEG);
     mElevatorController.setTolerance(AimingConstants.ELEVATOR_TOLERANCE_IN);
 
-    mLeftElevatorMotor.setSmartCurrentLimit(10);
-    mRightElevatorMotor.setSmartCurrentLimit(10);
+    // mLeftElevatorMotor.setSmartCurrentLimit(70);
+    // mRightElevatorMotor.setSmartCurrentLimit(10);
 
-    mLeftWristMotor.setSmartCurrentLimit(80);
-    mRightWristMotor.setSmartCurrentLimit(80);
+    mLeftWristMotor.setSmartCurrentLimit(100);
+    mRightWristMotor.setSmartCurrentLimit(100);
 
     //follower configuration
     mRightWristMotor.follow(mLeftWristMotor, true);
@@ -139,7 +139,6 @@ public class AimingSubsystem extends SubsystemBase {
     mCurrentWristRotationDeg = getCurrentWristDegreees();
     mCurrentElevatorDistanceIn = getCurrentElevatorDistance();
     SmartDashboard.putNumber("Current Wrist Rotation", getCurrentWristDegreees());
-
     updateMotorModes();
     elevatorPeriodic();
     wristPeriodic();
@@ -166,8 +165,12 @@ public class AimingSubsystem extends SubsystemBase {
     
     // Reducing Max PID Thingy if Wrist  Down and Stuff Because Breaky
     double maxPIDContribution = AimingConstants.MAX_WRIST_PID_CONTRIBUTION;
-    if (wristPIDCalculation < 0 && mCurrentWristRotationDeg<10) {
-      maxPIDContribution /= 2;
+
+    if (wristPIDCalculation < 0) {
+      maxPIDContribution = 0.3;
+    }
+    if (wristPIDCalculation < 0 && mCurrentWristRotationDeg<20) {
+      maxPIDContribution *= mCurrentWristRotationDeg/20;
     } 
 
     wristPIDCalculation = MathUtil.clamp(wristPIDCalculation, -maxPIDContribution, maxPIDContribution);

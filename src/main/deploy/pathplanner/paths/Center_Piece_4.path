@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.8133942934552536,
-        "y": 7.233934467868936
+        "x": 3.5627804588942515,
+        "y": 6.874947083227499
       },
       "isLocked": false,
       "linkedName": "Center_Left_Redezvous"
     },
     {
       "anchor": {
-        "x": 8.0858660148369,
-        "y": 5.811967891483264
+        "x": 8.527643721954112,
+        "y": 5.737024807382948
       },
       "prevControl": {
-        "x": 6.495639657945983,
-        "y": 6.543053086106172
+        "x": 8.323593525290105,
+        "y": 5.786658639003924
       },
       "nextControl": {
-        "x": 8.598075521909864,
-        "y": 5.5764864548038515
+        "x": 8.778257556515113,
+        "y": 5.676064685462704
       },
       "isLocked": false,
       "linkedName": null
@@ -36,8 +36,8 @@
         "y": 7.0
       },
       "prevControl": {
-        "x": 4.436542206417746,
-        "y": 7.464228261789857
+        "x": 3.569553805774279,
+        "y": 6.881720430107526
       },
       "nextControl": null,
       "isLocked": false,
@@ -49,17 +49,56 @@
       "waypointRelativePos": 0.9,
       "rotationDegrees": -8.0,
       "rotateFast": true
+    },
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 0,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 0.65,
+      "rotationDegrees": -4.820945543600541,
+      "rotateFast": false
     }
   ],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0.85,
+      "maxWaypointRelativePos": 1.2,
+      "constraints": {
+        "maxVelocity": 3.0,
+        "maxAcceleration": 1.2,
+        "maxAngularVelocity": 300.0,
+        "maxAngularAcceleration": 120.0
+      }
+    },
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0.75,
+      "maxWaypointRelativePos": 1.2,
+      "constraints": {
+        "maxVelocity": 4.5,
+        "maxAcceleration": 2.0,
+        "maxAngularVelocity": 300.0,
+        "maxAngularAcceleration": 120.0
+      }
+    }
+  ],
   "eventMarkers": [
     {
       "name": "IntakeUntilNote",
-      "waypointRelativePos": 0.8,
+      "waypointRelativePos": 0.4,
       "command": {
         "type": "sequential",
         "data": {
           "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "HandoffSetpoint"
+              }
+            },
             {
               "type": "named",
               "data": {
@@ -90,6 +129,9 @@
   },
   "reversed": false,
   "folder": "Center_Left",
-  "previewStartingState": null,
+  "previewStartingState": {
+    "rotation": 30.17084620428732,
+    "velocity": 0.0
+  },
   "useDefaultConstraints": true
 }

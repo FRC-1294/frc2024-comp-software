@@ -4,8 +4,11 @@
 
 package frc.robot.commands;
 
+import java.sql.Driver;
+import java.util.Optional;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -20,7 +23,7 @@ public class DefaultDriveCommand extends Command {
   private final SwerveSubsystem mSwerve;
   private boolean mIsPrecisionToggle = false;
   private final PIDController mNotePID = new PIDController(5, 0, 0.1);
-  private final PIDController mSpeakerAlignPID = new PIDController(1, 0, 0.1);
+  private final PIDController mSpeakerAlignPID = new PIDController(4, 0, 0.02);
 
   public DefaultDriveCommand(SwerveSubsystem swerve) {
     mSwerve = swerve;
@@ -85,13 +88,12 @@ public class DefaultDriveCommand extends Command {
   }
 
   private double getRotationToSpeakerDegrees(){
-    Transform2d relativeTrans;
     double targAngle;
-
-    if (Robot.mAlliance.get() == Alliance.Red){
-      targAngle = 324.85;
-    } else{
+    Optional<Alliance> alliance = DriverStation.getAlliance();
+    if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red){
       targAngle = 35.15;
+    } else{
+      targAngle = 324.85;
     }
 
     //Use atan2 to account for launching on blue side
