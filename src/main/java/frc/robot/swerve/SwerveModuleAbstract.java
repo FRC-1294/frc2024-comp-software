@@ -271,4 +271,8 @@ import frc.robot.Util.PIDParameters;
         return mDesiredRadians;
     }
 
+    public double getCurrent() {
+        return 0;
+    }
+
 }

@@ -26,19 +26,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootFromSubwoofer"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Center_Piece_3"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShootFromSubwoofer"
+            "name": "ShootFromMidnote"
           }
         },
         {
@@ -50,7 +38,19 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootFromSubwoofer"
+            "name": "ShootFromMidnote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center_Piece_3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootFromMidnote"
           }
         }
       ]
