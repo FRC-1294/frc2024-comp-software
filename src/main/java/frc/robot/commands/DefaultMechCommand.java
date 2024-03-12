@@ -113,14 +113,16 @@ public class DefaultMechCommand{
 
     public void execute() {
         MechState curState = determineState();
-                if (curState != mMechState){
-                    mSecondTolastState = mPrevState;
-                    mPrevState = mMechState;
-                    mMechState = determineState();
-                }
+        if (curState != mMechState){
+            mSecondTolastState = mPrevState;
+            mPrevState = mMechState;
+            mMechState = determineState();
+        }
 
         runAction();
-
+        if (Input.doAutoaim()){
+            mMechState.calculationBasedAutoaim();
+        }
         if (Input.getX()) {
             mMechState.staticAutoAim().schedule();;
         }
@@ -169,9 +171,7 @@ public class DefaultMechCommand{
             mUseUltraInstinct = false;
         }
 
-        if (Input.doAutoaim()){
-            mMechState.triggerAutoaim();
-        }
+
 
         SmartDashboard.putString("DesiredState", mDesiredState.name());
         SmartDashboard.putString("CurrentState", mMechState.getClass().getSimpleName());
@@ -196,12 +196,12 @@ public class DefaultMechCommand{
             //         mMechState.index(0.3).schedule();
             //         return;
             //}
-             else{
-                    mMechState.brakeLauncher().schedule();
-                    mMechState.brakeIndexer().schedule();
-                    if (!MechState.mHandoffPositionCommand.isScheduled()){
-                        mMechState.handoffPosition().schedule();
-                    }
+            else {
+                mMechState.brakeLauncher().schedule();
+                mMechState.brakeIndexer().schedule();
+                if (!MechState.mHandoffPositionCommand.isScheduled()){
+                    mMechState.handoffPosition().schedule();
+                }
             }
 
             // if (!launchStateReached) {

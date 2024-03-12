@@ -9,6 +9,7 @@ import frc.robot.commands.DefaultMechCommand;
 import frc.robot.constants.AimState;
 import frc.robot.states.MechState;
 import frc.robot.subsystems.AimingSubsystem;
+import frc.robot.subsystems.Autoaim;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
 
@@ -76,5 +77,12 @@ public class ReadyForLaunch extends MechState {
     public Command staticAutoAim(){
       DefaultMechCommand.mDesiredState = AimState.TRANSITION;
         return MechState.mStaticAutoAimCommand;
+    }
+
+    @Override
+    public void calculationBasedAutoaim(){
+      Autoaim.update();
+      //mAimingSubsystem.setDesiredLaunchRotation(Math.toDegrees(Autoaim.getNeededLaunchAngle()));
+      //mLauncherSubsystem.setLauncherState(AimState.AUTOAIM);
     }
 }

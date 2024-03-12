@@ -38,6 +38,7 @@ public abstract class MechState {
         mIntakeSubsystem = intakeSubsystem;
         mAimingSubsystem = aimingSubsystem;
 
+        
         mHandoffPositionCommand = mAimingSubsystem.waitUntilSetpoint(AimState.HANDOFF);
         mSpeakerPositionCommand = new ParallelCommandGroup(mAimingSubsystem.waitUntilSetpoint(AimState.SUBWOOFER), mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.SUBWOOFER));
         mAmpPositionCommand = new ParallelCommandGroup(mAimingSubsystem.waitUntilSetpoint(AimState.AMP),mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.AMP));
@@ -138,5 +139,5 @@ public abstract class MechState {
         return new InstantCommand();
     }
 
-    public void triggerAutoaim() {}
+    public void calculationBasedAutoaim() {}
 }

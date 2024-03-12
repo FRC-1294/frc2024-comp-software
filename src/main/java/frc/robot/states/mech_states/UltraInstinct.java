@@ -99,11 +99,4 @@ public class UltraInstinct extends MechState {
        return MechState.mHandoffPositionCommand;
     }
 
-    @Override 
-    public void triggerAutoaim(){
-
-        Autoaim.update();
-        // mAimingSubsystem.setDesiredLaunchRotation(Units.degreesToRadians(Autoaim.getNeededLaunchAngle()));
-        // mLauncherSubsystem.setLauncherState(AimState.WING);
-    }
 }

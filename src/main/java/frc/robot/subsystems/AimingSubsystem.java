@@ -341,10 +341,6 @@ public class AimingSubsystem extends SubsystemBase {
     mElevatorController.setTolerance(tolerance);
   }
 
-  public void calculateExitAngle(){
-    //Ankit do ur thing
-  }
-
   public boolean atElevatorSetpoint() {
     return mElevatorController.atSetpoint();
   }
@@ -354,7 +350,6 @@ public class AimingSubsystem extends SubsystemBase {
 
   public boolean atSetpoints() {
     return atElevatorSetpoint() && atWristSetpoint();
-    
   }
 
   public Command waitUntilSetpoint(AimState state) {
