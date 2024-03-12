@@ -81,9 +81,10 @@ public class DefaultDriveCommand extends Command {
     //     isFieldOriented = false;
     // }
 
-    if (Input.doAutoaim()) {
-      rot = yawAutoaim.calculate(SwerveSubsystem.getRobotPose().getRotation().getDegrees(), Units.radiansToDegrees(Autoaim.getNeededRobotYaw()));
-    }
+    // if (Input.doAutoaim()) {
+    //   rot = yawAutoaim.calculate(SwerveSubsystem.getRobotPose().getRotation().getDegrees(), Units.radiansToDegrees(Autoaim.getNeededRobotYaw()));
+    //   //SmartDashboard.putNumber("Autoaim", rot)
+    // }
 
     mSwerve.setChassisSpeed(x, y, Math.toRadians(rot), true, false);
 

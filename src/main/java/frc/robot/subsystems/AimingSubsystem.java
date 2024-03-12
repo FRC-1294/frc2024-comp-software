@@ -93,6 +93,7 @@ public class AimingSubsystem extends SubsystemBase {
 
     mRightWristMotor.setIdleMode(IdleMode.kCoast);
     mLeftWristMotor.setIdleMode(IdleMode.kCoast);}).ignoringDisable(true));
+
   }
 
   // Setting Conversions and Inversions
@@ -178,6 +179,7 @@ public class AimingSubsystem extends SubsystemBase {
     
 
     double wristFeedforwardCalculation = Math.cos(Math.toRadians(mCurrentWristRotationDeg-AimingConstants.COG_OFFSET))*AimingConstants.WRIST_KG;
+
     mLeftWristMotor.set(wristPIDCalculation + wristFeedforwardCalculation);
   }
 

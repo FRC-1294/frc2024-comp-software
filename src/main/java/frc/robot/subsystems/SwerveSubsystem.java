@@ -58,7 +58,8 @@ public class SwerveSubsystem extends SubsystemBase {
     mModules = mConfig.SWERVE_MODULES;
     mOdometry = new SwerveDrivePoseEstimator(mKinematics, getRotation2d(), getModulePositions(), new Pose2d());
     resetGyro();
-    resetRobotPose();
+    // resetRobotPose();
+    resetRobotPose(new Pose2d(15.2, 5.6, getRotation2d()));
 
     SmartDashboard.putData("Field", mField);
   }
@@ -68,10 +69,10 @@ public class SwerveSubsystem extends SubsystemBase {
     
     // This method will be called once per scheduler run    
     mOdometry.update(getRotation2d(), getModulePositions());
-    // SmartDashboard.putNumber("XPos", mOdometry.getEstimatedPosition().getX());
-    // SmartDashboard.putNumber("YPos", mOdometry.getEstimatedPosition().getY());
-    // SmartDashboard.putNumber("Rot", mOdometry.getEstimatedPosition().getRotation().getDegrees());
-    // SmartDashboard.putNumber("Heading", getRotation2d().getDegrees());
+    SmartDashboard.putNumber("XPos", mOdometry.getEstimatedPosition().getX());
+    SmartDashboard.putNumber("YPos", mOdometry.getEstimatedPosition().getY());
+    SmartDashboard.putNumber("Rot", mOdometry.getEstimatedPosition().getRotation().getDegrees());
+    SmartDashboard.putNumber("Heading", getRotation2d().getDegrees());
 
     mField.setRobotPose(mOdometry.getEstimatedPosition());
     double current = 0;

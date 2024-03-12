@@ -81,7 +81,8 @@ public class UltraInstinct extends MechState {
 
     @Override
     public Command speakerPosition(){
-       return MechState.mSpeakerPositionCommand;
+      return mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.SUBWOOFER);
+      //  return MechState.mSpeakerPositionCommand;
     }
 
     @Override

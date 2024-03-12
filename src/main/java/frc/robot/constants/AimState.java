@@ -9,8 +9,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /** Add your docs here. */
 public enum AimState {
-    AUTOAIM(-1, -1, 12000, 500),
-    SUBWOOFER(0,3, 7000, 2000), //Tolerance TBD
+    FLAT(50.35, .5, -1, 250),
+    AUTOAIM(-1, -1, 7000, 500),
+    SUBWOOFER(0,3, 12000, 2000), //Tolerance TBD
     AMP(100,5, 3000, 400), //Everything TBD
     TRAP(110,-1,-1,0,0,0), //Everything TBD
     HANDOFF(0,2,-1,-1), //Tolerance TBD
