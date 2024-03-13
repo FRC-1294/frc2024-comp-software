@@ -4,20 +4,16 @@
 
 package frc.robot.commands;
 
-import java.sql.Driver;
 import java.util.Optional;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.constants.FieldConstants;
 import frc.robot.constants.JoystickConstants;
 import frc.robot.Input;
 import frc.robot.subsystems.Autoaim;
-import frc.robot.Robot;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class DefaultDriveCommand extends Command {
@@ -25,7 +21,7 @@ public class DefaultDriveCommand extends Command {
   private final SwerveSubsystem mSwerve;
   private boolean mIsPrecisionToggle = false;
   private final PIDController mNotePID = new PIDController(5, 0, 0.1);
-  private final PIDController yawAutoaim = new PIDController(1, 0, 0.1);
+  private final PIDController yawAutoaim = new PIDController(4, 0, 0.02);
 
   private final PIDController mSpeakerAlignPID = new PIDController(4, 0, 0.02);
 
@@ -83,7 +79,7 @@ public class DefaultDriveCommand extends Command {
 
     // if (Input.doAutoaim()) {
     //   rot = yawAutoaim.calculate(SwerveSubsystem.getRobotPose().getRotation().getDegrees(), Units.radiansToDegrees(Autoaim.getNeededRobotYaw()));
-    //   //SmartDashboard.putNumber("Autoaim", rot)
+    //   rot = Math.toRadians(rot);
     // }
 
     mSwerve.setChassisSpeed(x, y, Math.toRadians(rot), true, false);
