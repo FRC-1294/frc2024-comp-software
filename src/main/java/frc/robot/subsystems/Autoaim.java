@@ -128,9 +128,9 @@ public class Autoaim {
 
         for (double i = start; i <= end; i += step){
             double guess = launcherAngleEquation(xDist2D, yDist2D, speakerApproachSpeed, i);
-            if (guess != sign){ // tbh don't know why im using sign atp
-                if (Math.abs(guess) < 2.0 * Math.PI / 180.0){
-                    return guess;
+            if (Math.signum(guess) != sign){ // tbh don't know why im using sign atp
+                if (Math.abs(guess) < 2.0){
+                    return i;
                 }
             }
         }
@@ -148,8 +148,8 @@ public class Autoaim {
         for (double i = start; i <= end; i += step){
             double guess = robotYawEquation(xDist3D, yDist3D, xVel, yVel, i);
             if (Math.signum(guess) != sign){ // tbh don't know why im using sign atp
-                if (Math.abs(guess) < 2.0 * Math.PI / 180.0){
-                    return guess;
+                if (Math.abs(guess) < 2.0){
+                    return i;
                 }
             }
         }
