@@ -82,7 +82,8 @@ public class ReadyForLaunch extends MechState {
     @Override
     public void calculationBasedAutoaim(){
       Autoaim.update();
-      //mAimingSubsystem.setDesiredLaunchRotation(Math.toDegrees(Autoaim.getNeededLaunchAngle()));
-      //mLauncherSubsystem.setLauncherState(AimState.AUTOAIM);
+      mAimingSubsystem.setDesiredLaunchRotation(Math.toDegrees(Autoaim.getNeededLaunchAngle()));
+      mLauncherSubsystem.setLauncherState(AimState.AUTOAIM);
     }
 }
+

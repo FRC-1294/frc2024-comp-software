@@ -51,11 +51,11 @@ public class AimingConstants {
 
 
     // inaccurate values
-    public static final double REST_LAUNCH_ANGLE = 50.429; // rest is when wrist rotation is zero degrees
-    public static final double NOTE_EXIT_SPEED = 25.00;
+    public static final double REST_LAUNCH_ANGLE = 53.429; // rest is when wrist rotation is zero degrees
+    public static final double NOTE_EXIT_SPEED = 26.26;
     public static final double DRAG_COEFFICIENT = 0.0;
     public static final double WRIST_D1 = .1778;
-    public static final double WRIST_D2 = .01;
+    public static final double WRIST_D2 = .00;
     public static final double WRIST_BEND_ANGLE = Units.degreesToRadians(50.429);
     public static final Pose3d BLUE_SPEAKER_POS = new Pose3d(.4, 5.5, 2.05, new Rotation3d());
     public static final Pose3d RED_SPEAKER_POS = new Pose3d(16.14, 5.5, 2.05, new Rotation3d());
@@ -70,7 +70,7 @@ public class AimingConstants {
 
     public static final int WRIST_THROUGHBORE_ENCODER_ID = 0;
     public static final double WRIST_THROUGHBORE_GEAR_RATIO = 1;
-    public static final double WRIST_THROUGHBORE_ENCODER_OFFSET = 298.2-177.44-0.6+0.65;
+    public static final double WRIST_THROUGHBORE_ENCODER_OFFSET = 298.2-177.44-0.6+0.6+8.4;
     public static final double COG_OFFSET = 27.2;
 
 

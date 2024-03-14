@@ -23,7 +23,7 @@ public class DefaultDriveCommand extends Command {
   private final PIDController mNotePID = new PIDController(5, 0, 0.1);
   private final PIDController yawAutoaim = new PIDController(4, 0, 0.02);
 
-  private final PIDController mSpeakerAlignPID = new PIDController(4, 0, 0.02);
+  private final PIDController mSpeakerAlignPID = new PIDController(2, 0, 0.02);
 
   public DefaultDriveCommand(SwerveSubsystem swerve) {
     mSwerve = swerve;
@@ -77,10 +77,10 @@ public class DefaultDriveCommand extends Command {
     //     isFieldOriented = false;
     // }
 
-    // if (Input.doAutoaim()) {
-    //   rot = yawAutoaim.calculate(SwerveSubsystem.getRobotPose().getRotation().getDegrees(), Units.radiansToDegrees(Autoaim.getNeededRobotYaw()));
-    //   rot = Math.toRadians(rot);
-    // }
+    if (Input.doAutoaim()) {
+      rot = yawAutoaim.calculate(SwerveSubsystem.getRobotPose().getRotation().getDegrees()-180, Units.radiansToDegrees(Autoaim.getNeededRobotYaw()));
+      rot = Math.toRadians(rot);
+    }
 
     mSwerve.setChassisSpeed(x, y, Math.toRadians(rot), true, false);
 
