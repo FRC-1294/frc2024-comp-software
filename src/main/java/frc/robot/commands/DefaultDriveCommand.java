@@ -71,7 +71,7 @@ public class DefaultDriveCommand extends Command {
     if (Input.alignSpeaker()){
       rot = Math.toRadians(
         mSpeakerAlignPID.calculate(
-          SwerveSubsystem.getHeading(),
+          SwerveSubsystem.getRobotPose().getRotation().getDegrees(),
           getRotationToSpeakerDegrees()));
       SmartDashboard.putBoolean("PodiumAligned", mSpeakerAlignPID.atSetpoint());
 
@@ -91,10 +91,12 @@ public class DefaultDriveCommand extends Command {
     double targAngle;
     Optional<Alliance> alliance = DriverStation.getAlliance();
     if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red){
-      targAngle = 35.15;
+      targAngle = FieldConstants.Red.SPEAKER.getPose().toPose2d().minus(SwerveSubsystem.getRobotPose()).getTranslation().getAngle().getDegrees();
     } else{
-      targAngle = 324.85;
+      targAngle = FieldConstants.Blue.SPEAKER.getPose().toPose2d().minus(SwerveSubsystem.getRobotPose()).getTranslation().getAngle().getDegrees();
     }
+
+    SmartDashboard.putNumber("targAngleSPeaker", targAngle);
 
     //Use atan2 to account for launching on blue side
     //double targAngle = Math.toDegrees(Math.atan2(relativeTrans.getY(), relativeTrans.getX()));

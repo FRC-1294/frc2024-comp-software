@@ -102,6 +102,11 @@ public class InitializePathPlanner{
     NamedCommands.registerCommand("ShootFromWing", new SequentialCommandGroup(new PrintCommand("Shoot Note from Wing Edge"), new WaitCommand(0.5)));
     NamedCommands.registerCommand("ShootFromLine", new SequentialCommandGroup(new PrintCommand("Shoot Note from Autonomous Line"), new WaitCommand(0.5)));
     NamedCommands.registerCommand("Handoff", new SequentialCommandGroup(new PrintCommand("Shoot Note from Wing Edge")));
+    NamedCommands.registerCommand("HandoffSetpoint", new PrintCommand("ojdo"));
+    NamedCommands.registerCommand("StartLauncherSW", new PrintCommand("oj"));
+    NamedCommands.registerCommand("StartWristSW", new PrintCommand("osjod"));
+    NamedCommands.registerCommand("PutShot", new PrintCommand("jo"));
+
   }
 
 

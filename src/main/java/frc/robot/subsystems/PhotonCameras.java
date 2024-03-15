@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.VisionConstants;
 import java.util.List;
@@ -61,6 +62,7 @@ public class PhotonCameras extends SubsystemBase {
 
         if (poseFront.isPresent() && isValidPose(poseFront.get())) {
             SwerveSubsystem.updateVision(poseFront.get(), getVisionSTD(poseFront.get()));
+            SmartDashboard.putNumber("ZPhoton", poseFront.get().estimatedPose.getZ());
         } else if (poseBack.isPresent() && isValidPose(poseBack.get())) {
             //SwerveSubsystem.updateVision(poseBack.get(), getVisionSTD(poseBack.get()));
         }

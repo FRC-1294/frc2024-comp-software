@@ -67,10 +67,10 @@ public class SwerveSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run    
     mOdometry.update(getRotation2d(), getModulePositions());
-    // SmartDashboard.putNumber("XPos", mOdometry.getEstimatedPosition().getX());
-    // SmartDashboard.putNumber("YPos", mOdometry.getEstimatedPosition().getY());
-    // SmartDashboard.putNumber("Rot", mOdometry.getEstimatedPosition().getRotation().getDegrees());
-    // SmartDashboard.putNumber("Heading", getRotation2d().getDegrees());
+    SmartDashboard.putNumber("XPos", mOdometry.getEstimatedPosition().getX());
+    SmartDashboard.putNumber("YPos", mOdometry.getEstimatedPosition().getY());
+    SmartDashboard.putNumber("Rot", mOdometry.getEstimatedPosition().getRotation().getDegrees());
+    SmartDashboard.putNumber("Heading", getRotation2d().getDegrees());
 
     mField.setRobotPose(mOdometry.getEstimatedPosition());
     double current = 0;
@@ -123,8 +123,8 @@ public class SwerveSubsystem extends SubsystemBase {
    * Sets the current YAW heading as the 0'd heading
    */
   public void resetGyro() {
-    mPigeon2.reset(); 
-    mOdometry.resetPosition(getRotation2d(), getModulePositions(), new Pose2d(getRobotPose().getX(), getRobotPose().getY(), getRobotPose().getRotation()));
+    mPigeon2.setYaw(0); 
+    mOdometry.resetPosition(new Rotation2d(0), getModulePositions(), getRobotPose());
   }
 
   /**
