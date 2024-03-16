@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
     new InitializePathPlanner(robotContainer.getSwerveSubsystem()).initialize();
     
     SmartDashboard.putData("Pick your Auton...",pathSelector);
-
+    pathSelector.addOption("test", new TestAllSubsystems(robotContainer.getIntakeSubsystem(), robotContainer.getAimingSubsystem(), robotContainer.getLauncherSubsystem()));
     pathSelector.addOption("kSCharacterization", new SwerveFrictionCharacterization(robotContainer.getSwerveSubsystem()));
     pathSelector.addOption("kVCharacterization", new SwerveVoltageCharacterization(robotContainer.getSwerveSubsystem()));
     pathSelector.addOption("4 Piece V1", AutoBuilder.buildAuto("4_Piece_V1"));
@@ -96,6 +96,5 @@ public class Robot extends TimedRobot {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
     CANSparkLowLevel.enableExternalUSBControl(true);
-    new TestAllSubsystems(robotContainer.getIntakeSubsystem(), robotContainer.getAimingSubsystem(), robotContainer.getLauncherSubsystem()).schedule();
   }
 }
