@@ -4,10 +4,11 @@
 
 package frc.robot.commands;
 
-import java.sql.Driver;
 import java.util.Optional;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -15,7 +16,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.JoystickConstants;
 import frc.robot.Input;
-import frc.robot.Robot;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class DefaultDriveCommand extends Command {
@@ -91,25 +91,16 @@ public class DefaultDriveCommand extends Command {
     double targAngle;
     Optional<Alliance> alliance = DriverStation.getAlliance();
     if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red){
-      targAngle = FieldConstants.Red.SPEAKER.getPose().toPose2d().minus(SwerveSubsystem.getRobotPose()).getTranslation().getAngle().getDegrees();
+      targAngle = FieldConstants.Red.SPEAKER.getPose().toPose2d()
+      .plus(new Transform2d(new Translation2d(-0.5,0), new Rotation2d()))
+      .minus(SwerveSubsystem.getRobotPose()).getTranslation().getAngle().getDegrees();
     } else{
-      targAngle = FieldConstants.Blue.SPEAKER.getPose().toPose2d().minus(SwerveSubsystem.getRobotPose()).getTranslation().getAngle().getDegrees();
+      targAngle = FieldConstants.Blue.SPEAKER.getPose().toPose2d()
+      .plus(new Transform2d(new Translation2d(0.5,0),new Rotation2d()))
+      .minus(SwerveSubsystem.getRobotPose()).getTranslation().getAngle().getDegrees();
     }
 
     SmartDashboard.putNumber("targAngleSPeaker", targAngle);
-
-    //Use atan2 to account for launching on blue side
-    //double targAngle = Math.toDegrees(Math.atan2(relativeTrans.getY(), relativeTrans.getX()));
-    // if (targAngle < 0){
-    //   //This is to convert the range from [-180,180] to [0,360]
-    //   targAngle += 360;
-    // }
-    //add 180 degrees because drivebase 0 is relative to intake, we want it to be relative to launcher
-    // targAngle += 180;
-    // if (targAngle>360){
-    //   //Take the remainder since we don't want angles above 360
-    //   targAngle = Math.IEEEremainder(targAngle, 360);
-    // }
     return targAngle;
   }
 }

@@ -27,7 +27,7 @@ public class FieldConstants {
     }
 
     public static enum Red {
-        SPEAKER(new Pose3d(new Translation3d(15.8, 5.6, 0.0), new Rotation3d(0.0, 0.0, 0.0)));
+        SPEAKER(new Pose3d(new Translation3d(16.5, 5.6, 0.0), new Rotation3d(0.0, 0.0, 0.0)));
 
         private final Pose3d pose;
 
