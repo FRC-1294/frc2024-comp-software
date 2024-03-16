@@ -38,8 +38,6 @@ public class DefaultMechCommand{
 
     private static boolean mUseUltraInstinct = false;
     private static MechState mMechState;
-    private static MechState mPrevState;
-    private static MechState mSecondTolastState;
     public static AimState mDesiredState = AimState.HANDOFF; 
 
     public DefaultMechCommand(IntakeSubsystem intakeSubsystem, LauncherSubsystem launcherSubsystem, AimingSubsystem aimingSubsystem) {
@@ -56,8 +54,6 @@ public class DefaultMechCommand{
         mReadyForLaunch = new ReadyForLaunch(mLauncherSubsystem,mAimingSubsystem,mIntakeSubsystem);
         mUltraInstinct = new UltraInstinct(mLauncherSubsystem,mAimingSubsystem,mIntakeSubsystem);
         
-        mPrevState = mUltraInstinct;
-        mSecondTolastState = mUltraInstinct;
         mMechState = mUltraInstinct;
         mMechState = determineState();
 
@@ -112,12 +108,8 @@ public class DefaultMechCommand{
     }
 
     public void execute() {
-        MechState curState = determineState();
-                if (curState != mMechState){
-                    mSecondTolastState = mPrevState;
-                    mPrevState = mMechState;
-                    mMechState = determineState();
-                }
+        mMechState = determineState();
+
 
         runAction();
 
@@ -184,14 +176,6 @@ public class DefaultMechCommand{
                 mMechState.index(0.3).schedule();
                 return;
             }
-            // else if ((MechState.mAmpPositionCommand.isScheduled()) 
-            //     || (MechState.mSpeakerPositionCommand.isScheduled()) 
-            //     || (MechState.mPodiumPositionCommand.isScheduled())
-            //     || (MechState.mStaticAutoAimCommand.isScheduled())){
-            //         //Indexer adjusts note if it slides out of launcher when one of the setpoints are triggered
-            //         mMechState.index(0.3).schedule();
-            //         return;
-            //}
              else{
                     mMechState.brakeLauncher().schedule();
                     mMechState.brakeIndexer().schedule();
@@ -199,14 +183,6 @@ public class DefaultMechCommand{
                         mMechState.handoffPosition().schedule();
                     }
             }
-
-            // if (!launchStateReached) {
-            //     mMechState.index(0.3);
-            // }
-
-            // if (!MechState.mHandoffPositionCommand.isScheduled()){
-            //     mMechState.handoffPosition().schedule();
-            // }
         }
         else if (mMechState == mIntaken) {
             mMechState.brakeIntake().schedule();
@@ -232,7 +208,6 @@ public class DefaultMechCommand{
         else if (mMechState == mReadyForLaunch) {
             mMechState.brakeIntake().schedule();
             mMechState.brakeIndexer().schedule();
-            //launchStateReached = true;
             //Need Operator Confirmation
             
         }
