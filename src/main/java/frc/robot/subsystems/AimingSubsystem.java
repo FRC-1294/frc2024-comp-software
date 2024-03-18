@@ -177,6 +177,7 @@ public class AimingSubsystem extends SubsystemBase {
     
 
     double wristFeedforwardCalculation = Math.cos(Math.toRadians(mCurrentWristRotationDeg-AimingConstants.COG_OFFSET))*AimingConstants.WRIST_KG;
+    
     mLeftWristMotor.set(wristPIDCalculation + wristFeedforwardCalculation);
   }
 

@@ -60,8 +60,8 @@ public class CompetitionBotSwerveConfig extends SwerveConfig{
 
                 FRONT_LEFT_TRANS_CARPET_PID = new PIDParameters(0.1, 0, 0,0.01,0.1946*1); //TODO: https://github.com/FRC-1294/frc2024/issues/280
                 FRONT_RIGHT_TRANS_CARPET_PID = new PIDParameters(0.1, 0, 0,0.01,0.1946*1);//TODO: https://github.com/FRC-1294/frc2024/issues/280
-                BACK_LEFT_TRANS_CARPET_PID = new PIDParameters(0.1, 0, 0,0.01,0.1946*1);//TODO: https://github.com/FRC-1294/frc2024/issues/280
-                BACK_RIGHT_TRANS_CARPET_PID = new PIDParameters(0.1, 0, 0,0.01,0.1946*1);//TODO: https://github.com/FRC-1294/frc2024/issues/280       
+                BACK_LEFT_TRANS_CARPET_PID = new PIDParameters(0.1, 0, 0,0.01,0.1946*1);//TODO: https://github.com/FRC-1294/frc2024/issues/280       
+                BACK_RIGHT_TRANS_CARPET_PID = new PIDParameters(0.1, 0, 0,0.01,0.1946*1);//TODO: https://github.com/FRC-1294/frc2024/issues/280
         }
 
         @Override
