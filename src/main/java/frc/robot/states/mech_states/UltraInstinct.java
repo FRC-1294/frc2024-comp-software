@@ -96,4 +96,9 @@ public class UltraInstinct extends MechState {
     public Command handoffPosition(){
        return MechState.mHandoffPositionCommand;
     }
+
+    @Override
+    public Command setWristDeg(double deg){
+      return new InstantCommand(()->mAimingSubsystem.setDesiredWristRotation(deg));
+  }
 }

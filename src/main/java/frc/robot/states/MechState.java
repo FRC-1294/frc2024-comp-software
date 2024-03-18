@@ -138,4 +138,8 @@ public abstract class MechState {
         return new InstantCommand();
     }
 
+    public Command setWristDeg(double deg){
+        return new InstantCommand();
+    }
+
 }

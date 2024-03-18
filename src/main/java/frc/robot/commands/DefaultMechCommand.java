@@ -62,6 +62,7 @@ public class DefaultMechCommand{
     }
 
     public static void defineEventListeners(){
+        SmartDashboard.putNumber("Set Wrist Encoder Degrees", 0);
         //Brakes the indexer ONE time when the left trigger is released
         BooleanSupplier getIndexer = ()-> Math.abs(Input.getLeftTrigger()) < LauncherConstants.INDEX_TRIGGER_DEADZONE;
         new Trigger(getIndexer).onTrue(mMechState.brakeIndexer());
@@ -110,11 +111,12 @@ public class DefaultMechCommand{
     public void execute() {
         mMechState = determineState();
 
-
         runAction();
 
         if (Input.getX()) {
-            mMechState.staticAutoAim().schedule();;
+            mMechState.staticAutoAim().schedule();
+            //This is for populating the event maps quickly
+            //mMechState.setWristDeg(SmartDashboard.getNumber("Set Wrist Encoder Degrees", 0)).schedule();
         }
         else if (Input.getY()) {
             mMechState.speakerPosition().schedule();
