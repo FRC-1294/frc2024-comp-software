@@ -18,14 +18,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.DefaultMechCommand;
 import frc.robot.commands.InitializePathPlanner;
 import frc.robot.commands.SwerveFrictionCharacterization;
 import frc.robot.commands.SwerveVoltageCharacterization;
-import frc.robot.commands.AutonomousCommands.LaunchFromHandoff;
-import frc.robot.commands.AutonomousCommands.ScoreSpeaker;
-import frc.robot.constants.AimState;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -36,7 +32,7 @@ import frc.robot.constants.AimState;
 public class Robot extends TimedRobot {
   private SendableChooser<Command> pathSelector = new SendableChooser<>();
   private RobotContainer robotContainer = new RobotContainer();
-  private DefaultMechCommand mDefaultMechCommand = new DefaultMechCommand(robotContainer.getIntakeSubsystem(), robotContainer.getLauncher(), robotContainer.getAimingSubsystem());
+  private DefaultMechCommand mDefaultMechCommand = new DefaultMechCommand(robotContainer.getIntakeSubsystem(), robotContainer.getLauncherSubsystem(), robotContainer.getAimingSubsystem());
   public static Optional<Alliance> mAlliance;
 ;
 

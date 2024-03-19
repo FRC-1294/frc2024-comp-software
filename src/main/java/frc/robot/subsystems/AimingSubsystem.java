@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 import java.util.function.BooleanSupplier;
-import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -184,7 +183,7 @@ public class AimingSubsystem extends SubsystemBase {
   private void updateMotorModes() {
     SmartDashboard.updateValues();
 
-    AimingMotorMode mode = mChooser.getSelected();
+   // AimingMotorMode mode = mChooser.getSelected(); //Not used
     
     // // Motors go towards setpoints
     // IdleMode idleMode;

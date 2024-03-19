@@ -20,7 +20,7 @@ public class RevSwerveModule extends SwerveModuleAbstract{
     
 
     // Public Debugging Values
-    private double mDesiredVel = 0.0;
+    //private double mDesiredVel = 0.0;
 
     public RevSwerveModule(int rotID, int transID, int rotEncoderID, boolean rotInverse,
     boolean transInverse, PIDParameters rotPID, PIDParameters transPID, double transGearRatio,

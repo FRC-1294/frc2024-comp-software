@@ -23,7 +23,6 @@ public class IntakeSubsystem extends SubsystemBase {
   private final CANSparkMax mIntakeMotorOuter = new CANSparkMax(IntakeConstants.INTAKE_SPARK_ID_OUTER, MotorType.kBrushless);
   private static final DigitalInput mBeamBreak = new DigitalInput(IntakeConstants.INTAKE_BEAMBREAK_ID);
   private boolean beamBreakOverride = false;
-  private boolean useCurrentLimits = false;
 
   public IntakeSubsystem() {
     mIntakeMotorInner.restoreFactoryDefaults();

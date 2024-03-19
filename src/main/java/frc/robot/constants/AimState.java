@@ -5,7 +5,6 @@
 package frc.robot.constants;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /** Add your docs here. */
 public enum AimState {
@@ -36,10 +35,10 @@ public enum AimState {
      double wristToleranceDegrees, double elevatorHeight, double elevatorTolerance, double launcherSetpoint, double launcherTolerance) {
         mWristAngleDegrees = wristAngleDeg;
         mRadialDistanceMeters = radialDistanceMeters;
+        mPositionToleranceMeters = shotToleranceMeters;
+        mWristToleranceDegrees = wristToleranceDegrees;
         mElevatorHeightMeters = elevatorHeight;
         mElevatorToleranceMeters = elevatorTolerance;
-        mPositionToleranceMeters = shotToleranceMeters;
-        mWristToleranceDegrees = wristAngleDeg;
         mLauncherSetpointRPM = launcherSetpoint;
         mLauncherToleranceRPM = launcherTolerance;
 
@@ -49,10 +48,10 @@ public enum AimState {
      double wristToleranceDegrees, double launcherSetpoint, double launcherTolerance) {
         mWristAngleDegrees = wristAngleDeg;
         mRadialDistanceMeters = radialDistanceMeters;
-        mElevatorHeightMeters = 0;
-        mElevatorToleranceMeters = 0.01;
         mPositionToleranceMeters = shotToleranceMeters;
-        mWristToleranceDegrees = wristAngleDeg;
+        mWristToleranceDegrees = wristToleranceDegrees;
+        mElevatorHeightMeters = 0;
+        mElevatorToleranceMeters = 0.01;        
         mLauncherSetpointRPM = launcherSetpoint;
         mLauncherToleranceRPM = launcherTolerance;
     }
@@ -75,11 +74,11 @@ public enum AimState {
         return withinWristTolerance(curWristAngle) && withinElevatorTolerance(curElevatorHeight) && withinLauncherTolerance(curLauncherSpeed);
     }
 
-    private double[] getPolarCoordsFromXY(Pose2d curSwervePose){
-        double [] coords = new double[2];
-        //return the polar coordinates in the form of (r,theta) from the 
-        return coords;
-    }
+    // private double[] getPolarCoordsFromXY(Pose2d curSwervePose){
+    //     double [] coords = new double[2];
+    //     //return the polar coordinates in the form of (r,theta) from the 
+    //     return coords;
+    // } //Not used
 
     public boolean withinWristTolerance(double curWristAngle){
         if (this == AUTO_AIM){
