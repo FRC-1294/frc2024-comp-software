@@ -82,8 +82,6 @@ public class DefaultDriveCommand extends Command {
       rot = Math.toRadians(rot);
     }
 
-    mSwerve.setChassisSpeed(x, y, Math.toRadians(rot), true, false);
-
     if (Input.alignSpeaker()){
       rot = Math.toRadians(
         mSpeakerAlignPID.calculate(

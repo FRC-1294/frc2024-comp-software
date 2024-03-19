@@ -1,8 +1,5 @@
 package frc.robot.subsystems;
 
-import java.sql.Driver;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -26,6 +23,8 @@ public class Autoaim {
     private static double currentTime = 0.0;
 
     public static boolean accountForVelocity = true;
+
+    
 
     public static void update(){
         lastTime = currentTime;
@@ -74,7 +73,9 @@ public class Autoaim {
         SmartDashboard.putNumber("distance2d", distance2D);
         double speakerApproachSpeed = accountForVelocity ? speeds.vxMetersPerSecond * (Math.abs(xDistance)/distance2D) + speeds.vyMetersPerSecond * (Math.abs(yDistance)/distance2D) : 0.0;
         
-        neededlauncherAngleRadians = searchForLaunchAngle(distance2D, zDistance, speakerApproachSpeed);
+        neededlauncherAngleRadians = simulateLaunchAngle(distance2D, zDistance, speakerApproachSpeed) * Math.PI / 180.0;
+
+        SmartDashboard.putBoolean("Autoaim Launch Ready", neededlauncherAngleRadians >= 0.0);
 
         double xSpeed = accountForVelocity ? speeds.vxMetersPerSecond : 0.0;
         double ySpeed = accountForVelocity ? speeds.vyMetersPerSecond : 0.0;
@@ -97,7 +98,41 @@ public class Autoaim {
         return neededRobotYaw;
     }
 
+    private static double simulateLaunchAngle(double xDist2D, double yDist2D, double speakerApproachSpeed){
+        double timeStep = 0.1;
+
+        for (double i = AimingConstants.REST_LAUNCH_ANGLE; i >= 0.0; i -= 0.1){
+            double launchAngle = i * Math.PI / 180.0;
+
+            double noteVelocityX = AimingConstants.NOTE_EXIT_SPEED * Math.cos(launchAngle) + speakerApproachSpeed;
+            double noteVelocityY = AimingConstants.NOTE_EXIT_SPEED * Math.sin(launchAngle);
+
+            double notePosX = -AimingConstants.WRIST_D1 * Math.cos(-launchAngle + AimingConstants.WRIST_BEND_ANGLE) - AimingConstants.WRIST_D2 * Math.cos(launchAngle);
+            double notePosY = AimingConstants.WRIST_D1 * Math.sin(-launchAngle + AimingConstants.WRIST_BEND_ANGLE) - AimingConstants.WRIST_D2 * Math.sin(launchAngle);
+
+            while (notePosX < xDist2D && notePosY > -1){
+                double xDrag = noteVelocityX * AimingConstants.DRAG_COEFFICIENT;
+                double yDrag = noteVelocityY * AimingConstants.DRAG_COEFFICIENT;
+
+                noteVelocityX -= xDrag * timeStep;
+                noteVelocityY -= yDrag * timeStep;
+                noteVelocityY -= 9.807 * timeStep;
+
+                notePosX += noteVelocityX * timeStep;
+                notePosY += noteVelocityY * timeStep;
+            }
+
+            if (Math.abs(notePosY - yDist2D) < .10){
+                return i;
+            }
+        }
+
+        return -1.0;
+    }
+
     private static double launcherAngleEquation(double xDist2D, double yDist2D, double speakerApproachSpeed, double angleGuess){
+        
+        
         double time = (
             (xDist2D + AimingConstants.WRIST_D1 * Math.cos(-angleGuess + AimingConstants.WRIST_BEND_ANGLE) + AimingConstants.WRIST_D2 * Math.cos(angleGuess)) 
             / (AimingConstants.NOTE_EXIT_SPEED * Math.cos(angleGuess) + speakerApproachSpeed)
