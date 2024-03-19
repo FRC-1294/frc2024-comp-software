@@ -49,11 +49,11 @@ public abstract class SwerveConfig {
                 FRONT_RIGHT_ROT_ENC_ID = 23;
 
                 BACK_LEFT_TRANS_ID = 9;
-                BACK_LEFT_ROT_ID = 6;
+                BACK_LEFT_ROT_ID = 4;
                 BACK_LEFT_ROT_ENC_ID = 20;
 
                 BACK_RIGHT_TRANS_ID = 5;
-                BACK_RIGHT_ROT_ID = 4;
+                BACK_RIGHT_ROT_ID = 6;
                 BACK_RIGHT_ROT_ENC_ID = 21;
 
 
