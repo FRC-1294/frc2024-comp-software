@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.CompConstants;
+import frc.robot.constants.FieldConstants;
 import frc.robot.robots.SwerveConfig;
 import frc.robot.swerve.SwerveModuleAbstract;
 
@@ -71,6 +72,7 @@ public class SwerveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("YPos", mOdometry.getEstimatedPosition().getY());
     SmartDashboard.putNumber("Rot", mOdometry.getEstimatedPosition().getRotation().getDegrees());
     SmartDashboard.putNumber("Heading", getRotation2d().getDegrees());
+    SmartDashboard.putNumber("DistToSpeaker",FieldConstants.getSpeakerDistance(getRobotPose()));
 
     mField.setRobotPose(mOdometry.getEstimatedPosition());
     double current = 0;
