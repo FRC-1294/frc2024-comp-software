@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 import java.util.function.BooleanSupplier;
-import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -183,7 +182,7 @@ public class AimingSubsystem extends SubsystemBase {
   private void updateMotorModes() {
     SmartDashboard.updateValues();
 
-    AimingMotorMode mode = mChooser.getSelected();
+   // AimingMotorMode mode = mChooser.getSelected(); //Not used
     
     // // Motors go towards setpoints
     // IdleMode idleMode;
@@ -206,22 +205,23 @@ public class AimingSubsystem extends SubsystemBase {
 
   // Contains Smart Dashboard Statements ONLY ON DEBUG
   private void debugSmartDashboard() {
-    if (CompConstants.DEBUG_MODE || CompConstants.PID_TUNE_MODE) {
-      SmartDashboard.putNumber("Current Wrist Rotation", getCurrentWristDegreees());
-      SmartDashboard.putNumber("Current Elevator Distance", getCurrentElevatorDistance());
-      SmartDashboard.putNumber("Desired Wrist Rotation", getDesiredWristRotation());
-      SmartDashboard.putNumber("Desired Elevator Distance", getDesiredElevatorDistance());
-      SmartDashboard.putNumber("Raw Elevator Encoder Position", mLeftElevatorEncoder.getPosition());
-      SmartDashboard.putNumber("Raw Wrist Encoder Rotation", mWristThroughBoreEncoder.getAbsolutePosition());
-      SmartDashboard.putBoolean("At Elevator setpoint", atElevatorSetpoint());
-      SmartDashboard.putBoolean("At Wrist setpoint", atWristSetpoint());
-      SmartDashboard.putNumber("Throughbore Encoder Position", mWristThroughBoreEncoder.getAbsolutePosition()*AimingConstants.WRIST_THROUGHBORE_GEAR_RATIO*360 - AimingConstants.WRIST_THROUGHBORE_ENCODER_OFFSET);
-      SmartDashboard.putBoolean("Wrist Throughbore Is Connected", mWristThroughBoreEncoder.isConnected());
-      SmartDashboard.putNumber("Wrist Throughbore Frequency", mWristThroughBoreEncoder.getFrequency());
-      SmartDashboard.putNumber("Wrist Tolerance", mWristController.getPositionTolerance());
-      SmartDashboard.putNumber("Wrist Error", mWristController.getPositionError());
-    }
-
+    
+    // if (CompConstants.DEBUG_MODE || CompConstants.PID_TUNE_MODE) {
+    //   SmartDashboard.putNumber("Current Wrist Rotation", getCurrentWristDegreees());
+    //   SmartDashboard.putNumber("Current Elevator Distance", getCurrentElevatorDistance());
+    //   SmartDashboard.putNumber("Desired Wrist Rotation", getDesiredWristRotation());
+    //   SmartDashboard.putNumber("Desired Elevator Distance", getDesiredElevatorDistance());
+    //   SmartDashboard.putNumber("Raw Elevator Encoder Position", mLeftElevatorEncoder.getPosition());
+    //   SmartDashboard.putNumber("Raw Wrist Encoder Rotation", mWristThroughBoreEncoder.getAbsolutePosition());
+    //   SmartDashboard.putBoolean("At Elevator setpoint", atElevatorSetpoint());
+    //   SmartDashboard.putBoolean("At Wrist setpoint", atWristSetpoint());
+    //   SmartDashboard.putNumber("Throughbore Encoder Position", mWristThroughBoreEncoder.getAbsolutePosition()*AimingConstants.WRIST_THROUGHBORE_GEAR_RATIO*360 - AimingConstants.WRIST_THROUGHBORE_ENCODER_OFFSET);
+    //   SmartDashboard.putBoolean("Wrist Throughbore Is Connected", mWristThroughBoreEncoder.isConnected());
+    //   SmartDashboard.putNumber("Wrist Throughbore Frequency", mWristThroughBoreEncoder.getFrequency());
+    //   SmartDashboard.putNumber("Wrist Tolerance", mWristController.getPositionTolerance());
+    //   SmartDashboard.putNumber("Wrist Error", mWristController.getPositionError());
+    // } //Dead code
+    
     if (CompConstants.PID_TUNE_MODE) {
       SmartDashboard.putNumber("Elevator P", AimingConstants.mElevatorPIDConstants.mKP);
       SmartDashboard.putNumber("Elevator I", AimingConstants.mElevatorPIDConstants.mKI);

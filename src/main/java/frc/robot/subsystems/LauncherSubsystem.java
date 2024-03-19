@@ -5,7 +5,7 @@
 package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.CoastOut;
+//import com.ctre.phoenix6.controls.CoastOut; //Not used
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -28,7 +28,7 @@ public class LauncherSubsystem extends SubsystemBase {
   private final TalonFX mFollowerFlywheel = new TalonFX(LauncherConstants.FOLLOWER_FLYWHEEL_ID, "DriveMotors");
 
   private final DigitalInput mBeamBreak = new DigitalInput(LauncherConstants.BEAMBREAK_ID);
-  private final CoastOut mCoastSignal = new CoastOut();
+  //private final CoastOut mCoastSignal = new CoastOut(); //Not used
   private final VoltageOut mVoltageSignal = new VoltageOut(0);
 
   private AimState mDesiredState = AimState.HANDOFF;
@@ -155,9 +155,9 @@ public class LauncherSubsystem extends SubsystemBase {
   public double getCurrentVelocity() {
     return mLeaderFlywheel.getVelocity().getValueAsDouble()*60;
   }
-  private double toFalconUnits(double val){
-    return val/(LauncherConstants.FLYWHEEL_SENSOR_TO_MECHANISM*60);
-  }
+  // private double toFalconUnits(double val){
+  //   return val/(LauncherConstants.FLYWHEEL_SENSOR_TO_MECHANISM*60);
+  // } //Not used
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
