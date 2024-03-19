@@ -207,6 +207,8 @@ public class AimingSubsystem extends SubsystemBase {
 
   // Contains Smart Dashboard Statements ONLY ON DEBUG
   private void debugSmartDashboard() {
+      SmartDashboard.putNumber("Desired Wrist Rotation", getDesiredWristRotation());
+
     if (CompConstants.DEBUG_MODE || CompConstants.PID_TUNE_MODE) {
       SmartDashboard.putNumber("Current Wrist Rotation", getCurrentWristDegreees());
       SmartDashboard.putNumber("Current Elevator Distance", getCurrentElevatorDistance());
