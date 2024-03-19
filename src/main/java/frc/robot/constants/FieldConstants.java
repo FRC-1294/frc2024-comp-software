@@ -1,5 +1,6 @@
 package frc.robot.constants;
 
+import java.sql.Driver;
 import java.util.Optional;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -10,6 +11,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Robot;
+import frc.robot.subsystems.SwerveSubsystem;
 
 public class FieldConstants {
     public static enum Blue {
@@ -42,7 +44,16 @@ public class FieldConstants {
 
 
     public static double getSpeakerDistance(Pose2d robotPose) {
-        if (Robot.mAlliance.isPresent() && Robot.mAlliance.get() == Alliance.Red) {
+        if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
+            return Red.SPEAKER.getPose().toPose2d().minus(robotPose).getTranslation().getNorm();            
+        }
+        return Blue.SPEAKER.getPose().toPose2d().minus(robotPose).getTranslation().getNorm();
+
+    }
+
+    public static double getSpeakerDistance() {
+        Pose2d robotPose = SwerveSubsystem.getRobotPose();
+        if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
             return Red.SPEAKER.getPose().toPose2d().minus(robotPose).getTranslation().getNorm();            
         }
         return Blue.SPEAKER.getPose().toPose2d().minus(robotPose).getTranslation().getNorm();

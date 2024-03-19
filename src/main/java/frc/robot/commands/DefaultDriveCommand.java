@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import java.util.Optional;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -92,15 +93,25 @@ public class DefaultDriveCommand extends Command {
     Optional<Alliance> alliance = DriverStation.getAlliance();
     if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red){
       targAngle = FieldConstants.Red.SPEAKER.getPose().toPose2d()
-      .plus(new Transform2d(new Translation2d(-0.5,0), new Rotation2d()))
+      .plus(getSpeakerRotationBias(FieldConstants.Red.SPEAKER.getPose().toPose2d(), SwerveSubsystem.getRobotPose()))
       .minus(SwerveSubsystem.getRobotPose()).getTranslation().getAngle().getDegrees();
     } else{
       targAngle = FieldConstants.Blue.SPEAKER.getPose().toPose2d()
-      .plus(new Transform2d(new Translation2d(0.5,0),new Rotation2d()))
+      .plus(getSpeakerRotationBias(FieldConstants.Blue.SPEAKER.getPose().toPose2d(), SwerveSubsystem.getRobotPose()))
       .minus(SwerveSubsystem.getRobotPose()).getTranslation().getAngle().getDegrees();
     }
 
     SmartDashboard.putNumber("targAngleSPeaker", targAngle);
     return targAngle;
+  }
+
+  private Transform2d getSpeakerRotationBias(Pose2d speakerPose, Pose2d robotPose) {
+    if (robotPose.getY() > speakerPose.getY()) {
+      return new Transform2d(0, -1, new Rotation2d());
+    } else if (robotPose.getY() < speakerPose.getY()) {
+      return new Transform2d(0, 1, new Rotation2d());
+    }
+
+    return new Transform2d(0, 0, new Rotation2d());
   }
 }
