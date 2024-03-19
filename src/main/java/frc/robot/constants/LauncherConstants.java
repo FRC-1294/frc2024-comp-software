@@ -22,7 +22,7 @@ public final class LauncherConstants {
   public static final int FOLLOWER_FLYWHEEL_ID = 41; //TODO:https://github.com/FRC-1294/frc2024/issues/241
 
   public static final int INDEXER_ID = 31; //TODO:https://github.com/FRC-1294/frc2024/issues/241
-  public static final int BEAMBREAK_ID = 3; //TODO:https://github.com/FRC-1294/frc2024/issues/241
+  public static final int BEAMBREAK_ID = 2; //TODO:https://github.com/FRC-1294/frc2024/issues/241
 
   //current flywheel mode
 
