@@ -103,15 +103,15 @@ public class LauncherSubsystem extends SubsystemBase {
   
   public void runLauncher() {
     //predicted velocity values
-    // if (mDesiredState.mLauncherSetpointRPM == 0 || mDesiredState.mLauncherSetpointRPM == -1){
-    //   mLeaderFlywheel.setControl(mCoastSignal);
-    // }else{
+    if (mDesiredState.mLauncherSetpointRPM == 0 || mDesiredState.mLauncherSetpointRPM == -1){
+      mLeaderFlywheel.setControl(mCoastSignal);
+    }else{
       mLeaderFlywheel.setControl(
         mVoltageSignal.withOutput(
           mDesiredState.mLauncherSetpointRPM*LauncherConstants.LAUNCHER_FF_CONTROLLER.kv
           + LauncherConstants.LAUNCHER_PID_CONTROLLER.calculate(getCurrentVelocity(), mDesiredState.mLauncherSetpointRPM)
         ));
-    //}
+    }
     //mLeaderFlywheel.setControl(new VelocityVoltage(mDesiredState.mLauncherSetpointRPM).withSlot(0));
   }
 
