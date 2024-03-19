@@ -76,4 +76,9 @@ public class AimingConstants {
     public static double getPolynomialRegression(double dist){
         return -25+16.3*dist+0.757*Math.pow(dist, 2)-0.349*Math.pow(dist, 3);
     }
+
+    public static double getAutoAimWristToleranceDegrees(){
+        //TODO write tolerance function here
+        return 0.5;
+    }
 }

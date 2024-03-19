@@ -21,7 +21,7 @@ public enum AimState {
     WING(0,0,0,0), //Everything TBD
     CLIMB_UP(0,-1,-1,0,AimingConstants.MAX_ELEVATOR_DIST_METERS-0.2,0.1),
     CLIMB_DOWN(0,-1,-1,0,AimingConstants.MIN_ELEVATOR_DIST_METERS,0.1),
-    TRANSITION(-1,-1,-1,-1);
+    AUTO_AIM(-1,-1,-1,-1);
 
     public final double mWristAngleDegrees;
     public final double mRadialDistanceMeters;
@@ -82,6 +82,9 @@ public enum AimState {
     }
 
     public boolean withinWristTolerance(double curWristAngle){
+        if (this == AUTO_AIM){
+            return Math.abs(curWristAngle-mWristAngleDegrees)<=AimingConstants.getAutoAimWristToleranceDegrees();
+        }
         return Math.abs(curWristAngle-mWristAngleDegrees)<=mWristToleranceDegrees || mWristAngleDegrees == -1;
     }
         

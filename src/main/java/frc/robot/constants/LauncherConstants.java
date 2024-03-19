@@ -47,4 +47,13 @@ public final class LauncherConstants {
   public static final double LAUNCH_COOLDOWN_SEC = 0.2;
   public static final double INDEX_TRIGGER_DEADZONE = 0.05;
 
+  public static double getAutoAimLauncherSpeed(){
+    //TODO create function to return launcher speed for autoaim
+    return 1000;
+  }
+  public static double getAutoAimLauncherTolerance(){
+    //TODO create function to return launcher tolerance for autoaim
+    return 1000;
+  }
+
 }

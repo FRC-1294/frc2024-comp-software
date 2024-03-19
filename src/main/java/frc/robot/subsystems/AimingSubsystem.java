@@ -268,11 +268,11 @@ public class AimingSubsystem extends SubsystemBase {
   public AimState getCurrentState(){
     for (AimState state : AimState.values()){
       if (state.withinWristTolerance(getCurrentWristDegreees())
-        && state.withinElevatorTolerance(getCurrentElevatorDistance()) && state != AimState.TRANSITION){
+        && state.withinElevatorTolerance(getCurrentElevatorDistance()) && state != AimState.AUTO_AIM){
         return state;
       }
     }
-    return AimState.TRANSITION;
+    return AimState.AUTO_AIM;
   }
 
   public double getDesiredElevatorDistance() {
@@ -306,7 +306,7 @@ public class AimingSubsystem extends SubsystemBase {
   }
 
   public void setDesiredSetpoint(AimState state) {
-    if(state != AimState.TRANSITION){
+    if(state != AimState.AUTO_AIM){
       mDesiredElevatorDistanceIn = state.mElevatorHeightMeters;
       mDesiredWristRotationDeg = state.mWristAngleDegrees;
       mWristController.setTolerance(state.mWristToleranceDegrees);
