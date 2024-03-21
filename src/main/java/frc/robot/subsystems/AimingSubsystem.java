@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 import java.lang.reflect.Field;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
+import javax.swing.border.LineBorder;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.revrobotics.CANSparkMax;
@@ -16,6 +17,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -66,6 +68,9 @@ public class AimingSubsystem extends SubsystemBase {
   MotorOutputConfigs mRightWristMotorOutputConfigs = new MotorOutputConfigs();
 
   Slot0Configs mElevatorControllerSlot0Configs = new Slot0Configs();
+
+  //0.1 is the non-zero sample time and 0.02 is our loop time 
+  LinearFilter mAbsEncFilter = LinearFilter.singlePoleIIR(0.1,0.02);
 
   public AimingSubsystem() {
     mChooser.addOption("Brake", AimingMotorMode.BRAKE);
@@ -247,7 +252,8 @@ public class AimingSubsystem extends SubsystemBase {
    * @return Current Wrist Rotation in Degrees
    */
   public double getCurrentWristDegreees(){
-    return -(mWristThroughBoreEncoder.getAbsolutePosition()*AimingConstants.WRIST_THROUGHBORE_GEAR_RATIO*360 - AimingConstants.WRIST_THROUGHBORE_ENCODER_OFFSET);
+    double raw_deg = -(mWristThroughBoreEncoder.getAbsolutePosition()*AimingConstants.WRIST_THROUGHBORE_GEAR_RATIO*360 - AimingConstants.WRIST_THROUGHBORE_ENCODER_OFFSET);
+    return mAbsEncFilter.calculate(raw_deg);
   }
 
   public AimState getCurrentState(){
