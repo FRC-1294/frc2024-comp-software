@@ -39,11 +39,14 @@ public class DefaultDriveCommand extends Command {
     mSpeakerAlignPID.setTolerance(2);
     mSpeakerAlignPID.enableContinuousInput(0, 360);
 
-    BooleanSupplier getSpeakerAligned = ()-> mSpeakerAlignPID.atSetpoint() &&
+    BooleanSupplier getDriveBaseLaunchReady = ()-> mSpeakerAlignPID.atSetpoint() &&
      FieldConstants.getSpeakerDistance()<=AimingConstants.MAX_SHOT_DIST_METERS;
     
-    new Trigger(getSpeakerAligned)
-    .onTrue(new InstantCommand(()->Input.turnOnViberator(JoystickConstants.XBOX_RUMBLE_VIGEROUS)));
+    new Trigger(getDriveBaseLaunchReady)
+    .onTrue(new InstantCommand(()->{
+      Input.turnOnViberator(JoystickConstants.XBOX_RUMBLE_VIGEROUS);
+      Input.enableLeftRumble(JoystickConstants.XBOX_RUMBLE_VIGEROUS);}))
+    .onFalse(new InstantCommand(()->Input.disableLeftRumble()));
   }
 
   // Called every time the scheduler runs while the command is scheduled.

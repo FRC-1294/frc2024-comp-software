@@ -74,19 +74,19 @@ public class DefaultMechCommand{
 
         BooleanSupplier intaken = ()-> mMechState == mIntaken;
         new Trigger(intaken).onTrue(new InstantCommand(()->{
-            Input.enableRumble(JoystickConstants.XBOX_RUMBLE_SOFT);
+            Input.enableRightRumble(JoystickConstants.XBOX_RUMBLE_SOFT);
             Input.turnOnViberator(JoystickConstants.XBOX_RUMBLE_SOFT);
         }));
 
         BooleanSupplier readyToAim = ()-> mMechState == mReadyForAim;
-        new Trigger(readyToAim).onTrue(new InstantCommand(()->Input.enableRumble(JoystickConstants.XBOX_RUMBLE_MEDIUM)));
+        new Trigger(readyToAim).onTrue(new InstantCommand(()->Input.enableRightRumble(JoystickConstants.XBOX_RUMBLE_MEDIUM)));
 
         BooleanSupplier readyToLaunch = ()-> mMechState == mReadyForLaunch;
-        new Trigger(readyToLaunch).onTrue(new InstantCommand(()->Input.enableRumble(JoystickConstants.XBOX_RUMBLE_VIGEROUS)));
+        new Trigger(readyToLaunch).onTrue(new InstantCommand(()->Input.enableRightRumble(JoystickConstants.XBOX_RUMBLE_VIGEROUS)));
 
         BooleanSupplier readyToIntake = ()-> mMechState == mReadyForIntake;
         new Trigger(readyToIntake).onTrue(new InstantCommand(()->{
-            Input.disableRumble();
+            Input.disableRightRumble();
             Input.turnOffViberator();}));
     }
 
@@ -186,7 +186,7 @@ public class DefaultMechCommand{
     public void runAction() {
 
         if (mMechState == mReadyForIntake) {
-            Input.disableRumble();
+            Input.disableRightRumble();
 
             if (!mDesiredState.withinWristTolerance(mAimingSubsystem.getCurrentWristDegreees()) && mDesiredState != AimState.HANDOFF && mDesiredState != AimState.OUTTAKE){
                 mMechState.index(0.3).schedule();

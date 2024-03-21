@@ -4,7 +4,6 @@
 
 package frc.robot.constants;
 
-import java.lang.reflect.Field;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import frc.robot.Util.PIDParameters;
 import frc.robot.subsystems.AimingSubsystem.AimingMotorMode;
