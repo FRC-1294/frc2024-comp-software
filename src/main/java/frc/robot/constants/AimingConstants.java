@@ -64,6 +64,7 @@ public class AimingConstants {
     public static final int CONNECTION_THRESH_HZ = 945;
 
     public static final InterpolatingDoubleTreeMap AIM_MAP = new InterpolatingDoubleTreeMap();
+    public static final double MAX_SHOT_DIST_METERS = 5.2;
 
     public static void populate_aim_map(){
         AimingConstants.AIM_MAP.put(AimState.MIDNOTE.mWristAngleDegrees, AimState.MIDNOTE.mRadialDistanceMeters);
