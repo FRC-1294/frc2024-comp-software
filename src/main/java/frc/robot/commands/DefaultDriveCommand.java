@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import java.util.Optional;
+import java.util.function.BooleanSupplier;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -14,8 +15,11 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.JoystickConstants;
+import frc.robot.constants.LauncherConstants;
 import frc.robot.Input;
 import frc.robot.subsystems.SwerveSubsystem;
 
@@ -33,6 +37,10 @@ public class DefaultDriveCommand extends Command {
 
     mSpeakerAlignPID.setTolerance(2);
     mSpeakerAlignPID.enableContinuousInput(0, 360);
+
+    BooleanSupplier getSpeakerAligned = ()-> mSpeakerAlignPID.atSetpoint();
+    new Trigger(getSpeakerAligned)
+    .onTrue(new InstantCommand(()->Input.turnOnViberator(JoystickConstants.XBOX_RUMBLE_VIGEROUS)));
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -74,9 +82,9 @@ public class DefaultDriveCommand extends Command {
         mSpeakerAlignPID.calculate(
           SwerveSubsystem.getRobotPose().getRotation().getDegrees(),
           getRotationToSpeakerDegrees()));
-      SmartDashboard.putBoolean("PodiumAligned", mSpeakerAlignPID.atSetpoint());
-
     }
+    
+    SmartDashboard.putBoolean("PodiumAligned", mSpeakerAlignPID.atSetpoint());
     SmartDashboard.putBoolean("Precision Toggle", mIsPrecisionToggle);
     mSwerve.setChassisSpeed(x, y, rot, !Input.getRobotOriented(), false);
   }
@@ -114,9 +122,5 @@ public class DefaultDriveCommand extends Command {
     // }
 
     return new Transform2d(0, 0, new Rotation2d());
-  }
-
-  public double shit(double deg){
-    return deg/10;
   }
 }

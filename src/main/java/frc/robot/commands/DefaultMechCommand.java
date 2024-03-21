@@ -72,11 +72,22 @@ public class DefaultMechCommand{
         BooleanSupplier returnToIndex = ()-> mMechState == mReadyForAim || determineState() == mReadyForLaunch;
         new Trigger(returnToIndex).onTrue(mMechState.brakeIndexer());
 
+        BooleanSupplier intaken = ()-> mMechState == mIntaken;
+        new Trigger(intaken).onTrue(new InstantCommand(()->{
+            Input.enableRumble(JoystickConstants.XBOX_RUMBLE_SOFT);
+            Input.turnOnViberator(JoystickConstants.XBOX_RUMBLE_SOFT);
+        }));
+
         BooleanSupplier readyToAim = ()-> mMechState == mReadyForAim;
-        new Trigger(readyToAim).onTrue(new InstantCommand(()->Input.enableRumble(JoystickConstants.XBOX_RUMBLE_SOFT)));
+        new Trigger(readyToAim).onTrue(new InstantCommand(()->Input.enableRumble(JoystickConstants.XBOX_RUMBLE_MEDIUM)));
 
         BooleanSupplier readyToLaunch = ()-> mMechState == mReadyForLaunch;
         new Trigger(readyToLaunch).onTrue(new InstantCommand(()->Input.enableRumble(JoystickConstants.XBOX_RUMBLE_VIGEROUS)));
+
+        BooleanSupplier readyToIntake = ()-> mMechState == mReadyForIntake;
+        new Trigger(readyToIntake).onTrue(new InstantCommand(()->{
+            Input.disableRumble();
+            Input.turnOffViberator();}));
     }
 
     public static MechState determineState() {
