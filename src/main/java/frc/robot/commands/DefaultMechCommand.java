@@ -217,13 +217,13 @@ public class DefaultMechCommand{
         else if (mMechState == mReadyForAim) {
             
             mMechState.brakeIntake().schedule();
-            mMechState.brakeIndexer().schedule();
+            // mMechState.brakeIndexer().schedule();
             
             //No Automation Yet
         }
         else if (mMechState == mReadyForLaunch) {
             mMechState.brakeIntake().schedule();
-            mMechState.brakeIndexer().schedule();
+            // mMechState.brakeIndexer().schedule();
             //Need Operator Confirmation
             
         }
