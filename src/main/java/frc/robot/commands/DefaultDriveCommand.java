@@ -92,11 +92,11 @@ public class DefaultDriveCommand extends Command {
     double targAngle;
     Optional<Alliance> alliance = DriverStation.getAlliance();
     if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red){
-      targAngle = FieldConstants.Red.SPEAKER.getPose().toPose2d()
+      targAngle = FieldConstants.Red.SPEAKER.getPose().toPose2d().plus(new Transform2d(-0.5,0,new Rotation2d()))
       .plus(getSpeakerRotationBias(FieldConstants.Red.SPEAKER.getPose().toPose2d(), SwerveSubsystem.getRobotPose()))
       .minus(SwerveSubsystem.getRobotPose()).getTranslation().getAngle().getDegrees();
     } else{
-      targAngle = FieldConstants.Blue.SPEAKER.getPose().toPose2d()
+      targAngle = FieldConstants.Blue.SPEAKER.getPose().toPose2d().plus(new Transform2d(0.5,0,new Rotation2d()))
       .plus(getSpeakerRotationBias(FieldConstants.Blue.SPEAKER.getPose().toPose2d(), SwerveSubsystem.getRobotPose()))
       .minus(SwerveSubsystem.getRobotPose()).getTranslation().getAngle().getDegrees();
     }
@@ -107,9 +107,9 @@ public class DefaultDriveCommand extends Command {
 
   private Transform2d getSpeakerRotationBias(Pose2d speakerPose, Pose2d robotPose) {
     if (robotPose.getY() > speakerPose.getY()) {
-      return new Transform2d(0, -1, new Rotation2d());
+      return new Transform2d(0, -(robotPose.getY()-speakerPose.getY()/3.8), new Rotation2d());
     } else if (robotPose.getY() < speakerPose.getY()) {
-      return new Transform2d(0, 1, new Rotation2d());
+      return new Transform2d(0, (robotPose.getY()-speakerPose.getY()/3.8), new Rotation2d());
     }
 
     return new Transform2d(0, 0, new Rotation2d());
