@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.AimingConstants;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.JoystickConstants;
-import frc.robot.constants.LauncherConstants;
 import frc.robot.Input;
 import frc.robot.subsystems.SwerveSubsystem;
 
@@ -29,7 +28,7 @@ public class DefaultDriveCommand extends Command {
   private final SwerveSubsystem mSwerve;
   private boolean mIsPrecisionToggle = false;
   private final PIDController mNotePID = new PIDController(5, 0, 0.1);
-  private final PIDController mSpeakerAlignPID = new PIDController(4, 0, 0.02);
+  public static final PIDController mSpeakerAlignPID = new PIDController(4, 0, 0.02);
 
   public DefaultDriveCommand(SwerveSubsystem swerve) {
     mSwerve = swerve;
@@ -102,31 +101,18 @@ public class DefaultDriveCommand extends Command {
     return false;
   }
 
-  private double getRotationToSpeakerDegrees(){
+  public static double getRotationToSpeakerDegrees(){
     double targAngle;
     Optional<Alliance> alliance = DriverStation.getAlliance();
     if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red){
       targAngle = FieldConstants.Red.SPEAKER.getPose().toPose2d().plus(new Transform2d(-1.3,0,new Rotation2d()))
-      .plus(getSpeakerRotationBias(FieldConstants.Red.SPEAKER.getPose().toPose2d(), SwerveSubsystem.getRobotPose()))
       .minus(SwerveSubsystem.getRobotPose()).getTranslation().getAngle().getDegrees();
     } else{
       targAngle = FieldConstants.Blue.SPEAKER.getPose().toPose2d().plus(new Transform2d(1.3,0,new Rotation2d()))
-      .plus(getSpeakerRotationBias(FieldConstants.Blue.SPEAKER.getPose().toPose2d(), SwerveSubsystem.getRobotPose()))
       .minus(SwerveSubsystem.getRobotPose()).getTranslation().getAngle().getDegrees();
     }
 
     SmartDashboard.putNumber("targAngleSPeaker", targAngle);
     return targAngle;
-  }
-
-  private Transform2d getSpeakerRotationBias(Pose2d speakerPose, Pose2d robotPose) {
-
-    // if (robotPose.getY() > speakerPose.getY()) {
-    //   return new Transform2d(0, -(robotPose.getY()-speakerPose.getY()/3.8), new Rotation2d());
-    // } else if (robotPose.getY() < speakerPose.getY()) {
-    //   return new Transform2d(0, (robotPose.getY()-speakerPose.getY()/3.8), new Rotation2d());
-    // }
-
-    return new Transform2d(0, 0, new Rotation2d());
   }
 }

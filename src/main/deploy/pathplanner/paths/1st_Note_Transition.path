@@ -11,26 +11,97 @@
         "x": 0.965334534407358,
         "y": 4.064946517314748
       },
-      "isLocked": false,
+      "isLocked": true,
       "linkedName": "Right_Subwoofer_Shot"
     },
     {
       "anchor": {
-        "x": 1.5,
-        "y": 4.08
+        "x": 2.4722716112098895,
+        "y": 4.1046482092964185
       },
       "prevControl": {
-        "x": 1.0585371201127425,
-        "y": 4.056863910829213
+        "x": 2.131304611380537,
+        "y": 3.9887194293544392
+      },
+      "nextControl": {
+        "x": 2.810938955211244,
+        "y": 4.219795106256878
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.63,
+        "y": 4.65
+      },
+      "prevControl": {
+        "x": 2.6145118956904585,
+        "y": 4.687156040978748
       },
       "nextControl": null,
-      "isLocked": false,
+      "isLocked": true,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.0,
+      "rotationDegrees": 0.0,
+      "rotateFast": true
+    }
+  ],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "AutoAimPrep",
+      "waypointRelativePos": 0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "HandoffSetpoint"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeUntilNote"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Handoff"
+              }
+            },
+            {
+              "type": "parallel",
+              "data": {
+                "commands": [
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "AutoAimWristSetpoint"
+                    }
+                  },
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "StartLauncherAutoAim"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 4.5,
     "maxAcceleration": 2.5,
@@ -39,7 +110,7 @@
   },
   "goalEndState": {
     "velocity": 1.5,
-    "rotation": 0,
+    "rotation": -19.860000000000014,
     "rotateFast": true
   },
   "reversed": false,

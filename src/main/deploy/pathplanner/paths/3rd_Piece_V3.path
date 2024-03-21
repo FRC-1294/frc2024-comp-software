@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.0184573702480737,
-        "y": 4.856489712979426
+        "x": 2.6684778661698645,
+        "y": 4.55769911259899
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.8922191177715693,
-        "y": 5.567691135382271
+        "x": 2.905765811531623,
+        "y": 5.554144441622216
       },
       "prevControl": {
-        "x": 1.522061637456609,
-        "y": 5.4660909321818645
+        "x": 1.3817627635255272,
+        "y": 5.418677504021674
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,7 +30,7 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.75,
+      "waypointRelativePos": 0.5,
       "rotationDegrees": 0,
       "rotateFast": false
     }
@@ -38,7 +38,7 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "New Event Marker",
+      "name": "AutoAimPrep",
       "waypointRelativePos": 0,
       "command": {
         "type": "sequential",
@@ -60,6 +60,25 @@
               "type": "named",
               "data": {
                 "name": "Handoff"
+              }
+            },
+            {
+              "type": "parallel",
+              "data": {
+                "commands": [
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "AutoAimWristSetpoint"
+                    }
+                  },
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "StartLauncherAutoAim"
+                    }
+                  }
+                ]
               }
             }
           ]

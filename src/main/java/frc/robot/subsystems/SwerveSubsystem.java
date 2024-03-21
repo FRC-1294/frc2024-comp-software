@@ -276,7 +276,6 @@ public class SwerveSubsystem extends SubsystemBase {
     setChassisSpeed(x, y, rot,false, isOpenLoop);
   }
 
-
   public void resetRobotPose() {
     mOdometry.resetPosition(getRotation2d(), getModulePositions(), new Pose2d());
   }

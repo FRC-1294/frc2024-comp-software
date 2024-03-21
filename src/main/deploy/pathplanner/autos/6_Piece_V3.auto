@@ -18,15 +18,9 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "2nd_Piece_Mid"
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "ShootFromMidnote"
+            "name": "ShootDynamic"
           }
         },
         {
@@ -38,7 +32,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootFromMidnote"
+            "name": "ShootDynamic"
           }
         },
         {
@@ -50,7 +44,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootFromMidnote"
+            "name": "ShootDynamic"
           }
         },
         {
@@ -62,7 +56,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootFromWing"
+            "name": "ShootDynamic"
           }
         },
         {
@@ -74,7 +68,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootFromWing"
+            "name": "ShootDynamic"
           }
         }
       ]
