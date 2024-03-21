@@ -83,7 +83,7 @@ public enum AimState {
 
     public boolean withinWristTolerance(double curWristAngle){
         if (this == AUTO_AIM){
-            return Math.abs(curWristAngle-AimingConstants.getPolynomialRegression(FieldConstants.getSpeakerDistance()))<=AimingConstants.getAutoAimWristToleranceDegrees();
+            return Math.abs(curWristAngle-AimingConstants.getPolynomialRegression())<=AimingConstants.getAutoAimWristToleranceDegrees();
         }
         return Math.abs(curWristAngle-mWristAngleDegrees)<=mWristToleranceDegrees || mWristAngleDegrees == -1;
     }

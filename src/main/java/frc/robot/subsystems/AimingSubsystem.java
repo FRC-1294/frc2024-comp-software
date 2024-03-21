@@ -359,7 +359,7 @@ public class AimingSubsystem extends SubsystemBase {
 
   public Command waitUntilAutoAimSetpoint() {
     return new FunctionalCommand(()-> {},
-                                 () -> {setDesiredWristRotation(() -> AimingConstants.getPolynomialRegression(FieldConstants.getSpeakerDistance()));
+                                 () -> {setDesiredWristRotation(() -> AimingConstants.getPolynomialRegression());
                                         mWristController.setTolerance(AimingConstants.getAutoAimWristToleranceDegrees());},
                                 (Interruptable)->{},
                                 ()->DefaultMechCommand.mDesiredState != AimState.AUTO_AIM, 

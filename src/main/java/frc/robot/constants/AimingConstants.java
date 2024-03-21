@@ -4,6 +4,7 @@
 
 package frc.robot.constants;
 
+import java.lang.reflect.Field;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import frc.robot.Util.PIDParameters;
 import frc.robot.subsystems.AimingSubsystem.AimingMotorMode;
@@ -65,6 +66,8 @@ public class AimingConstants {
 
     public static final InterpolatingDoubleTreeMap AIM_MAP = new InterpolatingDoubleTreeMap();
     public static final double MAX_SHOT_DIST_METERS = 5.2;
+    public static final double MAX_WRIST_ACCURACY_DEG = 0.5;
+    private static final double TOLERANCE_DAMPENING_CONSTANT = 0.15;
 
     public static void populate_aim_map(){
         AimingConstants.AIM_MAP.put(AimState.MIDNOTE.mWristAngleDegrees, AimState.MIDNOTE.mRadialDistanceMeters);
@@ -73,13 +76,13 @@ public class AimingConstants {
         AimingConstants.AIM_MAP.put(AimState.WING.mWristAngleDegrees, AimState.WING.mRadialDistanceMeters);
     }
 
-    public static double getPolynomialRegression(double dist){
-        return -7.26 + 7.65*dist + 1.27*Math.pow(dist, 2) - 0.25*Math.pow(dist, 3);
+    public static double getPolynomialRegression(){
+        return -7.26 + 7.65*FieldConstants.getSpeakerDistance() + 1.27*Math.pow(FieldConstants.getSpeakerDistance(), 2) - 0.25*Math.pow(FieldConstants.getSpeakerDistance(), 3);
         //return -25+16.3*dist+0.757*Math.pow(dist, 2)-0.349*Math.pow(dist, 3);
     }
 
     public static double getAutoAimWristToleranceDegrees(){
-        //TODO write tolerance function here
-        return 0.5;
+        return Math.max((7.625 + 2.54*FieldConstants.getSpeakerDistance() - 0.75*Math.pow(FieldConstants.getSpeakerDistance(), 2))
+        * TOLERANCE_DAMPENING_CONSTANT,MAX_WRIST_ACCURACY_DEG);
     }
-}
+} 

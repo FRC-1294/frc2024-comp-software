@@ -178,7 +178,7 @@ public class DefaultMechCommand{
         SmartDashboard.putString("DesiredState", mDesiredState.name());
         SmartDashboard.putString("CurrentState", mMechState.getClass().getSimpleName());
         SmartDashboard.putBoolean("AutoAim Scheduled", mMechState.mStaticAutoAimCommand.isScheduled());
-        SmartDashboard.putNumber("AutoAimPolynomial", AimingConstants.getPolynomialRegression(FieldConstants.getSpeakerDistance()));
+        SmartDashboard.putNumber("AutoAimPolynomial", AimingConstants.getPolynomialRegression());
 
     }
 
