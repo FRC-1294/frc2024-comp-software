@@ -47,7 +47,8 @@ public abstract class MechState {
         mBrakeIndexerCommand = new InstantCommand(()->mLauncherSubsystem.stopIndexer(),mLauncherSubsystem);
         mStaticAutoAimCommand = new RunCommand(()->{
             mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.PODIUM);
-            mAimingSubsystem.waitUntilWristSetpoint(() -> AimingConstants.getPolynomialRegression(FieldConstants.getSpeakerDistance()));
+            mAimingSubsystem.waitUntilWristSetpoint(() -> AimingConstants.getPolynomialRegression(FieldConstants.getSpeakerDistance()),
+            ()->AimingConstants.getAutoAimWristToleranceDegrees());
         }, mLauncherSubsystem,mAimingSubsystem);
         
         // new ParallelCommandGroup(mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.PODIUM), 

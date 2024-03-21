@@ -182,26 +182,6 @@ public class AimingSubsystem extends SubsystemBase {
 
   private void updateMotorModes() {
     SmartDashboard.updateValues();
-
-   // AimingMotorMode mode = mChooser.getSelected(); //Not used
-    
-    // // Motors go towards setpoints
-    // IdleMode idleMode;
-
-    // switch (mode) {
-    //     case COAST:
-    //         idleMode = IdleMode.kCoast;
-    //         break;
-    //     default:
-    //         idleMode = IdleMode.kBrake;
-    //         break;
-    // }
-
-    // mLeftElevatorMotor.setIdleMode(idleMode);
-    // mRightElevatorMotor.setIdleMode(idleMode);
-
-    // mRightWristMotor.setIdleMode(idleMode);
-    // mLeftWristMotor.setIdleMode(idleMode);
   }
 
   // Contains Smart Dashboard Statements ONLY ON DEBUG
@@ -324,6 +304,10 @@ public class AimingSubsystem extends SubsystemBase {
   public void setWristToleranceDeg(double tolerance){
     mWristController.setTolerance(tolerance);
   }
+
+  public void setWristToleranceDeg(Supplier<Double> tolerance){
+    mWristController.setTolerance(tolerance.get());
+  }
   
   public void setElevatorToleranceDeg(double tolerance){
     mElevatorController.setTolerance(tolerance);
@@ -361,7 +345,9 @@ public class AimingSubsystem extends SubsystemBase {
     return new FunctionalCommand(() -> setDesiredWristRotation(sp), ()->{}, (Interruptable)->{}, this::atWristSetpoint, this);  
   }
 
-  public Command waitUntilWristSetpoint(Supplier<Double> sp) {
-    return new FunctionalCommand(() -> setDesiredWristRotation(sp), ()->{}, (Interruptable)->{}, this::atWristSetpoint, this);  
+  public Command waitUntilWristSetpoint(Supplier<Double> sp, Supplier<Double> tolerance) {
+    return new FunctionalCommand(() -> {setDesiredWristRotation(sp);
+    setWristToleranceDeg(tolerance);},
+    ()->{}, (Interruptable)->{}, this::atWristSetpoint, this);  
   }
 }
