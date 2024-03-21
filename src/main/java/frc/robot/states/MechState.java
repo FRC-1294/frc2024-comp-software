@@ -45,11 +45,10 @@ public abstract class MechState {
         mPodiumPositionCommand = new ParallelCommandGroup(mAimingSubsystem.waitUntilSetpoint(AimState.PODIUM), mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.PODIUM));
         mLaunchCommand = new SequentialCommandGroup(mLauncherSubsystem.indexUntilNoteLaunchedCommand());
         mBrakeIndexerCommand = new InstantCommand(()->mLauncherSubsystem.stopIndexer(),mLauncherSubsystem);
-        mStaticAutoAimCommand = new RunCommand(()->{
-            mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.PODIUM);
-            mAimingSubsystem.waitUntilWristSetpoint(() -> AimingConstants.getPolynomialRegression(FieldConstants.getSpeakerDistance()),
-            ()->AimingConstants.getAutoAimWristToleranceDegrees());
-        }, mLauncherSubsystem,mAimingSubsystem);
+        mStaticAutoAimCommand = new ParallelCommandGroup(
+            mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.PODIUM),
+            mAimingSubsystem.waitUntilAutoAimSetpoint()
+        );
         
         // new ParallelCommandGroup(mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.PODIUM), 
         // mAimingSubsystem.waitUntilWristSetpoint(() -> AimingConstants.getPolynomialRegression(FieldConstants.getSpeakerDistance())));

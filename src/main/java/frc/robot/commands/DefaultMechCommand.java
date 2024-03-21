@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.AimingConstants;
+import frc.robot.constants.FieldConstants;
 import frc.robot.constants.JoystickConstants;
 import frc.robot.constants.LauncherConstants;
 import frc.robot.constants.AimState;
@@ -116,7 +117,7 @@ public class DefaultMechCommand{
         if (Input.getX()) {
             mMechState.staticAutoAim().schedule();
             //This is for populating the event maps quickly
-            //mMechState.setWristDeg(SmartDashboard.getNumber("Set Wrist Encoder Degrees", 0)).schedule();
+            // mMechState.setWristDeg(SmartDashboard.getNumber("Set Wrist Encoder Degrees", 0)).schedule();
         }
         else if (Input.getY()) {
             mMechState.speakerPosition().schedule();
@@ -165,6 +166,8 @@ public class DefaultMechCommand{
 
         SmartDashboard.putString("DesiredState", mDesiredState.name());
         SmartDashboard.putString("CurrentState", mMechState.getClass().getSimpleName());
+        SmartDashboard.putBoolean("AutoAim Scheduled", mMechState.mStaticAutoAimCommand.isScheduled());
+        SmartDashboard.putNumber("AutoAimPolynomial", AimingConstants.getPolynomialRegression(FieldConstants.getSpeakerDistance()));
 
     }
 

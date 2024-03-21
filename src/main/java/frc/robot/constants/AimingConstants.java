@@ -19,7 +19,7 @@ public class AimingConstants {
     // PID Constants
     public static final PIDParameters mElevatorPIDConstants = new PIDParameters(3, 0, 0);
     public static final PIDParameters mWristPIDConstants = new PIDParameters(0.009, 0, 0.0, 0, 0);
-    public static final double WRIST_KG = 0.025;
+    public static final double WRIST_KG = 0.04;
     public static final double ELEVATOR_FEEDFORWARD_CONSTANT = 0.05;
     public static final double SPARK_THROUGHBORE_GEAR_RATIO = 1;
 
@@ -54,7 +54,7 @@ public class AimingConstants {
     public static final int WRIST_THROUGHBORE_ENCODER_ID = 0;
     public static final double WRIST_THROUGHBORE_GEAR_RATIO = 1;
     public static final double WRIST_THROUGHBORE_ENCODER_OFFSET = 298.2-177.44-0.6+0.65+9.2-94.2-0.62+255.0;
-    public static final double COG_OFFSET = 27.9;
+    public static final double COG_OFFSET = 22;
 
 
     // If false, then motors are physically inverted
@@ -73,7 +73,8 @@ public class AimingConstants {
     }
 
     public static double getPolynomialRegression(double dist){
-        return -25+16.3*dist+0.757*Math.pow(dist, 2)-0.349*Math.pow(dist, 3);
+        return -7.26 + 7.65*dist + 1.27*Math.pow(dist, 2) - 0.25*Math.pow(dist, 3);
+        //return -25+16.3*dist+0.757*Math.pow(dist, 2)-0.349*Math.pow(dist, 3);
     }
 
     public static double getAutoAimWristToleranceDegrees(){

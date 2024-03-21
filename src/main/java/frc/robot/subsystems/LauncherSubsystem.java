@@ -71,7 +71,7 @@ public class LauncherSubsystem extends SubsystemBase {
     mIndexer.restoreFactoryDefaults();
     mIndexer.setInverted(LauncherConstants.INDEXER_IS_INVERTED);
     mIndexer.enableVoltageCompensation(10);
-    mIndexer.setSmartCurrentLimit(80);
+    // mIndexer.setSmartCurrentLimit(120);
     mIndexer.setIdleMode(IdleMode.kBrake);
     mIndexer.burnFlash();
   }
@@ -90,7 +90,7 @@ public class LauncherSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("indexer current",mIndexer.getOutputCurrent());
     SmartDashboard.putNumber("flywheel left current",mLeaderFlywheel.getStatorCurrent().getValueAsDouble());
     SmartDashboard.putNumber("flywheel right current",mFollowerFlywheel.getStatorCurrent().getValueAsDouble());
-    // SmartDashboard.putNumber("Indexer Applied Output", mIndexer.getAppliedOutput());
+    SmartDashboard.putNumber("Indexer Current", mIndexer.getOutputCurrent());
     // SmartDashboard.putBoolean("LauncherReady", isLauncherReady());
   }
 

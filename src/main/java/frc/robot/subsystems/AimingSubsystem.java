@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
+import java.lang.reflect.Field;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
@@ -25,6 +26,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.AimingConstants;
 import frc.robot.constants.CompConstants;
+import frc.robot.constants.FieldConstants;
+import frc.robot.commands.DefaultMechCommand;
 import frc.robot.constants.AimState;
 
 
@@ -131,6 +134,9 @@ public class AimingSubsystem extends SubsystemBase {
     mRightElevatorMotor.burnFlash();
     mLeftWristMotor.burnFlash();
     mRightWristMotor.burnFlash();
+
+    SmartDashboard.putNumber("wristOUtput", 0);
+
   }
 
   @Override
@@ -176,8 +182,8 @@ public class AimingSubsystem extends SubsystemBase {
     
 
     double wristFeedforwardCalculation = Math.cos(Math.toRadians(mCurrentWristRotationDeg-AimingConstants.COG_OFFSET))*AimingConstants.WRIST_KG;
-    
     mLeftWristMotor.set(wristPIDCalculation + wristFeedforwardCalculation);
+    // mLeftWristMotor.set(SmartDashboard.getNumber("wristOUtput", 0));
   }
 
   private void updateMotorModes() {
@@ -349,5 +355,15 @@ public class AimingSubsystem extends SubsystemBase {
     return new FunctionalCommand(() -> {setDesiredWristRotation(sp);
     setWristToleranceDeg(tolerance);},
     ()->{}, (Interruptable)->{}, this::atWristSetpoint, this);  
+  }
+
+  public Command waitUntilAutoAimSetpoint() {
+    return new FunctionalCommand(()-> {},
+                                 () -> {setDesiredWristRotation(() -> AimingConstants.getPolynomialRegression(FieldConstants.getSpeakerDistance()));
+                                        mWristController.setTolerance(AimingConstants.getAutoAimWristToleranceDegrees());},
+                                (Interruptable)->{},
+                                ()->DefaultMechCommand.mDesiredState != AimState.AUTO_AIM, 
+                                this
+                                );
   }
 }

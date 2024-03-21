@@ -5,6 +5,7 @@
 package frc.robot.constants;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import frc.robot.subsystems.SwerveSubsystem;
 
 /** Add your docs here. */
 public enum AimState {
@@ -82,7 +83,7 @@ public enum AimState {
 
     public boolean withinWristTolerance(double curWristAngle){
         if (this == AUTO_AIM){
-            return Math.abs(curWristAngle-mWristAngleDegrees)<=AimingConstants.getAutoAimWristToleranceDegrees();
+            return Math.abs(curWristAngle-AimingConstants.getPolynomialRegression(FieldConstants.getSpeakerDistance()))<=AimingConstants.getAutoAimWristToleranceDegrees();
         }
         return Math.abs(curWristAngle-mWristAngleDegrees)<=mWristToleranceDegrees || mWristAngleDegrees == -1;
     }
