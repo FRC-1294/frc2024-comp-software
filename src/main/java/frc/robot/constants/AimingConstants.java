@@ -55,6 +55,7 @@ public class AimingConstants {
     public static final double WRIST_THROUGHBORE_GEAR_RATIO = 1;
     public static final double WRIST_THROUGHBORE_ENCODER_OFFSET = 298.2-177.44-0.6+0.65+9.2-94.2-0.62+255.0;
     public static final double COG_OFFSET = 22;
+    public static final double WRIST_KS = 0.005;
 
 
     // If false, then motors are physically inverted

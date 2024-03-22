@@ -67,6 +67,7 @@ public class AimingSubsystem extends SubsystemBase {
   MotorOutputConfigs mLeftWristMotorOutputConfigs = new MotorOutputConfigs();
   MotorOutputConfigs mRightWristMotorOutputConfigs = new MotorOutputConfigs();
 
+
   Slot0Configs mElevatorControllerSlot0Configs = new Slot0Configs();
 
   //0.1 is the non-zero sample time and 0.02 is our loop time 
@@ -99,6 +100,8 @@ public class AimingSubsystem extends SubsystemBase {
 
     mRightWristMotor.setIdleMode(IdleMode.kCoast);
     mLeftWristMotor.setIdleMode(IdleMode.kCoast);}).ignoringDisable(true));
+    mWristController.setIntegratorRange(-0.1, 0.1);
+    mWristController.setIZone(3);
   }
 
   // Setting Conversions and Inversions
@@ -184,11 +187,9 @@ public class AimingSubsystem extends SubsystemBase {
     } 
 
     wristPIDCalculation = MathUtil.clamp(wristPIDCalculation, -maxPIDContribution, maxPIDContribution);
-    
 
     double wristFeedforwardCalculation = Math.cos(Math.toRadians(mCurrentWristRotationDeg-AimingConstants.COG_OFFSET))*AimingConstants.WRIST_KG;
-    mLeftWristMotor.set(wristPIDCalculation + wristFeedforwardCalculation);
-    //mLeftWristMotor.set(SmartDashboard.getNumber("wristOUtput", 0));
+    mLeftWristMotor.set(wristPIDCalculation + wristFeedforwardCalculation + Math.signum(wristPIDCalculation)*AimingConstants.WRIST_KS);
   }
 
   private void updateMotorModes() {
