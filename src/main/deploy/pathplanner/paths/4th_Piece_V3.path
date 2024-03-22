@@ -38,7 +38,7 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "New Event Marker",
+      "name": "AutoAimPrep",
       "waypointRelativePos": 0.05,
       "command": {
         "type": "sequential",
@@ -60,6 +60,25 @@
               "type": "named",
               "data": {
                 "name": "Handoff"
+              }
+            },
+            {
+              "type": "parallel",
+              "data": {
+                "commands": [
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "AutoAimWristSetpoint"
+                    }
+                  },
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "StartLauncherAutoAim"
+                    }
+                  }
+                ]
               }
             }
           ]

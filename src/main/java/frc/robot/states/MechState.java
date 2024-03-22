@@ -1,12 +1,11 @@
 package frc.robot.states;
 
-import java.lang.reflect.Field;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.DefaultMechCommand;
 import frc.robot.commands.AutonomousCommands.Handoff;
 import frc.robot.constants.AimState;
 import frc.robot.constants.AimingConstants;
@@ -47,7 +46,13 @@ public abstract class MechState {
         mPodiumPositionCommand = new ParallelCommandGroup(mAimingSubsystem.waitUntilSetpoint(AimState.PODIUM), mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.PODIUM));
         mLaunchCommand = new SequentialCommandGroup(mLauncherSubsystem.indexUntilNoteLaunchedCommand());
         mBrakeIndexerCommand = new InstantCommand(()->mLauncherSubsystem.stopIndexer(),mLauncherSubsystem);
-        mStaticAutoAimCommand = new ParallelCommandGroup(mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.SUBWOOFER), mAimingSubsystem.waitUntilWristSetpoint(() -> AimingConstants.AIM_MAP.get(FieldConstants.getSpeakerDistance(SwerveSubsystem.getRobotPose()))));
+        mStaticAutoAimCommand = new ParallelCommandGroup(
+            mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.PODIUM),
+            mAimingSubsystem.waitUntilAutoAimSetpoint()
+        );
+        
+        // new ParallelCommandGroup(mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.PODIUM), 
+        // mAimingSubsystem.waitUntilWristSetpoint(() -> AimingConstants.getPolynomialRegression(FieldConstants.getSpeakerDistance())));
     }
 
     public Command setLauncherSpeed(AimState state) {
@@ -140,4 +145,8 @@ public abstract class MechState {
     }
 
     public void calculationBasedAutoaim() {}
+    public Command setWristDeg(double deg){
+        return new InstantCommand();
+    }
+
 }

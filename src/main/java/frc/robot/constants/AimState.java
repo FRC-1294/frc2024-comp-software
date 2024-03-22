@@ -5,7 +5,7 @@
 package frc.robot.constants;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.SwerveSubsystem;
 
 /** Add your docs here. */
 public enum AimState {
@@ -23,7 +23,7 @@ public enum AimState {
     WING(0,0,0,0), //Everything TBD
     CLIMB_UP(0,-1,-1,0,AimingConstants.MAX_ELEVATOR_DIST_METERS-0.2,0.1),
     CLIMB_DOWN(0,-1,-1,0,AimingConstants.MIN_ELEVATOR_DIST_METERS,0.1),
-    TRANSITION(-1,-1,-1,-1);
+    AUTO_AIM(-1,-1,-1,-1);
 
     public final double mWristAngleDegrees;
     public final double mRadialDistanceMeters;
@@ -38,10 +38,10 @@ public enum AimState {
      double wristToleranceDegrees, double elevatorHeight, double elevatorTolerance, double launcherSetpoint, double launcherTolerance) {
         mWristAngleDegrees = wristAngleDeg;
         mRadialDistanceMeters = radialDistanceMeters;
+        mPositionToleranceMeters = shotToleranceMeters;
+        mWristToleranceDegrees = wristToleranceDegrees;
         mElevatorHeightMeters = elevatorHeight;
         mElevatorToleranceMeters = elevatorTolerance;
-        mPositionToleranceMeters = shotToleranceMeters;
-        mWristToleranceDegrees = wristAngleDeg;
         mLauncherSetpointRPM = launcherSetpoint;
         mLauncherToleranceRPM = launcherTolerance;
 
@@ -51,10 +51,10 @@ public enum AimState {
      double wristToleranceDegrees, double launcherSetpoint, double launcherTolerance) {
         mWristAngleDegrees = wristAngleDeg;
         mRadialDistanceMeters = radialDistanceMeters;
-        mElevatorHeightMeters = 0;
-        mElevatorToleranceMeters = 0.01;
         mPositionToleranceMeters = shotToleranceMeters;
-        mWristToleranceDegrees = wristAngleDeg;
+        mWristToleranceDegrees = wristToleranceDegrees;
+        mElevatorHeightMeters = 0;
+        mElevatorToleranceMeters = 0.01;        
         mLauncherSetpointRPM = launcherSetpoint;
         mLauncherToleranceRPM = launcherTolerance;
     }
@@ -77,13 +77,16 @@ public enum AimState {
         return withinWristTolerance(curWristAngle) && withinElevatorTolerance(curElevatorHeight) && withinLauncherTolerance(curLauncherSpeed);
     }
 
-    private double[] getPolarCoordsFromXY(Pose2d curSwervePose){
-        double [] coords = new double[2];
-        //return the polar coordinates in the form of (r,theta) from the 
-        return coords;
-    }
+    // private double[] getPolarCoordsFromXY(Pose2d curSwervePose){
+    //     double [] coords = new double[2];
+    //     //return the polar coordinates in the form of (r,theta) from the 
+    //     return coords;
+    // } //Not used
 
     public boolean withinWristTolerance(double curWristAngle){
+        if (this == AUTO_AIM){
+            return Math.abs(curWristAngle-AimingConstants.getPolynomialRegression())<=AimingConstants.getAutoAimWristToleranceDegrees();
+        }
         return Math.abs(curWristAngle-mWristAngleDegrees)<=mWristToleranceDegrees || mWristAngleDegrees == -1;
     }
         

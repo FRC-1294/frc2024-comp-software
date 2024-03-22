@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-
-import java.lang.reflect.Field;
 import org.photonvision.EstimatedRobotPose;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import edu.wpi.first.math.Matrix;
@@ -23,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.CompConstants;
+import frc.robot.constants.FieldConstants;
 import frc.robot.robots.SwerveConfig;
 import frc.robot.swerve.SwerveModuleAbstract;
 
@@ -73,6 +72,7 @@ public class SwerveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("YPos", mOdometry.getEstimatedPosition().getY());
     SmartDashboard.putNumber("Rot", mOdometry.getEstimatedPosition().getRotation().getDegrees());
     SmartDashboard.putNumber("Heading", getRotation2d().getDegrees());
+    SmartDashboard.putNumber("DistToSpeaker",FieldConstants.getSpeakerDistance(getRobotPose()));
 
     mField.setRobotPose(mOdometry.getEstimatedPosition());
     double current = 0;
@@ -125,8 +125,8 @@ public class SwerveSubsystem extends SubsystemBase {
    * Sets the current YAW heading as the 0'd heading
    */
   public void resetGyro() {
-    mPigeon2.reset(); 
-    mOdometry.resetPosition(getRotation2d(), getModulePositions(), new Pose2d(getRobotPose().getX(), getRobotPose().getY(), getRobotPose().getRotation()));
+    mPigeon2.setYaw(0); 
+    mOdometry.resetPosition(new Rotation2d(0), getModulePositions(), getRobotPose());
   }
 
   /**
@@ -277,7 +277,6 @@ public class SwerveSubsystem extends SubsystemBase {
   public void setChassisSpeed(double x, double y, double rot,boolean isOpenLoop) {
     setChassisSpeed(x, y, rot,false, isOpenLoop);
   }
-
 
   public void resetRobotPose() {
     mOdometry.resetPosition(getRotation2d(), getModulePositions(), new Pose2d());

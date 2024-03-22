@@ -3,9 +3,10 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
+import java.lang.reflect.Field;
 import java.util.function.BooleanSupplier;
-import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
+import javax.swing.border.LineBorder;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.revrobotics.CANSparkMax;
@@ -16,6 +17,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -26,6 +28,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.AimingConstants;
 import frc.robot.constants.CompConstants;
+import frc.robot.constants.FieldConstants;
+import frc.robot.commands.DefaultMechCommand;
 import frc.robot.constants.AimState;
 
 
@@ -65,6 +69,9 @@ public class AimingSubsystem extends SubsystemBase {
   MotorOutputConfigs mRightWristMotorOutputConfigs = new MotorOutputConfigs();
 
   Slot0Configs mElevatorControllerSlot0Configs = new Slot0Configs();
+
+  //0.1 is the non-zero sample time and 0.02 is our loop time 
+  LinearFilter mAbsEncFilter = LinearFilter.singlePoleIIR(0.1,0.02);
 
   public AimingSubsystem() {
     mChooser.addOption("Brake", AimingMotorMode.BRAKE);
@@ -134,6 +141,9 @@ public class AimingSubsystem extends SubsystemBase {
     mRightElevatorMotor.burnFlash();
     mLeftWristMotor.burnFlash();
     mRightWristMotor.burnFlash();
+
+    SmartDashboard.putNumber("wristOUtput", 0);
+
   }
 
   @Override
@@ -181,34 +191,17 @@ public class AimingSubsystem extends SubsystemBase {
     double wristFeedforwardCalculation = Math.cos(Math.toRadians(mCurrentWristRotationDeg-AimingConstants.COG_OFFSET))*AimingConstants.WRIST_KG;
 
     mLeftWristMotor.set(wristPIDCalculation + wristFeedforwardCalculation);
+    // mLeftWristMotor.set(SmartDashboard.getNumber("wristOUtput", 0));
   }
 
   private void updateMotorModes() {
     SmartDashboard.updateValues();
-
-    AimingMotorMode mode = mChooser.getSelected();
-    
-    // // Motors go towards setpoints
-    // IdleMode idleMode;
-
-    // switch (mode) {
-    //     case COAST:
-    //         idleMode = IdleMode.kCoast;
-    //         break;
-    //     default:
-    //         idleMode = IdleMode.kBrake;
-    //         break;
-    // }
-
-    // mLeftElevatorMotor.setIdleMode(idleMode);
-    // mRightElevatorMotor.setIdleMode(idleMode);
-
-    // mRightWristMotor.setIdleMode(idleMode);
-    // mLeftWristMotor.setIdleMode(idleMode);
   }
 
   // Contains Smart Dashboard Statements ONLY ON DEBUG
   private void debugSmartDashboard() {
+      SmartDashboard.putNumber("Desired Wrist Rotation", getDesiredWristRotation());
+
     if (CompConstants.DEBUG_MODE || CompConstants.PID_TUNE_MODE) {
       SmartDashboard.putNumber("Current Wrist Rotation", getCurrentWristDegreees());
       SmartDashboard.putNumber("Current Elevator Distance", getCurrentElevatorDistance());
@@ -263,7 +256,8 @@ public class AimingSubsystem extends SubsystemBase {
    * @return Current Wrist Rotation in Degrees
    */
   public double getCurrentWristDegreees(){
-    return -(mWristThroughBoreEncoder.getAbsolutePosition()*AimingConstants.WRIST_THROUGHBORE_GEAR_RATIO*360 - AimingConstants.WRIST_THROUGHBORE_ENCODER_OFFSET);
+    double raw_deg = -(mWristThroughBoreEncoder.getAbsolutePosition()*AimingConstants.WRIST_THROUGHBORE_GEAR_RATIO*360 - AimingConstants.WRIST_THROUGHBORE_ENCODER_OFFSET);
+    return mAbsEncFilter.calculate(raw_deg);
   }
 
   public double getCurrentLaunchDegrees(){
@@ -273,11 +267,11 @@ public class AimingSubsystem extends SubsystemBase {
   public AimState getCurrentState(){
     for (AimState state : AimState.values()){
       if (state.withinWristTolerance(getCurrentWristDegreees())
-        && state.withinElevatorTolerance(getCurrentElevatorDistance()) && state != AimState.TRANSITION){
+        && state.withinElevatorTolerance(getCurrentElevatorDistance()) && state != AimState.AUTO_AIM){
         return state;
       }
     }
-    return AimState.TRANSITION;
+    return AimState.AUTO_AIM;
   }
 
   public double getDesiredElevatorDistance() {
@@ -319,7 +313,7 @@ public class AimingSubsystem extends SubsystemBase {
   }
 
   public void setDesiredSetpoint(AimState state) {
-    if(state != AimState.TRANSITION){
+    if(state != AimState.AUTO_AIM){
       mDesiredElevatorDistanceIn = state.mElevatorHeightMeters;
       mDesiredWristRotationDeg = state.mWristAngleDegrees;
       mWristController.setTolerance(state.mWristToleranceDegrees);
@@ -337,6 +331,10 @@ public class AimingSubsystem extends SubsystemBase {
 
   public void setWristToleranceDeg(double tolerance){
     mWristController.setTolerance(tolerance);
+  }
+
+  public void setWristToleranceDeg(Supplier<Double> tolerance){
+    mWristController.setTolerance(tolerance.get());
   }
   
   public void setElevatorToleranceDeg(double tolerance){
@@ -370,7 +368,19 @@ public class AimingSubsystem extends SubsystemBase {
     return new FunctionalCommand(() -> setDesiredWristRotation(sp), ()->{}, (Interruptable)->{}, this::atWristSetpoint, this);  
   }
 
-  public Command waitUntilWristSetpoint(Supplier<Double> sp) {
-    return new FunctionalCommand(() -> setDesiredWristRotation(sp), ()->{}, (Interruptable)->{}, this::atWristSetpoint, this);  
+  public Command waitUntilWristSetpoint(Supplier<Double> sp, Supplier<Double> tolerance) {
+    return new FunctionalCommand(() -> {setDesiredWristRotation(sp);
+    setWristToleranceDeg(tolerance);},
+    ()->{}, (Interruptable)->{}, this::atWristSetpoint, this);  
+  }
+
+  public Command waitUntilAutoAimSetpoint() {
+    return new FunctionalCommand(()-> {},
+                                 () -> {setDesiredWristRotation(() -> AimingConstants.getPolynomialRegression());
+                                        setWristToleranceDeg(()->AimingConstants.getAutoAimWristToleranceDegrees());},
+                                (Interruptable)->{},
+                                ()->DefaultMechCommand.mDesiredState != AimState.AUTO_AIM, 
+                                this
+                                );
   }
 }

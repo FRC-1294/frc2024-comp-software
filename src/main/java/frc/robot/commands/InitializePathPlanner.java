@@ -12,10 +12,12 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SelectCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.AutonomousCommands.AlignSpeaker;
 import frc.robot.commands.AutonomousCommands.TimedHandoff;
 import frc.robot.constants.AimState;
 import frc.robot.subsystems.AimingSubsystem;
@@ -49,16 +51,18 @@ public class InitializePathPlanner{
       Map.entry(true, new TimedHandoff(mIntake,mLauncher).withTimeout(2.5)),
       Map.entry(false, new PrintCommand("Failed to pick up Note"))
     ),()->IntakeSubsystem.pieceInIntake()),
-      mAiming.waitUntilSetpoint(AimState.PODIUM), 
-      mLauncher.waitUntilFlywheelSetpointCommand(AimState.PODIUM), 
+      new ParallelCommandGroup(
+        mAiming.waitUntilSetpoint(AimState.PODIUM), 
+        mLauncher.waitUntilFlywheelSetpointCommand(AimState.PODIUM)), 
       mLauncher.indexUntilNoteLaunchedCommand()));
 
     NamedCommands.registerCommand("PutShot", new SequentialCommandGroup(new SelectCommand<>(Map.ofEntries(
       Map.entry(true, new TimedHandoff(mIntake,mLauncher).withTimeout(2.5)),
       Map.entry(false, new PrintCommand("Failed to pick up Note"))
     ),()->IntakeSubsystem.pieceInIntake()),
-      mAiming.waitUntilSetpoint(AimState.HANDOFF), 
-      mLauncher.waitUntilFlywheelSetpointCommand(AimState.AMP), 
+      new ParallelCommandGroup(
+        mAiming.waitUntilSetpoint(AimState.SUBWOOFER), 
+        mLauncher.waitUntilFlywheelSetpointCommand(AimState.HANDOFF)), 
       mLauncher.indexUntilNoteLaunchedCommand()));
 
     NamedCommands.registerCommand("ShootFromSubwoofer", new SequentialCommandGroup(
@@ -66,8 +70,9 @@ public class InitializePathPlanner{
         Map.entry(true, new TimedHandoff(mIntake,mLauncher).withTimeout(2.5)),
         Map.entry(false, new PrintCommand("Failed to pick up Note"))
       ),()->IntakeSubsystem.pieceInIntake()),
-      mAiming.waitUntilSetpoint(AimState.SUBWOOFER), 
-      mLauncher.waitUntilFlywheelSetpointCommand(AimState.SUBWOOFER), 
+      new ParallelCommandGroup(
+        mAiming.waitUntilSetpoint(AimState.SUBWOOFER), 
+        mLauncher.waitUntilFlywheelSetpointCommand(AimState.SUBWOOFER)), 
       mLauncher.indexUntilNoteLaunchedCommand()).withTimeout(4));
 
     NamedCommands.registerCommand("ShootFromWing", new SequentialCommandGroup(
@@ -75,8 +80,9 @@ public class InitializePathPlanner{
         Map.entry(true, new TimedHandoff(mIntake,mLauncher).withTimeout(2.5)),
         Map.entry(false, new PrintCommand("Failed to pick up Note"))
       ),()->IntakeSubsystem.pieceInIntake()),
-      mAiming.waitUntilSetpoint(AimState.WING), 
-      mLauncher.waitUntilFlywheelSetpointCommand(AimState.WING), 
+      new ParallelCommandGroup(
+        mAiming.waitUntilSetpoint(AimState.WING), 
+        mLauncher.waitUntilFlywheelSetpointCommand(AimState.WING)), 
       mLauncher.indexUntilNoteLaunchedCommand()));
 
     NamedCommands.registerCommand("ShootFromLine", new SequentialCommandGroup(
@@ -84,12 +90,26 @@ public class InitializePathPlanner{
         Map.entry(true, new TimedHandoff(mIntake,mLauncher).withTimeout(2.5)),
         Map.entry(false, new PrintCommand("Failed to pick up Note"))
       ),()->IntakeSubsystem.pieceInIntake()),
-      mAiming.waitUntilSetpoint(AimState.LINE), 
-      mLauncher.waitUntilFlywheelSetpointCommand(AimState.LINE), 
+      new ParallelCommandGroup(
+        mAiming.waitUntilSetpoint(AimState.LINE), 
+        mLauncher.waitUntilFlywheelSetpointCommand(AimState.LINE)), 
+      mLauncher.indexUntilNoteLaunchedCommand()));
+
+    NamedCommands.registerCommand("ShootDynamic", new SequentialCommandGroup(
+      new SelectCommand<>(Map.ofEntries(
+        Map.entry(true, new TimedHandoff(mIntake,mLauncher).withTimeout(2.5)),
+        Map.entry(false, new PrintCommand("Failed to pick up Note"))
+      ),()->IntakeSubsystem.pieceInIntake()),
+      new ParallelCommandGroup(
+            new AlignSpeaker(mSwerve),
+            mLauncher.waitUntilFlywheelSetpointCommand(AimState.PODIUM),
+            mAiming.waitUntilAutoAimSetpoint()
+      ), 
       mLauncher.indexUntilNoteLaunchedCommand()));
 
     NamedCommands.registerCommand("StartLauncherSW", mLauncher.waitUntilFlywheelSetpointCommand(AimState.SUBWOOFER));
-    NamedCommands.registerCommand("StartWristSW", mAiming.waitUntilSetpoint(AimState.SUBWOOFER));
+    NamedCommands.registerCommand("StartLauncherAutoAim", mLauncher.waitUntilFlywheelSetpointCommand(AimState.PODIUM));
+    NamedCommands.registerCommand("AutoAimWristSetpoint", mAiming.waitUntilAutoAimSetpoint());
     NamedCommands.registerCommand("Handoff", new SequentialCommandGroup(mAiming.waitUntilSetpoint(AimState.HANDOFF), 
                                         new TimedHandoff(mIntake,mLauncher)));
     NamedCommands.registerCommand("HandoffSetpoint", mAiming.waitUntilSetpoint(AimState.HANDOFF));
@@ -102,6 +122,11 @@ public class InitializePathPlanner{
     NamedCommands.registerCommand("ShootFromWing", new SequentialCommandGroup(new PrintCommand("Shoot Note from Wing Edge"), new WaitCommand(0.5)));
     NamedCommands.registerCommand("ShootFromLine", new SequentialCommandGroup(new PrintCommand("Shoot Note from Autonomous Line"), new WaitCommand(0.5)));
     NamedCommands.registerCommand("Handoff", new SequentialCommandGroup(new PrintCommand("Shoot Note from Wing Edge")));
+    NamedCommands.registerCommand("HandoffSetpoint", new PrintCommand("ojdo"));
+    NamedCommands.registerCommand("StartLauncherSW", new PrintCommand("oj"));
+    NamedCommands.registerCommand("StartWristSW", new PrintCommand("osjod"));
+    NamedCommands.registerCommand("PutShot", new PrintCommand("jo"));
+
   }
 
 

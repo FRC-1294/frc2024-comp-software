@@ -3,6 +3,7 @@ package frc.robot.states.mech_states;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.constants.IntakeConstants;
 import frc.robot.constants.LauncherConstants;
 import frc.robot.constants.AimState;
@@ -81,8 +82,7 @@ public class UltraInstinct extends MechState {
 
     @Override
     public Command speakerPosition(){
-      return mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.SUBWOOFER);
-      //  return MechState.mSpeakerPositionCommand;
+       return mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.PODIUM);
     }
 
     @Override
@@ -100,4 +100,8 @@ public class UltraInstinct extends MechState {
        return MechState.mHandoffPositionCommand;
     }
 
+    @Override
+    public Command setWristDeg(double deg){
+      return new InstantCommand(()->mAimingSubsystem.setDesiredWristRotation(deg));
+   }
 }

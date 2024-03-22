@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.CoastOut;
+//import com.ctre.phoenix6.controls.CoastOut; //Not used
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -28,7 +29,7 @@ public class LauncherSubsystem extends SubsystemBase {
   private final TalonFX mFollowerFlywheel = new TalonFX(LauncherConstants.FOLLOWER_FLYWHEEL_ID, "DriveMotors");
 
   private final DigitalInput mBeamBreak = new DigitalInput(LauncherConstants.BEAMBREAK_ID);
-  private final CoastOut mCoastSignal = new CoastOut();
+  private final CoastOut mCoastSignal = new CoastOut(); //Not used
   private final VoltageOut mVoltageSignal = new VoltageOut(0);
 
   private AimState mDesiredState = AimState.HANDOFF;
@@ -70,7 +71,7 @@ public class LauncherSubsystem extends SubsystemBase {
     mIndexer.restoreFactoryDefaults();
     mIndexer.setInverted(LauncherConstants.INDEXER_IS_INVERTED);
     mIndexer.enableVoltageCompensation(10);
-    mIndexer.setSmartCurrentLimit(80);
+    // mIndexer.setSmartCurrentLimit(120);
     mIndexer.setIdleMode(IdleMode.kBrake);
     mIndexer.burnFlash();
   }
@@ -89,7 +90,7 @@ public class LauncherSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("indexer current",mIndexer.getOutputCurrent());
     SmartDashboard.putNumber("flywheel left current",mLeaderFlywheel.getStatorCurrent().getValueAsDouble());
     SmartDashboard.putNumber("flywheel right current",mFollowerFlywheel.getStatorCurrent().getValueAsDouble());
-    // SmartDashboard.putNumber("Indexer Applied Output", mIndexer.getAppliedOutput());
+    SmartDashboard.putNumber("Indexer Current", mIndexer.getOutputCurrent());
     // SmartDashboard.putBoolean("LauncherReady", isLauncherReady());
   }
 
@@ -103,15 +104,15 @@ public class LauncherSubsystem extends SubsystemBase {
   
   public void runLauncher() {
     //predicted velocity values
-    // if (mDesiredState.mLauncherSetpointRPM == 0 || mDesiredState.mLauncherSetpointRPM == -1){
-    //   mLeaderFlywheel.setControl(mCoastSignal);
-    // }else{
+    if (mDesiredState.mLauncherSetpointRPM == 0 || mDesiredState.mLauncherSetpointRPM == -1){
+      mLeaderFlywheel.setControl(mCoastSignal);
+    }else{
       mLeaderFlywheel.setControl(
         mVoltageSignal.withOutput(
           mDesiredState.mLauncherSetpointRPM*LauncherConstants.LAUNCHER_FF_CONTROLLER.kv
           + LauncherConstants.LAUNCHER_PID_CONTROLLER.calculate(getCurrentVelocity(), mDesiredState.mLauncherSetpointRPM)
         ));
-    //}
+    }
     //mLeaderFlywheel.setControl(new VelocityVoltage(mDesiredState.mLauncherSetpointRPM).withSlot(0));
   }
 
@@ -155,9 +156,9 @@ public class LauncherSubsystem extends SubsystemBase {
   public double getCurrentVelocity() {
     return mLeaderFlywheel.getVelocity().getValueAsDouble()*60;
   }
-  private double toFalconUnits(double val){
-    return val/(LauncherConstants.FLYWHEEL_SENSOR_TO_MECHANISM*60);
-  }
+  // private double toFalconUnits(double val){
+  //   return val/(LauncherConstants.FLYWHEEL_SENSOR_TO_MECHANISM*60);
+  // } //Not used
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation

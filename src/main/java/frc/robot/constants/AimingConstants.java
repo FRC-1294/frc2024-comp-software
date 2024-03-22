@@ -4,7 +4,6 @@
 
 package frc.robot.constants;
 
-import edu.wpi.first.math.InterpolatingMatrixTreeMap;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -23,8 +22,8 @@ public class AimingConstants {
     
     // PID Constants
     public static final PIDParameters mElevatorPIDConstants = new PIDParameters(3, 0, 0);
-    public static final PIDParameters mWristPIDConstants = new PIDParameters(0.0075, 0, 0.0, 0, 0);
-    public static final double WRIST_KG = 0.043;
+    public static final PIDParameters mWristPIDConstants = new PIDParameters(0.009, 0, 0.0, 0, 0);
+    public static final double WRIST_KG = 0.04;
     public static final double ELEVATOR_FEEDFORWARD_CONSTANT = 0.05;
     public static final double SPARK_THROUGHBORE_GEAR_RATIO = 1;
 
@@ -75,8 +74,8 @@ public class AimingConstants {
 
     public static final int WRIST_THROUGHBORE_ENCODER_ID = 0;
     public static final double WRIST_THROUGHBORE_GEAR_RATIO = 1;
-    public static final double WRIST_THROUGHBORE_ENCODER_OFFSET = 298.2-177.44-0.6+0.6+8.4;
-    public static final double COG_OFFSET = 27.2;
+    public static final double WRIST_THROUGHBORE_ENCODER_OFFSET = 298.2-177.44-0.6+0.65+9.2-94.2-0.62+255.0;
+    public static final double COG_OFFSET = 22;
 
 
     // If false, then motors are physically inverted
@@ -86,6 +85,9 @@ public class AimingConstants {
     public static final int CONNECTION_THRESH_HZ = 945;
 
     public static final InterpolatingDoubleTreeMap AIM_MAP = new InterpolatingDoubleTreeMap();
+    public static final double MAX_SHOT_DIST_METERS = 5.2;
+    public static final double MAX_WRIST_ACCURACY_DEG = 0.5;
+    private static final double TOLERANCE_DAMPENING_CONSTANT = 0.15;
 
     public static void populate_aim_map(){
         AimingConstants.AIM_MAP.put(AimState.MIDNOTE.mWristAngleDegrees, AimState.MIDNOTE.mRadialDistanceMeters);
@@ -93,4 +95,14 @@ public class AimingConstants {
         AimingConstants.AIM_MAP.put(AimState.LINE.mWristAngleDegrees, AimState.LINE.mRadialDistanceMeters);
         AimingConstants.AIM_MAP.put(AimState.WING.mWristAngleDegrees, AimState.WING.mRadialDistanceMeters);
     }
-}
+
+    public static double getPolynomialRegression(){
+        return -7.26 + 7.65*FieldConstants.getSpeakerDistance() + 1.27*Math.pow(FieldConstants.getSpeakerDistance(), 2) - 0.25*Math.pow(FieldConstants.getSpeakerDistance(), 3);
+        //return -25+16.3*dist+0.757*Math.pow(dist, 2)-0.349*Math.pow(dist, 3);
+    }
+
+    public static double getAutoAimWristToleranceDegrees(){
+        return Math.max((7.625 + 2.54*FieldConstants.getSpeakerDistance() - 0.75*Math.pow(FieldConstants.getSpeakerDistance(), 2))
+        * TOLERANCE_DAMPENING_CONSTANT,MAX_WRIST_ACCURACY_DEG);
+    }
+} 
