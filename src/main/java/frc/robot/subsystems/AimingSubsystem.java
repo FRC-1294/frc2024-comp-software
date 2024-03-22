@@ -254,7 +254,7 @@ public class AimingSubsystem extends SubsystemBase {
    */
   public double getCurrentWristDegreees(){
     double raw_deg = -(mWristThroughBoreEncoder.getAbsolutePosition()*AimingConstants.WRIST_THROUGHBORE_GEAR_RATIO*360 - AimingConstants.WRIST_THROUGHBORE_ENCODER_OFFSET);
-    return mAbsEncFilter.calculate(raw_deg);
+    return raw_deg;
   }
 
   public AimState getCurrentState(){
