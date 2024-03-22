@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.38,
-        "y": 7.08
+        "x": 2.9,
+        "y": 7.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.479706318711006,
-        "y": 7.087658329393493
+        "x": 2.9997063187110062,
+        "y": 7.007658329393493
       },
       "isLocked": false,
       "linkedName": null
@@ -67,11 +67,17 @@
   "eventMarkers": [
     {
       "name": "IntakeUntilNote",
-      "waypointRelativePos": 0.6,
+      "waypointRelativePos": 0.3,
       "command": {
         "type": "sequential",
         "data": {
           "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "HandoffSetpoint"
+              }
+            },
             {
               "type": "named",
               "data": {
@@ -82,6 +88,25 @@
               "type": "named",
               "data": {
                 "name": "Handoff"
+              }
+            },
+            {
+              "type": "parallel",
+              "data": {
+                "commands": [
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "AutoAimWristSetpoint"
+                    }
+                  },
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "StartLauncherAutoAim"
+                    }
+                  }
+                ]
               }
             }
           ]

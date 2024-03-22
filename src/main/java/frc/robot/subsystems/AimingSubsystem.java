@@ -188,7 +188,7 @@ public class AimingSubsystem extends SubsystemBase {
 
     double wristFeedforwardCalculation = Math.cos(Math.toRadians(mCurrentWristRotationDeg-AimingConstants.COG_OFFSET))*AimingConstants.WRIST_KG;
     mLeftWristMotor.set(wristPIDCalculation + wristFeedforwardCalculation);
-    // mLeftWristMotor.set(SmartDashboard.getNumber("wristOUtput", 0));
+    //mLeftWristMotor.set(SmartDashboard.getNumber("wristOUtput", 0));
   }
 
   private void updateMotorModes() {
@@ -363,12 +363,22 @@ public class AimingSubsystem extends SubsystemBase {
     ()->{}, (Interruptable)->{}, this::atWristSetpoint, this);  
   }
 
-  public Command waitUntilAutoAimSetpoint() {
+  public Command waitUntilAutoAimSetpointTracked() {
     return new FunctionalCommand(()-> {},
                                  () -> {setDesiredWristRotation(() -> AimingConstants.getPolynomialRegression());
                                         setWristToleranceDeg(()->AimingConstants.getAutoAimWristToleranceDegrees());},
                                 (Interruptable)->{},
                                 ()->DefaultMechCommand.mDesiredState != AimState.AUTO_AIM, 
+                                this
+                                );
+  }
+
+  public Command waitUntilAutoAimSetpoint() {
+    return new FunctionalCommand(()-> {},
+                                 () -> {setDesiredWristRotation(() -> AimingConstants.getPolynomialRegression());
+                                        setWristToleranceDeg(()->AimingConstants.getAutoAimWristToleranceDegrees());},
+                                (Interruptable)->{},
+                                this::atWristSetpoint, 
                                 this
                                 );
   }

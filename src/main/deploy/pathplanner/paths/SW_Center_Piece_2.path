@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 3.36,
-        "y": 7.08
+        "x": 2.9,
+        "y": 7.0
       },
       "prevControl": {
-        "x": 3.263407417371093,
-        "y": 7.054118095489748
+        "x": 2.8034074173710932,
+        "y": 6.974118095489748
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,7 +30,7 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.65,
+      "waypointRelativePos": 0.55,
       "rotationDegrees": 10.03,
       "rotateFast": true
     },
@@ -40,7 +40,19 @@
       "rotateFast": false
     }
   ],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0.6,
+      "maxWaypointRelativePos": 0.8,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 2.5,
+        "maxAngularVelocity": 300.0,
+        "maxAngularAcceleration": 300.0
+      }
+    }
+  ],
   "eventMarkers": [
     {
       "name": "IntakeUntilNote",
@@ -74,7 +86,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 20.55604521958339,
+    "rotation": 34.77940694830585,
     "rotateFast": true
   },
   "reversed": false,

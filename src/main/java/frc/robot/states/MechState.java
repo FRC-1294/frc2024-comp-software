@@ -47,7 +47,7 @@ public abstract class MechState {
         mBrakeIndexerCommand = new InstantCommand(()->mLauncherSubsystem.stopIndexer(),mLauncherSubsystem);
         mStaticAutoAimCommand = new ParallelCommandGroup(
             mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.PODIUM),
-            mAimingSubsystem.waitUntilAutoAimSetpoint()
+            mAimingSubsystem.waitUntilAutoAimSetpointTracked()
         );
         
         // new ParallelCommandGroup(mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.PODIUM), 

@@ -113,6 +113,8 @@ public class InitializePathPlanner{
     NamedCommands.registerCommand("Handoff", new SequentialCommandGroup(mAiming.waitUntilSetpoint(AimState.HANDOFF), 
                                         new TimedHandoff(mIntake,mLauncher)));
     NamedCommands.registerCommand("HandoffSetpoint", mAiming.waitUntilSetpoint(AimState.HANDOFF));
+    NamedCommands.registerCommand("AlignToSpeaker", new AlignSpeaker(mSwerve));
+
   }
 
   public void initializeEmptyNamedCommands(){

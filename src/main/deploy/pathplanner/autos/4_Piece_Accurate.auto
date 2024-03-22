@@ -1,26 +1,14 @@
 {
   "version": 1.0,
-  "startingPose": {
-    "position": {
-      "x": 1.29,
-      "y": 7.89
-    },
-    "rotation": 0
-  },
+  "startingPose": null,
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "Center_Piece_1"
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "ShootFromLine"
+            "name": "ShootDynamic"
           }
         },
         {
@@ -32,7 +20,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootFromMidnote"
+            "name": "ShootDynamic"
           }
         },
         {
@@ -44,7 +32,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootFromMidnote"
+            "name": "ShootDynamic"
           }
         },
         {
@@ -56,7 +44,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootFromMidnote"
+            "name": "ShootDynamic"
           }
         }
       ]

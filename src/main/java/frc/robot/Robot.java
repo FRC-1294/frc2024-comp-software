@@ -45,7 +45,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
    CameraServer.startAutomaticCapture();
-    new InitializePathPlanner(robotContainer.getSwerveSubsystem()).initialize();
+    new InitializePathPlanner(robotContainer.getSwerveSubsystem(), robotContainer.getIntakeSubsystem(), robotContainer.getLauncherSubsystem(), robotContainer.getAimingSubsystem()).initialize();
     mAlliance = DriverStation.getAlliance();
     SmartDashboard.putData("Pick your Auton...",pathSelector);
 
@@ -56,6 +56,8 @@ public class Robot extends TimedRobot {
     pathSelector.addOption("4 Piece LC SW Hail Mary", AutoBuilder.buildAuto("4_Piece_SW_Bum"));
     pathSelector.addOption("Cool Shit", AutoBuilder.buildAuto("6_Piece_V3"));
     pathSelector.addOption("4 Piece RC SW", AutoBuilder.buildAuto("3_Piece_Lower_Center"));
+    pathSelector.addOption("2 note", AutoBuilder.buildAuto("New New Auto"));
+
 
 
     pathSelector.addOption("None", new PrintCommand("Damn that sucks"));

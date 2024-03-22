@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import java.lang.reflect.Field;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import edu.wpi.first.math.controller.PIDController;
@@ -104,14 +105,27 @@ public class DefaultDriveCommand extends Command {
   public static double getRotationToSpeakerDegrees(){
     double targAngle;
     Optional<Alliance> alliance = DriverStation.getAlliance();
+    double distance = FieldConstants.getSpeakerDistance();
     if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red){
       targAngle = FieldConstants.Red.SPEAKER.getPose().toPose2d().plus(new Transform2d(-1.3,0,new Rotation2d()))
       .minus(SwerveSubsystem.getRobotPose()).getTranslation().getAngle().getDegrees();
+      
+      targAngle += 2*distance;
+
     } else{
-      targAngle = FieldConstants.Blue.SPEAKER.getPose().toPose2d().plus(new Transform2d(1.3,0,new Rotation2d()))
-      .minus(SwerveSubsystem.getRobotPose()).getTranslation().getAngle().getDegrees();
+      // targAngle = FieldConstants.Blue.SPEAKER.getPose().toPose2d().plus(new Transform2d(1.3,0,new Rotation2d()))
+      // .minus(SwerveSubsystem.getRobotPose()).getTranslation().getAngle().getDegrees();
+
+      double targerAngle = Math.atan2(SwerveSubsystem.getRobotPose().getY() - FieldConstants.Blue.SPEAKER.getPose().getY(), SwerveSubsystem.getRobotPose().getX() - FieldConstants.Blue.SPEAKER.getPose().getX());
+
+      SmartDashboard.putNumber("targeranlge", Math.toDegrees(targerAngle));
+      //targAngle += 2*distance;
+      targAngle = Math.toDegrees(targerAngle);
     }
 
+    // Tunable Degree Offset Based on Distance
+  
+    
     SmartDashboard.putNumber("targAngleSPeaker", targAngle);
     return targAngle;
   }
