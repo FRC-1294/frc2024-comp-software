@@ -140,7 +140,7 @@ public class DefaultMechCommand{
             mMechState.handoffPosition().schedule();
             mMechState.brakeLauncher().schedule();            
         } else if(Input.getDPad() == Input.DPADDOWN){
-            mMechState.podiumPosition().schedule();
+            mMechState.staticAutoAim().schedule();
         }
         if (Input.getLeftBumper()) {
             mMechState.runIntakeMotors().schedule();

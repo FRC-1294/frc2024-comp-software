@@ -110,6 +110,8 @@ public class AimingSubsystem extends SubsystemBase {
 
     mLeftElevatorMotor.restoreFactoryDefaults();
     mRightElevatorMotor.restoreFactoryDefaults();
+    mLeftWristMotor.restoreFactoryDefaults();
+    mRightWristMotor.restoreFactoryDefaults();
 
     //initialize PID Controller Constants for SlotConfigs    
     mWristController = AimingConstants.mWristPIDConstants.toWPIController();
@@ -155,7 +157,7 @@ public class AimingSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Current Wrist Rotation", getCurrentWristDegreees());
     SmartDashboard.putNumber("Current Elevator Extension", getCurrentElevatorDistance());
     SmartDashboard.putNumber("Desired Elevator Extension", getDesiredElevatorDistance());
-
+    SmartDashboard.putNumber("Desired Wrist Rotation", getDesiredWristRotation());
     updateMotorModes();
     elevatorPeriodic();
     wristPeriodic();
@@ -388,7 +390,7 @@ public class AimingSubsystem extends SubsystemBase {
 
     public Command waitUntilCalculationAutoAimSetpointTracked() {
       return new FunctionalCommand(()-> {},
-                                  () -> {setDesiredLaunchRotation(Autoaim.getNeededLaunchAngle());
+                                  () -> {setDesiredLaunchRotation(Math.toDegrees(Autoaim.getNeededLaunchAngle()));
                                           setWristToleranceDeg(()->AimingConstants.getAutoAimWristToleranceDegrees());},
                                   (Interruptable)->{},
                                   ()->DefaultMechCommand.mDesiredState != AimState.AUTO_AIM, 

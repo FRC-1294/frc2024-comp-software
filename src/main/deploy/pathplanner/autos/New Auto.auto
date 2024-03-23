@@ -1,32 +1,20 @@
 {
   "version": 1.0,
-  "startingPose": {
-    "position": {
-      "x": 2,
-      "y": 2
-    },
-    "rotation": 0
-  },
+  "startingPose": null,
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "UltimateBumRush1"
+            "name": "ShootFromSubwoofer"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "UltimateBumRush2"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "UltimateBumRush3"
+            "pathName": "New Path"
           }
         }
       ]

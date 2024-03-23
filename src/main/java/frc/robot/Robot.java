@@ -61,6 +61,7 @@ public class Robot extends TimedRobot {
     pathSelector.addOption("Cool Shit", AutoBuilder.buildAuto("6_Piece_V3"));
     pathSelector.addOption("4 Piece RC SW", AutoBuilder.buildAuto("3_Piece_Lower_Center"));
     pathSelector.addOption("2 note", AutoBuilder.buildAuto("New New Auto"));
+    pathSelector.addOption("Goofy ah", AutoBuilder.buildAuto("New Auto"));
 
 
 
@@ -69,6 +70,7 @@ public class Robot extends TimedRobot {
 
     pathSelector.addOption("kSCharacterization", new SwerveFrictionCharacterization(robotContainer.getSwerveSubsystem()));
     pathSelector.addOption("kVCharacterization", new SwerveVoltageCharacterization(robotContainer.getSwerveSubsystem()));
+
     // pathSelector.addOption("4 Piece LC Line", AutoBuilder.buildAuto("4_Piece_Accurate"));
     // pathSelector.addOption("4 Piece LC Hail Mary", AutoBuilder.buildAuto("4_Piece_Bum"));
     // pathSelector.addOption("4 Piece Midnote", AutoBuilder.buildAuto("4_Piece_V2"));
