@@ -3,34 +3,102 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7518415036830075,
-        "y": 4.450088900177801
+        "x": 0.7315214630429262,
+        "y": 4.4636355939378545
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7518415036830064,
-        "y": 4.450088900177801
+        "x": 1.6933367200067735,
+        "y": 3.4069934806536275
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.621285242570486,
-        "y": 2.9260858521717044
+        "x": 3.163152992972653,
+        "y": 1.3817627635255272
       },
       "prevControl": {
-        "x": 1.6212852425704858,
-        "y": 2.9260858521717044
+        "x": 1.5746798422320771,
+        "y": 1.409877332565184
+      },
+      "nextControl": {
+        "x": 4.693929387858779,
+        "y": 1.354669376005418
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.283803234273137,
+        "y": 0.8195749724832779
+      },
+      "prevControl": {
+        "x": 8.229616459232918,
+        "y": 0.44704089408178815
+      },
+      "nextControl": {
+        "x": 8.351195091179594,
+        "y": 1.2828939887151551
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 0.7315214630429262,
+        "y": 4.4636355939378545
+      },
+      "prevControl": {
+        "x": 2.4993649987299977,
+        "y": 0.42672085344170574
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.75,
+      "rotationDegrees": 0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 1.5,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "HandoffSetpoint"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeUntilNote"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Handoff"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 4.5,
     "maxAcceleration": 2.5,
@@ -39,13 +107,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": -59.743562836470694,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "Center_Line_Only",
   "previewStartingState": {
-    "rotation": -53.90171603289202,
+    "rotation": -58.1092081981543,
     "velocity": 0
   },
   "useDefaultConstraints": true

@@ -70,10 +70,10 @@ public class InitializePathPlanner{
         Map.entry(true, new TimedHandoff(mIntake,mLauncher).withTimeout(2.5)),
         Map.entry(false, new PrintCommand("Failed to pick up Note"))
       ),()->IntakeSubsystem.pieceInIntake()),
-      new ParallelCommandGroup(
+      new SequentialCommandGroup(
         mAiming.waitUntilSetpoint(AimState.SUBWOOFER), 
-        mLauncher.waitUntilFlywheelSetpointCommand(AimState.SUBWOOFER)), 
-      mLauncher.indexUntilNoteLaunchedCommand()).withTimeout(4));
+        mLauncher.waitUntilFlywheelSetpointCommand(AimState.SUBWOOFER).withTimeout(3)), 
+      mLauncher.indexUntilNoteLaunchedCommand()));
 
     NamedCommands.registerCommand("ShootFromWing", new SequentialCommandGroup(
       new SelectCommand<>(Map.ofEntries(

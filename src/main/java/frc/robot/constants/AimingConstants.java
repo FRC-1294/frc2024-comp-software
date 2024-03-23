@@ -17,7 +17,7 @@ public class AimingConstants {
     
     // Teleop Constant
     public static final double MAX_ELEVATOR_TELEOP_INCREMENT = 0.01;
-    public static final double MAX_WRIST_TELEOP_INCREMENT = 0.15;
+    public static final double MAX_WRIST_TELEOP_INCREMENT = 0.2;
     
     
     // PID Constants
@@ -74,7 +74,7 @@ public class AimingConstants {
 
     public static final int WRIST_THROUGHBORE_ENCODER_ID = 0;
     public static final double WRIST_THROUGHBORE_GEAR_RATIO = 1;
-    public static final double WRIST_THROUGHBORE_ENCODER_OFFSET = 271+1+62.2+1;//298.2-177.44-0.6+0.65+9.2-94.2-0.62+255.0;
+    public static final double WRIST_THROUGHBORE_ENCODER_OFFSET = 271+1+62.2+1-24.2;//298.2-177.44-0.6+0.65+9.2-94.2-0.62+255.0;
     public static final double COG_OFFSET = 22;
     public static final double WRIST_KS = 0.005;
 
@@ -99,7 +99,7 @@ public class AimingConstants {
 
     public static double getPolynomialRegression(){
         return -7.26 + 7.65*FieldConstants.getSpeakerDistance() + 1.27*Math.pow(FieldConstants.getSpeakerDistance(), 2) - 0.25*Math.pow(FieldConstants.getSpeakerDistance(), 3)
-        - (7.625 + 2.54*FieldConstants.getSpeakerDistance() - 0.75*Math.pow(FieldConstants.getSpeakerDistance(),2))*0.06;
+        + (7.625 + 2.54*FieldConstants.getSpeakerDistance() - 0.75*Math.pow(FieldConstants.getSpeakerDistance(),2))*0.74;
         //return -25+16.3*dist+0.757*Math.pow(dist, 2)-0.349*Math.pow(dist, 3);
     }
 

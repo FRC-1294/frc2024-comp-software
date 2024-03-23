@@ -7,6 +7,7 @@ package frc.robot;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.revrobotics.CANSparkLowLevel;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -53,7 +54,7 @@ public class Robot extends TimedRobot {
     mAlliance = DriverStation.getAlliance();
     SmartDashboard.putData("Pick your Auton...",pathSelector);
 
-    pathSelector.addOption("4 Piece Subwoofer", AutoBuilder.buildAuto("4_Piece_V1"));
+    pathSelector.setDefaultOption("4 Piece Subwoofer", AutoBuilder.buildAuto("4_Piece_V1"));
     pathSelector.addOption("4 Piece gay", AutoBuilder.buildAuto("4_Piece_V2"));
 
     pathSelector.addOption("4 Piece LC SW", AutoBuilder.buildAuto("4_Piece_SW_Accurate"));
@@ -62,6 +63,7 @@ public class Robot extends TimedRobot {
     pathSelector.addOption("4 Piece RC SW", AutoBuilder.buildAuto("3_Piece_Lower_Center"));
     pathSelector.addOption("2 note", AutoBuilder.buildAuto("New New Auto"));
     pathSelector.addOption("Goofy ah", AutoBuilder.buildAuto("New Auto"));
+    pathSelector.addOption("One Piece", NamedCommands.getCommand("ShootFromSubwoofer"));
 
 
 
@@ -123,7 +125,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     Command autonomousCommand = pathSelector.getSelected();
-
+    System.out.println(pathSelector.getSelected().getName());
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {
       autonomousCommand.schedule();

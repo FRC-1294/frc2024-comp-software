@@ -1,6 +1,12 @@
 {
   "version": 1.0,
-  "startingPose": null,
+  "startingPose": {
+    "position": {
+      "x": 0.7315214630429262,
+      "y": 4.4636355939378545
+    },
+    "rotation": -60.25511870305779
+  },
   "command": {
     "type": "sequential",
     "data": {
@@ -15,6 +21,12 @@
           "type": "path",
           "data": {
             "pathName": "New Path"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootFromSubwoofer"
           }
         }
       ]

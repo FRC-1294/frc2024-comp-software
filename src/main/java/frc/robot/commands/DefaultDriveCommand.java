@@ -52,9 +52,9 @@ public class DefaultDriveCommand extends Command {
     
     new Trigger(getDriveBaseLaunchReady)
     .onTrue(new InstantCommand(()->{
-      Input.turnOnViberator(JoystickConstants.XBOX_RUMBLE_VIGEROUS);
-      Input.enableLeftRumble(JoystickConstants.XBOX_RUMBLE_VIGEROUS);}))
-    .onFalse(new InstantCommand(()->Input.disableLeftRumble()));
+      Input.turnOnViberator(JoystickConstants.XBOX_RUMBLE_VIGEROUS);}));
+    //  Input.enableLeftRumble(JoystickConstants.XBOX_RUMBLE_VIGEROUS);}))
+    //.onFalse(new InstantCommand(()->Input.disableLeftRumble()));
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -128,10 +128,16 @@ public class DefaultDriveCommand extends Command {
     Optional<Alliance> alliance = DriverStation.getAlliance();
     double distance = FieldConstants.getSpeakerDistance();
     if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red){
-      targAngle = FieldConstants.Red.SPEAKER.getPose().toPose2d().plus(new Transform2d(-1.3,0,new Rotation2d()))
-      .minus(SwerveSubsystem.getRobotPose()).getTranslation().getAngle().getDegrees();
+      // targAngle = FieldConstants.Red.SPEAKER.getPose().toPose2d().plus(new Transform2d(-1.3,0,new Rotation2d()))
+      // .minus(SwerveSubsystem.getRobotPose()).getTranslation().getAngle().getDegrees();
       
-      targAngle += 2*distance;
+      // targAngle += 2*distance;
+
+      double targerAngle = Math.atan2(FieldConstants.Red.SPEAKER.getPose().getY() - SwerveSubsystem.getRobotPose().getY(), SwerveSubsystem.getRobotPose().getX() - FieldConstants.Red.SPEAKER.getPose().getX());
+
+      SmartDashboard.putNumber("targeranlge", Math.toDegrees(targerAngle));
+      //targAngle += 2*distance;
+      targAngle = -Math.toDegrees(targerAngle);
 
     } else{
       // targAngle = FieldConstants.Blue.SPEAKER.getPose().toPose2d().plus(new Transform2d(1.3,0,new Rotation2d()))
