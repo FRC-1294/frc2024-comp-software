@@ -16,14 +16,14 @@ import frc.robot.subsystems.AimingSubsystem.AimingMotorMode;
 public class AimingConstants {
     
     // Teleop Constant
-    public static final double MAX_ELEVATOR_TELEOP_INCREMENT = 0.005;
+    public static final double MAX_ELEVATOR_TELEOP_INCREMENT = 0.01;
     public static final double MAX_WRIST_TELEOP_INCREMENT = 0.15;
     
     
     // PID Constants
-    public static final PIDParameters mElevatorPIDConstants = new PIDParameters(3, 0, 0);
-    public static final PIDParameters mWristPIDConstants = new PIDParameters(0.009, 0, 0.0, 0, 0);
-    public static final double WRIST_KG = 0.04;
+    public static final PIDParameters mElevatorPIDConstants = new PIDParameters(7, 0, 0);
+    public static final PIDParameters mWristPIDConstants = new PIDParameters(0.012, 0.001, 0.0, 0, 0);
+    public static final double WRIST_KG = 0.03;
     public static final double ELEVATOR_FEEDFORWARD_CONSTANT = 0.05;
     public static final double SPARK_THROUGHBORE_GEAR_RATIO = 1;
 
@@ -46,7 +46,7 @@ public class AimingConstants {
     public static final double MAX_WRIST_ROTATION_VELOCITY = 0;
 
     public static final double MAX_WRIST_PID_CONTRIBUTION = 0.6;
-    public static final double MAX_ELEVATOR_PID_CONTRIBUTION = 0.3;
+    public static final double MAX_ELEVATOR_PID_CONTRIBUTION = 0.75;
 
 
     // inaccurate values
@@ -74,8 +74,9 @@ public class AimingConstants {
 
     public static final int WRIST_THROUGHBORE_ENCODER_ID = 0;
     public static final double WRIST_THROUGHBORE_GEAR_RATIO = 1;
-    public static final double WRIST_THROUGHBORE_ENCODER_OFFSET = 298.2-177.44-0.6+0.65+9.2-94.2-0.62+255.0;
+    public static final double WRIST_THROUGHBORE_ENCODER_OFFSET = 271+1;//298.2-177.44-0.6+0.65+9.2-94.2-0.62+255.0;
     public static final double COG_OFFSET = 22;
+    public static final double WRIST_KS = 0.005;
 
 
     // If false, then motors are physically inverted
@@ -103,6 +104,6 @@ public class AimingConstants {
 
     public static double getAutoAimWristToleranceDegrees(){
         return Math.max((7.625 + 2.54*FieldConstants.getSpeakerDistance() - 0.75*Math.pow(FieldConstants.getSpeakerDistance(), 2))
-        * TOLERANCE_DAMPENING_CONSTANT,MAX_WRIST_ACCURACY_DEG);
+         * TOLERANCE_DAMPENING_CONSTANT,MAX_WRIST_ACCURACY_DEG);
     }
 } 

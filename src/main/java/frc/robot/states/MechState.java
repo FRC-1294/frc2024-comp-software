@@ -30,6 +30,7 @@ public abstract class MechState {
     public static Command mStaticAutoAimCommand;
 
     public Command mAimStatePositionCommand;
+    public static Command mCalculationAutoAimCommand;
     
 
     protected MechState (LauncherSubsystem launcherSubsystem,AimingSubsystem aimingSubsystem,IntakeSubsystem intakeSubsystem){ 
@@ -48,8 +49,13 @@ public abstract class MechState {
         mBrakeIndexerCommand = new InstantCommand(()->mLauncherSubsystem.stopIndexer(),mLauncherSubsystem);
         mStaticAutoAimCommand = new ParallelCommandGroup(
             mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.PODIUM),
-            mAimingSubsystem.waitUntilAutoAimSetpoint()
+            mAimingSubsystem.waitUntilAutoAimSetpointTracked()
         );
+
+        mCalculationAutoAimCommand = new ParallelCommandGroup(     
+                                            mAimingSubsystem.waitUntilCalculationAutoAimSetpointTracked(),
+                                            new InstantCommand(()->mLauncherSubsystem.setLauncherState(AimState.AUTOAIM))
+                                    ); 
         
         // new ParallelCommandGroup(mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.PODIUM), 
         // mAimingSubsystem.waitUntilWristSetpoint(() -> AimingConstants.getPolynomialRegression(FieldConstants.getSpeakerDistance())));
@@ -144,7 +150,9 @@ public abstract class MechState {
         return new InstantCommand();
     }
 
-    public void calculationBasedAutoaim() {}
+    public Command calculationBasedAutoaim() {
+        return new InstantCommand();
+    }
     public Command setWristDeg(double deg){
         return new InstantCommand();
     }

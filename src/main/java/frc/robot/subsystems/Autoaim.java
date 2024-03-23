@@ -91,6 +91,7 @@ public class Autoaim {
     }    
 
     public static double getNeededLaunchAngle(){
+        update();
         return neededlauncherAngleRadians;
     }
 

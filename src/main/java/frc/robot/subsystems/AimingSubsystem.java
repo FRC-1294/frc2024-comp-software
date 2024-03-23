@@ -68,6 +68,7 @@ public class AimingSubsystem extends SubsystemBase {
   MotorOutputConfigs mLeftWristMotorOutputConfigs = new MotorOutputConfigs();
   MotorOutputConfigs mRightWristMotorOutputConfigs = new MotorOutputConfigs();
 
+
   Slot0Configs mElevatorControllerSlot0Configs = new Slot0Configs();
 
   //0.1 is the non-zero sample time and 0.02 is our loop time 
@@ -100,7 +101,8 @@ public class AimingSubsystem extends SubsystemBase {
 
     mRightWristMotor.setIdleMode(IdleMode.kCoast);
     mLeftWristMotor.setIdleMode(IdleMode.kCoast);}).ignoringDisable(true));
-
+    mWristController.setIntegratorRange(-0.1, 0.1);
+    mWristController.setIZone(3);
   }
 
   // Setting Conversions and Inversions
@@ -151,6 +153,9 @@ public class AimingSubsystem extends SubsystemBase {
     mCurrentWristRotationDeg = getCurrentWristDegreees();
     mCurrentElevatorDistanceIn = getCurrentElevatorDistance();
     SmartDashboard.putNumber("Current Wrist Rotation", getCurrentWristDegreees());
+    SmartDashboard.putNumber("Current Elevator Extension", getCurrentElevatorDistance());
+    SmartDashboard.putNumber("Desired Elevator Extension", getDesiredElevatorDistance());
+
     updateMotorModes();
     elevatorPeriodic();
     wristPeriodic();
@@ -186,12 +191,9 @@ public class AimingSubsystem extends SubsystemBase {
     } 
 
     wristPIDCalculation = MathUtil.clamp(wristPIDCalculation, -maxPIDContribution, maxPIDContribution);
-    
 
     double wristFeedforwardCalculation = Math.cos(Math.toRadians(mCurrentWristRotationDeg-AimingConstants.COG_OFFSET))*AimingConstants.WRIST_KG;
-
-    mLeftWristMotor.set(wristPIDCalculation + wristFeedforwardCalculation);
-    // mLeftWristMotor.set(SmartDashboard.getNumber("wristOUtput", 0));
+    mLeftWristMotor.set(wristPIDCalculation + wristFeedforwardCalculation + Math.signum(wristPIDCalculation)*AimingConstants.WRIST_KS);
   }
 
   private void updateMotorModes() {
@@ -257,7 +259,7 @@ public class AimingSubsystem extends SubsystemBase {
    */
   public double getCurrentWristDegreees(){
     double raw_deg = -(mWristThroughBoreEncoder.getAbsolutePosition()*AimingConstants.WRIST_THROUGHBORE_GEAR_RATIO*360 - AimingConstants.WRIST_THROUGHBORE_ENCODER_OFFSET);
-    return mAbsEncFilter.calculate(raw_deg);
+    return raw_deg;
   }
 
   public double getCurrentLaunchDegrees(){
@@ -374,12 +376,32 @@ public class AimingSubsystem extends SubsystemBase {
     ()->{}, (Interruptable)->{}, this::atWristSetpoint, this);  
   }
 
-  public Command waitUntilAutoAimSetpoint() {
+  public Command waitUntilAutoAimSetpointTracked() {
     return new FunctionalCommand(()-> {},
                                  () -> {setDesiredWristRotation(() -> AimingConstants.getPolynomialRegression());
                                         setWristToleranceDeg(()->AimingConstants.getAutoAimWristToleranceDegrees());},
                                 (Interruptable)->{},
                                 ()->DefaultMechCommand.mDesiredState != AimState.AUTO_AIM, 
+                                this
+                                );
+  }
+
+    public Command waitUntilCalculationAutoAimSetpointTracked() {
+      return new FunctionalCommand(()-> {},
+                                  () -> {setDesiredLaunchRotation(Autoaim.getNeededLaunchAngle());
+                                          setWristToleranceDeg(()->AimingConstants.getAutoAimWristToleranceDegrees());},
+                                  (Interruptable)->{},
+                                  ()->DefaultMechCommand.mDesiredState != AimState.AUTO_AIM, 
+                                  this
+                                  );
+    } 
+
+  public Command waitUntilAutoAimSetpoint() {
+    return new FunctionalCommand(()-> {},
+                                 () -> {setDesiredWristRotation(() -> AimingConstants.getPolynomialRegression());
+                                        setWristToleranceDeg(()->AimingConstants.getAutoAimWristToleranceDegrees());},
+                                (Interruptable)->{},
+                                this::atWristSetpoint, 
                                 this
                                 );
   }
