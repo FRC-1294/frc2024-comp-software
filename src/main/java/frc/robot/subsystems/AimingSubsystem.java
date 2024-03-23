@@ -152,6 +152,9 @@ public class AimingSubsystem extends SubsystemBase {
     mCurrentWristRotationDeg = getCurrentWristDegreees();
     mCurrentElevatorDistanceIn = getCurrentElevatorDistance();
     SmartDashboard.putNumber("Current Wrist Rotation", getCurrentWristDegreees());
+    SmartDashboard.putNumber("Current Elevator Extension", getCurrentElevatorDistance());
+    SmartDashboard.putNumber("Desired Elevator Extension", getDesiredElevatorDistance());
+
     updateMotorModes();
     elevatorPeriodic();
     wristPeriodic();
