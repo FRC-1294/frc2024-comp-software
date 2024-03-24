@@ -12,7 +12,9 @@ import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.Odometry;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
@@ -42,6 +44,7 @@ public class SwerveSubsystem extends SubsystemBase {
   public final SwerveConfig mConfig;
   private ChassisSpeeds desiredChassisSpeeds = new ChassisSpeeds();
   private Field2d mField = new Field2d();
+  private SwerveDriveOdometry jank;
 
 
   public SwerveSubsystem(SwerveConfig configuration) {
@@ -56,6 +59,8 @@ public class SwerveSubsystem extends SubsystemBase {
     mPigeon2 = mConfig.PIGEON;
     mModules = mConfig.SWERVE_MODULES;
     mOdometry = new SwerveDrivePoseEstimator(mKinematics, getRotation2d(), getModulePositions(), new Pose2d());
+    jank = new SwerveDriveOdometry(mKinematics, getRotation2d(), getModulePositions());
+
     resetGyro();
     // resetRobotPose();
     resetRobotPose(new Pose2d(15.2, 5.6, getRotation2d()));
@@ -65,9 +70,11 @@ public class SwerveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    
+    //jank.update(getRotation2d(), getModulePositions());
     // This method will be called once per scheduler run    
     mOdometry.update(getRotation2d(), getModulePositions());
+
+    //SmartDashboard.putNumber("Pose Est Error", jank.getPoseMeters().minus(mOdometry.getEstimatedPosition()).getTranslation().getNorm());
     SmartDashboard.putNumber("XPos", mOdometry.getEstimatedPosition().getX());
     SmartDashboard.putNumber("YPos", mOdometry.getEstimatedPosition().getY());
     SmartDashboard.putNumber("Rot", mOdometry.getEstimatedPosition().getRotation().getDegrees());

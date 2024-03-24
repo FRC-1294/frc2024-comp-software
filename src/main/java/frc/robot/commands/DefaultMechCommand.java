@@ -126,7 +126,7 @@ public class DefaultMechCommand{
         runAction();
 
         if (Input.getX()) {
-            mMechState.calculationBasedAutoaim().schedule();
+            mMechState.staticAutoAim().schedule();
             //This is for populating the event maps quickly
             // mMechState.setWristDeg(SmartDashboard.getNumber("Set Wrist Encoder Degrees", 0)).schedule();
         }

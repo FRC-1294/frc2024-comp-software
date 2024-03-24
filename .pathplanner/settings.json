@@ -4,9 +4,10 @@
   "holonomicMode": true,
   "pathFolders": [
     "Center_Left",
+    "Center_Line_Only",
     "Mid_Center",
     "Misc_Tests",
-    "Center_Line_Only",
+    "Center_Right",
     "Wing_Focused"
   ],
   "autoFolders": [

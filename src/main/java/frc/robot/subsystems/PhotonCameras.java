@@ -12,6 +12,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.simulation.DriverStationSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.FieldConstants;
@@ -57,19 +59,21 @@ public class PhotonCameras extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // This method will be called once per scheduler run
-        Optional<EstimatedRobotPose> poseFront = getEstimatedGlobalPoseFront(SwerveSubsystem.getRobotPose());
-        Optional<EstimatedRobotPose> poseBack = getEstimatedGlobalPoseBack(SwerveSubsystem.getRobotPose());
+        if (DriverStation.isTeleop() || true) {
+            // This method will be called once per scheduler run
+            Optional<EstimatedRobotPose> poseFront = getEstimatedGlobalPoseFront(SwerveSubsystem.getRobotPose());
+            Optional<EstimatedRobotPose> poseBack = getEstimatedGlobalPoseBack(SwerveSubsystem.getRobotPose());
 
-        if (poseFront.isPresent() && isValidPose(poseFront.get())) {
-            SwerveSubsystem.updateVision(poseFront.get(), getVisionSTD(poseFront.get()));
-            SmartDashboard.putNumber("XPosVision", poseFront.get().estimatedPose.getX());
-            SmartDashboard.putNumber("YPosVision", poseFront.get().estimatedPose.getY());
-            SmartDashboard.putNumber("RotVision", poseFront.get().estimatedPose.getRotation().toRotation2d().getDegrees());
-        } else if (poseBack.isPresent() && isValidPose(poseBack.get())) {
-            //SwerveSubsystem.updateVision(poseBack.get(), getVisionSTD(poseBack.get()));
+            if (poseFront.isPresent() && isValidPose(poseFront.get())) {
+                SwerveSubsystem.updateVision(poseFront.get(), getVisionSTD(poseFront.get()));
+                SmartDashboard.putNumber("XPosVision", poseFront.get().estimatedPose.getX());
+                SmartDashboard.putNumber("YPosVision", poseFront.get().estimatedPose.getY());
+                SmartDashboard.putNumber("RotVision", poseFront.get().estimatedPose.getRotation().toRotation2d().getDegrees());
+                SmartDashboard.putNumber("ZPhoton", poseFront.get().estimatedPose.getZ());
+            } else if (poseBack.isPresent() && isValidPose(poseBack.get())) {
+                //SwerveSubsystem.updateVision(poseBack.get(), getVisionSTD(poseBack.get()));
+            }
         }
-
     }
 
     /**

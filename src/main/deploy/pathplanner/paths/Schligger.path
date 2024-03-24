@@ -1,0 +1,153 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 0.7358234536288891,
+        "y": 4.4744363362600605
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 0.9864372881861521,
+        "y": 4.21704915481627
+      },
+      "isLocked": false,
+      "linkedName": "Right_Subwoofer_Shot"
+    },
+    {
+      "anchor": {
+        "x": 4.230321253435299,
+        "y": 1.7657383062513878
+      },
+      "prevControl": {
+        "x": 1.8664231923058432,
+        "y": 2.1856858128130687
+      },
+      "nextControl": {
+        "x": 7.205829984359814,
+        "y": 1.2371379013306998
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.464395307168992,
+        "y": 2.616250998267763
+      },
+      "prevControl": {
+        "x": 8.285394317208397,
+        "y": 2.526750503288371
+      },
+      "nextControl": {
+        "x": 8.640502326045956,
+        "y": 2.7043045077053547
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.248810659783482,
+        "y": 1.7657383062513878
+      },
+      "prevControl": {
+        "x": 7.283270062035619,
+        "y": 1.284830677769465
+      },
+      "nextControl": {
+        "x": 1.8565631362991821,
+        "y": 2.1448668200178727
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 0.7358234536288891,
+        "y": 4.4744363362600605
+      },
+      "prevControl": {
+        "x": 1.0067573288262333,
+        "y": 4.1764090735361075
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Right_Subwoofer_Shot"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 2.0,
+      "rotationDegrees": 23.991960476060555,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 1.4,
+      "rotationDegrees": 11.144914716548609,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 1.5,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "HandoffSetpoint"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeUntilNote"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Handoff"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "StartLauncherSW"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "HandoffSetpoint"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.5,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 300.0,
+    "maxAngularAcceleration": 200.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -59.886266849693634,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Center_Right",
+  "previewStartingState": {
+    "rotation": -59.03624346792652,
+    "velocity": 0
+  },
+  "useDefaultConstraints": false
+}

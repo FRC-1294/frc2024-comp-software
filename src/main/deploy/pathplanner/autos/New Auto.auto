@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7315214630429262,
-      "y": 4.4636355939378545
+      "x": 0.74,
+      "y": 4.47
     },
-    "rotation": -60.25511870305779
+    "rotation": -59.04000000000002
   },
   "command": {
     "type": "sequential",
@@ -20,7 +20,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "New Path"
+            "pathName": "Schligger"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootFromSubwoofer"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "schlong"
           }
         },
         {

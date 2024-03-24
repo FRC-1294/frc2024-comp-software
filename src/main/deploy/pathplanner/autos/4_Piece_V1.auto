@@ -3,7 +3,7 @@
   "startingPose": {
     "position": {
       "x": 1.354669376005419,
-      "y": 5.537433881885308
+      "y": 5.533824400982135
     },
     "rotation": 0
   },
@@ -32,7 +32,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "3rd_Piece_SW"
+            "pathName": "4th_Piece_SW"
           }
         },
         {
@@ -44,7 +44,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "4th_Piece_SW"
+            "pathName": "3rd_Piece_SW"
           }
         },
         {
