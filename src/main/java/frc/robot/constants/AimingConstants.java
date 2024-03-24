@@ -5,6 +5,7 @@
 package frc.robot.constants;
 
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
+import java.lang.reflect.Field;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -98,13 +99,24 @@ public class AimingConstants {
     }
 
     public static double getPolynomialRegression(){
-        return -7.26 + 7.65*FieldConstants.getSpeakerDistance() + 1.27*Math.pow(FieldConstants.getSpeakerDistance(), 2) - 0.25*Math.pow(FieldConstants.getSpeakerDistance(), 3)
-        + (7.625 + 2.54*FieldConstants.getSpeakerDistance() - 0.75*Math.pow(FieldConstants.getSpeakerDistance(),2))*0.74;
+        if (FieldConstants.getSpeakerDistance()>4.6){
+            return -15 + 16.1*FieldConstants.getSpeakerDistance() - 1.65*Math.pow(FieldConstants.getSpeakerDistance(), 2) + 0.0683*Math.pow(FieldConstants.getSpeakerDistance(), 3)
+            + (16.1 - 3.3*FieldConstants.getSpeakerDistance() + 0.2049*Math.pow(FieldConstants.getSpeakerDistance(),2))*0.15;
+        }else{
+            return -7.26 + 7.65*FieldConstants.getSpeakerDistance() + 1.27*Math.pow(FieldConstants.getSpeakerDistance(), 2) - 0.25*Math.pow(FieldConstants.getSpeakerDistance(), 3)
+            + (7.625 + 2.54*FieldConstants.getSpeakerDistance() - 0.75*Math.pow(FieldConstants.getSpeakerDistance(),2))*0.74;
+        }
+        
         //return -25+16.3*dist+0.757*Math.pow(dist, 2)-0.349*Math.pow(dist, 3);
     }
 
     public static double getAutoAimWristToleranceDegrees(){
-        return Math.max((7.625 + 2.54*FieldConstants.getSpeakerDistance() - 0.75*Math.pow(FieldConstants.getSpeakerDistance(), 2))
-         * TOLERANCE_DAMPENING_CONSTANT,MAX_WRIST_ACCURACY_DEG);
+        if (FieldConstants.getSpeakerDistance()>4.6){
+            return Math.max((16.1 - 3.3*FieldConstants.getSpeakerDistance() + 0.2049*Math.pow(FieldConstants.getSpeakerDistance(),2))
+            * TOLERANCE_DAMPENING_CONSTANT,MAX_WRIST_ACCURACY_DEG);
+        }else{
+            return Math.max((7.625 + 2.54*FieldConstants.getSpeakerDistance() - 0.75*Math.pow(FieldConstants.getSpeakerDistance(), 2))
+            * TOLERANCE_DAMPENING_CONSTANT,MAX_WRIST_ACCURACY_DEG);
+        }
     }
 } 

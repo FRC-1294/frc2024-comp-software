@@ -67,10 +67,4 @@ public class ReadyForAim extends MechState {
       DefaultMechCommand.mDesiredState = AimState.AUTO_AIM;
         return MechState.mStaticAutoAimCommand;
     }
-
-    @Override
-    public Command calculationBasedAutoaim(){
-      DefaultMechCommand.mDesiredState = AimState.AUTO_AIM;
-      return MechState.mCalculationAutoAimCommand;
-    }
 }

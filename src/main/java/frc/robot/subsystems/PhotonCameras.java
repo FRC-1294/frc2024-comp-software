@@ -59,7 +59,7 @@ public class PhotonCameras extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (DriverStation.isTeleop() || true) {
+        if (DriverStation.isTeleop()) {
             // This method will be called once per scheduler run
             Optional<EstimatedRobotPose> poseFront = getEstimatedGlobalPoseFront(SwerveSubsystem.getRobotPose());
             Optional<EstimatedRobotPose> poseBack = getEstimatedGlobalPoseBack(SwerveSubsystem.getRobotPose());

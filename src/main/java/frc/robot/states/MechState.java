@@ -51,12 +51,6 @@ public abstract class MechState {
             mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.PODIUM),
             mAimingSubsystem.waitUntilAutoAimSetpointTracked()
         );
-
-        mCalculationAutoAimCommand = new ParallelCommandGroup(     
-                                            mAimingSubsystem.waitUntilCalculationAutoAimSetpointTracked(),
-                                            new InstantCommand(()->mLauncherSubsystem.setLauncherState(AimState.AUTOAIM))
-                                    ); 
-        
         // new ParallelCommandGroup(mLauncherSubsystem.waitUntilFlywheelSetpointCommand(AimState.PODIUM), 
         // mAimingSubsystem.waitUntilWristSetpoint(() -> AimingConstants.getPolynomialRegression(FieldConstants.getSpeakerDistance())));
     }
