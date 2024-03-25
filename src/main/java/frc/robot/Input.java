@@ -19,7 +19,6 @@ public class Input {
   private static final Joystick mRotJoystick = new Joystick(JoystickConstants.ROT_JOYSTICK_PORT);
   private static final Joystick mTransJoystick = new Joystick(JoystickConstants.TRANS_JOY_PORT);
   private static final XboxController mXboxController = new XboxController(JoystickConstants.XBOX_PORT);
-  private static final XboxController mAnkitsVibrator = new XboxController(JoystickConstants.VIBRATOR_PORT);
 
   public static final int DPADUP = 0;
   public static final int DPADRIGHT = 90;
@@ -39,11 +38,11 @@ public class Input {
     return false;
   }
 
-  public static void enableRightRumble(double intensity){
+  public static void enableRumble(double intensity){
     mXboxController.setRumble(RumbleType.kRightRumble, intensity);
   }
 
-  public static void disableRightRumble(){
+  public static void disableRumble(){
     mXboxController.setRumble(RumbleType.kRightRumble, 0);
   }
 
@@ -145,14 +144,6 @@ public class Input {
 
   public static boolean getReverseButton(){
     return mXboxController.getRawButton(7);
-  }
-
-  public static void turnOnViberator(double intensity){
-    mAnkitsVibrator.setRumble(RumbleType.kBothRumble, intensity);
-  }
-
-  public static void turnOffViberator(){
-    mAnkitsVibrator.setRumble(RumbleType.kBothRumble, 0);
   }
 }
 
