@@ -10,6 +10,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.revrobotics.CANSparkLowLevel;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -49,7 +50,8 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-   CameraServer.startAutomaticCapture();
+    DataLogManager.start();
+    CameraServer.startAutomaticCapture();
     new InitializePathPlanner(robotContainer.getSwerveSubsystem(), robotContainer.getIntakeSubsystem(), robotContainer.getLauncherSubsystem(), robotContainer.getAimingSubsystem()).initialize();
     mAlliance = DriverStation.getAlliance();
     SmartDashboard.putData("Pick your Auton...",pathSelector);
