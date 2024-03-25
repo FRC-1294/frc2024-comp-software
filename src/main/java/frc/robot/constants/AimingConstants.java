@@ -6,10 +6,13 @@ package frc.robot.constants;
 
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import java.lang.reflect.Field;
+import java.util.Optional;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Util.PIDParameters;
 import frc.robot.subsystems.AimingSubsystem.AimingMotorMode;
 
@@ -90,6 +93,7 @@ public class AimingConstants {
     public static final double MAX_SHOT_DIST_METERS = 5.2;
     public static final double MAX_WRIST_ACCURACY_DEG = 0.5;
     private static final double TOLERANCE_DAMPENING_CONSTANT = 0.15;
+    private static final double ROTATION_PADDING_METERS = 0.15;
 
     public static void populate_aim_map(){
         AimingConstants.AIM_MAP.put(AimState.MIDNOTE.mWristAngleDegrees, AimState.MIDNOTE.mRadialDistanceMeters);
@@ -118,5 +122,9 @@ public class AimingConstants {
             return Math.max((7.625 + 2.54*FieldConstants.getSpeakerDistance() - 0.75*Math.pow(FieldConstants.getSpeakerDistance(), 2))
             * TOLERANCE_DAMPENING_CONSTANT,MAX_WRIST_ACCURACY_DEG);
         }
+    }
+
+    public static double getSwerveAlignmentToleranceDeg(){
+        return Math.toDegrees(Math.atan2((FieldConstants.SPEAKER_WIDTH_METERS/2)-AimingConstants.ROTATION_PADDING_METERS,FieldConstants.getSpeakerDistance()));
     }
 } 

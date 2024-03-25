@@ -9,10 +9,6 @@ import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,12 +16,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.JoystickConstants;
 import frc.robot.Input;
 import frc.robot.subsystems.Autoaim;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.AimingConstants;
 import frc.robot.constants.FieldConstants;
-import frc.robot.constants.JoystickConstants;
-import frc.robot.Input;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class DefaultDriveCommand extends Command {
@@ -46,8 +38,6 @@ public class DefaultDriveCommand extends Command {
 
     mSpeakerAlignPID.setTolerance(2);
     mSpeakerAlignPID.enableContinuousInput(0, 360);
-    //  Input.enableLeftRumble(JoystickConstants.XBOX_RUMBLE_VIGEROUS);}))
-    //.onFalse(new InstantCommand(()->Input.disableLeftRumble()));
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -86,11 +76,6 @@ public class DefaultDriveCommand extends Command {
     x *= mSwerve.mConfig.TELE_MAX_SPEED_MPS;
     y *= mSwerve.mConfig.TELE_MAX_SPEED_MPS;
     rot *= mSwerve.mConfig.TELE_MAX_ROT_SPEED_RAD_SEC;
-    // SmartDashboard.putNumber("tx", mLimelight.getNoteAngle());
-    // if (Input.getNoteAlignment() && mLimelight.isDetectionValid()) {
-    //     rot = mNotePID.calculate(Units.degreesToRadians(mLimelight.getNoteAngle()));
-    //     isFieldOriented = false;
-    // }
 
     if (Input.doAutoaim()) {
       rot = yawAutoaim.calculate(SwerveSubsystem.getRobotPose().getRotation().getDegrees()-180, Units.radiansToDegrees(Autoaim.getNeededRobotYaw()));
@@ -117,39 +102,25 @@ public class DefaultDriveCommand extends Command {
   }
 
   public static boolean getAlignedToSpeaker(){
-    return mSpeakerAlignPID.atSetpoint() && FieldConstants.getSpeakerDistance()<=AimingConstants.MAX_SHOT_DIST_METERS;
+    return (SwerveSubsystem.getRobotPose().getRotation().getDegrees()-getRotationToSpeakerDegrees())>AimingConstants.getSwerveAlignmentToleranceDeg()
+     && FieldConstants.getSpeakerDistance()<=AimingConstants.MAX_SHOT_DIST_METERS;
   }
 
   public static double getRotationToSpeakerDegrees(){
     double targAngle;
     Optional<Alliance> alliance = DriverStation.getAlliance();
-    double distance = FieldConstants.getSpeakerDistance();
     if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red){
-      // targAngle = FieldConstants.Red.SPEAKER.getPose().toPose2d().plus(new Transform2d(-1.3,0,new Rotation2d()))
-      // .minus(SwerveSubsystem.getRobotPose()).getTranslation().getAngle().getDegrees();
-      
-      // targAngle += 2*distance;
-
-      double targerAngle = Math.atan2(FieldConstants.Red.SPEAKER.getPose().getY() - SwerveSubsystem.getRobotPose().getY(), SwerveSubsystem.getRobotPose().getX() - FieldConstants.Red.SPEAKER.getPose().getX());
-
+      double targerAngle = Math.atan2(FieldConstants.Red.SPEAKER.getPose().getY() - SwerveSubsystem.getRobotPose().getY(), SwerveSubsystem.getRobotPose().getX() - FieldConstants.Red.SPEAKER.getPose().getX() - FieldConstants.SPEAKER_LENGTH_METERS);
       SmartDashboard.putNumber("targeranlge", Math.toDegrees(targerAngle));
-      //targAngle += 2*distance;
       targAngle = -Math.toDegrees(targerAngle);
 
     } else{
-      // targAngle = FieldConstants.Blue.SPEAKER.getPose().toPose2d().plus(new Transform2d(1.3,0,new Rotation2d()))
-      // .minus(SwerveSubsystem.getRobotPose()).getTranslation().getAngle().getDegrees();
-
-      double targerAngle = Math.atan2(SwerveSubsystem.getRobotPose().getY() - FieldConstants.Blue.SPEAKER.getPose().getY(), SwerveSubsystem.getRobotPose().getX() - FieldConstants.Blue.SPEAKER.getPose().getX());
-
+      double targerAngle = Math.atan2(SwerveSubsystem.getRobotPose().getY() - FieldConstants.Blue.SPEAKER.getPose().getY(), SwerveSubsystem.getRobotPose().getX() - FieldConstants.Blue.SPEAKER.getPose().getX() + FieldConstants.SPEAKER_LENGTH_METERS);
       SmartDashboard.putNumber("targeranlge", Math.toDegrees(targerAngle));
-      //targAngle += 2*distance;
       targAngle = Math.toDegrees(targerAngle);
     }
 
     // Tunable Degree Offset Based on Distance
-  
-    
     SmartDashboard.putNumber("targAngleSPeaker", targAngle);
     return targAngle;
   }

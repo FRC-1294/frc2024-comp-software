@@ -18,7 +18,9 @@ public class FieldConstants {
         Blue(Pose3d pos) {
             pose = pos;
         }
-
+        /*
+         * Return the BACK CENTER location of the object
+         */
         public Pose3d getPose() {
             return pose;
         }
@@ -32,12 +34,16 @@ public class FieldConstants {
         Red(Pose3d pos) {
             pose = pos;
         }
-
+        /*
+         * Return the BACK CENTER location of the object
+         */
         public Pose3d getPose() {
             return pose;
         }
     }
 
+    public static final double SPEAKER_LENGTH_METERS = 0.46;
+    public static final double SPEAKER_WIDTH_METERS = 1.05;
 
     public static double getSpeakerDistance(Pose2d robotPose) {
         if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
