@@ -46,13 +46,6 @@ public class DefaultDriveCommand extends Command {
 
     mSpeakerAlignPID.setTolerance(2);
     mSpeakerAlignPID.enableContinuousInput(0, 360);
-
-    BooleanSupplier getDriveBaseLaunchReady = ()-> mSpeakerAlignPID.atSetpoint() &&
-     FieldConstants.getSpeakerDistance()<=AimingConstants.MAX_SHOT_DIST_METERS;
-    
-    new Trigger(getDriveBaseLaunchReady)
-    .onTrue(new InstantCommand(()->{
-      Input.turnOnViberator(JoystickConstants.XBOX_RUMBLE_VIGEROUS);}));
     //  Input.enableLeftRumble(JoystickConstants.XBOX_RUMBLE_VIGEROUS);}))
     //.onFalse(new InstantCommand(()->Input.disableLeftRumble()));
   }
@@ -121,6 +114,10 @@ public class DefaultDriveCommand extends Command {
   @Override
   public boolean isFinished() {
     return false;
+  }
+
+  public static boolean getAlignedToSpeaker(){
+    return mSpeakerAlignPID.atSetpoint() && FieldConstants.getSpeakerDistance()<=AimingConstants.MAX_SHOT_DIST_METERS;
   }
 
   public static double getRotationToSpeakerDegrees(){
