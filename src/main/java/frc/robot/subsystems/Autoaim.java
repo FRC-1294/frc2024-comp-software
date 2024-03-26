@@ -49,7 +49,7 @@ public class Autoaim {
         // get field launcher pivot location
         double launcherPivotX = robotX - SwerveSubsystem.getRobotPose().getRotation().getCos() * Units.inchesToMeters(11.25);
         double launcherPivotY = robotY - SwerveSubsystem.getRobotPose().getRotation().getSin() * Units.inchesToMeters(11.25);
-        double launcherPivotZ = Units.inchesToMeters(35.055);
+        double launcherPivotZ = Units.inchesToMeters(27);
 
 
         double xDistance = 0.0;
@@ -149,8 +149,8 @@ public class Autoaim {
     private static double robotYawEquation(double xDist3D, double yDist3D, double xVel, double yVel, double yawGuess)
     {
         return xDist3D 
-        * (yVel - Math.sin(yawGuess) * Math.cos(neededlauncherAngleRadians) * AimingConstants.NOTE_EXIT_SPEED) 
-        / (xVel - Math.cos(yawGuess) * Math.cos(neededlauncherAngleRadians) * AimingConstants.NOTE_EXIT_SPEED) 
+        * (yVel + Math.sin(yawGuess+Math.PI) * Math.cos(neededlauncherAngleRadians) * AimingConstants.NOTE_EXIT_SPEED) 
+        / (xVel + Math.cos(yawGuess+Math.PI) * Math.cos(neededlauncherAngleRadians) * AimingConstants.NOTE_EXIT_SPEED) 
         - yDist3D;
     }
     
@@ -184,7 +184,7 @@ public class Autoaim {
         for (double i = start; i <= end; i += step){
             double guess = robotYawEquation(xDist3D, yDist3D, xVel, yVel, i);
             if (Math.signum(guess) != sign){ // tbh don't know why im using sign atp
-                if (Math.abs(guess) < 2.0){
+                if (Math.abs(guess) < 1.0){
                     return i;
                 }
             }

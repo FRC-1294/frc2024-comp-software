@@ -78,7 +78,7 @@ public class DefaultDriveCommand extends Command {
     rot *= mSwerve.mConfig.TELE_MAX_ROT_SPEED_RAD_SEC;
 
     if (Input.doAutoaim()) {
-      rot = yawAutoaim.calculate(SwerveSubsystem.getRobotPose().getRotation().getDegrees()-180, Units.radiansToDegrees(Autoaim.getNeededRobotYaw()));
+      rot = yawAutoaim.calculate(SwerveSubsystem.getRobotPose().getRotation().getDegrees(), Units.radiansToDegrees(Autoaim.getNeededRobotYaw()));
       rot = Math.toRadians(rot);
     }
 
