@@ -22,7 +22,7 @@ public class Autoaim {
     private static double lastTime = 0.0;
     private static double currentTime = 0.0;
 
-    public static boolean accountForVelocity = true;
+    public static boolean accountForVelocity = false;
 
     
 
@@ -100,7 +100,7 @@ public class Autoaim {
     }
 
     private static double simulateLaunchAngle(double xDist2D, double yDist2D, double speakerApproachSpeed){
-        double timeStep = 0.1;
+        double timeStep = 0.003;
 
         for (double i = AimingConstants.REST_LAUNCH_ANGLE; i >= 0.0; i -= 0.1){
             double launchAngle = i * Math.PI / 180.0;
@@ -112,11 +112,11 @@ public class Autoaim {
             double notePosY = AimingConstants.WRIST_D1 * Math.sin(-launchAngle + AimingConstants.WRIST_BEND_ANGLE) - AimingConstants.WRIST_D2 * Math.sin(launchAngle);
 
             while (notePosX < xDist2D && notePosY > -1){
-                double xDrag = noteVelocityX * AimingConstants.DRAG_COEFFICIENT;
-                double yDrag = noteVelocityY * AimingConstants.DRAG_COEFFICIENT;
+                double xDrag = noteVelocityX * noteVelocityX * AimingConstants.DRAG_COEFFICIENT * (noteVelocityX > 0 ? -1 : 1);
+                double yDrag = noteVelocityY * noteVelocityY * AimingConstants.DRAG_COEFFICIENT * (noteVelocityY > 0 ? -1 : 1);
 
-                noteVelocityX -= xDrag * timeStep;
-                noteVelocityY -= yDrag * timeStep;
+                noteVelocityX += xDrag * timeStep;
+                noteVelocityY += yDrag * timeStep;
                 noteVelocityY -= 9.807 * timeStep;
 
                 notePosX += noteVelocityX * timeStep;
