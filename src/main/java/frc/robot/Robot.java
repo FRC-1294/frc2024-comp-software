@@ -65,6 +65,7 @@ public class Robot extends TimedRobot {
     pathSelector.addOption("4 Piece RC SW", AutoBuilder.buildAuto("3_Piece_Lower_Center"));
     pathSelector.addOption("2 note", AutoBuilder.buildAuto("New New Auto"));
     pathSelector.addOption("Goofy ah", AutoBuilder.buildAuto("New Auto"));
+    pathSelector.addOption("AutoAimTest", AutoBuilder.buildAuto("GoofyAutoAimTest"));
     pathSelector.addOption("One Piece", NamedCommands.getCommand("ShootFromSubwoofer"));
 
 
@@ -97,7 +98,7 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     SmartDashboard.updateValues();
     CommandScheduler.getInstance().run();
-
+    SmartDashboard.putNumber("buckboostCurrent",robotContainer.mPDH.getCurrent(15));
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

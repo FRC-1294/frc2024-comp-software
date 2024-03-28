@@ -375,7 +375,7 @@ public class AimingSubsystem extends SubsystemBase {
   public Command waitUntilWristSetpoint(Supplier<Double> sp, Supplier<Double> tolerance) {
     return new FunctionalCommand(() -> {setDesiredWristRotation(sp);
     setWristToleranceDeg(tolerance);},
-    ()->{}, (Interruptable)->{}, this::atWristSetpoint, this);  
+    ()->{}, (Interruptable)->{}, this::atWristSetpoint, this);
   }
 
   public Command waitUntilAutoAimSetpointTracked() {

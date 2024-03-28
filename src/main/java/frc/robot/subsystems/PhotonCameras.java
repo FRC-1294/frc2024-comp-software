@@ -59,19 +59,21 @@ public class PhotonCameras extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (DriverStation.isTeleop()) {
+        if (DriverStation.isTeleop()||true) {
             // This method will be called once per scheduler run
             Optional<EstimatedRobotPose> poseFront = getEstimatedGlobalPoseFront(SwerveSubsystem.getRobotPose());
-            Optional<EstimatedRobotPose> poseBack = getEstimatedGlobalPoseBack(SwerveSubsystem.getRobotPose());
-
             if (poseFront.isPresent() && isValidPose(poseFront.get())) {
                 SwerveSubsystem.updateVision(poseFront.get(), getVisionSTD(poseFront.get()));
-                SmartDashboard.putNumber("XPosVision", poseFront.get().estimatedPose.getX());
-                SmartDashboard.putNumber("YPosVision", poseFront.get().estimatedPose.getY());
-                SmartDashboard.putNumber("RotVision", poseFront.get().estimatedPose.getRotation().toRotation2d().getDegrees());
-                SmartDashboard.putNumber("ZPhoton", poseFront.get().estimatedPose.getZ());
-            } else if (poseBack.isPresent() && isValidPose(poseBack.get())) {
-                //SwerveSubsystem.updateVision(poseBack.get(), getVisionSTD(poseBack.get()));
+
+            } 
+            
+            Optional<EstimatedRobotPose> poseBack = getEstimatedGlobalPoseBack(SwerveSubsystem.getRobotPose());
+            if (poseBack.isPresent() && isValidPose(poseBack.get())) {
+                SwerveSubsystem.updateVision(poseBack.get(), getVisionSTD(poseBack.get()));
+                SmartDashboard.putNumber("XPosVision", poseBack.get().estimatedPose.getX());
+                SmartDashboard.putNumber("YPosVision", poseBack.get().estimatedPose.getY());
+                SmartDashboard.putNumber("RotVision", poseBack.get().estimatedPose.getRotation().toRotation2d().getDegrees());
+                SmartDashboard.putNumber("ZPhoton", poseBack.get().estimatedPose.getZ());
             }
         }
     }
@@ -134,7 +136,7 @@ public class PhotonCameras extends SubsystemBase {
 
 
         // Remove all readings above 4m on avg
-        if (numTags == 1 && avgDist > 4) {
+        if ((numTags == 1 && avgDist > 4) || (avgDist>5)) {
             return VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
         }
         // Don't scale by distance for Multi Tag Estimation(Literal Magic)

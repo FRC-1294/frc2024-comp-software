@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 //import org.photonvision.proto.Photon;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.robots.CompetitionBotSwerveConfig;
@@ -27,6 +29,7 @@ public class RobotContainer {
   private final IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
   private final LauncherSubsystem mLauncherSubsystem = new LauncherSubsystem();
   private final AimingSubsystem mAimingSubsystem = new AimingSubsystem();
+  public final PowerDistribution mPDH = new PowerDistribution(1, ModuleType.kRev);
   
   
 

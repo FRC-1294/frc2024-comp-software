@@ -101,7 +101,7 @@ public class InitializePathPlanner{
         Map.entry(false, new PrintCommand("Failed to pick up Note"))
       ),()->IntakeSubsystem.pieceInIntake()),
       new ParallelCommandGroup(
-            new AlignSpeaker(mSwerve),
+            // new AlignSpeaker(mSwerve),
             mLauncher.waitUntilFlywheelSetpointCommand(AimState.PODIUM),
             mAiming.waitUntilAutoAimSetpoint()
       ), 
@@ -143,7 +143,7 @@ public class InitializePathPlanner{
                                       // your Constants class
           new PIDConstants(5, 0.0, 0), // Translation PID constants
           new PIDConstants(5, 0.0, 0), // Rotation PID constants
-          3, // Max module speed, in m/s
+          4.5, // Max module speed, in m/s
           0.4669, // Drive base radius in meters. Distance from robot center to furthest module.
           new ReplanningConfig(true, true) // Default path replanning config. See the API for the options
                               // here
