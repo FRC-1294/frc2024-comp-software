@@ -30,10 +30,14 @@ public class Input {
     return mRotJoystick.getRawButton(3);
   }
 
-  public static boolean alignSpeaker() {
+  public static boolean alignAmp(){
+    return mRotJoystick.getRawButton(6);
+  }
+
+  public static boolean atanAlignSpeaker() {
     return mRotJoystick.getRawButton(5);//TBD
   }
-    public static boolean resetOdo() {
+  public static boolean resetOdo() {
     // return mTransJoystick.getRawButton(3);
     return false;
   }
@@ -62,7 +66,7 @@ public class Input {
     return mTransJoystick.getY();
   }
 
-  public static boolean doAutoaim(){
+  public static boolean getNoteLock(){
     return mRotJoystick.getRawButton(4);
   }
 
@@ -122,9 +126,10 @@ public class Input {
     return mTransJoystick.getTriggerPressed();
   }
 
-  public static boolean getNoteLock() {
+  public static boolean getVelLock() {
     return mRotJoystick.getTrigger();
   }
+
 
   public static boolean getIncPID() {
     return mRotJoystick.getRawButton(5);

@@ -209,7 +209,7 @@ public class SwerveSubsystem extends SubsystemBase {
    * @apiNote Keep in mind all of this is field relative so resetting the gyro midmatch will also
    *          reset these params
    */
-  public void   setChassisSpeed(double vxMPS, double vyMPS, double angleSpeedRADPS,
+  public void setChassisSpeed(double vxMPS, double vyMPS, double angleSpeedRADPS,
     boolean fieldOriented, boolean isOpenLoop) {
     ChassisSpeeds chassisSpeeds;
     if (fieldOriented) {

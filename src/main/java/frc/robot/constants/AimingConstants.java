@@ -54,22 +54,22 @@ public class AimingConstants {
 
 
     // inaccurate values
-    public static final double REST_LAUNCH_ANGLE = 53.429; // rest is when wrist rotation is zero degrees
-    public static final double NOTE_EXIT_SPEED = 26.26;
+    public static final double REST_LAUNCH_ANGLE = 50.429; // rest is when wrist rotation is zero degrees
+    public static final double NOTE_EXIT_SPEED = 26.00;
     public static final double AREA1 = (12.0/39.37) * (2.0/39.37) + (Math.PI * Math.pow(1/39.37, 2));
     public static final double AREA2 = Math.PI * (.3556*.3556) - Math.PI * (.254*.254);
     public static final double FLUID_DENSITY = 1.293;
     public static final double MASS = 0.2353010419;
 
     public static final double DRAG_COEFFICIENT = 0.0;
-    public static final double WRIST_D1 = .1778;
+    public static final double WRIST_D1 = Units.inchesToMeters(8.3);
     public static final double WRIST_D2 = .00;
-    public static final double WRIST_BEND_ANGLE = Units.degreesToRadians(50.429);
-    public static final Pose3d BLUE_SPEAKER_POS = new Pose3d(.4, 5.5, 2.05, new Rotation3d());
-    public static final Pose3d RED_SPEAKER_POS = new Pose3d(16.14, 5.5, 2.05, new Rotation3d());
+    public static final double WRIST_BEND_ANGLE = Units.degreesToRadians(REST_LAUNCH_ANGLE); //Units.degreesToRadians(50.429);
+    public static final Pose3d BLUE_SPEAKER_POS = new Pose3d(.3, 5.5, 2.1, new Rotation3d());
+    public static final Pose3d RED_SPEAKER_POS = new Pose3d(16.2, 5.5, 2.1, new Rotation3d());
     public static final double AUTOAIM_TIME_LOOKAHEAD = 0.0;
 
-    // ID's
+    // ID'
     public static final int LEFT_ELEVATOR_SPARK_ID = 33; //Done
     public static final int RIGHT_ELEVATOR_SPARK_ID = 32; //Done
 

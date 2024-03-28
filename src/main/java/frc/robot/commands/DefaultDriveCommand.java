@@ -8,6 +8,7 @@ import java.lang.reflect.Field;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -16,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.JoystickConstants;
 import frc.robot.Input;
 import frc.robot.subsystems.Autoaim;
+import frc.robot.subsystems.Limelight;
 import frc.robot.constants.AimingConstants;
 import frc.robot.constants.FieldConstants;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -23,21 +25,35 @@ import frc.robot.subsystems.SwerveSubsystem;
 public class DefaultDriveCommand extends Command {
 
   private final SwerveSubsystem mSwerve;
+  private final Limelight mLimelight;
+  
   private boolean mIsPrecisionToggle = false;
   private final PIDController mNotePID = new PIDController(5, 0, 0.1);
   private final PIDController yawAutoaim = new PIDController(4, 0, 0.02);
 
+  
 
   public static final PIDController mSpeakerAlignPID = new PIDController(4, 0, 0.02);
+  public static final PIDController mAmpAlignPID = new PIDController(4, 0, 0.02);
 
-  public DefaultDriveCommand(SwerveSubsystem swerve) {
+  public DefaultDriveCommand(SwerveSubsystem swerve, Limelight limelight) {
     mSwerve = swerve;
     addRequirements(mSwerve);
+    
+    if (limelight != null){
+      addRequirements(limelight);
+    }
+    mLimelight = limelight;
+
     mNotePID.setTolerance(2);
     yawAutoaim.enableContinuousInput(-180, 180);
 
     mSpeakerAlignPID.setTolerance(2);
     mSpeakerAlignPID.enableContinuousInput(0, 360);
+
+    mAmpAlignPID.setTolerance(2);
+    mAmpAlignPID.enableContinuousInput(-180, 180);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -49,11 +65,11 @@ public class DefaultDriveCommand extends Command {
     double rot = -Input.getRot();
     boolean isFieldOriented = true;
 
-    if (Input.resetGyro()) {
+    if (Input.resetGyro()) { //press
       mSwerve.resetGyro();
     }
 
-    if (Input.getPrecisionToggle()) {
+    if (Input.getPrecisionToggle()) { //toggle
       mIsPrecisionToggle = !mIsPrecisionToggle;
     }
 
@@ -77,21 +93,52 @@ public class DefaultDriveCommand extends Command {
     y *= mSwerve.mConfig.TELE_MAX_SPEED_MPS;
     rot *= mSwerve.mConfig.TELE_MAX_ROT_SPEED_RAD_SEC;
 
-    if (Input.doAutoaim()) {
-      rot = yawAutoaim.calculate(SwerveSubsystem.getRobotPose().getRotation().getDegrees()-180, Units.radiansToDegrees(Autoaim.getNeededRobotYaw()));
-      rot = Math.toRadians(rot);
-    }
 
-    if (Input.alignSpeaker()){
+    // autoyaw from calculation based autoaim
+    // if (Input.getNoteLock()) {
+    //   rot = yawAutoaim.calculate(SwerveSubsystem.getRobotPose().getRotation().getDegrees(), Units.radiansToDegrees(Autoaim.getNeededRobotYaw()));
+    //   rot = Math.toRadians(rot);
+    // }
+
+
+    if (Input.atanAlignSpeaker()){ //hold
       rot = Math.toRadians(
         mSpeakerAlignPID.calculate(
           SwerveSubsystem.getRobotPose().getRotation().getDegrees(),
           getRotationToSpeakerDegrees()));
     }
 
+    if (Input.alignAmp()){ // hold
+      Optional<Alliance> alliance = DriverStation.getAlliance();
+      
+      if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red){
+        mAmpAlignPID.setSetpoint(90);
+      } else{
+        mAmpAlignPID.setSetpoint(-90);
+      }
+
+      rot = Math.toRadians(mAmpAlignPID.calculate(SwerveSubsystem.getHeading()));
+    }
+
+    if (Input.getNoteLock()){ //hold
+      if (mLimelight != null && mLimelight.isDetectionValid()){
+        rot = Math.toRadians(mNotePID.calculate(mLimelight.getNoteAngle(), 0.0));
+        isFieldOriented = false;
+      }
+    }
+
+    if (Input.getVelLock()){ //hold
+      ChassisSpeeds fieldRelative = ChassisSpeeds.fromFieldRelativeSpeeds(
+        SwerveSubsystem.getChassisSpeeds(),
+        SwerveSubsystem.getRotation2d()
+      );
+      double targetAngle = Math.toDegrees(Math.atan2(fieldRelative.vyMetersPerSecond, fieldRelative.vxMetersPerSecond));
+      rot = Math.toRadians(mNotePID.calculate(SwerveSubsystem.getHeading(), targetAngle));
+    }
+
     SmartDashboard.putBoolean("PodiumAligned", mSpeakerAlignPID.atSetpoint());
     SmartDashboard.putBoolean("Precision Toggle", mIsPrecisionToggle);
-    mSwerve.setChassisSpeed(x, y, rot, true, false);
+    mSwerve.setChassisSpeed(x, y, rot, isFieldOriented, false);
   }
 
 
