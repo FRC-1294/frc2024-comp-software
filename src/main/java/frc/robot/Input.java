@@ -31,7 +31,7 @@ public class Input {
   }
 
   public static boolean alignAmp(){
-    return mRotJoystick.getRawButton(6);
+    return mRotJoystick.getRawButton(2);
   }
 
   public static boolean atanAlignSpeaker() {

@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -35,6 +36,7 @@ public class DefaultDriveCommand extends Command {
 
   public static final PIDController mSpeakerAlignPID = new PIDController(4, 0, 0.02);
   public static final PIDController mAmpAlignPID = new PIDController(4, 0, 0.02);
+  public static final PIDController mVelLock = new PIDController(4, 0, 0.3);
 
   public DefaultDriveCommand(SwerveSubsystem swerve, Limelight limelight) {
     mSwerve = swerve;
@@ -53,7 +55,7 @@ public class DefaultDriveCommand extends Command {
 
     mAmpAlignPID.setTolerance(2);
     mAmpAlignPID.enableContinuousInput(-180, 180);
-
+    mVelLock.enableContinuousInput(0, 360);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -128,12 +130,18 @@ public class DefaultDriveCommand extends Command {
     }
 
     if (Input.getVelLock()){ //hold
-      ChassisSpeeds fieldRelative = ChassisSpeeds.fromFieldRelativeSpeeds(
+      ChassisSpeeds fieldRelative = ChassisSpeeds.fromRobotRelativeSpeeds(
         SwerveSubsystem.getChassisSpeeds(),
         SwerveSubsystem.getRotation2d()
       );
-      double targetAngle = Math.toDegrees(Math.atan2(fieldRelative.vyMetersPerSecond, fieldRelative.vxMetersPerSecond));
-      rot = Math.toRadians(mNotePID.calculate(SwerveSubsystem.getHeading(), targetAngle));
+
+      
+      double targetAngle = Math.toDegrees(Math.atan2(y, x));
+      rot = Math.toRadians(mVelLock.calculate(SwerveSubsystem.getHeading() + SwerveSubsystem.getRate() * .4, targetAngle));
+      double speed = Math.sqrt(fieldRelative.vxMetersPerSecond*fieldRelative.vxMetersPerSecond+fieldRelative.vyMetersPerSecond*fieldRelative.vyMetersPerSecond);
+        //rot = rot / (speed * .5);
+      
+
     }
 
     SmartDashboard.putBoolean("PodiumAligned", mSpeakerAlignPID.atSetpoint());

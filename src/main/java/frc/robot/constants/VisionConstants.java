@@ -24,7 +24,7 @@ public class VisionConstants {
 
   // These are the names as they appear in photonvision of the cameras. These can be changed in the
   // photonvision dashboard
-  public static final String CAMERA_NAME_FRONT = "AgniVision1";
+  public static final String CAMERA_NAME_FRONT = "AgniVision2";
   public static final String CAMERA_NAME_BACK = "AgniVision3";
 
   // These are tunable constants for the reliability of odometry and vision measurements in the form
@@ -34,7 +34,7 @@ public class VisionConstants {
   public static final Matrix<N3, N1> SINGLE_TAG_VISION_MEASUREMENTS_STD_DEVS =
       VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(20));
   public static final Matrix<N3, N1> MULTI_TAG_VISION_MEASUREMENTS_STD_DEVS =
-      VecBuilder.fill(0.2, 0.2, Units.degreesToRadians(20));
+      VecBuilder.fill(0.1, 0.1, Units.degreesToRadians(20));
 
 
   public static final Transform3d ROBOT_TO_CAM_VEC_FRONT = new Transform3d(
