@@ -7,6 +7,7 @@ package frc.robot.commands;
 import java.lang.reflect.Field;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -130,18 +131,12 @@ public class DefaultDriveCommand extends Command {
     }
 
     if (Input.getVelLock()){ //hold
-      ChassisSpeeds fieldRelative = ChassisSpeeds.fromRobotRelativeSpeeds(
-        SwerveSubsystem.getChassisSpeeds(),
-        SwerveSubsystem.getRotation2d()
-      );
-
-      
-      double targetAngle = Math.toDegrees(Math.atan2(y, x));
-      rot = Math.toRadians(mVelLock.calculate(SwerveSubsystem.getHeading() + SwerveSubsystem.getRate() * .4, targetAngle));
-      double speed = Math.sqrt(fieldRelative.vxMetersPerSecond*fieldRelative.vxMetersPerSecond+fieldRelative.vyMetersPerSecond*fieldRelative.vyMetersPerSecond);
-        //rot = rot / (speed * .5);
-      
-
+      double mag = Math.sqrt(x*x+y*y);
+      if (mag > .1){
+        double targetAngle = Math.toDegrees(Math.atan2(y, x));
+        rot = Math.toRadians(mVelLock.calculate(SwerveSubsystem.getHeading() + SwerveSubsystem.getRate() * .4, targetAngle));
+        rot = MathUtil.clamp(rot, -mSwerve.mConfig.TELE_MAX_ROT_SPEED_RAD_SEC, mSwerve.mConfig.TELE_MAX_ROT_SPEED_RAD_SEC);
+      }
     }
 
     SmartDashboard.putBoolean("PodiumAligned", mSpeakerAlignPID.atSetpoint());
